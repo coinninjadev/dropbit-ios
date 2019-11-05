@@ -38,9 +38,7 @@ class LightningBroker: CKPersistenceBroker, LightningBrokerType {
     let ledgerEntry: CKMLNLedgerEntry
 
     if let invitation = invitation, let walletEntry = invitation.walletEntry {
-      ledgerEntry = CKMLNLedgerEntry.create(with: response.result, in: context)
-      walletEntry.ledgerEntry = ledgerEntry
-      ledgerEntry.walletEntry = walletEntry
+      ledgerEntry = CKMLNLedgerEntry.create(with: response.result, walletEntry: walletEntry, in: context)
     } else {
       ///invitation and/or invitation.walletEntry are nil, create ledger entry for non-invite lightning transaction
       ledgerEntry = CKMLNLedgerEntry.updateOrCreate(with: response.result, forWallet: wallet, in: context)

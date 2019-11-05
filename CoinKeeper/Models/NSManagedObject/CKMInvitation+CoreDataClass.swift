@@ -156,21 +156,24 @@ public class CKMInvitation: NSManagedObject {
                              in context: NSManagedObjectContext) -> CKMInvitation? {
     let queryId = isAcknowledged ? response.id : CKMInvitation.unacknowledgementPrefix + (response.metadata?.requestId ?? "")
     guard let foundInvitation = find(withId: queryId, in: context) else { return nil }
-    foundInvitation.sentDate = response.createdAt
-    foundInvitation.id = response.id
-    foundInvitation.preauthId = response.metadata?.preauthId
+    foundInvitation.configure(withAddressRequestResponse: response, side: side)
+    return foundInvitation
+  }
+
+  func configure(withAddressRequestResponse response: WalletAddressRequestResponse, side: WalletAddressRequestSide) {
+    self.sentDate = response.createdAt
+    self.id = response.id
+    self.preauthId = response.metadata?.preauthId
 
     let requestStatus = response.statusCase ?? .new
     let statusToPersist = CKMInvitation.statusToPersist(for: requestStatus, side: side)
-    foundInvitation.setStatusIfDifferent(to: statusToPersist)
+    self.setStatusIfDifferent(to: statusToPersist)
 
-    foundInvitation.setTxid(to: response.txid) // both txids are optional, placeholder txid is only on CKMTransaction
+    self.setTxid(to: response.txid) // both txids are optional, placeholder txid is only on CKMTransaction
 
-    if foundInvitation.status == .addressProvided, let address = response.address {
-      foundInvitation.addressProvidedToSender = address
+    if status == .addressSent, let address = response.address {
+      self.addressProvidedToSender = address
     }
-
-    return foundInvitation
   }
 
   static func statusToPersist(for requestStatus: WalletAddressRequestStatus, side: WalletAddressRequestSide) -> InvitationStatus {
