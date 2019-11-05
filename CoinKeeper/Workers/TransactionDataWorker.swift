@@ -171,7 +171,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
           guard let walletEntry = preauthLedgerEntry.walletEntry,
             let invitation = walletEntry.invitation,
             let matchingWAR = responses.first(where: { $0.id == invitation.id }),
-            let finalInvoiceId = matchingWAR.txid?.asNilIfEmpty(),
+            let finalInvoiceId = matchingWAR.cleanedTxid?.asNilIfEmpty(),
             let finalTxResult = ledgerResponse.ledger.first(where: { $0.id == finalInvoiceId })
             else { continue }
 

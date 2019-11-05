@@ -117,7 +117,7 @@ struct AddressRequestUpdate: AddressRequestUpdateDisplayable {
   init?(response: WalletAddressRequestResponse, requestSide: WalletAddressRequestSide, formatter: PhoneNumberFormatterType) {
     guard let responseStatus = response.statusCase else { return nil }
     self.phoneNumberFormatter = formatter
-    self.txid = response.txid
+    self.txid = response.cleanedTxid
     self.addressRequestId = response.id
     self.senderPhoneNumber = response.metadata?.sender.flatMap { GlobalPhoneNumber(participant: $0) }
     self.receiverPhoneNumber = response.metadata?.receiver.flatMap { GlobalPhoneNumber(participant: $0) }
