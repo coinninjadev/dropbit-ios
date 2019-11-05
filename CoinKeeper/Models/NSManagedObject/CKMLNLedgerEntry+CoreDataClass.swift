@@ -49,8 +49,10 @@ public class CKMLNLedgerEntry: NSManagedObject {
     }
   }
 
-  static func create(with response: LNTransactionResult, in context: NSManagedObjectContext) -> CKMLNLedgerEntry {
+  static func create(with response: LNTransactionResult, walletEntry: CKMWalletEntry, in context: NSManagedObjectContext) -> CKMLNLedgerEntry {
     let newEntry = CKMLNLedgerEntry(insertInto: context)
+    walletEntry.ledgerEntry = newEntry
+    newEntry.walletEntry = walletEntry //set relationships first so that walletEntry properties can be set during configure()
     configure(newEntry, with: response, in: context)
     return newEntry
   }
@@ -101,6 +103,20 @@ public class CKMLNLedgerEntry: NSManagedObject {
     } catch {
       log.error(error, message: "Could not execute fetch request for latest transaction")
       return nil
+    }
+  }
+
+  static func findPreauthEntries(in context: NSManagedObjectContext) -> [CKMLNLedgerEntry] {
+    let fetchRequest: NSFetchRequest<CKMLNLedgerEntry> = CKMLNLedgerEntry.fetchRequest()
+    let predicates = [CKPredicate.LedgerEntry.hasPreauthIdPrefix(),
+                      CKPredicate.LedgerEntry.withStatus(.pending)]
+    fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: predicates)
+
+    do {
+      return try context.fetch(fetchRequest)
+    } catch {
+      log.error(error, message: "Failed to fetch preauth ledger entries")
+      return []
     }
   }
 

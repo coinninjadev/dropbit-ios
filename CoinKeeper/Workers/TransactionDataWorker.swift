@@ -104,6 +104,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     }
     let since = fullSync ? nil : lastSyncDate
     return getLightningLedger(since: since)
+      .then(in: context) { self.replacePreauthorizedInvoicesWithFinalIfNeeded(ledgerResponse: $0, in: context) }
       .get(in: context) { response in
         ///Run deletion before persisting the ledger so that it doesn't interfere with wallet
         ///entries whose inverse relationships are not set until the context is saved.
@@ -155,6 +156,31 @@ class TransactionDataWorker: TransactionDataWorkerType {
           return self.getLightningLedger(since: date, recursiveResponse: response, offset: newPage)
         }
     }
+  }
+
+  ///This should be called before persisting the ledgerResponse as a whole
+  ///to avoid creating a new CKMLNLedgerEntry for the new/final invoice.
+  private func replacePreauthorizedInvoicesWithFinalIfNeeded(ledgerResponse: LNLedgerResponse,
+                                                             in context: NSManagedObjectContext) -> Promise<LNLedgerResponse> {
+    let preauthLedgerEntries = CKMLNLedgerEntry.findPreauthEntries(in: context)
+    guard preauthLedgerEntries.isNotEmpty else { return .value(ledgerResponse) }
+
+    return self.networkManager.getWalletAddressRequests(forSide: .sent)
+      .get(in: context) { responses in
+        for preauthLedgerEntry in preauthLedgerEntries {
+          guard let walletEntry = preauthLedgerEntry.walletEntry,
+            let invitation = walletEntry.invitation,
+            let matchingWAR = responses.first(where: { $0.id == invitation.id }),
+            let finalInvoiceId = matchingWAR.txid?.asNilIfEmpty(),
+            let finalTxResult = ledgerResponse.ledger.first(where: { $0.id == finalInvoiceId })
+            else { continue }
+
+          _ = CKMLNLedgerEntry.create(with: finalTxResult, walletEntry: walletEntry, in: context)
+          invitation.configure(withAddressRequestResponse: matchingWAR, side: .sent)
+
+          context.delete(preauthLedgerEntry)
+        }
+    }.map { _ in ledgerResponse }
   }
 
   func processOnChainLightningTransfers(withLedger ledgerResults: [LNTransactionResult],
