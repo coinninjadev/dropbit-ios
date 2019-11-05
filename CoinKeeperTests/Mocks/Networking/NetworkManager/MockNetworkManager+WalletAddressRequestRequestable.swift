@@ -11,7 +11,7 @@ import PromiseKit
 
 extension MockNetworkManager: WalletAddressRequestRequestable {
 
-  func createAddressRequest(body: WalletAddressRequestBody) -> Promise<WalletAddressRequestResponse> {
+  func createAddressRequest(body: WalletAddressRequestBody, preauthId: String?) -> Promise<WalletAddressRequestResponse> {
     return Promise { _ in }
   }
 
