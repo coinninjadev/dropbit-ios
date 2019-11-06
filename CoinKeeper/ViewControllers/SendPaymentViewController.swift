@@ -504,14 +504,14 @@ extension SendPaymentViewController {
       ///updateViewWithModel() will call this function again to apply the new `.contact` recipient type.
       self.delegate.viewController(self, checkForContactFromGenericContact: contact) { possibleValidatedContact in
         if let validatedContact = possibleValidatedContact {
-          self.viewModel.paymentRecipient = PaymentRecipient.contact(validatedContact)
+          self.viewModel.paymentRecipient = PaymentRecipient.phoneContact(validatedContact)
           self.updateViewWithModel()
           self.hideRecipientInputViews()
         } else {
           self.showPhoneEntryView(with: contact)
         }
       }
-    case .contact, .twitterContact:
+    case .phoneContact, .twitterContact:
       self.hideRecipientInputViews()
     }
   }
@@ -549,7 +549,7 @@ extension SendPaymentViewController {
 extension SendPaymentViewController: SelectedValidContactDelegate {
 
   func update(withSelectedContact contact: ContactType) {
-    self.viewModel.paymentRecipient = .contact(contact)
+    self.viewModel.paymentRecipient = .phoneContact(contact)
     updateViewWithModel()
   }
 
@@ -693,7 +693,7 @@ extension SendPaymentViewController {
 
   private func validateInvitationMaximum(against btcAmount: NSDecimalNumber) throws {
     guard let recipient = viewModel.paymentRecipient,
-      case let .contact(contact) = recipient,
+      case let .phoneContact(contact) = recipient,
       contact.kind != .registeredUser
       else { return }
 
@@ -709,7 +709,7 @@ extension SendPaymentViewController {
     }
 
     switch recipient {
-    case .contact(let contact):
+    case .phoneContact(let contact):
       try validatePayment(toContact: contact)
     case .phoneNumber(let genericContact):
       try validatePayment(toContact: genericContact)
@@ -785,7 +785,7 @@ extension SendPaymentViewController {
     var newContact = contact
     newContact.kind = kind
     switch contact.asDropBitReceiver {
-    case .phone(let contact): self.viewModel.paymentRecipient = .contact(contact)
+    case .phone(let contact): self.viewModel.paymentRecipient = .phoneContact(contact)
     case .twitter(let contact): self.viewModel.paymentRecipient = .twitterContact(contact)
     }
 

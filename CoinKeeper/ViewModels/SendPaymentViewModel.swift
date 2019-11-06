@@ -35,10 +35,10 @@ enum PaymentRecipient {
   /// Neither option contains scheme. i.e. "bitcoin:" "lightning:"
   case paymentTarget(String)
 
-  case contact(ContactType)
-
   /// Manually entered, not set from Contacts. Associated value is digits only.
   case phoneNumber(GenericContact)
+
+  case phoneContact(ContactType)
 
   case twitterContact(TwitterContactType)
 
@@ -168,7 +168,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   }
 
   var contact: ContactType? {
-    if let recipient = paymentRecipient, case let .contact(contact) = recipient {
+    if let recipient = paymentRecipient, case let .phoneContact(contact) = recipient {
       return contact
     } else {
       return nil
@@ -179,7 +179,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     if let recipient = paymentRecipient {
       switch recipient {
       case .paymentTarget:  return false
-      case .contact:        return sharedMemoAllowed
+      case .phoneContact:        return sharedMemoAllowed
       case .phoneNumber:    return sharedMemoAllowed
       case .twitterContact: return sharedMemoAllowed
       }
@@ -191,7 +191,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   var memoEncryptionPolicy: MemoEncryptionPolicy {
     if walletTransactionType == .lightning,
       let recipient = paymentRecipient,
-      case let .contact(contactType) = recipient,
+      case let .phoneContact(contactType) = recipient,
       contactType.kind == .invite {
       return .unencryptedInvite
     } else {
@@ -226,7 +226,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     switch recipient {
     case .phoneNumber, .paymentTarget:
       return .textField
-    case .contact, .twitterContact:
+    case .phoneContact, .twitterContact:
       return .label
     }
   }
@@ -235,7 +235,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     guard let recipient = self.paymentRecipient else { return nil }
     switch recipient {
     case .paymentTarget: return nil
-    case .contact(let contact): return contact.displayName
+    case .phoneContact(let contact): return contact.displayName
     case .twitterContact(let contact): return contact.displayName
     case .phoneNumber: return nil
     }
@@ -245,7 +245,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     guard let recipient = self.paymentRecipient else { return nil }
     switch recipient {
     case .paymentTarget: return nil
-    case .contact(let contact):
+    case .phoneContact(let contact):
       guard let phoneContact = contact as? PhoneContactType else { return nil }
       let formatter = CKPhoneNumberFormatter(format: .international)
       return (try? formatter.string(from: phoneContact.globalPhoneNumber)) ?? ""
@@ -260,7 +260,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     switch r {
     case .paymentTarget,
          .phoneNumber:    return .textField
-    case .contact,
+    case .phoneContact,
          .twitterContact: return .label
     }
   }

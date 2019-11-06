@@ -36,7 +36,7 @@ class SendPaymentViewModelTests: XCTestCase {
     XCTAssertEqual(address, self.sut.address)
 
     let number = GlobalPhoneNumber(countryCode: 1, nationalNumber: "9375555555")
-    self.sut.paymentRecipient = .contact(GenericContact(phoneNumber: number, formatted: ""))
+    self.sut.paymentRecipient = .phoneContact(GenericContact(phoneNumber: number, formatted: ""))
     XCTAssertNil(self.sut.address)
   }
 
@@ -44,7 +44,7 @@ class SendPaymentViewModelTests: XCTestCase {
     sut.sharedMemoAllowed = true
     let number = GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212")
     let contact = GenericContact(phoneNumber: number, formatted: "")
-    sut.paymentRecipient = .contact(contact)
+    sut.paymentRecipient = .phoneContact(contact)
     XCTAssertTrue(sut.shouldShowSharedMemoBox, "shouldShowSharedMemoBox should be true")
     sut.paymentRecipient = .phoneNumber(contact)
     XCTAssertTrue(sut.shouldShowSharedMemoBox, "shouldShowSharedMemoBox should be true")
@@ -56,7 +56,7 @@ class SendPaymentViewModelTests: XCTestCase {
     sut.sharedMemoAllowed = false
     let number = GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212")
     let contact = GenericContact(phoneNumber: number, formatted: "")
-    sut.paymentRecipient = .contact(contact)
+    sut.paymentRecipient = .phoneContact(contact)
     XCTAssertFalse(sut.shouldShowSharedMemoBox, "shouldShowSharedMemoBox should be false")
     sut.paymentRecipient = .phoneNumber(contact)
     XCTAssertFalse(sut.shouldShowSharedMemoBox, "shouldShowSharedMemoBox should be false")
