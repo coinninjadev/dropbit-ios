@@ -195,7 +195,7 @@ CurrencySwappableAmountEditor {
     refreshBothAmounts()
     let sharedMemoAllowed = delegate.viewControllerShouldInitiallyAllowMemoSharing(self)
     viewModel.sharedMemoAllowed = sharedMemoAllowed
-    memoContainerView.configure(memo: nil, isShared: sharedMemoAllowed)
+    memoContainerView.configure(memo: nil, isShared: sharedMemoAllowed, encryptionPolicy: viewModel.memoEncryptionPolicy)
     delegate.sendPaymentViewControllerDidLoad(self)
     walletToggleView.delegate = self
   }
@@ -374,7 +374,9 @@ extension SendPaymentViewController {
   }
 
   func updateMemoContainer() {
-    self.memoContainerView.configure(memo: viewModel.memo, isShared: viewModel.sharedMemoDesired)
+    self.memoContainerView.configure(memo: viewModel.memo,
+                                     isShared: viewModel.sharedMemoDesired,
+                                     encryptionPolicy: viewModel.memoEncryptionPolicy)
     self.memoContainerView.bottomBackgroundView.isHidden = !viewModel.shouldShowSharedMemoBox
 
     UIView.animate(withDuration: 0.2, animations: { [weak self] in
@@ -631,7 +633,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
     } else {
       phoneNumberEntryView.textField.selectedBack()
     }
-    return false  // manage this manually
+    return false //manage this manually
   }
 
   private func showInvalidPhoneNumberAlert() {

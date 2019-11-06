@@ -188,6 +188,17 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     }
   }
 
+  var memoEncryptionPolicy: MemoEncryptionPolicy {
+    if walletTransactionType == .lightning,
+      let recipient = paymentRecipient,
+      case let .contact(contactType) = recipient,
+      contactType.kind == .invite {
+      return .unencryptedInvite
+    } else {
+      return .encrypted
+    }
+  }
+
   var standardIgnoredOptions: CurrencyAmountValidationOptions {
     return [.invitationMaximum]
   }
