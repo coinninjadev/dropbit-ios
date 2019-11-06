@@ -81,7 +81,7 @@ public class CKMLNLedgerEntry: NSManagedObject {
     }
 
     // User may have added local memo
-    if let resultMemo = result.memo?.asNilIfEmpty(), entry.memo == nil {
+    if let resultMemo = result.memo?.asNilIfEmpty(), entry.memo == nil, !result.isPreauth {
       entry.memo = resultMemo
       entry.walletEntry?.memoSetByInvoice = true
     }
