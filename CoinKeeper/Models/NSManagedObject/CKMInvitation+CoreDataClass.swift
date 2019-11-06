@@ -171,7 +171,7 @@ public class CKMInvitation: NSManagedObject {
 
     self.setTxid(to: response.cleanedTxid) // both txids are optional, placeholder txid is only on CKMTransaction
 
-    if status == .addressSent, let address = response.address {
+    if status == .addressProvided, let address = response.address {
       self.addressProvidedToSender = address
     }
   }
