@@ -178,7 +178,7 @@ extension TransactionHistoryViewController: TransactionHistoryDataSourceDelegate
   }
 
   func transactionDataSourceDidChange() {
-    reloadCollectionViews()
+    reloadCollectionViews(indexPaths: viewModel.dataSource.indexPathsToAnimate())
   }
 
   @objc func didUpdateWordsBackedUp() {

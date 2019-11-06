@@ -55,9 +55,18 @@ extension TransactionHistoryViewController {
     summaryCollectionView.emptyDataSetDelegate = self
   }
 
-  func reloadCollectionViews() {
+  func reloadCollectionViews(indexPaths: [IndexPath] = []) {
     guard self.viewIfLoaded != nil else { return }
-    summaryCollectionView.reloadData()
+    if indexPaths.isNotEmpty {
+      summaryCollectionView.performBatchUpdates({
+        summaryCollectionView.insertItems(at: indexPaths)
+      }, completion: { [weak self] _ in
+        self?.summaryCollectionView.reloadData()
+      })
+    } else {
+      summaryCollectionView.reloadData()
+    }
+
     delegate.viewControllerSummariesDidReload(self, indexPathsIfNotAll: nil)
   }
 

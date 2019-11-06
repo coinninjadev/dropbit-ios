@@ -54,7 +54,7 @@ class CKRecipientParser: RecipientParserType {
     let results = try findRecipients(inText: text, ofTypes: types)
     switch results.count {
     case 0:
-      throw CKRecipientParserError.noResults(types)
+      throw CKRecipientParserError.noResults
     case 1:
       return results.first!
     default:
