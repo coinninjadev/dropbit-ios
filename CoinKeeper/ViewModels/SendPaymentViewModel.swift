@@ -179,7 +179,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     if let recipient = paymentRecipient {
       switch recipient {
       case .paymentTarget:  return false
-      case .phoneContact:        return sharedMemoAllowed
+      case .phoneContact:   return sharedMemoAllowed
       case .phoneNumber:    return sharedMemoAllowed
       case .twitterContact: return sharedMemoAllowed
       }
