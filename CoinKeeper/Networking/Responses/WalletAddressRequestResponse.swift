@@ -148,12 +148,6 @@ public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConve
   var addressType: String?
   var txid: String?
 
-  ///`txid` may include ":int" when set by server after preauthorized lightning invitation
-  var cleanedTxid: String? {
-    guard let id = txid else { return nil }
-    return id.components(separatedBy: ":").first ?? txid
-  }
-
   let metadata: WalletAddressRequestMetadata?
 
   /// Hash of the phone number for the contact associated with this request

@@ -57,7 +57,7 @@ public class CKMInvitation: NSManagedObject {
       }
     }
 
-    self.setTxid(to: response.cleanedTxid)
+    self.setTxid(to: response.txid)
   }
 
   convenience public init(withOutgoingInvitationDTO invitationDTO: OutgoingInvitationDTO,
@@ -138,7 +138,7 @@ public class CKMInvitation: NSManagedObject {
   private static func transaction(for response: WalletAddressRequestResponse,
                                   invitationId: String,
                                   in context: NSManagedObjectContext) -> CKMTransaction {
-    let maybeTxid: String? = response.cleanedTxid?.asNilIfEmpty()
+    let maybeTxid: String? = response.txid?.asNilIfEmpty()
     if let txid = maybeTxid, let foundTransaction = CKMTransaction.find(byTxid: txid, in: context) {
       return foundTransaction
     } else {
@@ -169,7 +169,7 @@ public class CKMInvitation: NSManagedObject {
     let statusToPersist = CKMInvitation.statusToPersist(for: requestStatus, side: side)
     self.setStatusIfDifferent(to: statusToPersist)
 
-    self.setTxid(to: response.cleanedTxid) // both txids are optional, placeholder txid is only on CKMTransaction
+    self.setTxid(to: response.txid) // both txids are optional, placeholder txid is only on CKMTransaction
 
     if status == .addressProvided, let address = response.address {
       self.addressProvidedToSender = address

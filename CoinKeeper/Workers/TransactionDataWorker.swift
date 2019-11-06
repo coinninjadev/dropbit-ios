@@ -171,8 +171,8 @@ class TransactionDataWorker: TransactionDataWorkerType {
           guard let walletEntry = preauthLedgerEntry.walletEntry,
             let invitation = walletEntry.invitation,
             let matchingWAR = responses.first(where: { $0.id == invitation.id }),
-            let finalInvoiceId = matchingWAR.cleanedTxid?.asNilIfEmpty(),
-            let finalTxResult = ledgerResponse.ledger.first(where: { $0.id == finalInvoiceId })
+            let finalInvoiceId = matchingWAR.txid?.asNilIfEmpty(),
+            let finalTxResult = ledgerResponse.ledger.first(where: { $0.cleanedId == finalInvoiceId })
             else { continue }
 
           _ = CKMLNLedgerEntry.create(with: finalTxResult, walletEntry: walletEntry, in: context)
