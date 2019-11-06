@@ -190,10 +190,15 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
 
   var memoEncryptionPolicy: MemoEncryptionPolicy {
     if walletTransactionType == .lightning,
-      let recipient = paymentRecipient,
-      case let .phoneContact(contactType) = recipient,
-      contactType.kind == .invite {
-      return .unencryptedInvite
+      let recipient = paymentRecipient {
+      switch recipient {
+      case .phoneContact(let contactType):
+        return contactType.kind == .invite ? .unencryptedInvite : .encrypted
+      case .twitterContact(let contactType):
+        return contactType.kind == .invite ? .unencryptedInvite : .encrypted
+      default:
+        return .encrypted
+      }
     } else {
       return .encrypted
     }
