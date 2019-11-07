@@ -244,7 +244,7 @@ class AlertManager: AlertManagerType {
     }
   }
 
-  private func sendDebugInfoAlertActionConfig(with action: @escaping CKCompletion) -> AlertActionConfiguration{
+  private func sendDebugInfoAlertActionConfig(with action: @escaping CKCompletion) -> AlertActionConfiguration {
     return AlertActionConfiguration(title: "Send Debug Info", style: .default, action: {
       action()
     })
