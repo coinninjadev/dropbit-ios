@@ -193,7 +193,8 @@ class AlertManager: AlertManagerType {
     let receiverDesc = update.receiverDescription(phoneFormatter: self.phoneNumberFormatter)
     switch update.status {
     case .completed:
-      let message = "Your transaction of \(update.fiatDescription) to \(receiverDesc) has been sent!"
+      let stateDescriptor = (update.addressType == .btc) ? "sent" : "received" //lightning invites are instantly transferred
+      let message = "Your transaction of \(update.fiatDescription) to \(receiverDesc) has been \(stateDescriptor)!"
 
       DispatchQueue.main.async {
         switch UIApplication.shared.applicationState {
@@ -222,12 +223,13 @@ class AlertManager: AlertManagerType {
 
   private func showReceiverAlert(for update: AddressRequestUpdateDisplayable) {
     let senderDesc = update.senderDescription(phoneFormatter: self.phoneNumberFormatter)
-    let dropbitTypeDescription = update.addressType == .btc ? "Bitcoin address" : "Lightning invoice"
     switch update.status {
     case .addressProvided:
-      let message = "We have sent a \(dropbitTypeDescription) to \(senderDesc) for \(update.fiatDescription) to be sent."
+      guard update.addressType == .btc else { return }
+      let message = "We have sent a Bitcoin address to \(senderDesc) for \(update.fiatDescription) to be sent."
       self.showBanner(with: message, duration: .custom(8.0), alertKind: .info)
     case .completed:
+      guard update.addressType == .btc else { return }
       let message = "The \(CKStrings.dropBitWithTrademark) for \(update.fiatDescription) from \(senderDesc) has been completed."
       self.showBanner(with: message, duration: .default, alertKind: .info)
     case .canceled:
