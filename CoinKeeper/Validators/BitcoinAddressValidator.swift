@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import CNBitcoinKit
 
 enum BitcoinAddressValidatorError: ValidatorTypeError {
   case isInvalidBitcoinAddress

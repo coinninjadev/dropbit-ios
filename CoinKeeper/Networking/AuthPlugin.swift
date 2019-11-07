@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import CNBitcoinKit
 import Moya
 import Result
 

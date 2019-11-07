@@ -89,7 +89,6 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     }
   }
 
-
   func viewControllerDidRequestDeleteWallet(_ viewController: UIViewController, completion: @escaping CKCompletion) {
     let description = """
         Are you sure you want to delete this wallet?

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CNBitcoinKit
 
 protocol ConfirmPaymentViewControllerDelegate: ViewControllerDismissable, AllPaymentSendingDelegate {
   func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController)

@@ -6,7 +6,6 @@
 //  Copyright © 2019 Coin Ninja, LLC. All rights reserved.
 //
 
-import CNBitcoinKit
 import CoreData
 import Foundation
 import PromiseKit

@@ -85,10 +85,6 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
 
     let mapPinImage = UIImage(imageLiteralResourceName: "mapPinBlue")
     let font = UIFont.medium(13)
-    let lightningAddressAttributes: StringAttributes = [
-      .font: font,
-      .foregroundColor: UIColor.darkBlueText
-    ]
     let blueAttributes: StringAttributes = [
       .font: font,
       .foregroundColor: UIColor.primaryActionButton
