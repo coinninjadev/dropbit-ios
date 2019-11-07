@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import PromiseKit
-import CNBitcoinKit
 
 extension AppCoordinator: WalletTransferViewControllerDelegate {
 

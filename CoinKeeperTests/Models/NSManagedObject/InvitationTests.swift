@@ -8,7 +8,6 @@
 
 @testable import DropBit
 import CoreData
-import CNBitcoinKit
 import XCTest
 
 class InvitationTests: XCTestCase {

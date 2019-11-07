@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CNBitcoinKit
 import Result
 import CoreData
 import MessageUI

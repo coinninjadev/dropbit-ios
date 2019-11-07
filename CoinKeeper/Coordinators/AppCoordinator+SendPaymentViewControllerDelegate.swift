@@ -10,7 +10,6 @@ import UIKit
 import Contacts
 import enum Result.Result
 import PromiseKit
-import CNBitcoinKit
 import Permission
 import MMDrawerController
 

@@ -8,7 +8,6 @@
 
 import CoreData
 import UIKit
-import CNBitcoinKit
 import Gifu
 import PromiseKit
 import DZNEmptyDataSet

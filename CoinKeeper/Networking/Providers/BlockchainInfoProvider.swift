@@ -8,7 +8,6 @@
 
 import Moya
 import PromiseKit
-import CNBitcoinKit
 
 class BlockchainInfoProvider {
 

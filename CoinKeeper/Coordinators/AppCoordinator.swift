@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CNBitcoinKit
 import MMDrawerController
 import Moya
 import Permission

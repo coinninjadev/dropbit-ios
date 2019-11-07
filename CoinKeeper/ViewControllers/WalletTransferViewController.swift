@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import SVProgressHUD
-import CNBitcoinKit
 import PromiseKit
 
 enum TransferAmount {

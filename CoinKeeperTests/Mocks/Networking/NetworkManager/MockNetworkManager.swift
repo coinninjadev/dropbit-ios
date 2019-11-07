@@ -9,7 +9,6 @@
 import Foundation
 @testable import DropBit
 import PromiseKit
-import CNBitcoinKit
 import OAuthSwift
 
 class MockNetworkManager: NetworkManagerType {
