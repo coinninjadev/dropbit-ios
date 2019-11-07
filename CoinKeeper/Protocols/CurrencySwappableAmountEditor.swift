@@ -16,9 +16,12 @@ protocol CurrencySwappableAmountEditor: CurrencySwappableEditAmountViewDelegate,
   var editAmountView: CurrencySwappableEditAmountView! { get }
 
   func updateQRImage()
+  func currencySwappableAmountDataDidChange()
 }
 
 extension CurrencySwappableAmountEditor {
+
+  func currencySwappableAmountDataDidChange() {}
 
   func viewModelDidBeginEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
     refreshBothAmounts()
@@ -78,6 +81,8 @@ extension CurrencySwappableAmountEditor {
   }
 
   func viewModelNeedsAmountLabelRefresh(_ viewModel: CurrencySwappableEditAmountViewModel, secondaryOnly: Bool) {
+    currencySwappableAmountDataDidChange()
+
     if secondaryOnly {
       refreshSecondaryAmount()
     } else {
