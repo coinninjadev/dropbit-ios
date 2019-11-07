@@ -151,6 +151,30 @@ public class CKMTransaction: NSManagedObject {
     }
   }
 
+  func configure(with lightningResponse: LNTransactionResponse, in context: NSManagedObjectContext) {
+    // self.txid should remain as an empty string so that the outgoingTransactionData.txid UUID
+    // doesn't trigger a 4xx error when sending txids to the server
+
+    context.performAndWait {
+      self.sortDate = Date()
+      self.date = self.sortDate
+      self.isSentToSelf = false
+      self.isIncoming = true
+      self.txid = lightningResponse.result.id
+
+      // counterparty address
+      //counterpartyAddress = CKMCounterpartyAddress.findOrCreate(withAddress: outgoingTransactionData.destinationAddress, in: context)
+
+      // temporary sent transaction
+      let tempTx = temporarySentTransaction ?? CKMTemporarySentTransaction(insertInto: context)
+      tempTx.amount = lightningResponse.result.value
+      tempTx.feeAmount = lightningResponse.result.networkFee
+      tempTx.isSentToSelf = false
+      tempTx.txid = lightningResponse.result.id
+      tempTx.transaction = self
+    }
+  }
+
   /// Returns early if this transaction already has a CKMTransactionSharedPayload attached
   func markAsFailed() {
     broadcastFailed = true

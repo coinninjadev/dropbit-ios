@@ -10,6 +10,7 @@ import Foundation
 import CNBitcoinKit
 import UIKit
 import PromiseKit
+import CoreData
 
 extension AppCoordinator: PaymentSendingDelegate {
 
@@ -167,10 +168,10 @@ extension AppCoordinator: PaymentSendingDelegate {
     }
   }
 
-  private func persistLightningPaymentResponse(_ response: LNTransactionResponse,
-                                               receiver: OutgoingDropBitReceiver?,
-                                               invitation: CKMInvitation?,
-                                               inputs: LightningPaymentInputs) {
+  func persistLightningPaymentResponse(_ response: LNTransactionResponse,
+                                       receiver: OutgoingDropBitReceiver?,
+                                       invitation: CKMInvitation?,
+                                       inputs: LightningPaymentInputs?) {
     let context = invitation?.managedObjectContext ?? self.persistenceManager.createBackgroundContext()
     context.performAndWait {
       self.persistenceManager.brokers.lightning.persistPaymentResponse(response, receiver: receiver,
@@ -232,11 +233,7 @@ extension AppCoordinator: PaymentSendingDelegate {
           persistedTransaction.isLightningTransfer = isInternalLightningLoad
 
           if isInternalLightningLoad { //create temporary lightning transaction
-            if let wallet = CKMWallet.find(in: context),
-              let tempLightningTx = persistedTransaction.temporarySentTransaction?.copyForLightning() {
-              let walletEntry = CKMWalletEntry(wallet: wallet, sortDate: Date(), insertInto: context)
-              walletEntry.temporarySentTransaction = tempLightningTx
-            }
+            self.createTemporaryLightning(from: persistedTransaction, in: context)
           }
 
           if let wallet = self.walletManager?.wallet {
@@ -292,5 +289,13 @@ extension AppCoordinator: PaymentSendingDelegate {
 
         failure(error)
     }
+  }
+
+  func createTemporaryLightning(from transaction: CKMTransaction, in context: NSManagedObjectContext) {
+    guard let wallet = CKMWallet.find(in: context),
+      let tempLightningTx = transaction.temporarySentTransaction?.copyForLightning() else { return }
+
+    let walletEntry = CKMWalletEntry(wallet: wallet, sortDate: Date(), insertInto: context)
+    walletEntry.temporarySentTransaction = tempLightningTx
   }
 }

@@ -277,6 +277,13 @@ class CKDatabase: PersistenceDatabaseType {
     return relevantTransaction
   }
 
+  func persistTemporaryTransaction(from response: LNTransactionResponse,
+                                   in context: NSManagedObjectContext) -> CKMTransaction {
+    let transaction = CKMTransaction(insertInto: context)
+    transaction.configure(with: response, in: context)
+    return transaction
+  }
+
   func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext) {
     let transactionsToRemove = CKMTransaction.findAllToDelete(notIn: txids, in: context)
     transactionsToRemove.forEach { context.delete($0) }

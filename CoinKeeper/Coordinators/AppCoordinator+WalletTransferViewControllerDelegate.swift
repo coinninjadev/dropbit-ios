@@ -26,10 +26,16 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
 
     let viewModel = PaymentSuccessFailViewModel(mode: .pending)
     let successFailVC = SuccessFailViewController.newInstance(viewModel: viewModel, delegate: self)
+    let context = self.persistenceManager.createBackgroundContext()
 
     successFailVC.action = { [unowned self] in
       self.networkManager.withdrawLightningFunds(to: receiveAddress, sats: sats)
-        .done { _ in
+        .done(in: context) { response in
+          let persistedTransaction = self.persistenceManager.brokers.transaction.persistTemporaryTransaction(from: response, in: context)
+          if let wallet = CKMWallet.find(in: context), let tempLightningTx = persistedTransaction.temporarySentTransaction?.copyForLightning() {
+            let walletEntry = CKMWalletEntry(wallet: wallet, sortDate: Date(), insertInto: context)
+            walletEntry.temporarySentTransaction = tempLightningTx
+          }
           self.analyticsManager.track(event: .lightningToOnChainSuccessful, with: nil)
           CKNotificationCenter.publish(key: .didUpdateLocalTransactionRecords)
           successFailVC.setMode(.success)
