@@ -234,6 +234,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     feesView.isHidden = false
     feesView.setupFees(top: networkFee, bottom: processingFee)
   }
+
 }
 
 extension WalletTransferViewController: ConfirmViewDelegate {
