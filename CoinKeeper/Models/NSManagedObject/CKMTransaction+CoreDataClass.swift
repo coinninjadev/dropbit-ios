@@ -161,7 +161,7 @@ public class CKMTransaction: NSManagedObject {
       self.txid = lightningResponse.result.id
 
       let tempTx = temporarySentTransaction ?? CKMTemporarySentTransaction(insertInto: context)
-      tempTx.amount = lightningResponse.result.value
+      tempTx.amount = -lightningResponse.result.value - lightningResponse.result.networkFee
       tempTx.feeAmount = lightningResponse.result.networkFee
       tempTx.isSentToSelf = false
       tempTx.txid = lightningResponse.result.id
