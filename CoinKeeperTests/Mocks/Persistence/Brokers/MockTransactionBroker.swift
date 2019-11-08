@@ -14,6 +14,11 @@ import PromiseKit
 
 class MockTransactionBroker: CKPersistenceBroker, TransactionBrokerType {
 
+  func persistTemporaryTransaction(from response: LNTransactionResponse,
+                                   in context: NSManagedObjectContext) -> CKMTransaction {
+    return CKMTransaction(insertInto: context)
+  }
+
   func persistTransactions(from transactionResponses: [TransactionResponse],
                            in context: NSManagedObjectContext,
                            relativeToCurrentHeight blockHeight: Int,
