@@ -130,10 +130,8 @@ public class CKMTransaction: NSManagedObject {
         self.txid = outgoingTransactionData.txid
       }
 
-      // counterparty address
       counterpartyAddress = CKMCounterpartyAddress.findOrCreate(withAddress: outgoingTransactionData.destinationAddress, in: context)
 
-      // temporary sent transaction
       let tempTx = temporarySentTransaction ?? CKMTemporarySentTransaction(insertInto: context)
       tempTx.amount = outgoingTransactionData.amount
       tempTx.feeAmount = outgoingTransactionData.feeAmount
@@ -162,10 +160,6 @@ public class CKMTransaction: NSManagedObject {
       self.isIncoming = true
       self.txid = lightningResponse.result.id
 
-      // counterparty address
-      //counterpartyAddress = CKMCounterpartyAddress.findOrCreate(withAddress: outgoingTransactionData.destinationAddress, in: context)
-
-      // temporary sent transaction
       let tempTx = temporarySentTransaction ?? CKMTemporarySentTransaction(insertInto: context)
       tempTx.amount = lightningResponse.result.value
       tempTx.feeAmount = lightningResponse.result.networkFee

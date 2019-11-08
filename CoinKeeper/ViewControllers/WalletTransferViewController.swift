@@ -50,8 +50,8 @@ BalanceDataSource & AnalyticsManagerAccessType {
 }
 
 enum TransferDirection {
-  case toLightning(PaymentData?) //load
-  case toOnChain(NSDecimalNumber?) //withdraw
+  case toLightning(PaymentData?)
+  case toOnChain(NSDecimalNumber?)
 }
 
 class WalletTransferViewController: PresentableViewController, StoryboardInitializable, CurrencySwappableAmountEditor, PaymentAmountValidatable {

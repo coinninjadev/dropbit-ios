@@ -21,24 +21,30 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
   }
 
   func viewControllerDidConfirmWithdraw(_ viewController: UIViewController, btcAmount: NSDecimalNumber) {
-    guard let receiveAddress = self.nextReceiveAddressForRequestPay() else { return }
+    let context = self.persistenceManager.createBackgroundContext()
+
+    guard let receiveAddress = self.nextReceiveAddressForRequestPay(), let wallet = CKMWallet.find(in: context) else { return }
     let sats = btcAmount.asFractionalUnits(of: .BTC)
 
     let viewModel = PaymentSuccessFailViewModel(mode: .pending)
     let successFailVC = SuccessFailViewController.newInstance(viewModel: viewModel, delegate: self)
-    let context = self.persistenceManager.createBackgroundContext()
 
     successFailVC.action = { [unowned self] in
       self.networkManager.withdrawLightningFunds(to: receiveAddress, sats: sats)
         .done(in: context) { response in
-          let persistedTransaction = self.persistenceManager.brokers.transaction.persistTemporaryTransaction(from: response, in: context)
-          if let wallet = CKMWallet.find(in: context), let tempLightningTx = persistedTransaction.temporarySentTransaction?.copyForLightning() {
-            let walletEntry = CKMWalletEntry(wallet: wallet, sortDate: Date(), insertInto: context)
-            walletEntry.temporarySentTransaction = tempLightningTx
-          }
+          self.persistenceManager.brokers.transaction.persistTemporaryTransaction(from: response, in: context)
+          self.persistLightningPaymentResponse(response, receiver: nil, invitation: nil, inputs: nil)
+          self.workerFactory().createTransactionDataWorker()?.processOnChainLightningTransfers(withLedger: [response.result],
+                                                                                          forWallet: wallet,
+                                                                                          in: context)
           self.analyticsManager.track(event: .lightningToOnChainSuccessful, with: nil)
-          CKNotificationCenter.publish(key: .didUpdateLocalTransactionRecords)
           successFailVC.setMode(.success)
+          do {
+            try context.saveRecursively()
+            CKNotificationCenter.publish(key: .didUpdateLocalTransactionRecords)
+          } catch {
+            log.contextSaveError(error)
+          }
         }
         .catch { error in
           log.error(error, message: "Failed to withdraw from lightning account")
