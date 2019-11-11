@@ -13,7 +13,7 @@ import CoreData
 extension Thenable {
 
   public func then<U>(
-    on: DispatchQueue? = conf.Q.map,
+    on: DispatchQueue? = DispatchQueue.global(qos: .background),
     in context: NSManagedObjectContext,
     flags: DispatchWorkItemFlags? = nil, _
     body: @escaping (Self.T) throws -> U
@@ -38,7 +38,7 @@ extension Thenable {
   }
 
   public func get(
-    on: DispatchQueue? = conf.Q.map,
+    on: DispatchQueue? = DispatchQueue.global(qos: .background),
     in context: NSManagedObjectContext,
     flags: DispatchWorkItemFlags? = nil,
     _ body: @escaping (Self.T) throws -> Swift.Void
@@ -60,7 +60,7 @@ extension Thenable {
   }
 
   public func done(
-    on: DispatchQueue? = conf.Q.map,
+    on: DispatchQueue? = DispatchQueue.global(qos: .background),
     in context: NSManagedObjectContext,
     flags: DispatchWorkItemFlags? = nil,
     _ body: @escaping (Self.T) throws -> Swift.Void
@@ -81,7 +81,7 @@ extension Thenable {
   }
 
   public func compactMap<U>(
-    on: DispatchQueue? = conf.Q.map,
+    on: DispatchQueue? = DispatchQueue.global(qos: .background),
     in context: NSManagedObjectContext,
     flags: DispatchWorkItemFlags? = nil,
     _ transform: @escaping (Self.T) throws -> U?
@@ -108,7 +108,7 @@ extension Thenable {
 extension CatchMixin {
 
   public func `catch`(
-    on: DispatchQueue? = conf.Q.map,
+    on: DispatchQueue? = DispatchQueue.global(qos: .background),
     in context: NSManagedObjectContext,
     policy: CatchPolicy = .allErrors,
     flags: DispatchWorkItemFlags? = nil,
