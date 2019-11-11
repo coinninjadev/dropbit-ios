@@ -15,6 +15,7 @@ protocol ContactCacheManagerType: AnyObject {
 
   var viewContext: NSManagedObjectContext { get }
   func createBackgroundContext() -> NSManagedObjectContext
+  func createRootBackgroundContext() -> NSManagedObjectContext
 
   func createPhoneNumberFetchedResultsController() -> NSFetchedResultsController<CCMPhoneNumber>
   func predicate(forSearch searchText: String) -> NSPredicate
@@ -58,6 +59,13 @@ class ContactCacheManager: ContactCacheManagerType {
     context.parent = viewContext
     context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
     context.name = "BackgroundContext_Contacts_\(Date().timeIntervalSince1970)"
+    return context
+  }
+
+  func createRootBackgroundContext() -> NSManagedObjectContext {
+    let context = self.container.newBackgroundContext()
+    context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+    context.name = "TemporaryRootContext_Contacts_\(Date().timeIntervalSince1970)"
     return context
   }
 

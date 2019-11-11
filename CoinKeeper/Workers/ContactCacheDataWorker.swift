@@ -82,7 +82,7 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
   }
 
   func reloadSystemContactsIfNeeded(force: Bool, completion: CKErrorCompletion?) {
-    let bgContext = contactCacheManager.createBackgroundContext()
+    let bgContext = contactCacheManager.createRootBackgroundContext()
     bgContext.perform {
       self.neededCacheAction(force: force, in: bgContext)
         .then(in: bgContext) { self.updateCache(withAction: $0, in: bgContext) }
