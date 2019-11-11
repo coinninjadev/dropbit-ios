@@ -296,7 +296,7 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
   }
 
   private func batchedPhoneNumbers(from phoneNumberHashes: [String],
-                                   batchLimit: Int = 100) -> Promise<[StringDictResponse]> {
+                                   batchLimit: Int = 300) -> Promise<[StringDictResponse]> {
     let phoneHashBatches = phoneNumberHashes.chunked(by: batchLimit)
 
     var batchIterator = phoneHashBatches.makeIterator()
