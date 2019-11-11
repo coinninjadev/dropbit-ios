@@ -11,6 +11,7 @@ import Contacts
 import PromiseKit
 
 protocol ContactCacheDataWorkerType: AnyObject {
+  func generateTestContacts(count: Int)
   func refreshStatuses() -> Promise<Void>
   func reloadSystemContactsIfNeeded(force: Bool, completion: CKErrorCompletion?)
   func refreshStatus(forPhoneNumber phoneNumber: GlobalPhoneNumber, completion: @escaping ((ValidatedContact?) -> Void))
@@ -21,6 +22,11 @@ struct CachedPhoneNumberDependencies {
   let salt: Data
   let formatter: CNContactFormatter
   let deviceCountryCode: Int
+}
+
+struct TestContact {
+  let name: String
+  let phoneNumber: String
 }
 
 class ContactCacheDataWorker: ContactCacheDataWorkerType {
@@ -79,6 +85,37 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
 
   enum CacheAction {
     case none, fullReload, selectiveUpdate
+  }
+
+  ///Useful for performance tests, `count` must be less than 7 digits for unique phone numbers
+  func generateTestContacts(count: Int) {
+    self.deleteAllTestCNContacts()
+
+    let contactRawValues = Array(1...count)
+    let testContactValues: [TestContact] = contactRawValues.compactMap { value -> TestContact? in
+      let stringValue = String(value)
+      let digitsNeeded = 7 - stringValue.count
+      guard digitsNeeded >= 0 else { return nil }
+      let phoneNumber = "330" + String(repeating: "2", count: digitsNeeded) + stringValue
+      return TestContact(name: stringValue, phoneNumber: phoneNumber)
+    }
+
+    let saveRequest = CNSaveRequest()
+    testContactValues.forEach { object in
+      let mutableContact = CNMutableContact()
+      mutableContact.givenName = object.name
+      mutableContact.familyName = "TEST"
+      mutableContact.phoneNumbers = [CNLabeledValue(label: CNLabelPhoneNumberMobile,
+                                                    value: CNPhoneNumber(stringValue: object.phoneNumber))]
+      saveRequest.add(mutableContact, toContainerWithIdentifier: nil)
+    }
+
+    do {
+      try contactStore.execute(saveRequest)
+      log.info("Successfully inserted \(count) test contacts in ContactStore")
+    } catch {
+      log.error("Failed to insert \(count) test contacts in ContactStore")
+    }
   }
 
   func reloadSystemContactsIfNeeded(force: Bool, completion: CKErrorCompletion?) {
@@ -193,6 +230,37 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
       } catch {
         seal.reject(error)
       }
+    }
+  }
+
+  private func deleteAllTestCNContacts() {
+    let allTestContacts = getTestCNContacts()
+    let saveRequest = CNSaveRequest()
+    allTestContacts.compactMap { $0.mutableCopy() as? CNMutableContact }.forEach { contact in
+      saveRequest.delete(contact)
+    }
+
+    do {
+      try contactStore.execute(saveRequest)
+    } catch {
+      log.error(error, message: "Failed to delete all test contacts")
+    }
+  }
+
+  private func getTestCNContacts() -> [CNContact] {
+    let keysToFetch = [CNContactFamilyNameKey] as [CNKeyDescriptor]
+
+    do {
+      var results: [CNContact] = []
+      let fetchRequest = CNContactFetchRequest(keysToFetch: keysToFetch)
+      fetchRequest.predicate = CNContact.predicateForContacts(matchingName: "TEST")
+      try contactStore.enumerateContacts(with: fetchRequest) { contact, _ in
+        results.append(contact)
+      }
+      return results
+    } catch {
+      log.error(error, message: "Failed to fetch test contacts")
+      return []
     }
   }
 
