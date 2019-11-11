@@ -150,8 +150,6 @@ public class CKMTransaction: NSManagedObject {
   }
 
   func configure(with lightningResponse: LNTransactionResponse, in context: NSManagedObjectContext) {
-    // self.txid should remain as an empty string so that the outgoingTransactionData.txid UUID
-    // doesn't trigger a 4xx error when sending txids to the server
 
     context.performAndWait {
       self.sortDate = Date()
