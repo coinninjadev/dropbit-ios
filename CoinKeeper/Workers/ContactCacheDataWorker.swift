@@ -146,7 +146,7 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
 
     case .selectiveUpdate:
       return self.getCNContacts()
-        .get { contacts in
+        .get(in: context) { contacts in
           try self.selectivelyUpdateCache(with: contacts, in: context)
         }.asVoid()
 
@@ -180,32 +180,28 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
   }
 
   private func selectivelyUpdateCache(with contacts: [CNContact], in context: NSManagedObjectContext) throws {
-    try context.performThrowingAndWait {
-      let formatter = CNContactFormatter()
-      let managedContacts = try self.contactCacheManager.allCachedContacts(in: context)
-      let hashableManagedContacts = Set(managedContacts.map { HashableContact(ccmContact: $0) })
-      let hashableSystemContacts = Set(contacts.map { HashableContact(cnContact: $0, formatter: formatter)})
+    let formatter = CNContactFormatter()
+    let managedContacts = try self.contactCacheManager.allCachedContacts(in: context)
+    let hashableManagedContacts = Set(managedContacts.map { HashableContact(ccmContact: $0) })
+    let hashableSystemContacts = Set(contacts.map { HashableContact(cnContact: $0, formatter: formatter)})
 
-      let hashableContactsToDelete: Set<HashableContact> = hashableManagedContacts.subtracting(hashableSystemContacts)
-      let hashableContactsToCreate: Set<HashableContact> = hashableSystemContacts.subtracting(hashableManagedContacts)
+    let hashableContactsToDelete: Set<HashableContact> = hashableManagedContacts.subtracting(hashableSystemContacts)
+    let hashableContactsToCreate: Set<HashableContact> = hashableSystemContacts.subtracting(hashableManagedContacts)
 
-      let idsToDelete = hashableContactsToDelete.map { $0.identifier }
-      let managedContactsToDelete: [CCMContact] = managedContacts.filter { idsToDelete.contains($0.cnContactIdentifier) }
-      managedContactsToDelete.forEach { context.delete($0) } // cascades to phone numbers
+    let idsToDelete = hashableContactsToDelete.map { $0.identifier }
+    let managedContactsToDelete: [CCMContact] = managedContacts.filter { idsToDelete.contains($0.cnContactIdentifier) }
+    managedContactsToDelete.forEach { context.delete($0) } // cascades to phone numbers
 
-      let idsToCreate = hashableContactsToCreate.map { $0.identifier }
-      let systemContactsToCreate = contacts.filter { idsToCreate.contains($0.identifier) }
-      try self.persistContacts(systemContactsToCreate, in: context)
-    }
+    let idsToCreate = hashableContactsToCreate.map { $0.identifier }
+    let systemContactsToCreate = contacts.filter { idsToCreate.contains($0.identifier) }
+    try self.persistContacts(systemContactsToCreate, in: context)
   }
 
   private func reloadSystemContacts(in context: NSManagedObjectContext) -> Promise<Void> {
     return self.getCNContacts()
-      .get { contacts in
-        try context.performThrowingAndWait {
-          try self.contactCacheManager.deleteSystemContactData(in: context)
-          try self.persistContacts(contacts, in: context)
-        }
+      .get(in: context) { contacts in
+        try self.contactCacheManager.deleteSystemContactData(in: context)
+        try self.persistContacts(contacts, in: context)
       }.asVoid()
   }
 
