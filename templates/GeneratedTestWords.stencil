@@ -17,7 +17,7 @@ public struct GeneratedTestWords {
     return "{{ argument.recoverOnlyLegacyDeactivatedWords }}".components(separatedBy: "_")
   }
 
-  static var recoverOnlyFirstTestnetAddress: String {
-    return "{{ argument.recoverOnlyFirstTestnetAddress }}"
+  static var recoverOnlyFirstMainnetAddress: String {
+    return "{{ argument.recoverOnlyFirstMainnetAddress }}"
   }
 }

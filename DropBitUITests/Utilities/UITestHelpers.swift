@@ -25,7 +25,7 @@ struct UITestHelpers {
   }
 
   static var recoverOnlyWordsFirstAddress: String {
-    return GeneratedTestWords.recoverOnlyFirstTestnetAddress
+    return GeneratedTestWords.recoverOnlyFirstMainnetAddress
   }
 
 }
