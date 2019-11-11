@@ -11,7 +11,7 @@ import CoreData
 
 class MockLightningBroker: CKPersistenceBroker, LightningBrokerType {
   func persistPaymentResponse(_ response: LNTransactionResponse, receiver: OutgoingDropBitReceiver?,
-                              invitation: CKMInvitation?, inputs: LightningPaymentInputs,
+                              invitation: CKMInvitation?, inputs: LightningPaymentInputs?,
                               in context: NSManagedObjectContext) {}
 
   var getAccountCalled = false

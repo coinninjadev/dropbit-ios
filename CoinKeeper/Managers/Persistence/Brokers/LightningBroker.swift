@@ -31,7 +31,7 @@ class LightningBroker: CKPersistenceBroker, LightningBrokerType {
   func persistPaymentResponse(_ response: LNTransactionResponse,
                               receiver: OutgoingDropBitReceiver?,
                               invitation: CKMInvitation?,
-                              inputs: LightningPaymentInputs,
+                              inputs: LightningPaymentInputs?,
                               in context: NSManagedObjectContext) {
     guard let wallet = CKMWallet.find(in: context) else { return }
 
@@ -50,7 +50,7 @@ class LightningBroker: CKPersistenceBroker, LightningBrokerType {
       ledgerEntry.walletEntry?.configure(withReceiver: receiver, in: context)
     }
 
-    if let sharedPayload = inputs.sharedPayload {
+    if let sharedPayload = inputs?.sharedPayload {
       ledgerEntry.walletEntry?.configureNewSenderSharedPayload(with: sharedPayload, in: context)
     }
   }

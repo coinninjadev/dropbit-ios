@@ -156,9 +156,9 @@ class TransactionDataWorker: TransactionDataWorkerType {
     }
   }
 
-  private func processOnChainLightningTransfers(withLedger ledgerResults: [LNTransactionResult],
-                                                forWallet wallet: CKMWallet,
-                                                in context: NSManagedObjectContext) {
+  func processOnChainLightningTransfers(withLedger ledgerResults: [LNTransactionResult],
+                                        forWallet wallet: CKMWallet,
+                                        in context: NSManagedObjectContext) {
     let lightningTransferTxids = ledgerResults.filter { $0.type == .btc }.map { $0.cleanedId }
 
     //Update CKMTransactions
