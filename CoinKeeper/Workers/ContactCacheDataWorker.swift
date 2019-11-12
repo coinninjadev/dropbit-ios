@@ -9,18 +9,24 @@
 import CoreData
 import Contacts
 import PromiseKit
+import UIKit
 
 typealias ContactProgressHandler = (_ cumulative: Int, _ total: Int) -> Void
 
 protocol ContactCacheDataWorkerType: AnyObject {
   func generateTestContacts(count: Int)
   func refreshStatuses() -> Promise<Void>
+  func refreshStatus(forPhoneNumber phoneNumber: GlobalPhoneNumber, completion: @escaping ((ValidatedContact?) -> Void))
 
   ///Progress handler will provide the cumulative total contacts processed during a full reload
+  func createContactCacheReloadOperation(force: Bool,
+                                         progressHandler: ContactProgressHandler?,
+                                         completion: CKErrorCompletion?) -> AsynchronousOperation
+
+  ///Generally this should not be called directly, but it exists for legacy migration reasons
   func reloadSystemContactsIfNeeded(force: Bool,
                                     progressHandler: ContactProgressHandler?,
                                     completion: CKErrorCompletion?)
-  func refreshStatus(forPhoneNumber phoneNumber: GlobalPhoneNumber, completion: @escaping ((ValidatedContact?) -> Void))
 }
 
 struct CachedPhoneNumberDependencies {
@@ -124,6 +130,42 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
     }
   }
 
+  func createContactCacheReloadOperation(force: Bool,
+                                         progressHandler: ContactProgressHandler?,
+                                         completion: CKErrorCompletion?) -> AsynchronousOperation {
+
+    let operation = AsynchronousOperation(operationType: .cacheContacts(force: force))
+    operation.task = { [weak self, weak innerOp = operation] in
+      guard let self = self, let innerOp = innerOp else { return }
+
+      let backgroundTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
+      let bgContext = self.contactCacheManager.createRootBackgroundContext()
+      bgContext.perform {
+        self.neededCacheAction(force: force, in: bgContext)
+          .then(in: bgContext) { self.updateCache(withAction: $0, progressHandler: progressHandler, in: bgContext) }
+          .done(in: bgContext) {
+            let changeDesc = bgContext.changesDescription()
+            log.debug("Contact cache changes: \(changeDesc)")
+
+            try bgContext.saveRecursively()
+
+            DispatchQueue.main.async {
+              completion?(nil)
+            }
+        }
+        .catch { error in
+          completion?(error)
+        }
+        .finally {
+          innerOp.finish()
+          UIApplication.shared.endBackgroundTask(backgroundTaskId)
+        }
+      }
+    }
+    return operation
+  }
+
+  ///Exists for legacy migration reasons, may be removed in the future
   func reloadSystemContactsIfNeeded(force: Bool,
                                     progressHandler: ContactProgressHandler?,
                                     completion: CKErrorCompletion?) {

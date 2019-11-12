@@ -80,14 +80,17 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
       case .authorized:
         if shouldReloadContactCache {
           self.alertManager.showActivityHUD(withStatus: "Loading Contacts")
-          self.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: false, progressHandler: self.showProgress) { [weak self] error in
+          let operation = self.contactCacheDataWorker
+            .createContactCacheReloadOperation(force: false, progressHandler: self.showProgress) { [weak self] error in
 
-            error.flatMap { log.error($0, message: "Error reloading contacts cache") }
+              error.flatMap { log.error($0, message: "Error reloading contacts cache") }
 
-            self?.alertManager.hideActivityHUD(withDelay: 0.5) {
-              self?.presentContacts(mode: .contacts, selectionDelegate: viewController)
-            }
+              self?.alertManager.hideActivityHUD(withDelay: 0.5) {
+                self?.presentContacts(mode: .contacts, selectionDelegate: viewController)
+              }
           }
+          self.serialQueueManager.enqueueOperationIfAppropriate(operation, policy: .always)
+
         } else {
           self.presentContacts(mode: .contacts, selectionDelegate: viewController)
         }
