@@ -185,7 +185,7 @@ class ContactCacheManager: ContactCacheManagerType {
                                              insertInto: context) else { continue }
 
         for labeledNumber in labeledNumbers {
-          let originalPhoneNumber = labeledNumber.value.stringValue
+          let originalPhoneNumber = labeledNumber.value.stringValue.droppingExtensions()
           let sanitizedOriginal = originalPhoneNumber.removingNonDecimalCharacters()
           let sanitizedForParsing = originalPhoneNumber.removingNonDecimalCharacters(keepingCharactersIn: "+")
 
