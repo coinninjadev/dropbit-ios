@@ -23,6 +23,10 @@ class MockContactCacheManager: ContactCacheManagerType {
     return NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
   }
 
+  func createRootBackgroundContext() -> NSManagedObjectContext {
+    return NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+  }
+
   func createPhoneNumberFetchedResultsController() -> NSFetchedResultsController<CCMPhoneNumber> {
     return NSFetchedResultsController<CCMPhoneNumber>()
   }
@@ -47,6 +51,7 @@ class MockContactCacheManager: ContactCacheManagerType {
 
   func persistContacts(_ contacts: [CNContact],
                        inputs: CachedPhoneNumberDependencies,
+                       progress: ContactProgressHandler?,
                        in context: NSManagedObjectContext) throws { }
 
   func validatedMetadata(for globalPhoneNumber: GlobalPhoneNumber, in context: NSManagedObjectContext) -> CCMValidatedMetadata? {

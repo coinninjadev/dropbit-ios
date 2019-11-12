@@ -25,10 +25,4 @@ class MockMigrationBroker: CKPersistenceBroker, MigrationBrokerType {
     return false
   }
 
-  func contactCacheMigrationFlag(for version: ContactCacheMigrationVersion) -> Bool {
-    return false
-  }
-
-  func setContactCacheMigrationFlag(migrated: Bool, for version: ContactCacheMigrationVersion) { }
-
 }
