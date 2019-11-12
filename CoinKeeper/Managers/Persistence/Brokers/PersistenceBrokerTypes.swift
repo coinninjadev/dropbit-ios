@@ -115,8 +115,6 @@ protocol MigrationBrokerType: AnyObject {
   func databaseMigrationFlag(for version: DatabaseMigrationVersion) -> Bool
   func setKeychainMigrationFlag(migrated: Bool, for version: KeychainMigrationVersion)
   func keychainMigrationFlag(for version: KeychainMigrationVersion) -> Bool
-  func contactCacheMigrationFlag(for version: ContactCacheMigrationVersion) -> Bool
-  func setContactCacheMigrationFlag(migrated: Bool, for version: ContactCacheMigrationVersion)
 
 }
 

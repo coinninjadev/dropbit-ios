@@ -62,12 +62,6 @@ class WorkerFactory {
     return KeychainMigrationWorker(migrators: factory.migrators())
   }
 
-  func createContactCacheMigrationWorker(dataWorker: ContactCacheDataWorkerType) -> ContactCacheMigrationWorker {
-    let factory = ContactCacheMigratorFactory(persistenceManager: persistenceManager,
-                                              dataWorker: dataWorker)
-    return ContactCacheMigrationWorker(migrators: factory.migrators())
-  }
-
   func createMigratorFactory(in context: NSManagedObjectContext) -> DatabaseMigratorFactory? {
     guard let wmgr = wmgrProvider?.walletManager else { return nil }
     let addressDataSource = wmgr.createAddressDataSource()

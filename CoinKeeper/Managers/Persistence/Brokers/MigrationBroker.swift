@@ -26,14 +26,6 @@ class MigrationBroker: CKPersistenceBroker, MigrationBrokerType {
     return getMigrationFlag(version: version.rawValue, key: .keychainMigrationVersions)
   }
 
-  func contactCacheMigrationFlag(for version: ContactCacheMigrationVersion) -> Bool {
-    return getMigrationFlag(version: version.rawValue, key: .contactCacheMigrationVersions)
-  }
-
-  func setContactCacheMigrationFlag(migrated: Bool, for version: ContactCacheMigrationVersion) {
-    setMigrationFlag(migrated: migrated, version: version.rawValue, key: .contactCacheMigrationVersions)
-  }
-
   private func getMigrationFlag(version: String, key: CKUserDefaults.Key) -> Bool {
     let value = userDefaultsManager.value(for: key) as? [String: Bool]
     return value?[version] ?? false

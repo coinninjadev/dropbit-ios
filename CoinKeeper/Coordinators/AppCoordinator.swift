@@ -373,21 +373,17 @@ class AppCoordinator: CoordinatorType {
   }
 
   func refreshContacts() {
-    let contactCacheMigrationWorker = workerFactory().createContactCacheMigrationWorker(dataWorker: contactCacheDataWorker)
-    _ = contactCacheMigrationWorker.migrateIfPossible()
-      .done {
-        let now = Date()
-        let lastContactReloadDate: Date = self.persistenceManager.brokers.activity.lastContactCacheReload ?? .distantPast
-        let oneWeekAgo = Calendar.current.date(byAdding: .day, value: -7, to: now) ?? now
-        let shouldForce = lastContactReloadDate < oneWeekAgo
-        let operation = self.contactCacheDataWorker.createContactCacheReloadOperation(force: shouldForce, progressHandler: nil) { [weak self] _ in
-          self?.persistenceManager.matchContactsIfPossible()
-          if shouldForce {
-            self?.persistenceManager.brokers.activity.lastContactCacheReload = now
-          }
-        }
-        self.serialQueueManager.enqueueOperationIfAppropriate(operation, policy: .skipIfSpecificOperationExists)
+    let now = Date()
+    let lastContactReloadDate: Date = self.persistenceManager.brokers.activity.lastContactCacheReload ?? .distantPast
+    let oneWeekAgo = Calendar.current.date(byAdding: .day, value: -7, to: now) ?? now
+    let shouldForce = lastContactReloadDate < oneWeekAgo
+    let operation = self.contactCacheDataWorker.createContactCacheReloadOperation(force: shouldForce, progressHandler: nil) { [weak self] _ in
+      self?.persistenceManager.matchContactsIfPossible()
+      if shouldForce {
+        self?.persistenceManager.brokers.activity.lastContactCacheReload = now
+      }
     }
+    self.serialQueueManager.enqueueOperationIfAppropriate(operation, policy: .skipIfSpecificOperationExists)
   }
 
   func resetUserAuthenticatedState() {
