@@ -22,11 +22,6 @@ protocol ContactCacheDataWorkerType: AnyObject {
   func createContactCacheReloadOperation(force: Bool,
                                          progressHandler: ContactProgressHandler?,
                                          completion: CKErrorCompletion?) -> AsynchronousOperation
-
-  ///Generally this should not be called directly, but it exists for legacy migration reasons
-  func reloadSystemContactsIfNeeded(force: Bool,
-                                    progressHandler: ContactProgressHandler?,
-                                    completion: CKErrorCompletion?)
 }
 
 struct CachedPhoneNumberDependencies {
@@ -163,30 +158,6 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
       }
     }
     return operation
-  }
-
-  ///Exists for legacy migration reasons, may be removed in the future
-  func reloadSystemContactsIfNeeded(force: Bool,
-                                    progressHandler: ContactProgressHandler?,
-                                    completion: CKErrorCompletion?) {
-    let bgContext = contactCacheManager.createRootBackgroundContext()
-    bgContext.perform {
-      self.neededCacheAction(force: force, in: bgContext)
-        .then(in: bgContext) { self.updateCache(withAction: $0, progressHandler: progressHandler, in: bgContext) }
-        .done(in: bgContext) {
-          let changeDesc = bgContext.changesDescription()
-          log.debug("Contact cache changes: \(changeDesc)")
-
-          try bgContext.saveRecursively()
-
-          DispatchQueue.main.async {
-            completion?(nil)
-          }
-        }
-        .catch { error in
-          completion?(error)
-      }
-    }
   }
 
   private func updateCache(withAction action: CacheAction,
