@@ -10,10 +10,16 @@ import CoreData
 import Contacts
 import PromiseKit
 
+typealias ContactProgressHandler = (_ cumulative: Int, _ total: Int) -> Void
+
 protocol ContactCacheDataWorkerType: AnyObject {
   func generateTestContacts(count: Int)
   func refreshStatuses() -> Promise<Void>
-  func reloadSystemContactsIfNeeded(force: Bool, completion: CKErrorCompletion?)
+
+  ///Progress handler will provide the cumulative total contacts processed during a full reload
+  func reloadSystemContactsIfNeeded(force: Bool,
+                                    progressHandler: ContactProgressHandler?,
+                                    completion: CKErrorCompletion?)
   func refreshStatus(forPhoneNumber phoneNumber: GlobalPhoneNumber, completion: @escaping ((ValidatedContact?) -> Void))
 }
 
@@ -118,11 +124,13 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
     }
   }
 
-  func reloadSystemContactsIfNeeded(force: Bool, completion: CKErrorCompletion?) {
+  func reloadSystemContactsIfNeeded(force: Bool,
+                                    progressHandler: ContactProgressHandler?,
+                                    completion: CKErrorCompletion?) {
     let bgContext = contactCacheManager.createRootBackgroundContext()
     bgContext.perform {
       self.neededCacheAction(force: force, in: bgContext)
-        .then(in: bgContext) { self.updateCache(withAction: $0, in: bgContext) }
+        .then(in: bgContext) { self.updateCache(withAction: $0, progressHandler: progressHandler, in: bgContext) }
         .done(in: bgContext) {
           let changeDesc = bgContext.changesDescription()
           log.debug("Contact cache changes: \(changeDesc)")
@@ -139,10 +147,12 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
     }
   }
 
-  private func updateCache(withAction action: CacheAction, in context: NSManagedObjectContext) -> Promise<Void> {
+  private func updateCache(withAction action: CacheAction,
+                           progressHandler: ContactProgressHandler?,
+                           in context: NSManagedObjectContext) -> Promise<Void> {
     switch action {
     case .fullReload:
-      return self.reloadSystemContacts(in: context)
+      return self.reloadSystemContacts(with: progressHandler, in: context)
 
     case .selectiveUpdate:
       return self.getCNContacts()
@@ -194,14 +204,14 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
 
     let idsToCreate = hashableContactsToCreate.map { $0.identifier }
     let systemContactsToCreate = contacts.filter { idsToCreate.contains($0.identifier) }
-    try self.persistContacts(systemContactsToCreate, in: context)
+    try self.persistContacts(systemContactsToCreate, progress: nil, in: context)
   }
 
-  private func reloadSystemContacts(in context: NSManagedObjectContext) -> Promise<Void> {
+  private func reloadSystemContacts(with progressHandler: ContactProgressHandler?, in context: NSManagedObjectContext) -> Promise<Void> {
     return self.getCNContacts()
       .get(in: context) { contacts in
         try self.contactCacheManager.deleteSystemContactData(in: context)
-        try self.persistContacts(contacts, in: context)
+        try self.persistContacts(contacts, progress: progressHandler, in: context)
       }.asVoid()
   }
 
@@ -312,7 +322,7 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
     }
   }
 
-  private func persistContacts(_ contacts: [CNContact], in context: NSManagedObjectContext) throws {
+  private func persistContacts(_ contacts: [CNContact], progress: ContactProgressHandler?, in context: NSManagedObjectContext) throws {
     let salt = try hashingManager.salt()
     let countryCode = self.countryCodeProvider?.deviceCountryCode() ?? 1
 
@@ -323,7 +333,8 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
       deviceCountryCode: countryCode
     )
 
-    try self.contactCacheManager.persistContacts(contacts, inputs: dependencies, in: context)
+    try self.contactCacheManager.persistContacts(contacts, inputs: dependencies,
+                                                 progress: progress, in: context)
   }
 
 }

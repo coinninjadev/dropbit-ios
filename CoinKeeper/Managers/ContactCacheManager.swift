@@ -27,6 +27,7 @@ protocol ContactCacheManagerType: AnyObject {
   func deleteSystemContactData(in context: NSManagedObjectContext) throws
   func persistContacts(_ contacts: [CNContact],
                        inputs: CachedPhoneNumberDependencies,
+                       progress: ContactProgressHandler?,
                        in context: NSManagedObjectContext) throws
 
   func validatedMetadata(for globalPhoneNumber: GlobalPhoneNumber, in context: NSManagedObjectContext) -> CCMValidatedMetadata?
@@ -165,11 +166,16 @@ class ContactCacheManager: ContactCacheManagerType {
 
   func persistContacts(_ contacts: [CNContact],
                        inputs: CachedPhoneNumberDependencies,
+                       progress: ContactProgressHandler?,
                        in context: NSManagedObjectContext) throws {
 
     let regionCode = Locale.current.regionCode?.uppercased() ?? "US"
-    let contactBatches = contacts.chunked(by: 300)
-    for batch in contactBatches {
+
+    let totalContactCount = contacts.count
+    let batchSize = (totalContactCount > 1000) ? 300 : 150
+    let contactBatches = contacts.chunked(by: batchSize)
+
+    for (i, batch) in contactBatches.enumerated() {
       for contact in batch {
         let labeledNumbers = contact.phoneNumbers
         guard labeledNumbers.isNotEmpty else { continue }
@@ -208,6 +214,10 @@ class ContactCacheManager: ContactCacheManagerType {
       let changeDesc = context.changesDescription()
       log.debug("Contact cache changes: \(changeDesc)")
       try context.saveRecursively()
+
+      let previousCount = (i * batchSize)
+      let cumulativeCount = previousCount + batch.count
+      progress?(cumulativeCount, totalContactCount)
     }
   }
 

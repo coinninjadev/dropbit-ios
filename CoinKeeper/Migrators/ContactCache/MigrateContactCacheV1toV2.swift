@@ -17,7 +17,7 @@ struct MigrateContactCacheV1toV2: Migratable {
   }
 
   func migrate() {
-    dataWorker.reloadSystemContactsIfNeeded(force: true) { error in
+    dataWorker.reloadSystemContactsIfNeeded(force: true, progressHandler: nil) { error in
       if let error = error {
         log.error(error, message: "Failed to force reload contact cache")
       } else {
