@@ -28,10 +28,11 @@ struct LightningURL {
   }
 
   private static func normalizedInputString(_ initialString: String) -> String {
-    if !initialString.contains(LightningURL.scheme) && initialString.contains(invoicePrefix) {
-      return LightningURL.scheme + ":" + initialString
+    let lowercased = initialString.lowercased()
+    if !lowercased.contains(LightningURL.scheme) && lowercased.contains(invoicePrefix) {
+      return LightningURL.scheme + ":" + lowercased
     } else {
-      return initialString
+      return lowercased
     }
   }
 }
