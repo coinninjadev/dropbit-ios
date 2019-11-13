@@ -120,7 +120,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
       let entriesToFetch = lnBroker.getLedgerEntriesWithoutPayloads(matchingIds: recentLedgerEntryIds, in: context)
       let idsToFetch = entriesToFetch.compactMap { $0.id }
 
-      return self.fetchTransactionNotifications(forIds: idsToFetch)
+      return self.networkManager.fetchTransactionNotifications(forIds: idsToFetch)
         .get(in: context) { responses in
           self.decryptAndPersistSharedPayloads(from: responses, ofType: .lightning, in: context)
       }
@@ -265,7 +265,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     let threshold = fourteenDaysAgo
     let relevantTxids = dto.txResponses.filter { ($0.date ?? Date()) > threshold }.map { $0.txid }
 
-    return self.fetchTransactionNotifications(forIds: relevantTxids)
+    return self.networkManager.fetchTransactionNotifications(forIds: relevantTxids)
       .then { responses -> Promise<TransactionDataWorkerDTO> in
         let combinedDTO = TransactionDataWorkerDTO(txNotificationResponses: responses).merged(with: dto)
         return Promise.value(combinedDTO)
@@ -279,10 +279,6 @@ class TransactionDataWorker: TransactionDataWorkerType {
         return Promise(error: error)
       }
     }
-  }
-
-  private func fetchTransactionNotifications(forIds ids: [String]) -> Promise<[TransactionNotificationResponse]> {
-    return self.networkManager.fetchTransactionNotifications(forIds: ids)
   }
 
   private func minimumSeekReceiveAddressIndex(in context: NSManagedObjectContext) -> Int? {
