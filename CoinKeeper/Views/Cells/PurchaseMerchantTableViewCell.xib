@@ -16,6 +16,18 @@
                 <rect key="frame" x="0.0" y="0.0" width="414" height="272"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LtT-42-STp">
+                        <rect key="frame" x="359" y="0.0" width="55" height="44"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="0G6-pn-upo"/>
+                            <constraint firstAttribute="height" constant="44" id="5Tc-ZT-G2d"/>
+                            <constraint firstAttribute="width" constant="55" id="j1u-8c-8zf"/>
+                        </constraints>
+                        <state key="normal" image="questionMarkIcon"/>
+                        <connections>
+                            <action selector="tooltipButtonWasTouched" destination="qSe-s3-eyQ" eventType="touchUpInside" id="lUW-9B-4Zq"/>
+                        </connections>
+                    </button>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="J21-N3-bU0">
                         <rect key="frame" x="0.0" y="20" width="414" height="252"/>
                         <subviews>
@@ -33,8 +45,10 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="J21-N3-bU0" secondAttribute="trailing" id="HyM-vC-KWX"/>
+                    <constraint firstAttribute="trailing" secondItem="LtT-42-STp" secondAttribute="trailing" id="J2J-A7-Ho4"/>
                     <constraint firstItem="J21-N3-bU0" firstAttribute="top" secondItem="fAr-oF-DjP" secondAttribute="top" constant="20" id="JuV-IY-rLi"/>
                     <constraint firstAttribute="bottom" secondItem="J21-N3-bU0" secondAttribute="bottom" id="c6t-Iy-MfO"/>
+                    <constraint firstItem="LtT-42-STp" firstAttribute="top" secondItem="fAr-oF-DjP" secondAttribute="top" id="eK8-er-FGq"/>
                     <constraint firstItem="J21-N3-bU0" firstAttribute="leading" secondItem="fAr-oF-DjP" secondAttribute="leading" id="hxM-Rf-7fz"/>
                 </constraints>
             </tableViewCellContentView>
@@ -42,8 +56,12 @@
                 <outlet property="attributeStackView" destination="Kia-gD-KE6" id="eOu-Yt-C6m"/>
                 <outlet property="logoImageView" destination="fPe-g4-abB" id="EKV-YP-yB0"/>
                 <outlet property="stackView" destination="J21-N3-bU0" id="Nd0-2e-7dq"/>
+                <outlet property="tooltipButton" destination="LtT-42-STp" id="35j-fZ-bXI"/>
             </connections>
             <point key="canvasLocation" x="106" y="225"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="questionMarkIcon" width="22" height="22"/>
+    </resources>
 </document>

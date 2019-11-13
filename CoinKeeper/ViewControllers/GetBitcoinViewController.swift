@@ -10,17 +10,17 @@ import UIKit
 import PassKit
 import PromiseKit
 
-protocol GetBitcoinViewControllerDelegate: AnyObject {
+protocol GetBitcoinViewControllerDelegate: URLOpener {
   func viewControllerFindBitcoinATMNearMe(_ viewController: GetBitcoinViewController)
   func viewControllerDidCopyAddress(_ viewController: UIViewController)
-  func viewControllerBuyWithApplePay(_ viewController: GetBitcoinViewController, url: String)
+  func viewControllerBuyWithApplePay(_ viewController: GetBitcoinViewController, bitcoinAddress: String)
 }
 
 final class GetBitcoinViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var tableView: UITableView!
-  @IBOutlet var purchaseBitcoinInfoLabel: UILabel!
-  @IBOutlet var copyBitcoinAddressButton: LightBorderedButton!
+
+  var viewModels: [BuyMerchantResponse] = []
 
   private(set) weak var delegate: GetBitcoinViewControllerDelegate!
   private(set) var bitcoinAddress = ""
@@ -39,32 +39,10 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
     setupUI()
   }
 
-  @IBAction func findATM() {
-    delegate.viewControllerFindBitcoinATMNearMe(self)
-  }
-
-  @IBAction func copyBitcoinAddress(_ sender: Any) {
-    UIPasteboard.general.string = bitcoinAddress
-    delegate.viewControllerDidCopyAddress(self)
-  }
-
   // MARK: private
   private func setupUI() {
-    /// Purchase bitcoin label
-    purchaseBitcoinInfoLabel.text = """
-    Bitcoin purchased with Apple Pay will automatically get deposited into your Bitcoin wallet using the
-    address below.
-    """.removingMultilineLineBreaks()
-    purchaseBitcoinInfoLabel.textColor = .outgoingGray
-    purchaseBitcoinInfoLabel.font = .regular(13)
-
-    let buyBitcoinImageString = NSAttributedString(
-      image: UIImage(imageLiteralResourceName: "bitcoinOrangeB"),
-      fontDescender: font.descender,
-      imageSize: CGSize(width: 12, height: 17)) + "  "
-    let buyBitcoinAttributedString = NSMutableAttributedString(attributedString: buyBitcoinImageString)
-    buyBitcoinAttributedString.appendRegular(bitcoinAddress, size: 12, color: .darkBlueText, paragraphStyle: nil)
-    copyBitcoinAddressButton.setAttributedTitle(buyBitcoinAttributedString, for: .normal)
+    tableView.registerNib(cellType: PurchaseMerchantTableViewCell.self)
+    tableView.registerNib(cellType: BitcoinAddressTableViewCell.self)
 
     navigationController?.setNavigationBarHidden(false, animated: true)
     navigationController?.navigationBar.tintColor = .darkBlueBackground
@@ -73,19 +51,114 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
     headerText.appendRegular("Get Bitcoin", size: 15, color: .darkGrayBackground, paragraphStyle: nil)
     header.attributedText = headerText
     navigationItem.titleView = header
+
+    tableView.separatorStyle = .none
+    tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+    tableView.dataSource = self
+    tableView.delegate = self
+
+    setupDataSource()
+  }
+
+  private func setupDataSource() {
+    var wyreAttributes: [BuyMerchantAttribute] = [], coinNinjaAttributes: [BuyMerchantAttribute] = []
+
+    wyreAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.positive,
+                                               description: "Buy Bitcoin using Apple Pay",
+                                               link: nil))
+    wyreAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.positive,
+                                               description: "Takes less than 30 seconds",
+                                               link: nil))
+    wyreAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.negative,
+                                               description: "$500 daily limit",
+                                               link: nil))
+    wyreAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.negative,
+                                               description: "Location restrictions may apply",
+                                               link: "https://support.sendwyre.com/en/articles/1863574-geographic-restrictions"))
+
+    let wyre = BuyMerchantResponse(image: UIImage(imageLiteralResourceName: "wyreLogo"),
+                                   tooltipUrl: nil,
+                                   attributes: wyreAttributes,
+                                   actionType: BuyMerchantBuyType.device.rawValue,
+                                   actionUrl: "") // TODO
+
+    coinNinjaAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.positive,
+                                               description: "Can use cash to buy",
+                                               link: nil))
+    coinNinjaAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.positive,
+                                               description: "Can sell Bitcoin for cash",
+                                               link: nil))
+    coinNinjaAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.negative,
+                                               description: "May limit based on verification",
+                                               link: nil))
+    coinNinjaAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.negative,
+                                               description: "High fees",
+                                               link: nil))
+
+    let coinNinja = BuyMerchantResponse(image: UIImage(imageLiteralResourceName: "coinNinjaLogo"),
+                                        tooltipUrl: nil,
+                                        attributes: coinNinjaAttributes,
+                                        actionType: BuyMerchantBuyType.atm.rawValue,
+                                        actionUrl: "") // TODO
+
+    viewModels = [wyre, coinNinja]
+  }
+}
+
+extension GetBitcoinViewController: UITableViewDataSource, UITableViewDelegate {
+
+  func numberOfSections(in tableView: UITableView) -> Int {
+    return 1
+  }
+
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return viewModels.count + 1
+  }
+
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    if indexPath.row == 0 {
+      let cell: BitcoinAddressTableViewCell = tableView.dequeue(BitcoinAddressTableViewCell.self,
+                                                                for: indexPath)
+      cell.load(with: bitcoinAddress)
+      return cell
+    } else {
+      let cell: PurchaseMerchantTableViewCell = tableView.dequeue(PurchaseMerchantTableViewCell.self,
+                                                                  for: indexPath)
+
+      cell.load(with: viewModels[indexPath.row - 1])
+      cell.delegate = self
+      return cell
+    }
+  }
+
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard ((self.tableView(self.tableView, cellForRowAt: indexPath) as? BitcoinAddressTableViewCell) != nil) else { return }
+
+    UIPasteboard.general.string = bitcoinAddress
+    delegate.viewControllerDidCopyAddress(self)
   }
 }
 
 extension GetBitcoinViewController: PurchaseMerchantTableViewCellDelegate {
 
+  func attributeLinkWasTouched(with url: URL) {
+    delegate.openURL(url, completionHandler: nil)
+  }
+
+  func tooltipButtonWasPressed(with url: URL) {
+    delegate.openURL(url, completionHandler: nil)
+  }
+
   func actionButtonWasPressed(with type: BuyMerchantBuyType, url: String) {
     switch type {
     case .device:
-      delegate.viewControllerBuyWithApplePay(self, url: bitcoinAddress)
+      delegate.viewControllerBuyWithApplePay(self, bitcoinAddress: bitcoinAddress)
     case .atm:
       delegate.viewControllerFindBitcoinATMNearMe(self)
     case .default:
-
+      guard let url = URL(string: url) else { return }
+      UIPasteboard.general.string = bitcoinAddress
+      delegate.openURLExternally(url, completionHandler: nil)
     }
   }
 }

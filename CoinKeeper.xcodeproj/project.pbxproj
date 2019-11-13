@@ -509,6 +509,8 @@
 		A2372875237B1DEF00086FEC /* BuyMerchantAttributeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2372874237B1DEF00086FEC /* BuyMerchantAttributeView.swift */; };
 		A2372877237B1F2B00086FEC /* BuyMerchantAttributeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2372876237B1F2B00086FEC /* BuyMerchantAttributeView.xib */; };
 		A2372879237B489500086FEC /* PurchaseMerchantTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2372878237B489500086FEC /* PurchaseMerchantTableViewCell.xib */; };
+		A237287B237C9E9900086FEC /* BitcoinAddressTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A237287A237C9E9900086FEC /* BitcoinAddressTableViewCell.swift */; };
+		A237287D237CA12100086FEC /* BitcoinAddressTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A237287C237CA12100086FEC /* BitcoinAddressTableViewCell.xib */; };
 		A23BB4C9237B03D300D8FBD1 /* PurchaseMerchantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A23BB4C8237B03D300D8FBD1 /* PurchaseMerchantTableViewCell.swift */; };
 		A24525352100EBC80024D5F8 /* Gifu.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A24525342100EBC80024D5F8 /* Gifu.framework */; };
 		A245C6D020D9537400D99983 /* WalletAddressRequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = A245C6CF20D9537400D99983 /* WalletAddressRequestBody.swift */; };
@@ -1610,6 +1612,8 @@
 		A2372874237B1DEF00086FEC /* BuyMerchantAttributeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyMerchantAttributeView.swift; sourceTree = "<group>"; };
 		A2372876237B1F2B00086FEC /* BuyMerchantAttributeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BuyMerchantAttributeView.xib; sourceTree = "<group>"; };
 		A2372878237B489500086FEC /* PurchaseMerchantTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PurchaseMerchantTableViewCell.xib; sourceTree = "<group>"; };
+		A237287A237C9E9900086FEC /* BitcoinAddressTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinAddressTableViewCell.swift; sourceTree = "<group>"; };
+		A237287C237CA12100086FEC /* BitcoinAddressTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BitcoinAddressTableViewCell.xib; sourceTree = "<group>"; };
 		A23BB4C8237B03D300D8FBD1 /* PurchaseMerchantTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseMerchantTableViewCell.swift; sourceTree = "<group>"; };
 		A24525342100EBC80024D5F8 /* Gifu.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Gifu.framework; path = Carthage/Build/iOS/Gifu.framework; sourceTree = "<group>"; };
 		A245C6CF20D9537400D99983 /* WalletAddressRequestBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressRequestBody.swift; sourceTree = "<group>"; };
@@ -2620,6 +2624,8 @@
 				3BCBFCCA229EF71D00F633BA /* SettingsRecoveryWordsCell.xib */,
 				A23BB4C8237B03D300D8FBD1 /* PurchaseMerchantTableViewCell.swift */,
 				A2372878237B489500086FEC /* PurchaseMerchantTableViewCell.xib */,
+				A237287A237C9E9900086FEC /* BitcoinAddressTableViewCell.swift */,
+				A237287C237CA12100086FEC /* BitcoinAddressTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4221,6 +4227,7 @@
 				3B124E172020EB2B00431E2E /* Assets.xcassets in Resources */,
 				30B6632C21666B5C0011296C /* ActionableAlertViewController.storyboard in Resources */,
 				A220A97D20B5E10C00C30149 /* SettingsViewController.storyboard in Resources */,
+				A237287D237CA12100086FEC /* BitcoinAddressTableViewCell.xib in Resources */,
 				B54D206020F9218A0057A694 /* CKBannerView.xib in Resources */,
 				B54BDCEC2086447500B71D6B /* TransactionHistorySummaryCell.xib in Resources */,
 				3B9779A5202E416700C9C933 /* Montserrat-ExtraLightItalic.ttf in Resources */,
@@ -4868,6 +4875,7 @@
 				B52A6F3222B9845F000801FA /* TransactionBroker.swift in Sources */,
 				3BEF229E2260DC78001F6D25 /* BuySpendCardCollectionViewCell.swift in Sources */,
 				3B3A1339204F3DB700E01908 /* OnboardingSubtitleLabel.swift in Sources */,
+				A237287B237C9E9900086FEC /* BitcoinAddressTableViewCell.swift in Sources */,
 				A2D1AD03232D368A00EF1001 /* LockedLightningView.swift in Sources */,
 				3B61B6E620DD4D360021D69E /* AppCoordinator+TransactionHistoryViewControllerDelegate.swift in Sources */,
 				A2952F7022BBBAAB00BDCE65 /* LineChartCell.swift in Sources */,

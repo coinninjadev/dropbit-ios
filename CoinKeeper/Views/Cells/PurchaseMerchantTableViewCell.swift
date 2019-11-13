@@ -12,7 +12,9 @@ import PassKit
 import Moya
 
 protocol PurchaseMerchantTableViewCellDelegate: AnyObject {
+  func attributeLinkWasTouched(with url: URL)
   func actionButtonWasPressed(with type: BuyMerchantBuyType, url: String)
+  func tooltipButtonWasPressed(with url: URL)
 }
 
 class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
@@ -41,6 +43,10 @@ class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
   override func awakeFromNib() {
     super.awakeFromNib()
 
+    actionButton = PrimaryActionButton()
+    selectionStyle = .none
+    separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+
     let button = PKPaymentButton(paymentButtonType: .buy, paymentButtonStyle: .black)
     button.addTarget(self, action: #selector(applePayButtonWasTouched), for: .touchUpInside)
     buyWithApplePayButton = button
@@ -49,9 +55,9 @@ class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
   func load(with model: BuyMerchantResponse) {
     viewModel = model
 
-    fetchImage(at: model.imageUrl) { [weak self] image in
-      self?.logoImageView.image = image
-    }
+    //fetchImage(at: model.imageUrl) { [weak self] image in
+    logoImageView.image = model.image
+    //}
 
     actionButton.addTarget(self, action: #selector(actionButtonWasTouched), for: .touchUpInside)
     tooltipButton.isHidden = model.tooltipUrl == nil
@@ -96,8 +102,14 @@ class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
 
   private func addAttributeView(with attribute: BuyMerchantAttribute) {
     let view = BuyMerchantAttributeView(frame: .zero)
+    view.delegate = self
     view.load(with: attribute)
     attributeStackView.addArrangedSubview(view)
+  }
+
+  @IBAction func tooltipButtonWasTouched() {
+    guard let viewModel = viewModel, let url = URL(string: viewModel.actionUrl) else { return }
+    delegate?.tooltipButtonWasPressed(with: url)
   }
 
   @objc func actionButtonWasTouched() {
@@ -114,4 +126,11 @@ class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
     }
   }
 
+}
+
+extension PurchaseMerchantTableViewCell: BuyMerchantAttributeViewDelegate {
+
+  func attributeViewWasTouched(with url: URL) {
+    delegate?.attributeLinkWasTouched(with: url)
+  }
 }
