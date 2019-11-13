@@ -74,7 +74,7 @@ extension SharedPayloadProfileV2 {
 
 struct SharedPayloadV2: SharedPayloadCodable {
   let meta: SharedPayloadMetadata
-  let txid: String
+  var txid: String
   let info: SharedPayloadInfoV1
   var profile: SharedPayloadProfileV2?
 
@@ -102,6 +102,12 @@ struct SharedPayloadV2: SharedPayloadCodable {
               memo: payloadDTO.sharingObservantMemo,
               amountInfo: amountInfo,
               senderIdentity: senderIdentity)
+  }
+
+  func copy(withId txid: String) -> SharedPayloadV2 {
+    var copy = self
+    copy.txid = txid
+    return copy
   }
 
 }

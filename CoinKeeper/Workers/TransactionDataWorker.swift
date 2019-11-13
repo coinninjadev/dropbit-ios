@@ -469,7 +469,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
                                                in context: NSManagedObjectContext) {
     guard responses.isNotEmpty else { return }
 
-    let decryptedPayloads: [Data]
+    let decryptedPayloads: [PayloadDataWithId]
     switch walletTxType {
     case .onChain:
       decryptedPayloads = decryptedOnChainPayloads(from: responses, in: context)
@@ -482,21 +482,19 @@ class TransactionDataWorker: TransactionDataWorkerType {
   }
 
   private func decryptedOnChainPayloads(from responses: [TransactionNotificationResponse],
-                                        in context: NSManagedObjectContext) -> [Data] {
+                                        in context: NSManagedObjectContext) -> [PayloadDataWithId] {
     let cryptor = CKCryptor(walletManager: self.walletManager)
-
-    let decryptionInputs = responses.compactMap { res -> (payload: String, address: String)? in
-      guard let payload = res.encryptedPayload else { return nil }
-      return (payload, res.address)
-    }
-
     let addressDataSource = walletManager.createAddressDataSource()
-    let decryptedPayloads: [Data] = decryptionInputs.compactMap { inputs in
-      guard addressDataSource.checkAddressExists(for: inputs.address, in: context) != nil else { return nil }
+
+    let decryptedPayloads: [PayloadDataWithId] = responses.compactMap { response in
+      guard let payload = response.encryptedPayload,
+        addressDataSource.checkAddressExists(for: response.address, in: context) != nil
+        else { return nil }
+
       do {
-        let payloadData = try cryptor.decrypt(payloadAsBase64String: inputs.payload, withReceiveAddress: inputs.address, in: context)
+        let payloadData = try cryptor.decrypt(payloadAsBase64String: payload, withReceiveAddress: response.address, in: context)
         log.debug("Successfully decrypted onChain payload")
-        return payloadData
+        return PayloadDataWithId(decryptedPayload: payloadData, txid: response.txid)
       } catch {
         log.error(error, message: "Failed to decrypt onChain payload")
         return nil
@@ -505,14 +503,14 @@ class TransactionDataWorker: TransactionDataWorkerType {
     return decryptedPayloads
   }
 
-  private func decryptLightningPayloads(from responses: [TransactionNotificationResponse]) -> [Data] {
+  private func decryptLightningPayloads(from responses: [TransactionNotificationResponse]) -> [PayloadDataWithId] {
     let cryptor = CKCryptor(walletManager: self.walletManager)
-    let decryptedPayloads: [Data] = responses.compactMap { response in
+    let decryptedPayloads: [PayloadDataWithId] = responses.compactMap { response in
       guard let payloadString = response.encryptedPayload else { return nil }
       do {
         let payloadData = try cryptor.decryptWithDefaultPrivateKey(payloadAsBase64String: payloadString)
         log.debug("Successfully decrypted lightning payload")
-        return payloadData
+        return PayloadDataWithId(decryptedPayload: payloadData, txid: response.txid)
       } catch {
         log.error(error, message: "Failed to decrypt lightning payload")
         return nil

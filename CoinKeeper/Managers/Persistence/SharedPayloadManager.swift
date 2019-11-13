@@ -9,9 +9,16 @@
 import Foundation
 import CoreData
 
+///Preauth lightning shared payloads do not contain the final invoice id,
+///so this struct passes it around along side the payload once fetched by the receiver
+struct PayloadDataWithId {
+  let decryptedPayload: Data
+  let txid: String
+}
+
 protocol SharedPayloadManagerType: AnyObject {
   func persistReceivedSharedPayloads(
-    _ payloads: [Data],
+    _ payloads: [PayloadDataWithId],
     ofType walletTxType: WalletTransactionType,
     hasher: HashingManager,
     contactCacheManager: ContactCacheManagerType,
@@ -33,7 +40,7 @@ struct PayloadPersistenceDependencies {
 class SharedPayloadManager: SharedPayloadManagerType {
 
   func persistReceivedSharedPayloads(
-    _ payloads: [Data],
+    _ payloads: [PayloadDataWithId],
     ofType walletTxType: WalletTransactionType,
     hasher: HashingManager,
     contactCacheManager: ContactCacheManagerType,
@@ -64,14 +71,14 @@ class SharedPayloadManager: SharedPayloadManagerType {
 
   // MARK: private
 
-  private func payloadsAsV1(from payloads: [Data]) -> [SharedPayloadV1]? {
-    let v1Payloads = payloads.compactMap { try? SharedPayloadV1(data: $0) }
+  private func payloadsAsV1(from payloads: [PayloadDataWithId]) -> [SharedPayloadV1]? {
+    let v1Payloads = payloads.compactMap { try? SharedPayloadV1(data: $0.decryptedPayload) }
     guard v1Payloads.isNotEmpty else { return nil }
     return v1Payloads
   }
 
-  private func payloadsAsV2(from payloads: [Data]) -> [SharedPayloadV2]? {
-    let v2Payloads = payloads.compactMap { try? SharedPayloadV2(data: $0) }
+  private func payloadsAsV2(from payloads: [PayloadDataWithId]) -> [SharedPayloadV2]? {
+    let v2Payloads = payloads.compactMap { try? SharedPayloadV2(data: $0.decryptedPayload).copy(withId: $0.txid) }
     guard v2Payloads.isNotEmpty else { return nil }
     return v2Payloads
   }

@@ -38,7 +38,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
     in context: NSManagedObjectContext)
 
   func persistReceivedSharedPayloads(
-    _ payloads: [Data],
+    _ payloads: [PayloadDataWithId],
     ofType walletTxType: WalletTransactionType,
     in context: NSManagedObjectContext)
 

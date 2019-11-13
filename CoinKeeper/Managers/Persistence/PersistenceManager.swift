@@ -59,7 +59,9 @@ class PersistenceManager: PersistenceManagerType {
     return databaseManager.persistentStore(for: context)
   }
 
-  func persistReceivedSharedPayloads(_ payloads: [Data], ofType walletTxType: WalletTransactionType, in context: NSManagedObjectContext) {
+  func persistReceivedSharedPayloads(_ payloads: [PayloadDataWithId],
+                                     ofType walletTxType: WalletTransactionType,
+                                     in context: NSManagedObjectContext) {
     let hasher = self.hashingManager
     databaseManager.sharedPayloadManager.persistReceivedSharedPayloads(
       payloads,
