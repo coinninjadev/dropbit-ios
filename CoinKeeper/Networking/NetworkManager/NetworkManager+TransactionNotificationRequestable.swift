@@ -20,6 +20,7 @@ extension NetworkManager: TransactionNotificationRequestable {
   }
 
   func fetchTransactionNotifications(forIds ids: [String]) -> Promise<[TransactionNotificationResponse]> {
+    guard ids.isNotEmpty else { return .value([]) }
     let query = TransactionNotificationsElasticQuery(ids: ids)
     let body = ElasticRequest(query: query)
     return cnProvider.requestList(TransactionNotificationTarget.query(body))

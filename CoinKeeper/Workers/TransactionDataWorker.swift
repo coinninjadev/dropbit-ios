@@ -438,6 +438,8 @@ class TransactionDataWorker: TransactionDataWorkerType {
   private func decryptAndPersistSharedPayloads(from responses: [TransactionNotificationResponse],
                                                ofType walletTxType: WalletTransactionType,
                                                in context: NSManagedObjectContext) {
+    guard responses.isNotEmpty else { return }
+
     let decryptedPayloads: [Data]
     switch walletTxType {
     case .onChain:
