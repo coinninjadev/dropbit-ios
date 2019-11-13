@@ -9,29 +9,18 @@
 import Foundation
 import UIKit
 
-class NewsArticleCell: UITableViewCell {
+class NewsArticleCell: UITableViewCell, FetchImageType {
 
   override func prepareForReuse() {
     source = nil
     thumbnailImageView.image = nil
-    _dataTask = nil
+    dataTask = nil
     setNeedsDisplay()
   }
 
-  private var _dataTask: URLSessionDataTask? {
+  var dataTask: URLSessionDataTask? {
     didSet {
-      _dataTask?.resume()
-    }
-  }
-
-  func fetchImage(at urlString: String, completion: @escaping (Data) -> Void) {
-    guard let url = URL(string: urlString) else { return }
-    _dataTask = URLSession.shared.dataTask(with: url) { [weak self] (data, _, _) in
-      guard let data = data, let image = UIImage(data: data) else { return }
-      DispatchQueue.main.async {
-        self?.thumbnailImageView.image = image
-        completion(data)
-      }
+      dataTask?.resume()
     }
   }
 
@@ -80,13 +69,13 @@ class NewsArticleCell: UITableViewCell {
   }
 
   func load(article: NewsArticleResponse,
-            imageFetcher: @escaping (Data) -> Void) {
+            imageFetcher: @escaping (UIImage) -> Void) {
     titleLabel.text = article.title
     sourceLabel.text = article.getFullSource()
     self.source = article.source.flatMap { NewsArticleResponse.Source(rawValue: $0) }
     if let image = sourceImage {
       thumbnailImageView.image = image
-    } else if let data = article.imageData, let image = UIImage(data: data) {
+    } else if let image = article.image {
       thumbnailImageView.image = image
     } else {
       let urlString = article.thumbnail ?? NewsArticleResponse.Source.coinninja.rawValue

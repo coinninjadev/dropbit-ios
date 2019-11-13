@@ -85,7 +85,7 @@ class MockGetBitcoinViewControllerDelegate: GetBitcoinViewControllerDelegate {
   }
 
   var wasAskedToBuyWithApplePay = false
-  func viewControllerBuyWithApplePay(_ viewController: GetBitcoinViewController, address: String) {
+  func viewControllerBuyWithApplePay(_ viewController: GetBitcoinViewController, url: String) {
     wasAskedToBuyWithApplePay = true
   }
 }

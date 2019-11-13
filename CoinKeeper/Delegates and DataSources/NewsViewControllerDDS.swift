@@ -208,8 +208,8 @@ extension NewsViewControllerDDS: UITableViewDataSource {
       let newsCell = tableView.dequeue(NewsArticleCell.self, for: indexPath)
       let index = indexPath.row - newsCellIndexOffset
       if var article = newsData.articles[safe: index] {
-        newsCell.load(article: article) { [weak newsCell] imageData in
-          article.imageData = imageData
+        newsCell.load(article: article) { [weak newsCell] image in
+          article.image = image
           self.newsData.articles[index] = article
           newsCell?.load(article: article) { _ in }
         }

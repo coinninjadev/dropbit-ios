@@ -13,17 +13,14 @@ import PromiseKit
 protocol GetBitcoinViewControllerDelegate: AnyObject {
   func viewControllerFindBitcoinATMNearMe(_ viewController: GetBitcoinViewController)
   func viewControllerDidCopyAddress(_ viewController: UIViewController)
-  func viewControllerBuyWithApplePay(_ viewController: GetBitcoinViewController, address: String)
+  func viewControllerBuyWithApplePay(_ viewController: GetBitcoinViewController, url: String)
 }
 
 final class GetBitcoinViewController: BaseViewController, StoryboardInitializable {
 
-  @IBOutlet var findATMButton: PrimaryActionButton!
-  @IBOutlet var centerStackView: UIStackView!
+  @IBOutlet var tableView: UITableView!
   @IBOutlet var purchaseBitcoinInfoLabel: UILabel!
   @IBOutlet var copyBitcoinAddressButton: LightBorderedButton!
-
-  var buyWithApplePayButton: PKPaymentButton!
 
   private(set) weak var delegate: GetBitcoinViewControllerDelegate!
   private(set) var bitcoinAddress = ""
@@ -33,15 +30,6 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
     let vc = GetBitcoinViewController.makeFromStoryboard()
     vc.delegate = delegate
     vc.bitcoinAddress = bitcoinAddress
-    if PKPaymentAuthorizationController.canMakePayments() {
-      let button = PKPaymentButton(paymentButtonType: .buy, paymentButtonStyle: .black)
-      button.addTarget(vc, action: #selector(buyWithApplePay), for: .touchUpInside)
-      vc.buyWithApplePayButton = button
-    } else {
-      let button = PKPaymentButton(paymentButtonType: .setUp, paymentButtonStyle: .black)
-      button.addTarget(vc, action: #selector(setupApplePay), for: .touchUpInside)
-      vc.buyWithApplePayButton = button
-    }
     return vc
   }
 
@@ -60,14 +48,6 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
     delegate.viewControllerDidCopyAddress(self)
   }
 
-  @objc func buyWithApplePay() {
-    delegate.viewControllerBuyWithApplePay(self, address: bitcoinAddress)
-  }
-
-  @objc func setupApplePay() {
-    PKPassLibrary().openPaymentSetup()
-  }
-
   // MARK: private
   private func setupUI() {
     /// Purchase bitcoin label
@@ -77,26 +57,6 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
     """.removingMultilineLineBreaks()
     purchaseBitcoinInfoLabel.textColor = .outgoingGray
     purchaseBitcoinInfoLabel.font = .regular(13)
-
-    /// Buy with Apple Pay button
-    buyWithApplePayButton.addTarget(self, action: #selector(buyWithApplePay), for: .touchUpInside)
-    centerStackView.insertArrangedSubview(buyWithApplePayButton, at: 2)
-    buyWithApplePayButton.heightAnchor.constraint(equalToConstant: 51).isActive = true
-
-    let mapPinImage = UIImage(imageLiteralResourceName: "mapPinBlue")
-    let font = UIFont.medium(13)
-    let blueAttributes: StringAttributes = [
-      .font: font,
-      .foregroundColor: UIColor.primaryActionButton
-    ]
-
-    // The font descender relates to the bottom y-coordinate, offset from the baseline, of the receiver’s longest descender.
-    let atmAttributedString = NSAttributedString(
-      image: mapPinImage,
-      fontDescender: font.descender,
-      imageSize: CGSize(width: 13, height: 20)) + "  " + NSAttributedString(string: "FIND BITCOIN ATM", attributes: blueAttributes)
-    findATMButton.setAttributedTitle(atmAttributedString, for: .normal)
-    findATMButton.style = .standardClear
 
     let buyBitcoinImageString = NSAttributedString(
       image: UIImage(imageLiteralResourceName: "bitcoinOrangeB"),
@@ -113,5 +73,19 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
     headerText.appendRegular("Get Bitcoin", size: 15, color: .darkGrayBackground, paragraphStyle: nil)
     header.attributedText = headerText
     navigationItem.titleView = header
+  }
+}
+
+extension GetBitcoinViewController: PurchaseMerchantTableViewCellDelegate {
+
+  func actionButtonWasPressed(with type: BuyMerchantBuyType, url: String) {
+    switch type {
+    case .device:
+      delegate.viewControllerBuyWithApplePay(self, url: bitcoinAddress)
+    case .atm:
+      delegate.viewControllerFindBitcoinATMNearMe(self)
+    case .default:
+
+    }
   }
 }
