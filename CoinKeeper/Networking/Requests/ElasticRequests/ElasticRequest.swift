@@ -68,6 +68,11 @@ public struct ElasticTerms {
     return .object(["identity_hash": arrayValue])
   }
 
+  static func object(withTxids ids: [String]) -> JSONValue {
+    let arrayValue = stringsToArrayValue(ids)
+    return .object(["txid": arrayValue])
+  }
+
   private static func stringsToArrayValue(_ strings: [String]) -> JSONValue {
     return .array(strings.map { .string($0) })
   }

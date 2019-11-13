@@ -13,6 +13,7 @@ public enum TransactionNotificationTarget: CoinNinjaTargetType {
 
   case create(CreateTransactionNotificationBody)
   case get(String) //txid or ledgerEntryId
+  case query(ElasticRequest)
 
 }
 
@@ -26,12 +27,14 @@ extension TransactionNotificationTarget {
     switch self {
     case .create:         return nil
     case .get(let txid):  return txid
+    case .query:          return "query"
     }
   }
 
   public var method: Method {
     switch self {
-    case .create: return .post
+    case .create,
+         .query:  return .post
     case .get:    return .get
     }
   }
@@ -39,6 +42,8 @@ extension TransactionNotificationTarget {
   public var task: Task {
     switch self {
     case .create(let body):
+      return .requestCustomJSONEncodable(body, encoder: customEncoder)
+    case .query(let body):
       return .requestCustomJSONEncodable(body, encoder: customEncoder)
     case .get:
       return .requestPlain

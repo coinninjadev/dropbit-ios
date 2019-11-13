@@ -284,12 +284,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
   }
 
   private func fetchTransactionNotifications(forIds ids: [String]) -> Promise<[TransactionNotificationResponse]> {
-    var idIterator = ids.makeIterator()
-    let promiseIterator = AnyIterator<Promise<[TransactionNotificationResponse]>> {
-      guard let id = idIterator.next() else { return nil }
-      return self.networkManager.fetchTransactionNotifications(forId: id)
-    }
-    return when(fulfilled: promiseIterator, concurrently: 5).flatMapValues { $0 } // flatten to single array of TransactionNotificationResponse
+    return self.networkManager.fetchTransactionNotifications(forIds: ids)
   }
 
   private func minimumSeekReceiveAddressIndex(in context: NSManagedObjectContext) -> Int? {
