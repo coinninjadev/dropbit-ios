@@ -60,6 +60,7 @@ class LightningWalletAmountValidator: ValidatorType<CurrencyConverter> {
 
   static let maxWalletValue = Money(amount: NSDecimalNumber(value: 200), currency: .USD)
   static let minReloadAmount = Money(amount: NSDecimalNumber(value: 5), currency: .USD)
+  static let minLightningWithdrawAmount = Money(amount: NSDecimalNumber(value: 40_000), currency: .BTC)
 
   let balancesNetPending: WalletBalances
   let type: WalletTransactionType

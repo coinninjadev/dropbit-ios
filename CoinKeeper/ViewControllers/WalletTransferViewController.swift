@@ -146,6 +146,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
       }
     } catch {
       self.delegate.handleLightningLoadError(error)
+      self.disableConfirmButton()
     }
   }
 
@@ -210,18 +211,21 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
         let value = CurrencyConverter(fromBtcTo: .USD, fromAmount: amount, rates: rateManager.exchangeRates)
         try LightningWalletAmountValidator(balancesNetPending: walletBalances,
                                            walletType: type,
-                                           ignoring: [.maxWalletValue]).validate(value: value)
+                                           ignoring: [.maxWalletValue, .minReloadAmount]).validate(value: value)
 
         delegate.viewControllerNeedsFeeEstimates(self, btcAmount: amount)
           .get(on: .main) { response in
             SVProgressHUD.dismiss()
             self.setupUIForFees(networkFee: response.result.networkFee, processingFee: response.result.processingFee)
+            self.setupTransactionUI()
         }.catch { error in
           SVProgressHUD.dismiss()
           self.delegate.viewControllerNetworkError(error)
+          self.disableConfirmButton()
         }
       } catch {
         delegate.handleLightningLoadError(error)
+        self.disableConfirmButton()
       }
 
     default:
