@@ -54,11 +54,10 @@ class WalletSyncOperationFactory {
         let bgContext = dependencies.bgContext
         let isFullSync = walletSyncType == .comprehensive
 
-        let backgroundTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
-
         operation.task = { [weak self, weak innerOp = operation] in
           guard let strongSelf = self, let strongOperation = innerOp else { return }
 
+          let backgroundTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
           var caughtError: Error?
           log.info("Sync routine: Starting.")
           strongSelf.performSync(with: dependencies, fullSync: isFullSync, in: bgContext)

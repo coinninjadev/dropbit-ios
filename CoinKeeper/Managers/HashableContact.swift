@@ -38,7 +38,7 @@ struct HashablePhoneNumber: Hashable {
 
   init(labeledNumber: CNLabeledValue<CNPhoneNumber>) {
     self.labelKey = labeledNumber.label ?? ""
-    self.originalSanitizedNumber = labeledNumber.value.stringValue.removingNonDecimalCharacters()
+    self.originalSanitizedNumber = labeledNumber.value.stringValue.droppingExtensions().removingNonDecimalCharacters()
   }
 
   init(managedNumber: CCMPhoneNumber) {

@@ -37,6 +37,12 @@ extension String {
     return self.components(separatedBy: charactersToRemove).joined()
   }
 
+  ///Trims trailing portion of phone number string if separated by pause/wait/extension characters
+  func droppingExtensions() -> String {
+    let extensionCharSet = CharacterSet(charactersIn: ",;*")
+    return self.components(separatedBy: extensionCharSet).first ?? self
+  }
+
   func asNilIfEmpty() -> String? {
     return self.isEmpty ? nil : self
   }

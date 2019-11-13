@@ -22,11 +22,13 @@ enum AsyncOperationType: CustomStringConvertible {
 
   case syncWallet(WalletSyncType)
   case deleteWallet
+  case cacheContacts(force: Bool)
 
   var description: String {
     switch self {
     case .deleteWallet:             return "deleteWallet"
     case .syncWallet(let syncType): return "syncWallet.\(syncType.rawValue)"
+    case .cacheContacts(let force): return "cacheContacts.\(force)"
     }
   }
 
@@ -35,8 +37,8 @@ enum AsyncOperationType: CustomStringConvertible {
     case .syncWallet(let selfSyncType):
       switch operationType {
       case .syncWallet(let operationSyncType):
-        let associatedTypesMatch = (selfSyncType == operationSyncType)
-        return ignoringAssociatedValues ? true : associatedTypesMatch
+        let associatedValuesMatch = (selfSyncType == operationSyncType)
+        return ignoringAssociatedValues ? true : associatedValuesMatch
 
       default:
         return false
@@ -46,6 +48,14 @@ enum AsyncOperationType: CustomStringConvertible {
       switch operationType {
       case .deleteWallet:   return true
       default:              return false
+      }
+    case .cacheContacts(let force):
+      switch operationType {
+      case .cacheContacts(let comparisonForce):
+        let associatedValuesMatch = (force == comparisonForce)
+        return ignoringAssociatedValues ? true : associatedValuesMatch
+      default:
+        return false
       }
     }
   }

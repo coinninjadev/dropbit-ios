@@ -9,11 +9,19 @@
 import CoreData
 import Contacts
 import PromiseKit
+import UIKit
+
+typealias ContactProgressHandler = (_ cumulative: Int, _ total: Int) -> Void
 
 protocol ContactCacheDataWorkerType: AnyObject {
+  func generateTestContacts(count: Int)
   func refreshStatuses() -> Promise<Void>
-  func reloadSystemContactsIfNeeded(force: Bool, completion: CKErrorCompletion?)
   func refreshStatus(forPhoneNumber phoneNumber: GlobalPhoneNumber, completion: @escaping ((ValidatedContact?) -> Void))
+
+  ///Progress handler will provide the cumulative total contacts processed during a full reload
+  func createContactCacheReloadOperation(force: Bool,
+                                         progressHandler: ContactProgressHandler?,
+                                         completion: CKErrorCompletion?) -> AsynchronousOperation
 }
 
 struct CachedPhoneNumberDependencies {
@@ -21,6 +29,11 @@ struct CachedPhoneNumberDependencies {
   let salt: Data
   let formatter: CNContactFormatter
   let deviceCountryCode: Int
+}
+
+struct TestContact {
+  let name: String
+  let phoneNumber: String
 }
 
 class ContactCacheDataWorker: ContactCacheDataWorkerType {
@@ -81,35 +94,82 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
     case none, fullReload, selectiveUpdate
   }
 
-  func reloadSystemContactsIfNeeded(force: Bool, completion: CKErrorCompletion?) {
-    let bgContext = contactCacheManager.createBackgroundContext()
-    bgContext.perform {
-      self.neededCacheAction(force: force, in: bgContext)
-        .then(in: bgContext) { self.updateCache(withAction: $0, in: bgContext) }
-        .done(in: bgContext) {
-          let changeDesc = bgContext.changesDescription()
-          log.debug("Contact cache changes: \(changeDesc)")
+  ///Useful for performance tests, `count` must be less than 7 digits for unique phone numbers
+  func generateTestContacts(count: Int) {
+    self.deleteAllTestCNContacts()
 
-          try bgContext.saveRecursively()
+    let contactRawValues = Array(1...count)
+    let testContactValues: [TestContact] = contactRawValues.compactMap { value -> TestContact? in
+      let stringValue = String(value)
+      let digitsNeeded = 7 - stringValue.count
+      guard digitsNeeded >= 0 else { return nil }
+      let phoneNumber = "330" + String(repeating: "2", count: digitsNeeded) + stringValue
+      return TestContact(name: stringValue, phoneNumber: phoneNumber)
+    }
 
-          DispatchQueue.main.async {
-            completion?(nil)
-          }
-        }
-        .catch { error in
-          completion?(error)
-      }
+    let saveRequest = CNSaveRequest()
+    testContactValues.forEach { object in
+      let mutableContact = CNMutableContact()
+      mutableContact.givenName = object.name
+      mutableContact.familyName = "TEST"
+      mutableContact.phoneNumbers = [CNLabeledValue(label: CNLabelPhoneNumberMobile,
+                                                    value: CNPhoneNumber(stringValue: object.phoneNumber))]
+      saveRequest.add(mutableContact, toContainerWithIdentifier: nil)
+    }
+
+    do {
+      try contactStore.execute(saveRequest)
+      log.info("Successfully inserted \(count) test contacts in ContactStore")
+    } catch {
+      log.error("Failed to insert \(count) test contacts in ContactStore")
     }
   }
 
-  private func updateCache(withAction action: CacheAction, in context: NSManagedObjectContext) -> Promise<Void> {
+  func createContactCacheReloadOperation(force: Bool,
+                                         progressHandler: ContactProgressHandler?,
+                                         completion: CKErrorCompletion?) -> AsynchronousOperation {
+
+    let operation = AsynchronousOperation(operationType: .cacheContacts(force: force))
+    operation.task = { [weak self, weak innerOp = operation] in
+      guard let self = self, let innerOp = innerOp else { return }
+
+      let backgroundTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
+      let bgContext = self.contactCacheManager.createRootBackgroundContext()
+      bgContext.perform {
+        self.neededCacheAction(force: force, in: bgContext)
+          .then(in: bgContext) { self.updateCache(withAction: $0, progressHandler: progressHandler, in: bgContext) }
+          .done(in: bgContext) {
+            let changeDesc = bgContext.changesDescription()
+            log.debug("Contact cache changes: \(changeDesc)")
+
+            try bgContext.saveRecursively()
+
+            DispatchQueue.main.async {
+              completion?(nil)
+            }
+        }
+        .catch { error in
+          completion?(error)
+        }
+        .finally {
+          innerOp.finish()
+          UIApplication.shared.endBackgroundTask(backgroundTaskId)
+        }
+      }
+    }
+    return operation
+  }
+
+  private func updateCache(withAction action: CacheAction,
+                           progressHandler: ContactProgressHandler?,
+                           in context: NSManagedObjectContext) -> Promise<Void> {
     switch action {
     case .fullReload:
-      return self.reloadSystemContacts(in: context)
+      return self.reloadSystemContacts(with: progressHandler, in: context)
 
     case .selectiveUpdate:
       return self.getCNContacts()
-        .get { contacts in
+        .get(in: context) { contacts in
           try self.selectivelyUpdateCache(with: contacts, in: context)
         }.asVoid()
 
@@ -143,32 +203,28 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
   }
 
   private func selectivelyUpdateCache(with contacts: [CNContact], in context: NSManagedObjectContext) throws {
-    try context.performThrowingAndWait {
-      let formatter = CNContactFormatter()
-      let managedContacts = try self.contactCacheManager.allCachedContacts(in: context)
-      let hashableManagedContacts = Set(managedContacts.map { HashableContact(ccmContact: $0) })
-      let hashableSystemContacts = Set(contacts.map { HashableContact(cnContact: $0, formatter: formatter)})
+    let formatter = CNContactFormatter()
+    let managedContacts = try self.contactCacheManager.allCachedContacts(in: context)
+    let hashableManagedContacts = Set(managedContacts.map { HashableContact(ccmContact: $0) })
+    let hashableSystemContacts = Set(contacts.map { HashableContact(cnContact: $0, formatter: formatter)})
 
-      let hashableContactsToDelete: Set<HashableContact> = hashableManagedContacts.subtracting(hashableSystemContacts)
-      let hashableContactsToCreate: Set<HashableContact> = hashableSystemContacts.subtracting(hashableManagedContacts)
+    let hashableContactsToDelete: Set<HashableContact> = hashableManagedContacts.subtracting(hashableSystemContacts)
+    let hashableContactsToCreate: Set<HashableContact> = hashableSystemContacts.subtracting(hashableManagedContacts)
 
-      let idsToDelete = hashableContactsToDelete.map { $0.identifier }
-      let managedContactsToDelete: [CCMContact] = managedContacts.filter { idsToDelete.contains($0.cnContactIdentifier) }
-      managedContactsToDelete.forEach { context.delete($0) } // cascades to phone numbers
+    let idsToDelete = hashableContactsToDelete.map { $0.identifier }
+    let managedContactsToDelete: [CCMContact] = managedContacts.filter { idsToDelete.contains($0.cnContactIdentifier) }
+    managedContactsToDelete.forEach { context.delete($0) } // cascades to phone numbers
 
-      let idsToCreate = hashableContactsToCreate.map { $0.identifier }
-      let systemContactsToCreate = contacts.filter { idsToCreate.contains($0.identifier) }
-      try self.persistContacts(systemContactsToCreate, in: context)
-    }
+    let idsToCreate = hashableContactsToCreate.map { $0.identifier }
+    let systemContactsToCreate = contacts.filter { idsToCreate.contains($0.identifier) }
+    try self.persistContacts(systemContactsToCreate, progress: nil, in: context)
   }
 
-  private func reloadSystemContacts(in context: NSManagedObjectContext) -> Promise<Void> {
+  private func reloadSystemContacts(with progressHandler: ContactProgressHandler?, in context: NSManagedObjectContext) -> Promise<Void> {
     return self.getCNContacts()
-      .get { contacts in
-        try context.performThrowingAndWait {
-          try self.contactCacheManager.deleteSystemContactData(in: context)
-          try self.persistContacts(contacts, in: context)
-        }
+      .get(in: context) { contacts in
+        try self.contactCacheManager.deleteSystemContactData(in: context)
+        try self.persistContacts(contacts, progress: progressHandler, in: context)
       }.asVoid()
   }
 
@@ -193,6 +249,37 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
       } catch {
         seal.reject(error)
       }
+    }
+  }
+
+  private func deleteAllTestCNContacts() {
+    let allTestContacts = getTestCNContacts()
+    let saveRequest = CNSaveRequest()
+    allTestContacts.compactMap { $0.mutableCopy() as? CNMutableContact }.forEach { contact in
+      saveRequest.delete(contact)
+    }
+
+    do {
+      try contactStore.execute(saveRequest)
+    } catch {
+      log.error(error, message: "Failed to delete all test contacts")
+    }
+  }
+
+  private func getTestCNContacts() -> [CNContact] {
+    let keysToFetch = [CNContactFamilyNameKey] as [CNKeyDescriptor]
+
+    do {
+      var results: [CNContact] = []
+      let fetchRequest = CNContactFetchRequest(keysToFetch: keysToFetch)
+      fetchRequest.predicate = CNContact.predicateForContacts(matchingName: "TEST")
+      try contactStore.enumerateContacts(with: fetchRequest) { contact, _ in
+        results.append(contact)
+      }
+      return results
+    } catch {
+      log.error(error, message: "Failed to fetch test contacts")
+      return []
     }
   }
 
@@ -228,7 +315,7 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
   }
 
   private func batchedPhoneNumbers(from phoneNumberHashes: [String],
-                                   batchLimit: Int = 100) -> Promise<[StringDictResponse]> {
+                                   batchLimit: Int = 300) -> Promise<[StringDictResponse]> {
     let phoneHashBatches = phoneNumberHashes.chunked(by: batchLimit)
 
     var batchIterator = phoneHashBatches.makeIterator()
@@ -248,7 +335,7 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
     }
   }
 
-  private func persistContacts(_ contacts: [CNContact], in context: NSManagedObjectContext) throws {
+  private func persistContacts(_ contacts: [CNContact], progress: ContactProgressHandler?, in context: NSManagedObjectContext) throws {
     let salt = try hashingManager.salt()
     let countryCode = self.countryCodeProvider?.deviceCountryCode() ?? 1
 
@@ -259,7 +346,8 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
       deviceCountryCode: countryCode
     )
 
-    try self.contactCacheManager.persistContacts(contacts, inputs: dependencies, in: context)
+    try self.contactCacheManager.persistContacts(contacts, inputs: dependencies,
+                                                 progress: progress, in: context)
   }
 
 }

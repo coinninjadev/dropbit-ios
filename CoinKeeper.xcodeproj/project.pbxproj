@@ -703,9 +703,6 @@
 		B52053E1227B6D3000E5D2ED /* AlertManager+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52053E0227B6D3000E5D2ED /* AlertManager+Constants.swift */; };
 		B5219C812343C7A300EA5B05 /* TransactionDetailCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5219C802343C7A300EA5B05 /* TransactionDetailCellViewModel.swift */; };
 		B521E85F218785B8002DB8C2 /* CoreDataObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B559AF1021811FDD001D44F2 /* CoreDataObserver.swift */; };
-		B5221D5122441CAA0081C868 /* ContactCacheMigratorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5221D5022441CAA0081C868 /* ContactCacheMigratorFactory.swift */; };
-		B5221D5322441CC30081C868 /* MigrateContactCacheV1toV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5221D5222441CC30081C868 /* MigrateContactCacheV1toV2.swift */; };
-		B5221D55224427C40081C868 /* ContactCacheMigrationWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5221D54224427C40081C868 /* ContactCacheMigrationWorker.swift */; };
 		B523DFC220926E88008A789D /* Collection+IsNotEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = B523DFC120926E88008A789D /* Collection+IsNotEmpty.swift */; };
 		B524B242216CEB5200F669F4 /* MockNetworkManager+MessageRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B524B240216CEAAE00F669F4 /* MockNetworkManager+MessageRequestable.swift */; };
 		B5264B2F21909196009164F6 /* ResponseStringsTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5264B2E21909196009164F6 /* ResponseStringsTestable.swift */; };
@@ -1797,9 +1794,6 @@
 		B520DFE822734EAE004C7D9E /* Model v5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model v5.xcdatamodel"; sourceTree = "<group>"; };
 		B5219C802343C7A300EA5B05 /* TransactionDetailCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailCellViewModel.swift; sourceTree = "<group>"; };
 		B5221D4F2243FFB70081C868 /* ContactCache v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ContactCache v2.xcdatamodel"; sourceTree = "<group>"; };
-		B5221D5022441CAA0081C868 /* ContactCacheMigratorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCacheMigratorFactory.swift; sourceTree = "<group>"; };
-		B5221D5222441CC30081C868 /* MigrateContactCacheV1toV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateContactCacheV1toV2.swift; sourceTree = "<group>"; };
-		B5221D54224427C40081C868 /* ContactCacheMigrationWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCacheMigrationWorker.swift; sourceTree = "<group>"; };
 		B523DFC120926E88008A789D /* Collection+IsNotEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+IsNotEmpty.swift"; sourceTree = "<group>"; };
 		B524B240216CEAAE00F669F4 /* MockNetworkManager+MessageRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+MessageRequestable.swift"; sourceTree = "<group>"; };
 		B5264B2E21909196009164F6 /* ResponseStringsTestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseStringsTestable.swift; sourceTree = "<group>"; };
@@ -2348,15 +2342,6 @@
 			path = Database;
 			sourceTree = "<group>";
 		};
-		3B23232B2248FE7300514201 /* ContactCache */ = {
-			isa = PBXGroup;
-			children = (
-				B5221D5022441CAA0081C868 /* ContactCacheMigratorFactory.swift */,
-				B5221D5222441CC30081C868 /* MigrateContactCacheV1toV2.swift */,
-			);
-			path = ContactCache;
-			sourceTree = "<group>";
-		};
 		3B23232C2248FE8900514201 /* Keychain */ = {
 			isa = PBXGroup;
 			children = (
@@ -2519,7 +2504,6 @@
 			children = (
 				B5401C5C228C89D1004C77BC /* WorkerFactory.swift */,
 				B52CC6AA221EC63F00B00C9E /* ContactCacheDataWorker.swift */,
-				B5221D54224427C40081C868 /* ContactCacheMigrationWorker.swift */,
 				B552EDE2211E33D000332BB5 /* TransactionDataWorker.swift */,
 				B552EDE6211E33D000332BB5 /* WalletAddressDataWorker.swift */,
 				B5D77072232D6980004E1519 /* AddressRequestFulfillmentWorker.swift */,
@@ -2683,7 +2667,6 @@
 			isa = PBXGroup;
 			children = (
 				3B23232A2248FE5700514201 /* Database */,
-				3B23232B2248FE7300514201 /* ContactCache */,
 				3B23232C2248FE8900514201 /* Keychain */,
 			);
 			path = Migrators;
@@ -4547,7 +4530,6 @@
 				A2AA3778210112C000633F83 /* UIImageView+GIF.swift in Sources */,
 				B57F06832243CF0200C147D2 /* TimeInterval+Constants.swift in Sources */,
 				3B2E3ED021C92FE600AE55DE /* SyncDependencies.swift in Sources */,
-				B5221D5122441CAA0081C868 /* ContactCacheMigratorFactory.swift in Sources */,
 				3BACDB992190B7DB0006F2D4 /* AppCoordinator+RecoveryWordsIntroViewControllerDelegate.swift in Sources */,
 				A293E35020F67F390099ED69 /* SuccessFailViewModel.swift in Sources */,
 				A2E0300220EABF8E00E160E9 /* RestoreWalletViewController.swift in Sources */,
@@ -4683,7 +4665,6 @@
 				3B73B2752281E33900F4C551 /* TwitterOAuth.generated.swift in Sources */,
 				4A75CAF92090FB0D00E8E653 /* DeviceVerificationViewController.swift in Sources */,
 				B526760720F5059F003144A7 /* PriceTransactionResponse.swift in Sources */,
-				B5221D55224427C40081C868 /* ContactCacheMigrationWorker.swift in Sources */,
 				403AAD5E2063513900F7A2BA /* Model.xcdatamodeld in Sources */,
 				30C0974E219C64F80064F19E /* Int+NSDecimalNumber.swift in Sources */,
 				3B598FEE23196BA800FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStatusViewControllerDelegate.swift in Sources */,
@@ -4953,7 +4934,6 @@
 				B5090D902283244700E57423 /* LocationManagerDelegate.swift in Sources */,
 				3BD7B73120D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift in Sources */,
 				3BDFADFC2267AEFF0077DEF2 /* BlockstreamTarget.swift in Sources */,
-				B5221D5322441CC30081C868 /* MigrateContactCacheV1toV2.swift in Sources */,
 				3B5A88A0228AFC850082BBA4 /* CNContactSearchBar.swift in Sources */,
 				3B598FE02318337C00FF50CD /* LightningUpgradeStartViewController.swift in Sources */,
 				B56E15972167DB26003B69D4 /* NetworkManager+WalletRequestable.swift in Sources */,

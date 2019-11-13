@@ -15,6 +15,7 @@ protocol ContactCacheManagerType: AnyObject {
 
   var viewContext: NSManagedObjectContext { get }
   func createBackgroundContext() -> NSManagedObjectContext
+  func createRootBackgroundContext() -> NSManagedObjectContext
 
   func createPhoneNumberFetchedResultsController() -> NSFetchedResultsController<CCMPhoneNumber>
   func predicate(forSearch searchText: String) -> NSPredicate
@@ -26,6 +27,7 @@ protocol ContactCacheManagerType: AnyObject {
   func deleteSystemContactData(in context: NSManagedObjectContext) throws
   func persistContacts(_ contacts: [CNContact],
                        inputs: CachedPhoneNumberDependencies,
+                       progress: ContactProgressHandler?,
                        in context: NSManagedObjectContext) throws
 
   func validatedMetadata(for globalPhoneNumber: GlobalPhoneNumber, in context: NSManagedObjectContext) -> CCMValidatedMetadata?
@@ -58,6 +60,13 @@ class ContactCacheManager: ContactCacheManagerType {
     context.parent = viewContext
     context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
     context.name = "BackgroundContext_Contacts_\(Date().timeIntervalSince1970)"
+    return context
+  }
+
+  func createRootBackgroundContext() -> NSManagedObjectContext {
+    let context = self.container.newBackgroundContext()
+    context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+    context.name = "TemporaryRootContext_Contacts_\(Date().timeIntervalSince1970)"
     return context
   }
 
@@ -157,42 +166,58 @@ class ContactCacheManager: ContactCacheManagerType {
 
   func persistContacts(_ contacts: [CNContact],
                        inputs: CachedPhoneNumberDependencies,
+                       progress: ContactProgressHandler?,
                        in context: NSManagedObjectContext) throws {
 
-    for contact in contacts {
-      let labeledNumbers = contact.phoneNumbers
-      guard labeledNumbers.isNotEmpty else { continue }
+    let regionCode = Locale.current.regionCode?.uppercased() ?? "US"
 
-      guard let cachedContact = CCMContact(cnContact: contact,
-                                           formatter: inputs.formatter,
-                                           insertInto: context) else { continue }
+    let totalContactCount = contacts.count
+    let batchSize = (totalContactCount > 1000) ? 300 : 150
+    let contactBatches = contacts.chunked(by: batchSize)
 
-      for labeledNumber in labeledNumbers {
-        let originalPhoneNumber = labeledNumber.value.stringValue
-        let sanitizedOriginal = originalPhoneNumber.removingNonDecimalCharacters()
-        let sanitizedForParsing = originalPhoneNumber.removingNonDecimalCharacters(keepingCharactersIn: "+")
+    for (i, batch) in contactBatches.enumerated() {
+      for contact in batch {
+        let labeledNumbers = contact.phoneNumbers
+        guard labeledNumbers.isNotEmpty else { continue }
 
-        do {
-          let parsedNumber = try phoneNumberKit.parse(sanitizedForParsing, ignoreType: false)
-          // CCMPhoneNumber objects don't use findOrCreate, because there may be duplicate contacts
-          // and we don't want to delete all instances of a phone number if the duplicate is removed
-          let cachedPhoneNumber = self.createCachedPhoneNumber(for: parsedNumber,
-                                                               sanitizedOriginal: sanitizedOriginal,
-                                                               labelKey: labeledNumber.label,
-                                                               dependencies: inputs,
-                                                               in: context)
-          cachedPhoneNumber.cachedContact = cachedContact
+        guard let cachedContact = CCMContact(cnContact: contact,
+                                             formatter: inputs.formatter,
+                                             insertInto: context) else { continue }
 
-        } catch {
-          // not parseable, will not create or link CCMValidatedMetadata
-          log.warn("Failed to parse phone number %@, error: \(error.localizedDescription)", privateArgs: [originalPhoneNumber])
-          let cachedPhoneNumber = CCMPhoneNumber(formattedNumber: originalPhoneNumber,
-                                                 sanitizedOriginal: sanitizedOriginal,
-                                                 labelKey: labeledNumber.label,
-                                                 insertInto: context)
-          cachedPhoneNumber.cachedContact = cachedContact
+        for labeledNumber in labeledNumbers {
+          let originalPhoneNumber = labeledNumber.value.stringValue.droppingExtensions()
+          let sanitizedOriginal = originalPhoneNumber.removingNonDecimalCharacters()
+          let sanitizedForParsing = originalPhoneNumber.removingNonDecimalCharacters(keepingCharactersIn: "+")
+
+          do {
+            let parsedNumber = try phoneNumberKit.parse(sanitizedForParsing, withRegion: regionCode, ignoreType: false)
+            // CCMPhoneNumber objects don't use findOrCreate, because there may be duplicate contacts
+            // and we don't want to delete all instances of a phone number if the duplicate is removed
+            let cachedPhoneNumber = self.createCachedPhoneNumber(for: parsedNumber,
+                                                                 sanitizedOriginal: sanitizedOriginal,
+                                                                 labelKey: labeledNumber.label,
+                                                                 dependencies: inputs,
+                                                                 in: context)
+            cachedPhoneNumber.cachedContact = cachedContact
+
+          } catch {
+            // not parseable, will not create or link CCMValidatedMetadata
+            log.warn("Failed to parse phone number %@, error: \(error.localizedDescription)", privateArgs: [originalPhoneNumber])
+            let cachedPhoneNumber = CCMPhoneNumber(formattedNumber: originalPhoneNumber,
+                                                   sanitizedOriginal: sanitizedOriginal,
+                                                   labelKey: labeledNumber.label,
+                                                   insertInto: context)
+            cachedPhoneNumber.cachedContact = cachedContact
+          }
         }
       }
+      let changeDesc = context.changesDescription()
+      log.debug("Contact cache changes: \(changeDesc)")
+      try context.saveRecursively()
+
+      let previousCount = (i * batchSize)
+      let cumulativeCount = previousCount + batch.count
+      progress?(cumulativeCount, totalContactCount)
     }
   }
 
@@ -208,7 +233,7 @@ class ContactCacheManager: ContactCacheManagerType {
     let allContacts = try CCMContact.findAll(in: context)
     let allMetadata = try CCMValidatedMetadata.findAll(in: context)
     let allObjects: [NSManagedObject] = allContacts + allMetadata
-    let batches = allObjects.chunked(by: 100)
+    let batches = allObjects.chunked(by: 300)
     for batch in batches {
       batch.forEach { context.delete($0) }
       try context.saveRecursively()

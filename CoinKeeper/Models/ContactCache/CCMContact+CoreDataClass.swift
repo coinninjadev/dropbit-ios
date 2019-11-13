@@ -32,4 +32,14 @@ public class CCMContact: NSManagedObject {
     return try context.fetch(fetchRequest)
   }
 
+  static func getCount(in context: NSManagedObjectContext) -> Int {
+    let fetchRequest: NSFetchRequest<CCMContact> = CCMContact.fetchRequest()
+    do {
+      return try context.count(for: fetchRequest)
+    } catch {
+      log.error(error, message: "Failed to get count of CCMContact in cache")
+      return 0
+    }
+  }
+
 }
