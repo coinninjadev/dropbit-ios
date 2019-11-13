@@ -63,7 +63,7 @@ protocol LightningBrokerType: AnyObject {
   func deleteInvalidWalletEntries(in context: NSManagedObjectContext)
   func deleteInvalidLedgerEntries(in context: NSManagedObjectContext)
 
-  func getLedgerEntriesWithoutPayloads(matchingIds ids: [String], limit: Int, in context: NSManagedObjectContext) -> [CKMLNLedgerEntry]
+  func getLedgerEntriesWithoutPayloads(matchingIds ids: [String], in context: NSManagedObjectContext) -> [CKMLNLedgerEntry]
 
 }
 

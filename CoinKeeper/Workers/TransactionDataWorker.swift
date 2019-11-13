@@ -117,13 +117,11 @@ class TransactionDataWorker: TransactionDataWorkerType {
       let threshold = self.fourteenDaysAgo
       let recentLedgerEntryIds = response.ledger.filter { $0.type == .lightning && $0.createdAt > threshold }.map { $0.cleanedId }
 
-      ///Limit and rotate results (using lastCheckedSharedPayload), so that fetching notifications doesn't result in a rate limit error
-      let entriesToFetch = lnBroker.getLedgerEntriesWithoutPayloads(matchingIds: recentLedgerEntryIds, limit: 10, in: context)
+      let entriesToFetch = lnBroker.getLedgerEntriesWithoutPayloads(matchingIds: recentLedgerEntryIds, in: context)
       let idsToFetch = entriesToFetch.compactMap { $0.id }
 
       return self.fetchTransactionNotifications(forIds: idsToFetch)
         .get(in: context) { responses in
-          entriesToFetch.forEach { $0.walletEntry?.lastCheckedSharedPayload = Date() }
           self.decryptAndPersistSharedPayloads(from: responses, ofType: .lightning, in: context)
       }
       .asVoid()
