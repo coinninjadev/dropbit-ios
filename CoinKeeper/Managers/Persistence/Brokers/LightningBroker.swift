@@ -83,14 +83,10 @@ class LightningBroker: CKPersistenceBroker, LightningBrokerType {
     invalidLedgerEntries.forEach { context.delete($0) }
   }
 
-  func getLedgerEntriesWithoutPayloads(matchingIds ids: [String], limit: Int, in context: NSManagedObjectContext) -> [CKMLNLedgerEntry] {
+  func getLedgerEntriesWithoutPayloads(matchingIds ids: [String], in context: NSManagedObjectContext) -> [CKMLNLedgerEntry] {
     let fetchRequest: NSFetchRequest<CKMLNLedgerEntry> = CKMLNLedgerEntry.fetchRequest()
     fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: [CKPredicate.LedgerEntry.idIn(ids),
                                                                              CKPredicate.LedgerEntry.withoutPayload()])
-    let sortPath = #keyPath(CKMLNLedgerEntry.walletEntry.lastCheckedSharedPayload)
-    fetchRequest.sortDescriptors = [NSSortDescriptor(key: sortPath, ascending: true)]
-    fetchRequest.fetchLimit = limit
-
     do {
       return try context.fetch(fetchRequest)
     } catch {

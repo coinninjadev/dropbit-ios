@@ -117,13 +117,11 @@ class TransactionDataWorker: TransactionDataWorkerType {
       let threshold = self.fourteenDaysAgo
       let recentLedgerEntryIds = response.ledger.filter { $0.type == .lightning && $0.createdAt > threshold }.map { $0.cleanedId }
 
-      ///Limit and rotate results (using lastCheckedSharedPayload), so that fetching notifications doesn't result in a rate limit error
-      let entriesToFetch = lnBroker.getLedgerEntriesWithoutPayloads(matchingIds: recentLedgerEntryIds, limit: 10, in: context)
+      let entriesToFetch = lnBroker.getLedgerEntriesWithoutPayloads(matchingIds: recentLedgerEntryIds, in: context)
       let idsToFetch = entriesToFetch.compactMap { $0.id }
 
-      return self.fetchTransactionNotifications(forIds: idsToFetch)
+      return self.networkManager.fetchTransactionNotifications(forIds: idsToFetch)
         .get(in: context) { responses in
-          entriesToFetch.forEach { $0.walletEntry?.lastCheckedSharedPayload = Date() }
           self.decryptAndPersistSharedPayloads(from: responses, ofType: .lightning, in: context)
       }
       .asVoid()
@@ -267,7 +265,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     let threshold = fourteenDaysAgo
     let relevantTxids = dto.txResponses.filter { ($0.date ?? Date()) > threshold }.map { $0.txid }
 
-    return self.fetchTransactionNotifications(forIds: relevantTxids)
+    return self.networkManager.fetchTransactionNotifications(forIds: relevantTxids)
       .then { responses -> Promise<TransactionDataWorkerDTO> in
         let combinedDTO = TransactionDataWorkerDTO(txNotificationResponses: responses).merged(with: dto)
         return Promise.value(combinedDTO)
@@ -281,15 +279,6 @@ class TransactionDataWorker: TransactionDataWorkerType {
         return Promise(error: error)
       }
     }
-  }
-
-  private func fetchTransactionNotifications(forIds ids: [String]) -> Promise<[TransactionNotificationResponse]> {
-    var idIterator = ids.makeIterator()
-    let promiseIterator = AnyIterator<Promise<[TransactionNotificationResponse]>> {
-      guard let id = idIterator.next() else { return nil }
-      return self.networkManager.fetchTransactionNotifications(forId: id)
-    }
-    return when(fulfilled: promiseIterator, concurrently: 5).flatMapValues { $0 } // flatten to single array of TransactionNotificationResponse
   }
 
   private func minimumSeekReceiveAddressIndex(in context: NSManagedObjectContext) -> Int? {
@@ -449,6 +438,8 @@ class TransactionDataWorker: TransactionDataWorkerType {
   private func decryptAndPersistSharedPayloads(from responses: [TransactionNotificationResponse],
                                                ofType walletTxType: WalletTransactionType,
                                                in context: NSManagedObjectContext) {
+    guard responses.isNotEmpty else { return }
+
     let decryptedPayloads: [Data]
     switch walletTxType {
     case .onChain:

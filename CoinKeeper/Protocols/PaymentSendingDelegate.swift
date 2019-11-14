@@ -75,8 +75,8 @@ extension PaymentSendingDelegate {
       return
     }
 
-    if let topVC = self.navigationController.topViewController() {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+      if let topVC = self.navigationController.topViewController() {
         let twitterVC = ShareTransactionViewController.newInstance(delegate: delegate, walletTxType: walletTxType)
         topVC.present(twitterVC, animated: true, completion: nil)
       }

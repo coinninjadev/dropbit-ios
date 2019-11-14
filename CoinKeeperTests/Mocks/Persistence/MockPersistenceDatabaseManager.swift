@@ -18,7 +18,6 @@ class MockPersistenceDatabaseManager: PersistenceDatabaseType {
     return CKMTransaction(insertInto: context)
   }
 
-
   var sharedPayloadManager: SharedPayloadManagerType = SharedPayloadManager()
 
   func persistTemporaryTransaction(
