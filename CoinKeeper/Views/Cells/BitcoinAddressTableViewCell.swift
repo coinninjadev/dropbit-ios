@@ -21,7 +21,7 @@ class BitcoinAddressTableViewCell: UITableViewCell {
 
   @IBOutlet var titleLabel: UILabel!
   @IBOutlet var containerView: UIView!
-  @IBOutlet var bitcoinAddressLabel: InsetUILabel!
+  @IBOutlet var bitcoinAddressLabel: PaddedLabel!
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -51,13 +51,5 @@ class BitcoinAddressTableViewCell: UITableViewCell {
   func load(with address: String) {
     bitcoinAddressLabel.attributedText = BitcoinAddressTableViewCell.bitcoinImageString +
       NSAttributedString(string: address)
-  }
-}
-
-class InsetUILabel: UILabel {
-
-  override func drawText(in rect: CGRect) {
-      let insets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
-      super.drawText(in: rect.inset(by: insets))
   }
 }

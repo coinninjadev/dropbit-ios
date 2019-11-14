@@ -121,7 +121,7 @@ class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
   }
 
   @IBAction func tooltipButtonWasTouched() {
-    guard let viewModel = viewModel, let url = URL(string: viewModel.actionUrl) else { return }
+    guard let tooltipUrl = viewModel?.tooltipUrl, let url = URL(string: tooltipUrl) else { return }
     delegate?.tooltipButtonWasPressed(with: url)
   }
 

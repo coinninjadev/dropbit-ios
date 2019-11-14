@@ -78,7 +78,7 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
                                                link: "https://support.sendwyre.com/en/articles/1863574-geographic-restrictions"))
 
     let wyre = BuyMerchantResponse(image: UIImage(imageLiteralResourceName: "wyreLogo"),
-                                   tooltipUrl: nil,
+                                   tooltipUrl: "https://dropbit.app/tooltips/wyre",
                                    attributes: wyreAttributes,
                                    actionType: BuyMerchantBuyType.device.rawValue,
                                    actionUrl: "") // TODO
@@ -141,7 +141,7 @@ extension GetBitcoinViewController: UITableViewDataSource, UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    guard ((self.tableView(self.tableView, cellForRowAt: indexPath) as? BitcoinAddressTableViewCell) != nil) else { return }
+    guard indexPath.row == 0 else { return }
 
     UIPasteboard.general.string = bitcoinAddress
     delegate.viewControllerDidCopyAddress(self)

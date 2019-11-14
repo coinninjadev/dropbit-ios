@@ -17,6 +17,7 @@ class BuyMerchantAttributeView: UIView {
 
   @IBOutlet var imageView: UIImageView!
   @IBOutlet var descriptionLabel: UILabel!
+  @IBOutlet var linkButton: UIButton!
 
   weak var delegate: BuyMerchantAttributeViewDelegate?
   var viewModel: BuyMerchantAttribute?
@@ -40,9 +41,6 @@ class BuyMerchantAttributeView: UIView {
 
     backgroundColor = .lightGrayBackground
     descriptionLabel.font = .light(12)
-
-    let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(linkLabelWasTapped))
-    addGestureRecognizer(gestureRecognizer)
   }
 
   func load(with model: BuyMerchantAttribute) {
@@ -53,15 +51,21 @@ class BuyMerchantAttributeView: UIView {
       let normalString = NSMutableAttributedString.regular(model.description,
                                                           size: 14, color: .darkBlueText)
       normalString.underlineText()
-      descriptionLabel.attributedText = normalString
+      linkButton.setAttributedTitle(normalString, for: .normal)
+
+      linkButton.isHidden = false
+      descriptionLabel.isHidden = true
     } else {
       descriptionLabel.attributedText = NSMutableAttributedString.regular(model.description,
                                                                          size: 14, color: .darkBlueText)
+
+      linkButton.isHidden = true
+      descriptionLabel.isHidden = false
     }
 
   }
 
-  @objc func linkLabelWasTapped() {
+  @IBAction func linkButtonWasTapped() {
     guard let link = viewModel?.link, let url = URL(string: link) else { return }
     delegate?.attributeViewWasTouched(with: url)
   }
