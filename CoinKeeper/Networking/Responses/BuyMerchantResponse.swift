@@ -14,11 +14,11 @@ enum BuyMerchantAttributeType: String {
   case negative
 }
 
-struct BuyMerchantAttribute { //TODO: ResponseDecodable, Encodable
+struct BuyMerchantAttribute {
 
   let type: BuyMerchantAttributeType
   let description: String
-  let link: String?
+  var link: String? = nil
 
   static var sampleJSON: String { return "" }
   static var requiredStringKeys: [KeyPath<BuyMerchantAttribute, String>] { return [\.description] }
@@ -40,9 +40,9 @@ enum BuyMerchantBuyType: String {
   case atm
 }
 
-struct BuyMerchantResponse { //TODO: ResponseDecodable, Encodable
+struct BuyMerchantResponse {
 
-  let image: UIImage //TODO: Will change to String when integrated with the api
+  let image: UIImage
   let tooltipUrl: String?
   let attributes: [BuyMerchantAttribute]
   let actionType: String

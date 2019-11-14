@@ -26,9 +26,11 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
   private(set) var bitcoinAddress = ""
 
   static func newInstance(delegate: GetBitcoinViewControllerDelegate,
+                          viewModels: [BuyMerchantResponse],
                           bitcoinAddress: String) -> GetBitcoinViewController {
     let vc = GetBitcoinViewController.makeFromStoryboard()
     vc.delegate = delegate
+    vc.viewModels = viewModels
     vc.bitcoinAddress = bitcoinAddress
     return vc
   }
@@ -57,52 +59,6 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
     tableView.dataSource = self
     tableView.delegate = self
     tableView.backgroundColor = .lightGrayBackground
-
-    setupDataSource()
-  }
-
-  private func setupDataSource() {
-    var wyreAttributes: [BuyMerchantAttribute] = [], coinNinjaAttributes: [BuyMerchantAttribute] = []
-
-    wyreAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.positive,
-                                               description: "Buy Bitcoin using Apple Pay",
-                                               link: nil))
-    wyreAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.positive,
-                                               description: "Takes less than 30 seconds",
-                                               link: nil))
-    wyreAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.negative,
-                                               description: "$500 daily limit",
-                                               link: nil))
-    wyreAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.negative,
-                                               description: "Location restrictions may apply",
-                                               link: "https://support.sendwyre.com/en/articles/1863574-geographic-restrictions"))
-
-    let wyre = BuyMerchantResponse(image: UIImage(imageLiteralResourceName: "wyreLogo"),
-                                   tooltipUrl: "https://dropbit.app/tooltips/wyre",
-                                   attributes: wyreAttributes,
-                                   actionType: BuyMerchantBuyType.device.rawValue,
-                                   actionUrl: "")
-
-    coinNinjaAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.positive,
-                                               description: "Can use cash to buy",
-                                               link: nil))
-    coinNinjaAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.positive,
-                                               description: "Can sell Bitcoin for cash",
-                                               link: nil))
-    coinNinjaAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.negative,
-                                               description: "May limit based on verification",
-                                               link: nil))
-    coinNinjaAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.negative,
-                                               description: "High fees",
-                                               link: nil))
-
-    let coinNinja = BuyMerchantResponse(image: UIImage(imageLiteralResourceName: "coinNinjaLogo"),
-                                        tooltipUrl: nil,
-                                        attributes: coinNinjaAttributes,
-                                        actionType: BuyMerchantBuyType.atm.rawValue,
-                                        actionUrl: "")
-
-    viewModels = [wyre, coinNinja]
   }
 }
 

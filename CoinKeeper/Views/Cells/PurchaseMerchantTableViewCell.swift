@@ -56,9 +56,7 @@ class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
   func load(with model: BuyMerchantResponse) {
     viewModel = model
 
-    //fetchImage(at: model.imageUrl) { [weak self] image in
     logoImageView.image = model.image
-    //}
 
     actionButton.addTarget(self, action: #selector(actionButtonWasTouched), for: .touchUpInside)
     tooltipButton.isHidden = model.tooltipUrl == nil
