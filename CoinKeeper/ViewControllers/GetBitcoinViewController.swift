@@ -56,6 +56,7 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
     tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
     tableView.dataSource = self
     tableView.delegate = self
+    tableView.backgroundColor = .lightGrayBackground
 
     setupDataSource()
   }
@@ -109,6 +110,14 @@ extension GetBitcoinViewController: UITableViewDataSource, UITableViewDelegate {
 
   func numberOfSections(in tableView: UITableView) -> Int {
     return 1
+  }
+
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    if indexPath.row == 0 {
+      return 96
+    } else {
+      return 285
+    }
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

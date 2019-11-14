@@ -20,6 +20,7 @@ protocol PurchaseMerchantTableViewCellDelegate: AnyObject {
 class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
 
   @IBOutlet var logoImageView: UIImageView!
+  @IBOutlet var containerView: UIView!
   @IBOutlet var tooltipButton: UIButton!
   @IBOutlet var stackView: UIStackView!
   @IBOutlet var attributeStackView: UIStackView!
@@ -43,13 +44,13 @@ class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
   override func awakeFromNib() {
     super.awakeFromNib()
 
-    actionButton = PrimaryActionButton()
     selectionStyle = .none
-    separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-
-    let button = PKPaymentButton(paymentButtonType: .buy, paymentButtonStyle: .black)
-    button.addTarget(self, action: #selector(applePayButtonWasTouched), for: .touchUpInside)
-    buyWithApplePayButton = button
+    backgroundColor = .lightGrayBackground
+    containerView.backgroundColor = .lightGrayBackground
+    containerView.applyCornerRadius(10)
+    containerView.layer.borderWidth = 1
+    containerView.layer.borderColor = UIColor.mediumGrayBorder.cgColor
+    setupButtons()
   }
 
   func load(with model: BuyMerchantResponse) {
@@ -66,29 +67,41 @@ class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
       addAttributeView(with: attribute)
     }
 
-    setupButtons(with: model.buyType)
+    configureButtons(with: model.buyType)
   }
 
-  private func setupButtons(with buyType: BuyMerchantBuyType) {
+  private func setupButtons() {
+    actionButton = PrimaryActionButton()
+    actionButton.translatesAutoresizingMaskIntoConstraints = false
+    actionButton.heightAnchor.constraint(equalToConstant: 51).isActive = true
+
+    let button = PKPaymentButton(paymentButtonType: .buy, paymentButtonStyle: .black)
+    button.addTarget(self, action: #selector(applePayButtonWasTouched), for: .touchUpInside)
+    buyWithApplePayButton = button
+    buyWithApplePayButton.translatesAutoresizingMaskIntoConstraints = false
+    buyWithApplePayButton.heightAnchor.constraint(equalToConstant: 51).isActive = true
+  }
+
+  private func configureButtons(with buyType: BuyMerchantBuyType) {
     switch buyType {
     case .device:
       stackView.removeArrangedSubview(actionButton)
       stackView.addArrangedSubview(buyWithApplePayButton)
     case .atm:
       let mapPinImage = UIImage(imageLiteralResourceName: "mapPin")
-      let font = UIFont.medium(13)
-      let blueAttributes: StringAttributes = [
+      let font = UIFont.medium(18)
+      let attributes: StringAttributes = [
         .font: font,
-        .foregroundColor: UIColor.primaryActionButton
+        .foregroundColor: UIColor.white
       ]
 
       let atmAttributedString = NSAttributedString(
         image: mapPinImage,
         fontDescender: font.descender,
-        imageSize: CGSize(width: 13, height: 20)) + "  " + NSAttributedString(string: "FIND BITCOIN ATM", attributes: blueAttributes)
+        imageSize: CGSize(width: 13, height: 20)) + "  " + NSAttributedString(string: "FIND BITCOIN ATM",
+                                                                              attributes: attributes)
       actionButton.setAttributedTitle(atmAttributedString, for: .normal)
       actionButton.style = .standard
-      actionButton.setTitle("FIND BITCOIN ATM", for: .normal)
       stackView.removeArrangedSubview(buyWithApplePayButton)
       stackView.addArrangedSubview(actionButton)
     case .default:

@@ -20,7 +20,8 @@ class BitcoinAddressTableViewCell: UITableViewCell {
   }()
 
   @IBOutlet var titleLabel: UILabel!
-  @IBOutlet var bitcoinAddressLabel: UILabel!
+  @IBOutlet var containerView: UIView!
+  @IBOutlet var bitcoinAddressLabel: InsetUILabel!
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -28,9 +29,13 @@ class BitcoinAddressTableViewCell: UITableViewCell {
     backgroundColor = .lightGrayBackground
     selectionStyle = .none
 
-    titleLabel.font = .bold(16)
+    titleLabel.font = .medium(16)
     titleLabel.backgroundColor = .lightGrayBackground
     titleLabel.text = "DropBit Bitcoin Receive Address"
+
+    containerView.applyCornerRadius(10)
+    containerView.layer.borderColor = UIColor.mediumGrayBorder.cgColor
+    containerView.layer.borderWidth = 1
 
     let buyBitcoinImageString = NSAttributedString(
       image: UIImage(imageLiteralResourceName: "bitcoinOrangeB"),
@@ -38,10 +43,21 @@ class BitcoinAddressTableViewCell: UITableViewCell {
       imageSize: CGSize(width: 12, height: 17)) + "  "
     let buyBitcoinAttributedString = NSMutableAttributedString(attributedString: buyBitcoinImageString)
     bitcoinAddressLabel.attributedText = buyBitcoinAttributedString
+    bitcoinAddressLabel.backgroundColor = .white
+    bitcoinAddressLabel.font = .regular(15)
+    titleLabel.backgroundColor = .lightGrayBackground
   }
 
   func load(with address: String) {
     bitcoinAddressLabel.attributedText = BitcoinAddressTableViewCell.bitcoinImageString +
       NSAttributedString(string: address)
+  }
+}
+
+class InsetUILabel: UILabel {
+
+  override func drawText(in rect: CGRect) {
+      let insets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
+      super.drawText(in: rect.inset(by: insets))
   }
 }

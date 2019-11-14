@@ -43,7 +43,7 @@ struct CoinNinjaUrlFactory {
     case buyWithCreditCard
     case buyWithApplePay(String)
     case quickPayTrackPurchase(String)
-    case buyAtATM(CLLocationCoordinate2D)
+    case buyAtATM(CLLocationCoordinate2D?)
     case dropBitMe(handle: String)
     case dropBitMeLearnMore
     case lightningUpgrade
@@ -176,7 +176,11 @@ struct CoinNinjaUrlFactory {
       case .buyWithApplePay(let address):
         return "buybitcoin/quickbuy?address=\(address)"
       case .buyAtATM(let coordinate):
-        return "news/webview/load-map?lat=\(coordinate.latitude)&long=\(coordinate.longitude)&type=atms"
+        if let coordinate = coordinate {
+          return "news/webview/load-map?lat=\(coordinate.latitude)&long=\(coordinate.longitude)&type=atms"
+        } else {
+          return "news/webview/load-map?type=atms"
+        }
       case .dropBitMe(let handle):
         return handle
       case .dropBitAppLightningWithdrawalFees:

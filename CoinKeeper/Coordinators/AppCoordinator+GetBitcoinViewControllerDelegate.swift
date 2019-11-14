@@ -17,12 +17,13 @@ extension AppCoordinator: GetBitcoinViewControllerDelegate {
     permissionManager.requestPermission(for: .location) { (status) in
       switch status {
       case .authorized, .notDetermined:
-        guard let coordinate = self.locationManager.location?.coordinate,
-          let url = CoinNinjaUrlFactory.buildUrl(for: .buyAtATM(coordinate)) else {
-            self.locationManager.requestLocation() //Attempt to repair for next location request
-            return
+        if self.locationManager.location?.coordinate == nil {
+          self.locationManager.requestLocation() //Attempt to repair for next location request
         }
-        self.openURL(url, completionHandler: nil)
+
+        if let url = CoinNinjaUrlFactory.buildUrl(for: .buyAtATM(self.locationManager.location?.coordinate)) {
+          self.openURL(url, completionHandler: nil)
+        }
       case .denied, .disabled:
         let description = "To use the location-based services of finding Bitcoin ATMs near you," +
         " please enable location services in the iOS Settings app."

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,34 +17,50 @@
                 <rect key="frame" x="0.0" y="0.0" width="414" height="96"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="9Ot-6s-tKr">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="96"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5qp-dQ-2h9">
+                        <rect key="frame" x="30" y="0.0" width="354" height="96"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Bh-0B-5Ab">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="48"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rPN-PH-Pfc">
-                                <rect key="frame" x="0.0" y="48" width="414" height="48"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="9Ot-6s-tKr">
+                                <rect key="frame" x="0.0" y="0.0" width="354" height="96"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Bh-0B-5Ab">
+                                        <rect key="frame" x="0.0" y="0.0" width="354" height="48"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rPN-PH-Pfc" customClass="InsetUILabel" customModule="DropBit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="48" width="354" height="48"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <viewLayoutGuide key="safeArea" id="zja-uF-az3"/>
+                            </stackView>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="zja-uF-az3"/>
-                    </stackView>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="LUs-EB-VRU" firstAttribute="trailing" secondItem="9Ot-6s-tKr" secondAttribute="trailing" id="03F-Zd-I73"/>
+                            <constraint firstItem="LUs-EB-VRU" firstAttribute="bottom" secondItem="9Ot-6s-tKr" secondAttribute="bottom" id="A5t-oX-ojg"/>
+                            <constraint firstItem="9Ot-6s-tKr" firstAttribute="top" secondItem="LUs-EB-VRU" secondAttribute="top" id="NVu-by-oN6"/>
+                            <constraint firstItem="9Ot-6s-tKr" firstAttribute="top" secondItem="LUs-EB-VRU" secondAttribute="top" id="bjY-3e-ark"/>
+                            <constraint firstItem="9Ot-6s-tKr" firstAttribute="bottom" secondItem="LUs-EB-VRU" secondAttribute="bottom" id="gfG-Rp-KbO"/>
+                            <constraint firstItem="9Ot-6s-tKr" firstAttribute="leading" secondItem="LUs-EB-VRU" secondAttribute="leading" id="woC-Ed-wTh"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="LUs-EB-VRU"/>
+                    </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="9Ot-6s-tKr" secondAttribute="bottom" id="B3Y-ux-DAB"/>
-                    <constraint firstItem="9Ot-6s-tKr" firstAttribute="leading" secondItem="oyd-NT-y2g" secondAttribute="leading" id="D8L-2O-2Af"/>
-                    <constraint firstItem="9Ot-6s-tKr" firstAttribute="top" secondItem="oyd-NT-y2g" secondAttribute="top" id="OvB-FD-iiK"/>
-                    <constraint firstAttribute="trailing" secondItem="9Ot-6s-tKr" secondAttribute="trailing" id="q3B-iy-PsX"/>
+                    <constraint firstItem="5qp-dQ-2h9" firstAttribute="top" secondItem="oyd-NT-y2g" secondAttribute="top" id="38x-ot-tMy"/>
+                    <constraint firstAttribute="trailing" secondItem="5qp-dQ-2h9" secondAttribute="trailing" constant="30" id="J9M-jf-MtC"/>
+                    <constraint firstItem="5qp-dQ-2h9" firstAttribute="leading" secondItem="oyd-NT-y2g" secondAttribute="leading" constant="30" id="Z2W-A7-6If"/>
+                    <constraint firstAttribute="bottom" secondItem="5qp-dQ-2h9" secondAttribute="bottom" id="fee-IQ-iYS"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="bitcoinAddressLabel" destination="rPN-PH-Pfc" id="CvC-Zi-LVy"/>
+                <outlet property="containerView" destination="5qp-dQ-2h9" id="p7R-HK-DM7"/>
                 <outlet property="titleLabel" destination="4Bh-0B-5Ab" id="M6G-be-PY2"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="206.25"/>

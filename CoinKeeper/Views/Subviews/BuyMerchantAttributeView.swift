@@ -39,7 +39,7 @@ class BuyMerchantAttributeView: UIView {
     super.awakeFromNib()
 
     backgroundColor = .lightGrayBackground
-    descriptionLabel.font = .light(14)
+    descriptionLabel.font = .light(12)
 
     let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(linkLabelWasTapped))
     addGestureRecognizer(gestureRecognizer)
@@ -50,11 +50,13 @@ class BuyMerchantAttributeView: UIView {
     viewModel = model
 
     if model.link != nil {
-      let normalString = NSMutableAttributedString.medium(model.description, size: 14, color: .darkBlueText)
+      let normalString = NSMutableAttributedString.regular(model.description,
+                                                          size: 14, color: .darkBlueText)
       normalString.underlineText()
       descriptionLabel.attributedText = normalString
     } else {
-      descriptionLabel.attributedText = NSAttributedString(string: model.description)
+      descriptionLabel.attributedText = NSMutableAttributedString.regular(model.description,
+                                                                         size: 14, color: .darkBlueText)
     }
 
   }
