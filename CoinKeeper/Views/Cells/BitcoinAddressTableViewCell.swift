@@ -32,6 +32,7 @@ class BitcoinAddressTableViewCell: UITableViewCell {
     titleLabel.font = .medium(16)
     titleLabel.backgroundColor = .lightGrayBackground
     titleLabel.text = "DropBit Bitcoin Receive Address"
+    titleLabel.backgroundColor = .lightGrayBackground
 
     containerView.applyCornerRadius(10)
     containerView.layer.borderColor = UIColor.mediumGrayBorder.cgColor
@@ -45,7 +46,6 @@ class BitcoinAddressTableViewCell: UITableViewCell {
     bitcoinAddressLabel.attributedText = buyBitcoinAttributedString
     bitcoinAddressLabel.backgroundColor = .white
     bitcoinAddressLabel.font = .regular(15)
-    titleLabel.backgroundColor = .lightGrayBackground
   }
 
   func load(with address: String) {

@@ -81,7 +81,7 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
                                    tooltipUrl: "https://dropbit.app/tooltips/wyre",
                                    attributes: wyreAttributes,
                                    actionType: BuyMerchantBuyType.device.rawValue,
-                                   actionUrl: "") // TODO
+                                   actionUrl: "")
 
     coinNinjaAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.positive,
                                                description: "Can use cash to buy",
@@ -100,7 +100,7 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
                                         tooltipUrl: nil,
                                         attributes: coinNinjaAttributes,
                                         actionType: BuyMerchantBuyType.atm.rawValue,
-                                        actionUrl: "") // TODO
+                                        actionUrl: "")
 
     viewModels = [wyre, coinNinja]
   }
@@ -108,12 +108,16 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
 
 extension GetBitcoinViewController: UITableViewDataSource, UITableViewDelegate {
 
+  enum TableViewRows: Int {
+    case bitcoinAddress = 0
+  }
+
   func numberOfSections(in tableView: UITableView) -> Int {
     return 1
   }
 
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    if indexPath.row == 0 {
+    if indexPath.row == TableViewRows.bitcoinAddress.rawValue {
       return 96
     } else {
       return 285
@@ -125,7 +129,7 @@ extension GetBitcoinViewController: UITableViewDataSource, UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    if indexPath.row == 0 {
+    if indexPath.row == TableViewRows.bitcoinAddress.rawValue {
       let cell: BitcoinAddressTableViewCell = tableView.dequeue(BitcoinAddressTableViewCell.self,
                                                                 for: indexPath)
       cell.load(with: bitcoinAddress)
@@ -141,7 +145,7 @@ extension GetBitcoinViewController: UITableViewDataSource, UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    guard indexPath.row == 0 else { return }
+    guard indexPath.row == TableViewRows.bitcoinAddress.rawValue else { return }
 
     UIPasteboard.general.string = bitcoinAddress
     delegate.viewControllerDidCopyAddress(self)
