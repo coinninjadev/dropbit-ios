@@ -45,13 +45,13 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
   private func getBitcoinDataSource() -> [BuyMerchantResponse] {
     var wyreAttributes: [BuyMerchantAttribute] = [], coinNinjaAttributes: [BuyMerchantAttribute] = []
 
-    wyreAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.positive,
+    wyreAttributes.append(BuyMerchantAttribute(type: .positive,
                                                description: "Buy Bitcoin using Apple Pay"))
-    wyreAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.positive,
+    wyreAttributes.append(BuyMerchantAttribute(type: .positive,
                                                description: "Takes less than 30 seconds"))
-    wyreAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.negative,
+    wyreAttributes.append(BuyMerchantAttribute(type: .negative,
                                                description: "$500 daily limit"))
-    var attribute = BuyMerchantAttribute(type: BuyMerchantAttributeType.negative,
+    var attribute = BuyMerchantAttribute(type: .negative,
                                          description: "Location restrictions may apply")
     attribute.link = "https://support.sendwyre.com/en/articles/1863574-geographic-restrictions"
     wyreAttributes.append(attribute)
@@ -62,13 +62,13 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
                                    actionType: BuyMerchantBuyType.device.rawValue,
                                    actionUrl: "")
 
-    coinNinjaAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.positive,
+    coinNinjaAttributes.append(BuyMerchantAttribute(type: .positive,
                                                description: "Can use cash to buy"))
-    coinNinjaAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.positive,
+    coinNinjaAttributes.append(BuyMerchantAttribute(type: .positive,
                                                description: "Can sell Bitcoin for cash"))
-    coinNinjaAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.negative,
+    coinNinjaAttributes.append(BuyMerchantAttribute(type: .negative,
                                                description: "May limit based on verification"))
-    coinNinjaAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.negative,
+    coinNinjaAttributes.append(BuyMerchantAttribute(type: .negative,
                                                description: "High fees"))
 
     let coinNinja = BuyMerchantResponse(image: UIImage(imageLiteralResourceName: "coinNinjaLogo"),

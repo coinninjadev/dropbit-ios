@@ -41,7 +41,6 @@ extension AppCoordinator: GetBitcoinViewControllerDelegate {
       return
     }
     viewControllerRequestedAuthenticationSuspension(viewController)
-    //TODO: How do we want to handle all apple pay requests with a bitcoin address?
     guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyWithApplePay(bitcoinAddress)) else { return }
     openURLExternally(url, completionHandler: nil)
   }
