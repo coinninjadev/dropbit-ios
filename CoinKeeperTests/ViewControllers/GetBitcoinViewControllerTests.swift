@@ -17,7 +17,7 @@ class GetBitcoinViewControllerTests: XCTestCase {
   override func setUp() {
     super.setUp()
     mockCoordinator = MockGetBitcoinViewControllerDelegate()
-    sut = GetBitcoinViewController.newInstance(delegate: mockCoordinator, bitcoinAddress: "")
+    sut = GetBitcoinViewController.newInstance(delegate: mockCoordinator, viewModels: [], bitcoinAddress: "")
     _ = sut.view
   }
 
@@ -29,51 +29,17 @@ class GetBitcoinViewControllerTests: XCTestCase {
 
   // MARK: outlets
   func testOutletsAreConnected() {
-    XCTAssertNotNil(sut.findATMButton)
-    XCTAssertNotNil(sut.centerStackView)
-    XCTAssertNotNil(sut.purchaseBitcoinInfoLabel)
-    XCTAssertNotNil(sut.copyBitcoinAddressButton)
-    XCTAssertNotNil(sut.buyWithApplePayButton)
-  }
-
-  // MARK: buttons contain actions
-  func testFindATMButtonContainsAction() {
-    let actions = sut.findATMButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
-    let expected = #selector(GetBitcoinViewController.findATM).description
-    XCTAssertTrue(actions.contains(expected))
-  }
-
-  func testBuyWithApplePayButtonContainsAction() {
-    let actions = sut.buyWithApplePayButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
-    let expected = #selector(GetBitcoinViewController.buyWithApplePay).description
-    XCTAssertTrue(actions.contains(expected))
-  }
-
-  func testBitcoinButtonContainsAction() {
-    let actions = sut.copyBitcoinAddressButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
-    let expected = #selector(GetBitcoinViewController.copyBitcoinAddress(_:)).description
-    XCTAssertTrue(actions.contains(expected))
-  }
-
-  // MARK: actions produce results
-  func testFindATMTellsCoordinator() {
-    sut.findATMButton.sendActions(for: .touchUpInside)
-    XCTAssertTrue(mockCoordinator.wasAskedToFindATMNearMe)
-  }
-
-  func testCopyLightningAddressTellsCoordinator() {
-    sut.copyBitcoinAddressButton.sendActions(for: .touchUpInside)
-    XCTAssertTrue(mockCoordinator.wasAskedToCopyAddress)
-  }
-
-  func testBuyWithApplePayTellsCoordinator() {
-    sut.buyWithApplePayButton.sendActions(for: .touchUpInside)
-    XCTAssertTrue(mockCoordinator.wasAskedToBuyWithApplePay)
+    XCTAssertNotNil(sut.tableView)
   }
 
 }
 
 class MockGetBitcoinViewControllerDelegate: GetBitcoinViewControllerDelegate {
+
+  func openURL(_ url: URL, completionHandler completion: CKCompletion?) {}
+
+  func openURLExternally(_ url: URL, completionHandler completion: ((Bool) -> Void)?) {}
+
   var wasAskedToCopyAddress = false
   func viewControllerDidCopyAddress(_ viewController: UIViewController) {
     wasAskedToCopyAddress = true
@@ -85,7 +51,7 @@ class MockGetBitcoinViewControllerDelegate: GetBitcoinViewControllerDelegate {
   }
 
   var wasAskedToBuyWithApplePay = false
-  func viewControllerBuyWithApplePay(_ viewController: GetBitcoinViewController, address: String) {
+  func viewControllerBuyWithApplePay(_ viewController: GetBitcoinViewController, bitcoinAddress url: String) {
     wasAskedToBuyWithApplePay = true
   }
 }
