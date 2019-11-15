@@ -39,6 +39,10 @@ extension MockNetworkManager: LightningRequestable {
     return Promise { _ in }
   }
 
+  func cancelPreauthorizedLightningPayment(withId id: String) -> Promise<LNTransactionResponse> {
+    return Promise { _ in }
+  }
+
   func withdrawLightningFunds(to address: String, sats: Int) -> Promise<LNTransactionResponse> {
     return Promise { _ in }
   }
