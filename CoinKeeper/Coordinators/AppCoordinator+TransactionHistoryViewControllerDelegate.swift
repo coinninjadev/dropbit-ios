@@ -36,8 +36,48 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
       let btcAddress = wmgr.createAddressDataSource()
         .nextAvailableReceiveAddress(forServerPool: false, indicesToSkip: [], in: context)?
         .address else { return }
-    let controller = GetBitcoinViewController.newInstance(delegate: self, bitcoinAddress: btcAddress)
+    let controller = GetBitcoinViewController.newInstance(delegate: self,
+                                                          viewModels: getBitcoinDataSource(),
+                                                          bitcoinAddress: btcAddress)
     navigationController.pushViewController(controller, animated: true)
+  }
+
+  private func getBitcoinDataSource() -> [BuyMerchantResponse] {
+    var wyreAttributes: [BuyMerchantAttribute] = [], coinNinjaAttributes: [BuyMerchantAttribute] = []
+
+    wyreAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.positive,
+                                               description: "Buy Bitcoin using Apple Pay"))
+    wyreAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.positive,
+                                               description: "Takes less than 30 seconds"))
+    wyreAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.negative,
+                                               description: "$500 daily limit"))
+    var attribute = BuyMerchantAttribute(type: BuyMerchantAttributeType.negative,
+                                         description: "Location restrictions may apply")
+    attribute.link = "https://support.sendwyre.com/en/articles/1863574-geographic-restrictions"
+    wyreAttributes.append(attribute)
+
+    let wyre = BuyMerchantResponse(image: UIImage(imageLiteralResourceName: "wyreLogo"),
+                                   tooltipUrl: "https://dropbit.app/tooltips/wyre",
+                                   attributes: wyreAttributes,
+                                   actionType: BuyMerchantBuyType.device.rawValue,
+                                   actionUrl: "")
+
+    coinNinjaAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.positive,
+                                               description: "Can use cash to buy"))
+    coinNinjaAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.positive,
+                                               description: "Can sell Bitcoin for cash"))
+    coinNinjaAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.negative,
+                                               description: "May limit based on verification"))
+    coinNinjaAttributes.append(BuyMerchantAttribute(type: BuyMerchantAttributeType.negative,
+                                               description: "High fees"))
+
+    let coinNinja = BuyMerchantResponse(image: UIImage(imageLiteralResourceName: "coinNinjaLogo"),
+                                        tooltipUrl: nil,
+                                        attributes: coinNinjaAttributes,
+                                        actionType: BuyMerchantBuyType.atm.rawValue,
+                                        actionUrl: "")
+
+    return [wyre, coinNinja]
   }
 
   func viewControllerDidTapSpendBitcoin(_ viewController: UIViewController) {

@@ -10,38 +10,28 @@ import UIKit
 import PassKit
 import PromiseKit
 
-protocol GetBitcoinViewControllerDelegate: AnyObject {
+protocol GetBitcoinViewControllerDelegate: URLOpener {
   func viewControllerFindBitcoinATMNearMe(_ viewController: GetBitcoinViewController)
   func viewControllerDidCopyAddress(_ viewController: UIViewController)
-  func viewControllerBuyWithApplePay(_ viewController: GetBitcoinViewController, address: String)
+  func viewControllerBuyWithApplePay(_ viewController: GetBitcoinViewController, bitcoinAddress: String)
 }
 
 final class GetBitcoinViewController: BaseViewController, StoryboardInitializable {
 
-  @IBOutlet var findATMButton: PrimaryActionButton!
-  @IBOutlet var centerStackView: UIStackView!
-  @IBOutlet var purchaseBitcoinInfoLabel: UILabel!
-  @IBOutlet var copyBitcoinAddressButton: LightBorderedButton!
+  @IBOutlet var tableView: UITableView!
 
-  var buyWithApplePayButton: PKPaymentButton!
+  var viewModels: [BuyMerchantResponse] = []
 
   private(set) weak var delegate: GetBitcoinViewControllerDelegate!
   private(set) var bitcoinAddress = ""
 
   static func newInstance(delegate: GetBitcoinViewControllerDelegate,
+                          viewModels: [BuyMerchantResponse],
                           bitcoinAddress: String) -> GetBitcoinViewController {
     let vc = GetBitcoinViewController.makeFromStoryboard()
     vc.delegate = delegate
+    vc.viewModels = viewModels
     vc.bitcoinAddress = bitcoinAddress
-    if PKPaymentAuthorizationController.canMakePayments() {
-      let button = PKPaymentButton(paymentButtonType: .buy, paymentButtonStyle: .black)
-      button.addTarget(vc, action: #selector(buyWithApplePay), for: .touchUpInside)
-      vc.buyWithApplePayButton = button
-    } else {
-      let button = PKPaymentButton(paymentButtonType: .setUp, paymentButtonStyle: .black)
-      button.addTarget(vc, action: #selector(setupApplePay), for: .touchUpInside)
-      vc.buyWithApplePayButton = button
-    }
     return vc
   }
 
@@ -51,60 +41,10 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
     setupUI()
   }
 
-  @IBAction func findATM() {
-    delegate.viewControllerFindBitcoinATMNearMe(self)
-  }
-
-  @IBAction func copyBitcoinAddress(_ sender: Any) {
-    UIPasteboard.general.string = bitcoinAddress
-    delegate.viewControllerDidCopyAddress(self)
-  }
-
-  @objc func buyWithApplePay() {
-    delegate.viewControllerBuyWithApplePay(self, address: bitcoinAddress)
-  }
-
-  @objc func setupApplePay() {
-    PKPassLibrary().openPaymentSetup()
-  }
-
   // MARK: private
   private func setupUI() {
-    /// Purchase bitcoin label
-    purchaseBitcoinInfoLabel.text = """
-    Bitcoin purchased with Apple Pay will automatically get deposited into your Bitcoin wallet using the
-    address below.
-    """.removingMultilineLineBreaks()
-    purchaseBitcoinInfoLabel.textColor = .outgoingGray
-    purchaseBitcoinInfoLabel.font = .regular(13)
-
-    /// Buy with Apple Pay button
-    buyWithApplePayButton.addTarget(self, action: #selector(buyWithApplePay), for: .touchUpInside)
-    centerStackView.insertArrangedSubview(buyWithApplePayButton, at: 2)
-    buyWithApplePayButton.heightAnchor.constraint(equalToConstant: 51).isActive = true
-
-    let mapPinImage = UIImage(imageLiteralResourceName: "mapPinBlue")
-    let font = UIFont.medium(13)
-    let blueAttributes: StringAttributes = [
-      .font: font,
-      .foregroundColor: UIColor.primaryActionButton
-    ]
-
-    // The font descender relates to the bottom y-coordinate, offset from the baseline, of the receiver’s longest descender.
-    let atmAttributedString = NSAttributedString(
-      image: mapPinImage,
-      fontDescender: font.descender,
-      imageSize: CGSize(width: 13, height: 20)) + "  " + NSAttributedString(string: "FIND BITCOIN ATM", attributes: blueAttributes)
-    findATMButton.setAttributedTitle(atmAttributedString, for: .normal)
-    findATMButton.style = .standardClear
-
-    let buyBitcoinImageString = NSAttributedString(
-      image: UIImage(imageLiteralResourceName: "bitcoinOrangeB"),
-      fontDescender: font.descender,
-      imageSize: CGSize(width: 12, height: 17)) + "  "
-    let buyBitcoinAttributedString = NSMutableAttributedString(attributedString: buyBitcoinImageString)
-    buyBitcoinAttributedString.appendRegular(bitcoinAddress, size: 12, color: .darkBlueText, paragraphStyle: nil)
-    copyBitcoinAddressButton.setAttributedTitle(buyBitcoinAttributedString, for: .normal)
+    tableView.registerNib(cellType: PurchaseMerchantTableViewCell.self)
+    tableView.registerNib(cellType: BitcoinAddressTableViewCell.self)
 
     navigationController?.setNavigationBarHidden(false, animated: true)
     navigationController?.navigationBar.tintColor = .darkBlueBackground
@@ -113,5 +53,81 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
     headerText.appendRegular("Get Bitcoin", size: 15, color: .darkGrayBackground, paragraphStyle: nil)
     header.attributedText = headerText
     navigationItem.titleView = header
+
+    tableView.separatorStyle = .none
+    tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+    tableView.dataSource = self
+    tableView.delegate = self
+    tableView.backgroundColor = .lightGrayBackground
+  }
+}
+
+extension GetBitcoinViewController: UITableViewDataSource, UITableViewDelegate {
+
+  enum TableViewRows: Int {
+    case bitcoinAddress = 0
+  }
+
+  func numberOfSections(in tableView: UITableView) -> Int {
+    return 1
+  }
+
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    if indexPath.row == TableViewRows.bitcoinAddress.rawValue {
+      return 96
+    } else {
+      return 285
+    }
+  }
+
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return viewModels.count + 1
+  }
+
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    if indexPath.row == TableViewRows.bitcoinAddress.rawValue {
+      let cell: BitcoinAddressTableViewCell = tableView.dequeue(BitcoinAddressTableViewCell.self,
+                                                                for: indexPath)
+      cell.load(with: bitcoinAddress)
+      return cell
+    } else {
+      let cell: PurchaseMerchantTableViewCell = tableView.dequeue(PurchaseMerchantTableViewCell.self,
+                                                                  for: indexPath)
+
+      cell.load(with: viewModels[indexPath.row - 1])
+      cell.delegate = self
+      return cell
+    }
+  }
+
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard indexPath.row == TableViewRows.bitcoinAddress.rawValue else { return }
+
+    UIPasteboard.general.string = bitcoinAddress
+    delegate.viewControllerDidCopyAddress(self)
+  }
+}
+
+extension GetBitcoinViewController: PurchaseMerchantTableViewCellDelegate {
+
+  func attributeLinkWasTouched(with url: URL) {
+    delegate.openURL(url, completionHandler: nil)
+  }
+
+  func tooltipButtonWasPressed(with url: URL) {
+    delegate.openURL(url, completionHandler: nil)
+  }
+
+  func actionButtonWasPressed(with type: BuyMerchantBuyType, url: String) {
+    switch type {
+    case .device:
+      delegate.viewControllerBuyWithApplePay(self, bitcoinAddress: bitcoinAddress)
+    case .atm:
+      delegate.viewControllerFindBitcoinATMNearMe(self)
+    case .default:
+      guard let url = URL(string: url) else { return }
+      UIPasteboard.general.string = bitcoinAddress
+      delegate.openURLExternally(url, completionHandler: nil)
+    }
   }
 }
