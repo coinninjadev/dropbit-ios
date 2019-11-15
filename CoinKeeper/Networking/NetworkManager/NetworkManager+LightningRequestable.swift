@@ -16,6 +16,7 @@ protocol LightningRequestable: AnyObject {
   func getLightningLedger(parameters: LNLedgerUrlParameters) -> Promise<LNLedgerResponse>
   func payLightningPaymentRequest(_ request: String, sats: Int) -> Promise<LNTransactionResponse>
   func preauthorizeLightningPayment(sats: Int, encodedPayload: String) -> Promise<LNTransactionResponse>
+  func cancelPreauthorizedLightningPayment(withId id: String) -> Promise<LNTransactionResponse>
   func withdrawLightningFunds(to address: String, sats: Int) -> Promise<LNTransactionResponse>
   func estimateLightningWithdrawlFees(to address: String, sats: Int) -> Promise<LNTransactionResponse>
 }
@@ -51,7 +52,11 @@ extension NetworkManager: LightningRequestable {
 
   func preauthorizeLightningPayment(sats: Int, encodedPayload: String) -> Promise<LNTransactionResponse> {
     let body = LNCreatePaymentRequestBody(value: sats, expires: nil, memo: encodedPayload)
-    return cnProvider.request(LNTransactionTarget.preauthorize(body))
+    return cnProvider.request(LNTransactionTarget.preauth(body))
+  }
+
+  func cancelPreauthorizedLightningPayment(withId id: String) -> Promise<LNTransactionResponse> {
+    return cnProvider.request(LNTransactionTarget.cancelPreauth(id))
   }
 
   func withdrawLightningFunds(to address: String, sats: Int) -> Promise<LNTransactionResponse> {
