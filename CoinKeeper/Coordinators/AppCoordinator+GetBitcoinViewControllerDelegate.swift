@@ -17,12 +17,13 @@ extension AppCoordinator: GetBitcoinViewControllerDelegate {
     permissionManager.requestPermission(for: .location) { (status) in
       switch status {
       case .authorized, .notDetermined:
-        guard let coordinate = self.locationManager.location?.coordinate,
-          let url = CoinNinjaUrlFactory.buildUrl(for: .buyAtATM(coordinate)) else {
-            self.locationManager.requestLocation() //Attempt to repair for next location request
-            return
+        if self.locationManager.location?.coordinate == nil {
+          self.locationManager.requestLocation() //Attempt to repair for next location request
         }
-        self.openURL(url, completionHandler: nil)
+
+        if let url = CoinNinjaUrlFactory.buildUrl(for: .buyAtATM(self.locationManager.location?.coordinate)) {
+          self.openURL(url, completionHandler: nil)
+        }
       case .denied, .disabled:
         let description = "To use the location-based services of finding Bitcoin ATMs near you," +
         " please enable location services in the iOS Settings app."
@@ -32,15 +33,16 @@ extension AppCoordinator: GetBitcoinViewControllerDelegate {
     }
   }
 
-  func viewControllerBuyWithApplePay(_ viewController: GetBitcoinViewController, address: String) {
+  func viewControllerBuyWithApplePay(_ viewController: GetBitcoinViewController, bitcoinAddress: String) {
     analyticsManager.track(event: .buyWithQuickPay, with: nil)
-    guard address.asNilIfEmpty() != nil else {
+    guard bitcoinAddress.asNilIfEmpty() != nil else {
       let warning = "An error occurred: No Bitcoin receive address was detected. Please try again later."
       self.alertManager.showError(message: warning, forDuration: 2.0)
       return
     }
     viewControllerRequestedAuthenticationSuspension(viewController)
-    guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyWithApplePay(address)) else { return }
+    //TODO: How do we want to handle all apple pay requests with a bitcoin address?
+    guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyWithApplePay(bitcoinAddress)) else { return }
     openURLExternally(url, completionHandler: nil)
   }
 

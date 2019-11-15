@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,71 +16,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="tu3-lI-Xhb">
-                                <rect key="frame" x="24" y="44" width="366" height="715"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xbG-h2-7iL" userLabel="Top Buffer View">
-                                        <rect key="frame" x="0.0" y="0.0" width="366" height="286"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iTb-b3-RPF">
-                                        <rect key="frame" x="0.0" y="310" width="366" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f09-vq-rI4" customClass="LightBorderedButton" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="354.5" width="366" height="51"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="51" id="6b1-1s-7sC"/>
-                                        </constraints>
-                                        <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="copyBitcoinAddress:" destination="0LE-bU-XIg" eventType="touchUpInside" id="aNe-Hk-9mx"/>
-                                        </connections>
-                                    </button>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wa5-gJ-95M" userLabel="Bottom Buffer View">
-                                        <rect key="frame" x="0.0" y="429.5" width="366" height="285.5"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </view>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="Wa5-gJ-95M" firstAttribute="height" secondItem="xbG-h2-7iL" secondAttribute="height" id="jKI-mx-idR"/>
-                                </constraints>
-                            </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="knP-gO-z95" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="20" y="767" width="374" height="51"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="51" id="wOP-dF-5rq"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="findATM" destination="0LE-bU-XIg" eventType="touchUpInside" id="N19-0j-zNc"/>
-                                </connections>
-                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="C8q-dg-lEr">
+                                <rect key="frame" x="0.0" y="64" width="414" height="798"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="knP-gO-z95" firstAttribute="top" secondItem="tu3-lI-Xhb" secondAttribute="bottom" constant="8" id="GPQ-P0-G6y"/>
-                            <constraint firstItem="tu3-lI-Xhb" firstAttribute="top" secondItem="1Sg-Ve-Ft5" secondAttribute="top" id="HiR-zx-Xd2"/>
-                            <constraint firstItem="tu3-lI-Xhb" firstAttribute="leading" secondItem="1Sg-Ve-Ft5" secondAttribute="leading" constant="24" id="JNz-eF-Ex6"/>
-                            <constraint firstItem="1Sg-Ve-Ft5" firstAttribute="trailing" secondItem="tu3-lI-Xhb" secondAttribute="trailing" constant="24" id="XFk-us-qZ0"/>
-                            <constraint firstItem="knP-gO-z95" firstAttribute="leading" secondItem="1Sg-Ve-Ft5" secondAttribute="leading" constant="20" id="ZO9-XD-UUu"/>
-                            <constraint firstItem="1Sg-Ve-Ft5" firstAttribute="trailing" secondItem="knP-gO-z95" secondAttribute="trailing" constant="20" id="rLC-Bm-Sbz"/>
-                            <constraint firstItem="1Sg-Ve-Ft5" firstAttribute="bottom" secondItem="knP-gO-z95" secondAttribute="bottom" constant="44" id="xQO-fT-9f5"/>
+                            <constraint firstItem="C8q-dg-lEr" firstAttribute="leading" secondItem="1Sg-Ve-Ft5" secondAttribute="leading" id="25v-Hu-cFf"/>
+                            <constraint firstItem="C8q-dg-lEr" firstAttribute="top" secondItem="1Sg-Ve-Ft5" secondAttribute="top" constant="20" id="bKT-Ts-KQb"/>
+                            <constraint firstItem="C8q-dg-lEr" firstAttribute="trailing" secondItem="1Sg-Ve-Ft5" secondAttribute="trailing" id="eLT-8e-bDr"/>
+                            <constraint firstItem="C8q-dg-lEr" firstAttribute="bottom" secondItem="1Sg-Ve-Ft5" secondAttribute="bottom" id="tTU-BE-jE9"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="1Sg-Ve-Ft5"/>
                     </view>
                     <connections>
-                        <outlet property="centerStackView" destination="tu3-lI-Xhb" id="p0t-8W-xaG"/>
-                        <outlet property="copyBitcoinAddressButton" destination="f09-vq-rI4" id="ked-NK-W0Q"/>
-                        <outlet property="findATMButton" destination="knP-gO-z95" id="QXu-mI-Lyd"/>
-                        <outlet property="purchaseBitcoinInfoLabel" destination="iTb-b3-RPF" id="Or3-KK-itR"/>
+                        <outlet property="tableView" destination="C8q-dg-lEr" id="5QL-zF-hJh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hhD-Ti-1dh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-229" y="106"/>
+            <point key="canvasLocation" x="-230.43478260869566" y="105.80357142857143"/>
         </scene>
     </scenes>
 </document>
