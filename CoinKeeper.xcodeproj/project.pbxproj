@@ -724,6 +724,10 @@
 		B52053E1227B6D3000E5D2ED /* AlertManager+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52053E0227B6D3000E5D2ED /* AlertManager+Constants.swift */; };
 		B5219C812343C7A300EA5B05 /* TransactionDetailCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5219C802343C7A300EA5B05 /* TransactionDetailCellViewModel.swift */; };
 		B521E85F218785B8002DB8C2 /* CoreDataObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B559AF1021811FDD001D44F2 /* CoreDataObserver.swift */; };
+		B5222061237F2C9D00F68280 /* LightningQuickLoadViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5222060237F2C9D00F68280 /* LightningQuickLoadViewController.storyboard */; };
+		B5222063237F2CEB00F68280 /* LightningQuickLoadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5222062237F2CEB00F68280 /* LightningQuickLoadViewController.swift */; };
+		B5222065237F44ED00F68280 /* QuickLoadControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5222064237F44ED00F68280 /* QuickLoadControl.swift */; };
+		B5222067237F450100F68280 /* QuickLoadControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5222066237F450100F68280 /* QuickLoadControl.xib */; };
 		B523DFC220926E88008A789D /* Collection+IsNotEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = B523DFC120926E88008A789D /* Collection+IsNotEmpty.swift */; };
 		B524B242216CEB5200F669F4 /* MockNetworkManager+MessageRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B524B240216CEAAE00F669F4 /* MockNetworkManager+MessageRequestable.swift */; };
 		B5264B2F21909196009164F6 /* ResponseStringsTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5264B2E21909196009164F6 /* ResponseStringsTestable.swift */; };
@@ -1837,6 +1841,10 @@
 		B520DFE822734EAE004C7D9E /* Model v5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model v5.xcdatamodel"; sourceTree = "<group>"; };
 		B5219C802343C7A300EA5B05 /* TransactionDetailCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailCellViewModel.swift; sourceTree = "<group>"; };
 		B5221D4F2243FFB70081C868 /* ContactCache v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ContactCache v2.xcdatamodel"; sourceTree = "<group>"; };
+		B5222060237F2C9D00F68280 /* LightningQuickLoadViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningQuickLoadViewController.storyboard; sourceTree = "<group>"; };
+		B5222062237F2CEB00F68280 /* LightningQuickLoadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningQuickLoadViewController.swift; sourceTree = "<group>"; };
+		B5222064237F44ED00F68280 /* QuickLoadControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLoadControl.swift; sourceTree = "<group>"; };
+		B5222066237F450100F68280 /* QuickLoadControl.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickLoadControl.xib; sourceTree = "<group>"; };
 		B523DFC120926E88008A789D /* Collection+IsNotEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+IsNotEmpty.swift"; sourceTree = "<group>"; };
 		B524B240216CEAAE00F669F4 /* MockNetworkManager+MessageRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+MessageRequestable.swift"; sourceTree = "<group>"; };
 		B5264B2E21909196009164F6 /* ResponseStringsTestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseStringsTestable.swift; sourceTree = "<group>"; };
@@ -2979,6 +2987,7 @@
 				5B91E3972076BEB500DD9A86 /* DrawerViewController.swift */,
 				B5FFFFC1226FB4710029DB62 /* DropBitMeViewController.swift */,
 				B59E2C8622E789D800A75AFE /* LightningTooltipViewController.swift */,
+				B5222062237F2CEB00F68280 /* LightningQuickLoadViewController.swift */,
 				A216D78E20B30C25005FBAC2 /* NoConnectionViewController.swift */,
 				3B82692C203372AC009B11EC /* PinCreationViewController.swift */,
 				3B86F78B203C6DCD00D15231 /* PinEntryViewController.swift */,
@@ -3039,6 +3048,7 @@
 				B5FFFFBF226FB44E0029DB62 /* DropBitMeViewController.storyboard */,
 				3BC456FE20288D7300CC36B1 /* LaunchScreen.storyboard */,
 				B59E2C8822E78A1200A75AFE /* LightningTooltipViewController.storyboard */,
+				B5222060237F2C9D00F68280 /* LightningQuickLoadViewController.storyboard */,
 				A216D79020B30C51005FBAC2 /* NoConnectionViewController.storyboard */,
 				3B82692A20337282009B11EC /* PinCreationViewController.storyboard */,
 				3B86F789203C6D4E00D15231 /* PinEntryViewController.storyboard */,
@@ -3495,6 +3505,8 @@
 				4AE8AE252098C52800748431 /* SecurePinDisplayView.swift */,
 				B5B0DC80221364140010AB2A /* PhoneNumberEntryView.xib */,
 				B5B0DC7E221363910010AB2A /* PhoneNumberEntryView.swift */,
+				B5222066237F450100F68280 /* QuickLoadControl.xib */,
+				B5222064237F44ED00F68280 /* QuickLoadControl.swift */,
 				B52A25C82077E42100F636A1 /* GrayCellSeparator.swift */,
 				A29CE0C82098F8CA00761B91 /* SuccessFailView.swift */,
 				3093B07B21EE36CF00B3EF9C /* TransactionHistoryRefreshView.swift */,
@@ -4201,6 +4213,7 @@
 				5B91E39A2076C02200DD9A86 /* DrawerViewController.storyboard in Resources */,
 				3B9779AD202E416700C9C933 /* Montserrat-Thin.ttf in Resources */,
 				A26C768F2108BE96001EB738 /* licenses.html in Resources */,
+				B5222061237F2C9D00F68280 /* LightningQuickLoadViewController.storyboard in Resources */,
 				A268F13522E9EABD00410040 /* WalletBalanceView.xib in Resources */,
 				3B86F78A203C6D4E00D15231 /* PinEntryViewController.storyboard in Resources */,
 				3BFA718E203F2AB300774D59 /* PinDisplayView.xib in Resources */,
@@ -4254,6 +4267,7 @@
 				A220A97D20B5E10C00C30149 /* SettingsViewController.storyboard in Resources */,
 				A237287D237CA12100086FEC /* BitcoinAddressTableViewCell.xib in Resources */,
 				B54D206020F9218A0057A694 /* CKBannerView.xib in Resources */,
+				B5222067237F450100F68280 /* QuickLoadControl.xib in Resources */,
 				B54BDCEC2086447500B71D6B /* TransactionHistorySummaryCell.xib in Resources */,
 				3B9779A5202E416700C9C933 /* Montserrat-ExtraLightItalic.ttf in Resources */,
 				B584767220E141DC00F5FE60 /* SettingsTableViewSectionHeader.xib in Resources */,
@@ -5174,6 +5188,7 @@
 				B534CB362215E4DC00E6884A /* CKPhoneNumberTextField.swift in Sources */,
 				A260E8DB20FD312B008343F9 /* UIView+Enabler.swift in Sources */,
 				B5EABAB221FB8F4D00E32E08 /* CreateTransactionNotificationBody.swift in Sources */,
+				B5222063237F2CEB00F68280 /* LightningQuickLoadViewController.swift in Sources */,
 				B552EDFB211E33D000332BB5 /* CKAlamofireSessionManager.swift in Sources */,
 				B52F690A22417B0100790E97 /* CKDatabase.swift in Sources */,
 				3B936ADB23218F810067CA97 /* CKWalletError.swift in Sources */,
@@ -5217,6 +5232,7 @@
 				A246C82722CBA83F00AF1F52 /* PriceTarget.swift in Sources */,
 				A257CEB42302E5070063670B /* FeesView.swift in Sources */,
 				3B0C7858231E891600D4C216 /* LightningUpgradeCoordinator.swift in Sources */,
+				B5222065237F44ED00F68280 /* QuickLoadControl.swift in Sources */,
 				A2573FAE23687E8900060BEE /* CoinNinjaBroadcastResponse.swift in Sources */,
 				3BEE0605235F7FFD004BDCEB /* AppCoordinator+GetBitcoinSuccessViewControllerDelegate.swift in Sources */,
 				3BA9F603208F6CEA0047C213 /* AppCoordinator+CreateRecoveryWordsViewControllerDelegate.swift in Sources */,
