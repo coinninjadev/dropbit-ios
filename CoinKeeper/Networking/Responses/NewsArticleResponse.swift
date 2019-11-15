@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct NewsArticleResponse: ResponseDecodable {
   enum Source: String, Decodable {
@@ -43,7 +44,7 @@ struct NewsArticleResponse: ResponseDecodable {
   var pubTime: Date?
   var added: Date?
 
-  var imageData: Data?
+  var image: UIImage?
 
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
