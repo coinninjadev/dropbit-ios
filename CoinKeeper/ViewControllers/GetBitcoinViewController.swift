@@ -68,10 +68,6 @@ extension GetBitcoinViewController: UITableViewDataSource, UITableViewDelegate {
     case bitcoinAddress = 0
   }
 
-  func numberOfSections(in tableView: UITableView) -> Int {
-    return 1
-  }
-
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     if indexPath.row == TableViewRows.bitcoinAddress.rawValue {
       return 96

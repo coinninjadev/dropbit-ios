@@ -40,7 +40,6 @@ class BuyMerchantAttributeView: UIView {
     super.awakeFromNib()
 
     backgroundColor = .lightGrayBackground
-    linkButton.contentHorizontalAlignment = .left
   }
 
   func load(with model: BuyMerchantAttribute) {
