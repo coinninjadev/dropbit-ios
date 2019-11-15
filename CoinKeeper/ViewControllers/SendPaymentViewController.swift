@@ -508,6 +508,7 @@ extension SendPaymentViewController {
           self.updateViewWithModel()
           self.hideRecipientInputViews()
         } else {
+          self.updateMemoContainer() //update message for encryption policy
           self.showPhoneEntryView(with: contact)
         }
       }
