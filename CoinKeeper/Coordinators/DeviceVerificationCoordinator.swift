@@ -118,8 +118,7 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
         .then(in: context) { delegate.twitterAccessManager.getCurrentTwitterUser(in: context) }
         .then { _ in delegate.networkManager.getOrCreateLightningAccount() }
         .get(in: context) { lnAccountResponse in
-          guard let wallet = CKMWallet.find(in: context) else { return }
-          delegate.persistenceManager.brokers.lightning.persistAccountResponse(lnAccountResponse, forWallet: wallet, in: context)
+          delegate.persistenceManager.brokers.lightning.persistAccountResponse(lnAccountResponse, in: context)
           do {
             try context.saveRecursively()
           } catch {
@@ -337,8 +336,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
         .then(in: bgContext) { self.checkAndPersistVerificationStatus(from: $0, crDelegate: delegate, in: bgContext) }
         .then { delegate.networkManager.getOrCreateLightningAccount() }
         .get(in: bgContext) { lnAccountResponse in
-          guard let wallet = CKMWallet.find(in: bgContext) else { return }
-          delegate.persistenceManager.brokers.lightning.persistAccountResponse(lnAccountResponse, forWallet: wallet, in: bgContext)
+          delegate.persistenceManager.brokers.lightning.persistAccountResponse(lnAccountResponse, in: bgContext)
           do {
             try bgContext.saveRecursively()
           } catch {

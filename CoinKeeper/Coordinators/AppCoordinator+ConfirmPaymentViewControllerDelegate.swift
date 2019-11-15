@@ -131,7 +131,9 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
       return self.base64SharedPayload(from: body, invitationDTO: outgoingInvitationDTO)
         .then { self.networkManager.preauthorizeLightningPayment(sats: body.amount.btc, encodedPayload: $0) }
         .then { preauthResponse -> Promise<CreateAddressRequestOutput> in
-          return self.networkManager.createAddressRequest(body: body, preauthId: preauthResponse.result.id)
+          return self.networkManager.getOrCreateLightningAccount()
+            .get(in: context) { self.persistenceManager.brokers.lightning.persistAccountResponse($0, in: context) }
+            .then { _ in self.networkManager.createAddressRequest(body: body, preauthId: preauthResponse.result.id) }
             .map { CreateAddressRequestOutput(warResponse: $0, invitationDTO: outgoingInvitationDTO, preauthResponse: preauthResponse) }
       }
     }

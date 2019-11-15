@@ -171,11 +171,7 @@ class WalletSyncOperationFactory {
 
   func updateLightningAccount(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<LNAccountResponse> {
     return dependencies.networkManager.getOrCreateLightningAccount()
-      .get(in: context) { lnAccountResponse in
-        guard let wallet = CKMWallet.find(in: context) else { return }
-
-        dependencies.persistenceManager.brokers.lightning.persistAccountResponse(lnAccountResponse, forWallet: wallet, in: context)
-    }
+      .get(in: context) { dependencies.persistenceManager.brokers.lightning.persistAccountResponse($0, in: context) }
   }
 
   private func checkAndVerifyUser(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {

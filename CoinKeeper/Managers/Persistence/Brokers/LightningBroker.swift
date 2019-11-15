@@ -15,9 +15,8 @@ class LightningBroker: CKPersistenceBroker, LightningBrokerType {
     return CKMLNAccount.findOrCreate(forWallet: wallet, in: context)
   }
 
-  func persistAccountResponse(_ response: LNAccountResponse,
-                              forWallet wallet: CKMWallet,
-                              in context: NSManagedObjectContext) {
+  func persistAccountResponse(_ response: LNAccountResponse, in context: NSManagedObjectContext) {
+    guard let wallet = CKMWallet.find(in: context) else { return }
     let account = getAccount(forWallet: wallet, in: context)
     account.update(with: response)
   }

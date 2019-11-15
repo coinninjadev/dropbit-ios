@@ -50,7 +50,6 @@ protocol LightningBrokerType: AnyObject {
 
   func getAccount(forWallet wallet: CKMWallet, in context: NSManagedObjectContext) -> CKMLNAccount
   func persistAccountResponse(_ response: LNAccountResponse,
-                              forWallet wallet: CKMWallet,
                               in context: NSManagedObjectContext)
   func persistLedgerResponse(_ response: LNLedgerResponse,
                              forWallet wallet: CKMWallet,

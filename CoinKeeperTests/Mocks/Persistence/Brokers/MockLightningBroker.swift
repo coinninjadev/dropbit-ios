@@ -23,9 +23,7 @@ class MockLightningBroker: CKPersistenceBroker, LightningBrokerType {
     return account
   }
 
-  func persistAccountResponse(_ response: LNAccountResponse,
-                              forWallet wallet: CKMWallet,
-                              in context: NSManagedObjectContext) { }
+  func persistAccountResponse(_ response: LNAccountResponse, in context: NSManagedObjectContext) { }
 
   func persistLedgerResponse(_ response: LNLedgerResponse,
                              forWallet wallet: CKMWallet,
