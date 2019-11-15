@@ -88,7 +88,8 @@ class LightningBroker: CKPersistenceBroker, LightningBrokerType {
   func getLedgerEntriesWithoutPayloads(matchingIds ids: [String], in context: NSManagedObjectContext) -> [CKMLNLedgerEntry] {
     let fetchRequest: NSFetchRequest<CKMLNLedgerEntry> = CKMLNLedgerEntry.fetchRequest()
     fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: [CKPredicate.LedgerEntry.idIn(ids),
-                                                                             CKPredicate.LedgerEntry.withoutPayload()])
+                                                                             CKPredicate.LedgerEntry.withoutPayload(),
+                                                                             CKPredicate.LedgerEntry.withStatus(.completed)])
     do {
       return try context.fetch(fetchRequest)
     } catch {
