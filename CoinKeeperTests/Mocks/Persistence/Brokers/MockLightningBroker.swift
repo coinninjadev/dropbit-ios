@@ -14,6 +14,8 @@ class MockLightningBroker: CKPersistenceBroker, LightningBrokerType {
                               invitation: CKMInvitation?, inputs: LightningPaymentInputs?,
                               in context: NSManagedObjectContext) {}
 
+  func persistPaymentResponse(_ response: LNTransactionResponse, in context: NSManagedObjectContext) { }
+
   var getAccountCalled = false
   func getAccount(forWallet wallet: CKMWallet, in context: NSManagedObjectContext) -> CKMLNAccount {
     let account = CKMLNAccount(insertInto: context)

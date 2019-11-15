@@ -178,6 +178,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
           _ = CKMLNLedgerEntry.create(with: finalTxResult, walletEntry: walletEntry, in: context)
           invitation.configure(withAddressRequestResponse: matchingWAR, side: .sent)
 
+          log.debug("Did replace preauthorized invoice with final; preauth: \(preauthLedgerEntry.id ?? "-"), final: \(finalTxResult.cleanedId)")
           context.delete(preauthLedgerEntry)
         }
     }.map { _ in ledgerResponse }

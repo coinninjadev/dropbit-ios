@@ -73,7 +73,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     }
 
     let bgContext = persistenceManager.createBackgroundContext()
-    let successFailViewController = SuccessFailViewController.newInstance(viewModel: PaymentSuccessFailViewModel(mode: .pending),
+    let successFailVC = SuccessFailViewController.newInstance(viewModel: PaymentSuccessFailViewModel(mode: .pending),
                                                                           delegate: self)
     bgContext.performAndWait {
       ///Create and persist an orphan CKMInvitation object, which will be "acknowledged" and linked
@@ -86,44 +86,54 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
       ///If a sync is running concurrently at just the right time, it will sometimes delete this invitation
       ///because this invitation hasn't yet been received/acknowledged by the server.
     }
-    successFailViewController.action = { [weak self] in
+    successFailVC.action = { [weak self] in
       guard let strongSelf = self else { return }
 
-      strongSelf.createAddressRequest(body: inviteBody, outgoingInvitationDTO: outgoingInvitationDTO)
-        .done(in: bgContext) { response in
-          strongSelf.handleAddressRequestCreationSuccess(response: response,
-                                                         invitationDTO: outgoingInvitationDTO,
-                                                         successFailVC: successFailViewController,
-                                                         in: bgContext)
-          // Call this separately from handleAddressRequestCreationSuccess so
-          // that it doesn't interrupt Twilio error SMS fallback flow
-          strongSelf.showShareTransactionIfAppropriate(dropBitReceiver: outgoingInvitationDTO.contact.asDropBitReceiver,
-                                                       walletTxType: outgoingInvitationDTO.walletTxType, delegate: strongSelf)
+      bgContext.perform {
+        strongSelf.createAddressRequest(body: inviteBody, outgoingInvitationDTO: outgoingInvitationDTO, in: bgContext)
+          .done(in: bgContext) { output in
+            strongSelf.handleAddressRequestCreationSuccess(output: output, successFailVC: successFailVC, in: bgContext)
+            // Call this separately from handleAddressRequestCreationSuccess so
+            // that it doesn't interrupt Twilio error SMS fallback flow
+            strongSelf.showShareTransactionIfAppropriate(dropBitReceiver: output.invitationDTO.contact.asDropBitReceiver,
+                                                         walletTxType: output.invitationDTO.walletTxType, delegate: strongSelf)
 
         }.catch(on: .main) { error in
           strongSelf.handleAddressRequestCreationError(error,
                                                        invitationDTO: outgoingInvitationDTO,
                                                        inviteBody: inviteBody,
-                                                       successFailVC: successFailViewController,
+                                                       successFailVC: successFailVC,
                                                        in: bgContext)
+        }
       }
     }
 
-    self.navigationController.topViewController()?.present(successFailViewController, animated: false) {
-      successFailViewController.action?()
+    self.navigationController.topViewController()?.present(successFailVC, animated: false) {
+      successFailVC.action?()
     }
   }
 
+  private struct CreateAddressRequestOutput {
+    let warResponse: WalletAddressRequestResponse
+    let invitationDTO: OutgoingInvitationDTO
+    let preauthResponse: LNTransactionResponse?
+  }
+
   private func createAddressRequest(body: WalletAddressRequestBody,
-                                    outgoingInvitationDTO: OutgoingInvitationDTO) -> Promise<WalletAddressRequestResponse> {
+                                    outgoingInvitationDTO: OutgoingInvitationDTO,
+                                    in context: NSManagedObjectContext) -> Promise<CreateAddressRequestOutput> {
     switch outgoingInvitationDTO.walletTxType {
     case .onChain:
       return networkManager.createAddressRequest(body: body, preauthId: nil)
+        .map { CreateAddressRequestOutput(warResponse: $0, invitationDTO: outgoingInvitationDTO, preauthResponse: nil) }
 
     case .lightning:
       return self.base64SharedPayload(from: body, invitationDTO: outgoingInvitationDTO)
-      .then { self.networkManager.preauthorizeLightningPayment(sats: body.amount.btc, encodedPayload: $0) }
-      .then { self.networkManager.createAddressRequest(body: body, preauthId: $0.result.id) }
+        .then { self.networkManager.preauthorizeLightningPayment(sats: body.amount.btc, encodedPayload: $0) }
+        .then { preauthResponse -> Promise<CreateAddressRequestOutput> in
+          return self.networkManager.createAddressRequest(body: body, preauthId: preauthResponse.result.id)
+            .map { CreateAddressRequestOutput(warResponse: $0, invitationDTO: outgoingInvitationDTO, preauthResponse: preauthResponse) }
+      }
     }
   }
 
@@ -136,21 +146,20 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     }
   }
 
-  private func handleAddressRequestCreationSuccess(response: WalletAddressRequestResponse,
-                                                   invitationDTO: OutgoingInvitationDTO,
+  private func handleAddressRequestCreationSuccess(output: CreateAddressRequestOutput,
                                                    successFailVC: SuccessFailViewController,
                                                    in context: NSManagedObjectContext) {
     context.performAndWait {
-      self.acknowledgeSuccessfulInvite(outgoingInvitationDTO: invitationDTO, response: response, in: context)
+      self.acknowledgeSuccessfulInvite(using: output, in: context)
       do {
         try context.saveRecursively()
         successFailVC.setMode(.success)
 
-        if case let .twitter(twitterContact) = invitationDTO.contact.asDropBitReceiver {
+        if case let .twitter(twitterContact) = output.invitationDTO.contact.asDropBitReceiver {
           DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             if let topVC = self.navigationController.topViewController() {
               let tweetMethodVC = TweetMethodViewController.newInstance(twitterRecipient: twitterContact,
-                                                                        addressRequestResponse: response,
+                                                                        addressRequestResponse: output.warResponse,
                                                                         delegate: self)
               topVC.present(tweetMethodVC, animated: true, completion: nil)
             }
@@ -228,23 +237,30 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     self.navigationController.topViewController()?.present(alert, animated: true, completion: nil)
   }
 
-  private func acknowledgeSuccessfulInvite(outgoingInvitationDTO: OutgoingInvitationDTO,
-                                           response: WalletAddressRequestResponse,
+  private func acknowledgeSuccessfulInvite(using output: CreateAddressRequestOutput,
                                            in context: NSManagedObjectContext) {
     analyticsManager.track(event: .dropbitInitiated, with: nil)
+
+    let response = output.warResponse
+    let invitationDTO = output.invitationDTO
     context.performAndWait {
       let outgoingTransactionData = OutgoingTransactionData(
         txid: CKMTransaction.invitationTxidPrefix + response.id,
         destinationAddress: "",
-        amount: outgoingInvitationDTO.btcPair.btcAmount.asFractionalUnits(of: .BTC),
-        feeAmount: outgoingInvitationDTO.fee,
+        amount: invitationDTO.btcPair.btcAmount.asFractionalUnits(of: .BTC),
+        feeAmount: invitationDTO.fee,
         sentToSelf: false,
         requiredFeeRate: nil,
-        sharedPayloadDTO: outgoingInvitationDTO.sharedPayloadDTO,
+        sharedPayloadDTO: invitationDTO.sharedPayloadDTO,
         sender: nil,
-        receiver: OutgoingDropBitReceiver(contact: outgoingInvitationDTO.contact)
+        receiver: OutgoingDropBitReceiver(contact: invitationDTO.contact)
       )
       self.persistenceManager.brokers.invitation.acknowledgeInvitation(with: outgoingTransactionData, response: response, in: context)
+      if let preauth = output.preauthResponse {
+        //Calling this after acknowledging the invitation will allow the new CKMLNLedgerEntry
+        //to attach itself to the same CKMWalletEntry as the acknowledged invitation.
+        self.persistenceManager.brokers.lightning.persistPaymentResponse(preauth, in: context)
+      }
     }
   }
 
@@ -257,10 +273,9 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
       case let .twilioError(response) = networkError,
       let typedResponse = try? response.map(WalletAddressRequestResponse.self, using: WalletAddressRequestResponse.decoder) {
 
-      self.handleAddressRequestCreationSuccess(response: typedResponse,
-                                               invitationDTO: invitationDTO,
-                                               successFailVC: successFailVC,
-                                               in: context)
+      let output = CreateAddressRequestOutput(warResponse: typedResponse, invitationDTO: invitationDTO, preauthResponse: nil)
+      self.handleAddressRequestCreationSuccess(output: output, successFailVC: successFailVC, in: context)
+
       // Dismisses both the SuccessFailVC and the ConfirmPaymentVC before showing alert
       self.viewController(successFailVC, success: true) {
         self.showManualInviteSMSAlert(inviteBody: inviteBody)

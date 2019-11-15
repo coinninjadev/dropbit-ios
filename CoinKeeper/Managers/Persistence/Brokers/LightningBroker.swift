@@ -53,6 +53,10 @@ class LightningBroker: CKPersistenceBroker, LightningBrokerType {
     }
   }
 
+  func persistPaymentResponse(_ response: LNTransactionResponse, in context: NSManagedObjectContext) {
+    self.persistPaymentResponse(response, receiver: nil, invitation: nil, inputs: nil, in: context)
+  }
+
   func deleteInvalidWalletEntries(in context: NSManagedObjectContext) {
     let fetchRequest: NSFetchRequest<CKMWalletEntry> = CKMWalletEntry.fetchRequest()
     fetchRequest.predicate = CKPredicate.WalletEntry.invalid()

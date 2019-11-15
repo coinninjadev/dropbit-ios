@@ -60,6 +60,8 @@ protocol LightningBrokerType: AnyObject {
                               invitation: CKMInvitation?,
                               inputs: LightningPaymentInputs?,
                               in context: NSManagedObjectContext)
+  func persistPaymentResponse(_ response: LNTransactionResponse,
+                              in context: NSManagedObjectContext)
   func deleteInvalidWalletEntries(in context: NSManagedObjectContext)
   func deleteInvalidLedgerEntries(in context: NSManagedObjectContext)
 
