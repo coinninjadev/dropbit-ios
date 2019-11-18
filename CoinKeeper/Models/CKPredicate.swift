@@ -72,7 +72,7 @@ struct CKPredicate {
 
     /// Useful for identifying invitations that have provided an address, but not yet received a transaction.
     static func updatedFulfilledReceivedAddressRequests() -> NSPredicate {
-      let predicates = [withStatuses([.addressSent]),
+      let predicates = [withStatuses([.addressProvided]),
                         withoutTxid(),
                         hasProvidedAddress()]
       return NSCompoundPredicate(type: .and, subpredicates: predicates)

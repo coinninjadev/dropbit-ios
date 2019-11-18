@@ -58,6 +58,7 @@ class NetworkManager: NetworkManagerType {
   let analyticsManager: AnalyticsManagerType
   let cnProvider: CoinNinjaProviderType
 
+  let coinNinjaProvider = CoinNinjaBroadcastProvider()
   let blockchainInfoProvider = BlockchainInfoProvider()
   let blockstreamProvider = BlockstreamProvider()
 

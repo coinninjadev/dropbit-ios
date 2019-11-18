@@ -98,13 +98,11 @@ class ExchangeRateManager {
 /// Conforming object should provide both exchange rates and the current wallet balance
 typealias ConvertibleBalanceProvider = CurrencyValueDataSourceType & BalanceDataSource
 
-protocol BalanceDisplayable: ExchangeRateUpdatable, BalanceUpdateable {
+protocol BalanceDisplayable: ExchangeRateUpdatable, BalanceUpdateable, DualAmountDisplayable {
 
   var balanceProvider: ConvertibleBalanceProvider? { get } // implementation should be a weak reference
-  var balanceContainer: BalanceContainer! { get } // IBOutlet
-  var primaryBalanceCurrency: CurrencyCode { get }
+  var topBar: WalletOverviewTopBar! { get } // IBOutlet
   var walletBalanceView: WalletBalanceView { get }
-  var balanceLeftButtonType: BalanceContainerLeftButtonType { get }
   var walletTransactionType: WalletTransactionType { get }
 
 }
@@ -151,34 +149,9 @@ extension BalanceDisplayable where Self: UIViewController {
   }
 
   private func updatedDataSource() {
-    // Prevent ever showing a negative balance
-    var onChainSanitizedBalance: NSDecimalNumber = .zero
-    var lightningSanitizedBalance: NSDecimalNumber = .zero
-    if let calculatedBalance = balanceProvider?.balancesNetPending() {
-      if calculatedBalance.onChain.isPositiveNumber {
-        onChainSanitizedBalance = calculatedBalance.onChain
-      }
-
-      if calculatedBalance.lightning.isPositiveNumber {
-        lightningSanitizedBalance = calculatedBalance.lightning
-      }
-    }
-
-    let rates = rateManager.exchangeRates
-    let onChainConverter = CurrencyConverter(fromBtcTo: .USD, fromAmount: onChainSanitizedBalance, rates: rates)
-    let lightningConverter = CurrencyConverter(fromBtcTo: .USD, fromAmount: lightningSanitizedBalance, rates: rates)
-    let balanceDataSource = BalanceContainerDataSource(
-      leftButtonType: balanceLeftButtonType,
-      onChainConverter: onChainConverter,
-      lightningConverter: lightningConverter,
-      primaryCurrency: primaryBalanceCurrency)
-    let walletDataSource = WalletBalanceDataSource(
-      onChainConverter: onChainConverter,
-      lightningConverter: lightningConverter,
-      primaryCurrency: primaryBalanceCurrency)
-
-    balanceContainer.update(with: balanceDataSource, walletTransactionType: walletTransactionType)
-    walletBalanceView.update(with: walletDataSource, walletTransactionType: walletTransactionType)
+    let labels = dualAmountLabels(walletTxType: walletTransactionType)
+    topBar.update(with: labels)
+    walletBalanceView.update(with: labels)
   }
 
 }

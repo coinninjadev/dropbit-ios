@@ -97,7 +97,7 @@ class CKDatabase: PersistenceDatabaseType {
       allServerAddresses.forEach { context.delete($0) }
       serverDerivativePaths.forEach { context.delete($0) }
 
-      CKMInvitation.find(withStatuses: [.requestSent, .addressSent], in: context).forEach { $0.status = .canceled }
+      CKMInvitation.find(withStatuses: [.requestSent, .addressProvided], in: context).forEach { $0.status = .canceled }
       CKMInvitation.find(withStatuses: [.notSent], in: context).forEach { context.delete($0) }
 
       user = CKMUser.find(in: context)
@@ -275,6 +275,13 @@ class CKDatabase: PersistenceDatabaseType {
     vouts.forEach { $0.isSpent = true }
 
     return relevantTransaction
+  }
+
+  func persistTemporaryTransaction(from response: LNTransactionResponse,
+                                   in context: NSManagedObjectContext) -> CKMTransaction {
+    let transaction = CKMTransaction(insertInto: context)
+    transaction.configure(with: response, in: context)
+    return transaction
   }
 
   func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext) {

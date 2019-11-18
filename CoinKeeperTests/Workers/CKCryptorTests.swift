@@ -81,8 +81,6 @@ class CKCryptorTests: XCTestCase {
     possibleMemos.forEach { self.assertTextEncryption(clearText: $0, aliceWallet: aliceWallet, bobWallet: bobWallet)}
   }
 
-  // TODO: have a test for 49 -> 84, and vice versa
-
   private func assertTextEncryption(clearText: String, aliceWallet: WalletManager, bobWallet: WalletManager) {
     let stack = InMemoryCoreDataStack()
     let context = stack.context
@@ -128,7 +126,6 @@ class CKCryptorTests: XCTestCase {
 
   }
 
-  // TODO: add another testEncryptingPayload test for 49->84 and 84->49.
   func testEncryptingPayload() {
     let stack = InMemoryCoreDataStack()
     let context = stack.context

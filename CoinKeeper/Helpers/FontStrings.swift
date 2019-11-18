@@ -25,4 +25,5 @@ enum FontStrings: String {
   case montserratSemiBoldItalic = "Montserrat-SemiBoldItalic"
   case montserratThin = "Montserrat-Thin"
   case montserratThinItalic = "Montserrat-ThinItalic"
+  case bitcoinSymbolFont = "SFProDisplay-Medium"
 }

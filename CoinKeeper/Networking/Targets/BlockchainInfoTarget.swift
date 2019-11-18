@@ -10,7 +10,6 @@ import Moya
 
 public enum BlockchainInfoTarget {
   case transaction(String)
-  case sendRawTransaction(String)
 }
 
 extension BlockchainInfoTarget: TargetType {
@@ -22,14 +21,12 @@ extension BlockchainInfoTarget: TargetType {
   public var path: String {
     switch self {
     case .transaction(let txid):  return  "rawtx/\(txid)"
-    case .sendRawTransaction:     return "pushtx"
     }
   }
 
   public var method: Method {
     switch self {
     case .transaction:        return .get
-    case .sendRawTransaction: return .post
     }
   }
 
@@ -40,16 +37,12 @@ extension BlockchainInfoTarget: TargetType {
   public var task: Task {
     switch self {
     case .transaction:  return .requestPlain
-    case .sendRawTransaction(let encodedTx):
-      let body = "tx=\(encodedTx)".data(using: .utf8)!
-      return .requestData(body)
     }
   }
 
   public var headers: [String: String]? {
     switch self {
     case .transaction:        return nil
-    case .sendRawTransaction: return nil
     }
   }
 

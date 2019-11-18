@@ -28,7 +28,8 @@ struct CoinNinjaUrlFactory {
     case myAddressesTooltip
     case sharedMemosTooltip
     case regularTransactionTooltip
-    case dropbitTransactionTooltip
+    case dropbitTransactionTooltipOutgoing
+    case dropbitTransactionTooltipIncoming
     case lightningWithdrawalTooltip
     case lightningInvoiceTooltip
     case lightningDropBitTooltip
@@ -42,7 +43,7 @@ struct CoinNinjaUrlFactory {
     case buyWithCreditCard
     case buyWithApplePay(String)
     case quickPayTrackPurchase(String)
-    case buyAtATM(CLLocationCoordinate2D)
+    case buyAtATM(CLLocationCoordinate2D?)
     case dropBitMe(handle: String)
     case dropBitMeLearnMore
     case lightningUpgrade
@@ -85,10 +86,11 @@ struct CoinNinjaUrlFactory {
            .adjustableFeesTooltip,
            .dropBitAppLightningWithdrawalFees,
            .regularTransactionTooltip,
-           .dropbitTransactionTooltip,
+           .dropbitTransactionTooltipOutgoing,
            .lightningWithdrawalTooltip,
            .lightningInvoiceTooltip,
            .lightningDropBitTooltip,
+           .dropbitTransactionTooltipIncoming,
            .lightningLoadTooltip,
            .lightningUpgrade,
            .legacyWords:
@@ -145,7 +147,9 @@ struct CoinNinjaUrlFactory {
         return "\(tooltipBreadcrumb)sharedmemos"
       case .regularTransactionTooltip:
         return "\(tooltipBreadcrumb)regulartransaction"
-      case .dropbitTransactionTooltip:
+      case .dropbitTransactionTooltipIncoming:
+        return "\(tooltipBreadcrumb)dropbittransactionrec"
+      case .dropbitTransactionTooltipOutgoing:
         return "\(tooltipBreadcrumb)dropbittransaction"
       case .lightningWithdrawalTooltip:
         return "\(tooltipBreadcrumb)lightningwithdrawal"
@@ -172,7 +176,11 @@ struct CoinNinjaUrlFactory {
       case .buyWithApplePay(let address):
         return "buybitcoin/quickbuy?address=\(address)"
       case .buyAtATM(let coordinate):
-        return "news/webview/load-map?lat=\(coordinate.latitude)&long=\(coordinate.longitude)&type=atms"
+        if let coordinate = coordinate {
+          return "news/webview/load-map?lat=\(coordinate.latitude)&long=\(coordinate.longitude)&type=atms"
+        } else {
+          return "news/webview/load-map?type=atms"
+        }
       case .dropBitMe(let handle):
         return handle
       case .dropBitAppLightningWithdrawalFees:

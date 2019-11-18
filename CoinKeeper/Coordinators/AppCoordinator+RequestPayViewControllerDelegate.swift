@@ -40,19 +40,7 @@ extension AppCoordinator: RequestPayViewControllerDelegate {
     guard let requestPayVC = viewController as? RequestPayViewController else { return }
     analyticsManager.track(event: .sendRequestButtonPressed, with: nil)
     let controller = UIActivityViewController(activityItems: payload, applicationActivities: nil)
-    controller.excludedActivityTypes = [
-      .addToReadingList,
-      .assignToContact,
-      .markupAsPDF,
-      .openInIBooks,
-      .postToFacebook,
-      .postToFlickr,
-      .postToTencentWeibo,
-      .postToTwitter,
-      .postToVimeo,
-      .postToWeibo,
-      .saveToCameraRoll
-    ]
+    controller.excludedActivityTypes = UIActivity.standardExcludedTypes
     controller.completionWithItemsHandler = { _, _, _, _ in
       if requestPayVC.isModal {
         requestPayVC.dismiss(animated: true, completion: nil)

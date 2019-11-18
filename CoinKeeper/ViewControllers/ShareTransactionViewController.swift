@@ -76,7 +76,7 @@ class ShareTransactionViewController: UIViewController, StoryboardInitializable 
 
   private func configureTwitterButton() {
     let font = UIFont.compactButtonTitle
-    let attributes: [NSAttributedString.Key: Any] = [
+    let attributes: StringAttributes = [
       .font: font,
       .foregroundColor: UIColor.whiteText
     ]

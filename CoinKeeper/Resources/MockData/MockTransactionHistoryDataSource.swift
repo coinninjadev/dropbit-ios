@@ -24,6 +24,10 @@ class MockTransactionHistoryDataSource: TransactionHistoryDataSourceType {
     self.items = dropBitItems
   }
 
+  func indexPathsToAnimate() -> [IndexPath] {
+    return []
+  }
+
   func summaryCellDisplayableItem(at indexPath: IndexPath,
                                   rates: ExchangeRates,
                                   currencies: CurrencyPair,

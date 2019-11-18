@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CNBitcoinKit
 
 protocol ConfirmPaymentViewControllerDelegate: ViewControllerDismissable, AllPaymentSendingDelegate {
   func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController)
@@ -176,7 +175,7 @@ extension ConfirmPaymentViewController {
 
     primaryCurrencyLabel.textAlignment = .center
     primaryCurrencyLabel.textColor = .lightBlueTint
-    primaryCurrencyLabel.font = .regular(35)
+    primaryCurrencyLabel.font = .regular(viewModel.primaryAmountFontSize)
 
     secondaryCurrencyLabel.textAlignment = .center
     secondaryCurrencyLabel.textColor = .darkGrayText
@@ -237,9 +236,8 @@ extension ConfirmPaymentViewController {
   }
 
   fileprivate func updateAmountViews() {
-    let converter = viewModel.generateCurrencyConverter(withBTCAmount: viewModel.btcAmount)
-    let labels = viewModel.dualAmountLabels(withConverter: converter, walletTransactionType: viewModel.walletTransactionType)
-    primaryCurrencyLabel.text = labels.primary
+    let labels = viewModel.dualAmountLabels(walletTxType: viewModel.walletTransactionType)
+    primaryCurrencyLabel.attributedText = labels.primary
     secondaryCurrencyLabel.attributedText = labels.secondary
   }
 

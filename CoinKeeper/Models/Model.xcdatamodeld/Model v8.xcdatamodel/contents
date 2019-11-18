@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15400" systemVersion="18G103" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15508" systemVersion="18G103" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CKMAddress" representedClassName="CKMAddress" versionHashModifier="1" syncable="YES">
         <attribute name="addressId" attributeType="String"/>
         <relationship name="addressTransactionSummaries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CKMAddressTransactionSummary" inverseName="address" inverseEntity="CKMAddressTransactionSummary"/>
@@ -246,7 +246,6 @@
     </entity>
     <entity name="CKMWalletEntry" representedClassName="CKMWalletEntry" syncable="YES">
         <attribute name="isHidden" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="lastCheckedSharedPayload" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="memo" optional="YES" attributeType="String"/>
         <attribute name="memoSetByInvoice" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="sortDate" attributeType="Date" usesScalarValueType="NO"/>
@@ -278,6 +277,6 @@
         <element name="CKMVin" positionX="-1845" positionY="657" width="128" height="133"/>
         <element name="CKMVout" positionX="-1503" positionY="639" width="128" height="165"/>
         <element name="CKMWallet" positionX="-1368" positionY="99" width="128" height="210"/>
-        <element name="CKMWalletEntry" positionX="-1818.1640625" positionY="-44.91796875" width="128" height="223"/>
+        <element name="CKMWalletEntry" positionX="-1818.1640625" positionY="-44.91796875" width="128" height="208"/>
     </elements>
 </model>

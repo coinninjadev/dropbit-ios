@@ -1,5 +1,5 @@
 //
-//  PrimarySecondaryBalanceContainer.swift
+//  DualBalanceView.swift
 //  DropBit
 //
 //  Created by Mitchell Malleo on 7/25/19.
@@ -9,7 +9,13 @@
 import Foundation
 import UIKit
 
-class PrimarySecondaryBalanceContainer: UIView {
+protocol WalletBalanceViewDelegate: AnyObject {
+  func isSyncCurrentlyRunning() -> Bool
+  func selectedCurrency() -> SelectedCurrency
+  func swapSelectedCurrency()
+}
+
+class DualBalanceView: UIView {
 
   @IBOutlet var primaryBalanceLabel: BalancePrimaryAmountLabel!
   @IBOutlet var secondaryBalanceLabel: BalanceSecondaryAmountLabel!
@@ -51,17 +57,10 @@ class PrimarySecondaryBalanceContainer: UIView {
     secondaryBalanceLabel.textColor = .bitcoinOrange
   }
 
-  func set(primaryAmount amount: NSDecimalNumber?, currency: CurrencyCode, walletTransactionType: WalletTransactionType) {
-    primaryBalanceLabel.attributedText = CKCurrencyFormatter.attributedString(for: amount,
-                                                                              currency: currency,
-                                                                              walletTransactionType: walletTransactionType)
-    setupLabelColors(for: currency)
-  }
-
-  func set(secondaryAmount amount: NSDecimalNumber?, currency: CurrencyCode, walletTransactionType: WalletTransactionType) {
-    secondaryBalanceLabel.attributedText = CKCurrencyFormatter.attributedString(for: amount,
-                                                                                currency: currency,
-                                                                                walletTransactionType: walletTransactionType)
+  func updateLabels(with labels: DualAmountLabels, primaryCurrency: CurrencyCode) {
+    primaryBalanceLabel.attributedText = labels.primary
+    secondaryBalanceLabel.attributedText = labels.secondary
+    setupLabelColors(for: primaryCurrency)
   }
 
   private func setupStyle() {

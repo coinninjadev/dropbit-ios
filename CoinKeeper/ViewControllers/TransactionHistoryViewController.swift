@@ -8,7 +8,6 @@
 
 import CoreData
 import UIKit
-import CNBitcoinKit
 import Gifu
 import PromiseKit
 import DZNEmptyDataSet
@@ -178,7 +177,7 @@ extension TransactionHistoryViewController: TransactionHistoryDataSourceDelegate
   }
 
   func transactionDataSourceDidChange() {
-    reloadCollectionViews()
+    reloadCollectionViews(indexPaths: viewModel.dataSource.indexPathsToAnimate())
   }
 
   @objc func didUpdateWordsBackedUp() {

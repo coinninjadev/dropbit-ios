@@ -10,7 +10,6 @@ import UIKit
 import Contacts
 import enum Result.Result
 import PromiseKit
-import CNBitcoinKit
 import Permission
 import MMDrawerController
 
@@ -75,29 +74,36 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     let shouldReloadContactCache = permissionManager.permissionStatus(for: .contacts) != .authorized
 
     permissionManager.requestPermission(for: .contacts) { [weak self] status in
-      guard let strongSelf = self else { return }
+      guard let self = self else { return }
 
       switch status {
       case .authorized:
         if shouldReloadContactCache {
-          strongSelf.alertManager.showActivityHUD(withStatus: "Loading Contacts")
-          strongSelf.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: false) { [weak self] error in
-            if let err = error {
-              log.error(err, message: "Error reloading contacts cache")
-            }
+          self.alertManager.showActivityHUD(withStatus: "Loading Contacts")
+          let operation = self.contactCacheDataWorker
+            .createContactCacheReloadOperation(force: false, progressHandler: self.showProgress) { [weak self] error in
 
-            self?.alertManager.hideActivityHUD(withDelay: nil) {
-              self?.presentContacts(mode: .contacts, selectionDelegate: viewController)
-            }
+              error.flatMap { log.error($0, message: "Error reloading contacts cache") }
+
+              self?.alertManager.hideActivityHUD(withDelay: 0.5) {
+                self?.presentContacts(mode: .contacts, selectionDelegate: viewController)
+              }
           }
+          self.serialQueueManager.enqueueOperationIfAppropriate(operation, policy: .always)
+
         } else {
-          strongSelf.presentContacts(mode: .contacts, selectionDelegate: viewController)
+          self.presentContacts(mode: .contacts, selectionDelegate: viewController)
         }
 
       default:
         break
       }
     }
+  }
+
+  private func showProgress(_ cumulative: Int, _ total: Int) {
+    let status = "Loading Contacts \n\(cumulative) / \(total)"
+    self.alertManager.showActivityHUD(withStatus: status)
   }
 
   private func presentContacts(mode: ContactsViewControllerMode, selectionDelegate viewController: SelectedValidContactDelegate) {

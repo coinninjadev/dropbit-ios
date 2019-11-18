@@ -27,7 +27,7 @@ enum CKRecipientType: CaseIterable {
 enum CKRecipientParserError: LocalizedError {
   case multipleRecipients
   case validation(ValidatorTypeError)
-  case noResults([CKRecipientType])
+  case noResults
 
   var errorDescription: String? {
     switch self {
@@ -35,27 +35,9 @@ enum CKRecipientParserError: LocalizedError {
       return "Multiplie potential recipients were found in the text."
     case .validation(let validatorError):
       return validatorError.displayMessage ?? validatorError.debugMessage
-    case .noResults(let types):
-      let recipientDesc = recipientDescription(for: types)
-      return "No valid \(recipientDesc)were found in the text."
+    case .noResults:
+      return "No valid recipients were found in the text."
     }
-  }
-
-  private func recipientDescription(for types: [CKRecipientType]) -> String {
-    var recipientDesc = ""
-    if types.contains(.bitcoinURL) {
-      recipientDesc = "Bitcoin addresses "
-    }
-
-    if types.contains(.lightningURL) {
-      recipientDesc = "Lightning invoices "
-    }
-
-    if types.contains(.phoneNumber) {
-      let conj = recipientDesc.isEmpty ? "" : "or "
-      recipientDesc += "\(conj)phone numbers "
-    }
-    return recipientDesc
   }
 
 }

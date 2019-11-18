@@ -116,10 +116,10 @@ class VerificationStatusViewController: BaseViewController, StoryboardInitializa
 
     setupAddressUI()
 
-    let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.lightBlueTint,
-                                                     .font: UIFont.regular(14),
-                                                     .underlineStyle: 1,
-                                                     .underlineColor: UIColor.lightBlueTint]
+    let attributes: StringAttributes = [.foregroundColor: UIColor.lightBlueTint,
+                                        .font: UIFont.regular(14),
+                                        .underlineStyle: 1,
+                                        .underlineColor: UIColor.lightBlueTint]
 
     let attributedString = NSAttributedString(string: "View DropBit addresses", attributes: attributes)
     addressButton.setAttributedTitle(attributedString, for: .normal)

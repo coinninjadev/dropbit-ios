@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+typealias StringAttributes = [NSAttributedString.Key: Any]
+
 extension NSAttributedString {
   static func + (left: NSAttributedString, right: NSAttributedString) -> NSAttributedString {
     let result = NSMutableAttributedString()
@@ -51,7 +53,7 @@ extension NSAttributedString {
                    imageOffset: CGPoint = .zero,
                    trailingImage: Bool = false) {
 
-    let attributes: [NSAttributedString.Key: Any] = [
+    let attributes: StringAttributes = [
       .font: font,
       .foregroundColor: sharedColor
     ]
@@ -72,7 +74,7 @@ extension NSAttributedString {
   }
 
   convenience init(string: String, color: UIColor, font: UIFont) {
-    let attributes: [NSAttributedString.Key: Any] = [
+    let attributes: StringAttributes = [
       .font: font,
       .foregroundColor: color
     ]

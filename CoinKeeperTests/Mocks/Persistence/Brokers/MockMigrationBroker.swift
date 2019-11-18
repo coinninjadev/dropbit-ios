@@ -6,7 +6,6 @@
 //  Copyright © 2019 Coin Ninja, LLC. All rights reserved.
 //
 
-import CNBitcoinKit
 import CoreData
 import Foundation
 import PromiseKit
@@ -25,11 +24,5 @@ class MockMigrationBroker: CKPersistenceBroker, MigrationBrokerType {
   func keychainMigrationFlag(for version: KeychainMigrationVersion) -> Bool {
     return false
   }
-
-  func contactCacheMigrationFlag(for version: ContactCacheMigrationVersion) -> Bool {
-    return false
-  }
-
-  func setContactCacheMigrationFlag(migrated: Bool, for version: ContactCacheMigrationVersion) { }
 
 }

@@ -17,6 +17,7 @@ protocol TransactionHistoryDataSourceDelegate: AnyObject {
 /// This protocol abstracts the UICollectionViewDataSource so that it can load data based off of Core Data fetch results
 /// or data from an array of mock view models that conform to TransactionDetailCellDisplayable.
 protocol TransactionHistoryDataSourceType: AnyObject {
+
   func summaryCellDisplayableItem(at indexPath: IndexPath,
                                   rates: ExchangeRates,
                                   currencies: CurrencyPair,
@@ -36,6 +37,7 @@ protocol TransactionHistoryDataSourceType: AnyObject {
 
   func numberOfSections() -> Int
   func numberOfItems(inSection section: Int) -> Int
+  func indexPathsToAnimate() -> [IndexPath]
   var walletTransactionType: WalletTransactionType { get }
   var delegate: TransactionHistoryDataSourceDelegate? { get set }
 }
@@ -44,6 +46,8 @@ class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourc
 
   let frc: NSFetchedResultsController<CKMTransaction>
   let walletTransactionType: WalletTransactionType = .onChain
+
+  private var newIndexPaths: [IndexPath] = []
 
   weak var delegate: TransactionHistoryDataSourceDelegate?
 
@@ -90,6 +94,12 @@ class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourc
     return OnChainPopoverViewModel(object: transaction, inputs: inputs)
   }
 
+  func indexPathsToAnimate() -> [IndexPath] {
+    let indexPaths = newIndexPaths
+    newIndexPaths = []
+    return indexPaths
+  }
+
   func detailCellActionableItem(at indexPath: IndexPath) -> TransactionDetailCellActionable? {
     return frc.object(at: indexPath)
   }
@@ -110,12 +120,23 @@ class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourc
     delegate?.transactionDataSourceDidChange()
   }
 
+  func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                  didChange anObject: Any,
+                  at indexPath: IndexPath?,
+                  for type: NSFetchedResultsChangeType,
+                  newIndexPath: IndexPath?) {
+    guard let newIndexPath = newIndexPath, type == .insert else { return }
+    newIndexPaths.append(newIndexPath)
+  }
+
 }
 
 class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSourceType, NSFetchedResultsControllerDelegate {
 
   let frc: NSFetchedResultsController<CKMWalletEntry>
   let walletTransactionType: WalletTransactionType = .lightning
+
+  private var newIndexPaths: [IndexPath] = []
 
   weak var delegate: TransactionHistoryDataSourceDelegate?
 
@@ -192,6 +213,12 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
     }
   }
 
+  func indexPathsToAnimate() -> [IndexPath] {
+    let indexPaths = newIndexPaths
+    newIndexPaths = []
+    return indexPaths
+  }
+
   func numberOfSections() -> Int {
     return frc.sections?.count ?? 0
   }
@@ -206,6 +233,15 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
 
   func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     delegate?.transactionDataSourceDidChange()
+  }
+
+  func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                  didChange anObject: Any,
+                  at indexPath: IndexPath?,
+                  for type: NSFetchedResultsChangeType,
+                  newIndexPath: IndexPath?) {
+    guard let newIndexPath = newIndexPath, type == .insert else { return }
+    newIndexPaths.append(newIndexPath)
   }
 
 }

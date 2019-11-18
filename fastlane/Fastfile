@@ -74,7 +74,7 @@ platform :ios do
       "deviceEndpointTestApplication=#{ENV['DEVICE_ENDPOINT_TEST_APPLICATION']}",
       "fakeWords=#{ENV['GENERATED_FAKE_WORDS']}",
       "recoverOnlyWords=#{ENV['GENERATED_RECOVER_ONLY_WORDS']}",
-      "recoverOnlyFirstTestnetAddress=#{ENV['GENERATED_RECOVER_FIRST_TESTNET_ADDRESS']}",
+      "recoverOnlyFirstMainnetAddress=#{ENV['GENERATED_RECOVER_FIRST_MAINNET_ADDRESS']}",
       "recoverOnlyLegacyWords=#{ENV['GENERATED_RECOVER_ONLY_LEGACY_WORDS']}",
       "recoverOnlyLegacyDeactivatedWords=#{ENV['GENERATED_RECOVER_ONLY_LEGACY_DEACTIVATED_WORDS']}",
       "twitterConsumerKey=#{ENV['TWITTER_CONSUMER_KEY']}",

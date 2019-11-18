@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import PromiseKit
 
-extension AppCoordinator: BalanceContainerDelegate {
+extension AppCoordinator: WalletOverviewTopBarDelegate {
 
   func selectedWallet() -> WalletTransactionType {
     return persistenceManager.brokers.preferences.selectedWalletTransactionType
@@ -46,17 +46,6 @@ extension AppCoordinator: BalanceContainerDelegate {
 
     let dropBitMeVC = DropBitMeViewController.newInstance(config: config, delegate: self)
     topVC.present(dropBitMeVC, animated: true, completion: nil)
-  }
-
-  func didTapRightBalanceView(in viewController: UIViewController) {
-    if let controller = viewController as? WalletOverviewViewController {
-      // save to user defaults
-      currencyController.selectedCurrency.toggle()
-      persistenceManager.brokers.preferences.selectedCurrency = currencyController.selectedCurrency
-
-      // tell tx history to reload from user defaults
-      controller.updateSelectedCurrency(to: currencyController.selectedCurrency)
-    }
   }
 
   func dropBitMeAvatar() -> Promise<UIImage> {

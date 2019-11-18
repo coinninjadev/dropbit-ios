@@ -7,7 +7,6 @@
 //
 
 @testable import DropBit
-import CNBitcoinKit
 import CoreData
 import PromiseKit
 

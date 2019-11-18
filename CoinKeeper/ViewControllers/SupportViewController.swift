@@ -8,10 +8,7 @@
 
 import UIKit
 
-protocol SupportViewControllerDelegate: ViewControllerURLDelegate {
-  func viewControllerDidSelectClose(_ viewController: UIViewController)
-  func viewControllerSendDebuggingInfo(_ viewController: UIViewController)
-}
+protocol SupportViewControllerDelegate: ViewControllerURLDelegate & DebugDelegate & ViewControllerDismissable {}
 
 final class SupportViewController: BaseViewController, StoryboardInitializable {
 

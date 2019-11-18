@@ -7,73 +7,16 @@
 //
 
 import Foundation
-import CNBitcoinKit
-
-protocol DualAmountDisplayable: CurrencyConverterProvider { }
-
-extension DualAmountDisplayable {
-
-  var groupingSeparator: String {
-    return Locale.current.groupingSeparator ?? ","
-  }
-
-  var decimalSeparator: String {
-    return Locale.current.decimalSeparator ?? "."
-  }
-
-  var decimalSeparatorCharacter: Character {
-    return decimalSeparator.first ?? "."
-  }
-
-  /// hidePrimaryZero will return the currency symbol only if primary amount is zero, useful during editing
-  func dualAmountLabels(hidePrimaryZero: Bool = false, walletTransactionType: WalletTransactionType) -> DualAmountLabels {
-    let converter = generateCurrencyConverter()
-    return dualAmountLabels(withConverter: converter, walletTransactionType: walletTransactionType, hidePrimaryZero: hidePrimaryZero)
-  }
-
-  func dualAmountLabels(
-    withConverter currencyConverter: CurrencyConverter,
-    withSymbols: Bool = true,
-    walletTransactionType: WalletTransactionType,
-    hidePrimaryZero: Bool = false) -> DualAmountLabels {
-
-    let primaryCurrency = currencyPair.primary
-    let secondaryCurrency = currencyPair.secondary
-    let primaryAmount = currencyConverter.amount(forCurrency: primaryCurrency) ?? .zero
-    let secondaryAmount = currencyConverter.amount(forCurrency: secondaryCurrency) ?? .zero
-
-    var primaryText = CKCurrencyFormatter.string(for: primaryAmount,
-                                                 currency: primaryCurrency,
-                                                 walletTransactionType: walletTransactionType)
-
-    if hidePrimaryZero && fromAmount == .zero {
-      switch walletTransactionType {
-      case .lightning:
-        if primaryCurrency == .USD {
-          primaryText = primaryCurrency.symbol
-        } else {
-          primaryText = primaryCurrency.integerSymbol
-        }
-      case .onChain:
-        primaryText = primaryCurrency.symbol
-      }
-    }
-
-    let secondary = CKCurrencyFormatter.attributedString(for: secondaryAmount,
-                                                        currency: secondaryCurrency,
-                                                        walletTransactionType: walletTransactionType)
-
-    return DualAmountLabels(primary: primaryText, secondary: secondary)
-  }
-
-}
+import UIKit
 
 /// The object that should handle UI updates when the amount view model changes
 protocol CurrencySwappableEditAmountViewModelDelegate: AnyObject {
+  var editingIsActive: Bool { get }
+  var maxPrimaryWidth: CGFloat { get }
   func viewModelDidBeginEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel)
-  func viewModelDidChangeAmount(_ viewModel: CurrencySwappableEditAmountViewModel)
   func viewModelDidEndEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel)
   func viewModelDidSwapCurrencies(_ viewModel: CurrencySwappableEditAmountViewModel)
+  func viewModelNeedsAmountLabelRefresh(_ viewModel: CurrencySwappableEditAmountViewModel, secondaryOnly: Bool)
 }
 
 extension CurrencySwappableEditAmountViewModelDelegate {
@@ -108,10 +51,10 @@ struct CurrencyPair {
   }
 }
 
-class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable {
+class CurrencySwappableEditAmountViewModel: NSObject, DualAmountEditable {
 
   var exchangeRates: ExchangeRates
-  var fromAmount: NSDecimalNumber
+  private(set) var fromAmount: NSDecimalNumber
   var fromCurrency: CurrencyCode
   var toCurrency: CurrencyCode
   var fiatCurrency: CurrencyCode
@@ -151,7 +94,14 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable {
 
   var primaryAmount: NSDecimalNumber {
     get { return fromAmount }
-    set { fromAmount = newValue }
+    set {
+      if primaryRequiresInteger {
+        let sats = newValue.intValue
+        fromAmount = NSDecimalNumber(integerAmount: sats, currency: .BTC)
+      } else {
+        fromAmount = newValue
+      }
+    }
   }
 
   var secondaryCurrency: CurrencyCode {
@@ -168,6 +118,43 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable {
     }
   }
 
+  func selectedCurrency() -> SelectedCurrency {
+    return fromCurrency.isFiat ? .fiat : .BTC
+  }
+
+  var editingIsActive: Bool {
+    return delegate?.editingIsActive ?? false
+  }
+
+  var maxPrimaryWidth: CGFloat {
+    return delegate?.maxPrimaryWidth ?? 0
+  }
+
+  var standardPrimaryFontSize: CGFloat { 30 }
+  var reducedPrimaryFontSize: CGFloat { 20 }
+
+  var primaryRequiresInteger: Bool { isEditingSats }
+
+  var isEditingSats: Bool {
+    return primaryCurrency == .BTC && walletTransactionType == .lightning
+  }
+
+  var primaryAttributes: StringAttributes {
+    return [.font: UIFont.regular(30), .foregroundColor: UIColor.darkBlueText]
+  }
+
+  var secondaryAttributes: StringAttributes {
+    return [.font: UIFont.regular(17), .foregroundColor: UIColor.bitcoinOrange]
+  }
+
+  var fiatFormatter: CKCurrencyFormatter {
+    if editingIsActive && fromCurrency.isFiat {
+      return EditingFiatAmountFormatter(currency: fiatCurrency)
+    } else {
+      return FiatFormatter(currency: fiatCurrency, withSymbol: true)
+    }
+  }
+
   static func emptyInstance() -> CurrencySwappableEditAmountViewModel {
     let currencyPair = CurrencyPair(primary: .BTC, fiat: .USD)
     return CurrencySwappableEditAmountViewModel(exchangeRates: [:],
@@ -177,7 +164,7 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable {
   }
 
   func swapPrimaryCurrency() {
-    let oldToAmount = generateCurrencyConverter().convertedAmount() ?? .zero
+    let oldToAmount = currencyConverter.convertedAmount() ?? .zero
     self.fromAmount = oldToAmount
     let oldFromCurrency = fromCurrency
     fromCurrency = toCurrency
@@ -191,29 +178,16 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable {
   }
 
   var btcAmount: NSDecimalNumber {
-    let converter = generateCurrencyConverter()
-    return converter.btcAmount
+    return currencyConverter.btcAmount
   }
 
   var btcIsPrimary: Bool {
     return primaryCurrency == .BTC
   }
 
-  /// Formatted to work with text field editing across locales and currencies
-  func primaryAmountInputText() -> String? {
-    let converter = generateCurrencyConverter()
-    let primaryAmount = converter.amount(forCurrency: primaryCurrency) ?? .zero
-    if btcIsPrimary {
-      return BitcoinFormatter(symbolType: .string).string(fromDecimal: primaryAmount)
-    } else {
-      return FiatFormatter(currency: primaryCurrency, withSymbol: true).string(fromDecimal: primaryAmount)
-    }
-  }
-
   /// Removes the currency symbol and thousands separator from the primary text, based on Locale.current
-  private func sanitizedAmountString(_ rawText: String?) -> String? {
-    return rawText?.removing(groupingSeparator: self.groupingSeparator,
-                             currencySymbol: primaryCurrency.symbol)
+  func sanitizedAmountString(_ rawText: String?) -> String? {
+    return rawText?.removingNonDecimalCharacters(keepingCharactersIn: decimalSeparator)
   }
 
   /// Returns .zero for nil, empty, and other invalid strings.
@@ -224,85 +198,11 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable {
 
     var amount = NSDecimalNumber(fromString: sanitizedText) ?? .zero
 
-    if walletTransactionType == .lightning && primaryCurrency == .BTC {
+    if primaryRequiresInteger {
       amount = NSDecimalNumber(integerAmount: amount.intValue, currency: .BTC)
     }
 
     return amount
-  }
-
-}
-
-extension CurrencySwappableEditAmountViewModel: UITextFieldDelegate {
-
-  @objc func primaryAmountTextFieldDidChange(_ textField: UITextField) {
-    fromAmount = sanitizedAmount(fromRawText: textField.text)
-    delegate?.viewModelDidChangeAmount(self)
-  }
-
-  func textFieldDidBeginEditing(_ textField: UITextField) {
-    if fromAmount == .zero {
-      if walletTransactionType == .lightning && primaryCurrency == .BTC {
-        textField.text = fromCurrency.integerSymbol
-      } else {
-        textField.text = fromCurrency.symbol
-      }
-    }
-
-    delegate?.viewModelDidBeginEditingAmount(self)
-  }
-
-  func textFieldDidEndEditing(_ textField: UITextField) {
-    if fromAmount == .zero {
-      textField.text = dualAmountLabels(walletTransactionType: walletTransactionType).primary
-    }
-    delegate?.viewModelDidEndEditingAmount(self)
-  }
-
-  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    guard let text = textField.text, let swiftRange = Range(range, in: text), isNotDeletingOrEditingCurrencySymbol(for: text, in: range) else {
-      return false
-    }
-
-    let finalString = text.replacingCharacters(in: swiftRange, with: string)
-    let splitByDecimalArray = finalString.components(separatedBy: decimalSeparator).dropFirst()
-
-    if !splitByDecimalArray.isEmpty {
-      guard splitByDecimalArray[1].count <= primaryCurrency.decimalPlaces else {
-        return false
-      }
-    }
-
-    guard finalString.count(of: decimalSeparatorCharacter) <= 1 else {
-      return false
-    }
-
-    let requiredSymbolString = primaryCurrency.symbol
-    guard finalString.contains(requiredSymbolString) || finalString.contains(primaryCurrency.integerSymbol ?? "") else {
-      return false
-    }
-
-    var symbolsToRemove = [requiredSymbolString]
-    if let integerSymbol = primaryCurrency.integerSymbol {
-      symbolsToRemove.append(integerSymbol)
-    }
-
-    let trimmedFinal = finalString.removing(groupingSeparator: self.groupingSeparator, currencySymbols: symbolsToRemove)
-    if trimmedFinal.isEmpty {
-      return true // allow deletion of all digits by returning early
-    }
-
-    guard let newAmount = NSDecimalNumber(fromString: trimmedFinal) else { return false }
-
-    guard newAmount.significantFractionalDecimalDigits <= primaryCurrency.decimalPlaces else {
-      return false
-    }
-
-    return true
-  }
-
-  private func isNotDeletingOrEditingCurrencySymbol(for amount: String, in range: NSRange) -> Bool {
-    return (amount != primaryCurrency.symbol || range.length == 0 || amount != primaryCurrency.integerSymbol)
   }
 
 }

@@ -13,6 +13,10 @@ import PromiseKit
 @testable import DropBit
 
 class MockPersistenceDatabaseManager: PersistenceDatabaseType {
+  func persistTemporaryTransaction(from response: LNTransactionResponse,
+                                   in context: NSManagedObjectContext) -> CKMTransaction {
+    return CKMTransaction(insertInto: context)
+  }
 
   var sharedPayloadManager: SharedPayloadManagerType = SharedPayloadManager()
 

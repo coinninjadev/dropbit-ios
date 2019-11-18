@@ -83,7 +83,7 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
     let shouldUseFallback = (qrCode.btcAmount ?? .zero) == .zero
     var qrCodeToUse = qrCode
     if shouldUseFallback {
-      let fallbackConverter = fallbackViewModel?.generateCurrencyConverter()
+      let fallbackConverter = fallbackViewModel?.currencyConverter
       let fallbackAmount = fallbackConverter?.btcAmount ?? .zero
       let fallbackQRCode = qrCode.copy(withBTCAmount: fallbackAmount)
       qrCodeToUse = fallbackQRCode

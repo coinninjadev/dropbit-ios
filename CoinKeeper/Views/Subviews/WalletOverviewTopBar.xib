@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BalanceContainer" customModule="DropBit" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WalletOverviewTopBar" customModule="DropBit" customModuleProvider="target">
             <connections>
+                <outlet property="balanceView" destination="kx6-z5-GQm" id="nJq-tM-Ovh"/>
                 <outlet property="chartButton" destination="Pwo-4y-6AK" id="lVr-7s-f4p"/>
                 <outlet property="dropBitMeButton" destination="MhN-3t-rHg" id="WCp-WL-61G"/>
                 <outlet property="leftButton" destination="sLU-EL-8bo" id="s3Y-cz-qzN"/>
-                <outlet property="primarySecondaryBalanceContainer" destination="kx6-z5-GQm" id="nJq-tM-Ovh"/>
                 <outlet property="rightBalanceContainerView" destination="kx6-z5-GQm" id="Dsa-Sn-So2"/>
             </connections>
         </placeholder>
@@ -34,7 +32,7 @@
                         <action selector="didTapLeftButton:" destination="-1" eventType="touchUpInside" id="zwp-3f-O9P"/>
                     </connections>
                 </button>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kx6-z5-GQm" userLabel="Right Balance Container View" customClass="PrimarySecondaryBalanceContainer" customModule="DropBit" customModuleProvider="target">
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kx6-z5-GQm" userLabel="Right Balance Container View" customClass="DualBalanceView" customModule="DropBit" customModuleProvider="target">
                     <rect key="frame" x="333" y="5" width="180" height="46"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>

@@ -39,6 +39,12 @@ class TransactionBroker: CKPersistenceBroker, TransactionBrokerType {
     )
   }
 
+  @discardableResult
+  func persistTemporaryTransaction(from lightningResponse: LNTransactionResponse,
+                                   in context: NSManagedObjectContext) -> CKMTransaction {
+    return databaseManager.persistTemporaryTransaction(from: lightningResponse, in: context)
+  }
+
   func containsRegularTransaction(in context: NSManagedObjectContext) -> IncomingOutgoingTuple {
     return databaseManager.containsRegularTransaction(in: context)
   }

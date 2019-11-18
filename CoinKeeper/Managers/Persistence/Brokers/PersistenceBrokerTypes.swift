@@ -58,12 +58,12 @@ protocol LightningBrokerType: AnyObject {
   func persistPaymentResponse(_ response: LNTransactionResponse,
                               receiver: OutgoingDropBitReceiver?,
                               invitation: CKMInvitation?,
-                              inputs: LightningPaymentInputs,
+                              inputs: LightningPaymentInputs?,
                               in context: NSManagedObjectContext)
   func deleteInvalidWalletEntries(in context: NSManagedObjectContext)
   func deleteInvalidLedgerEntries(in context: NSManagedObjectContext)
 
-  func getLedgerEntriesWithoutPayloads(matchingIds ids: [String], limit: Int, in context: NSManagedObjectContext) -> [CKMLNLedgerEntry]
+  func getLedgerEntriesWithoutPayloads(matchingIds ids: [String], in context: NSManagedObjectContext) -> [CKMLNLedgerEntry]
 
 }
 
@@ -115,8 +115,6 @@ protocol MigrationBrokerType: AnyObject {
   func databaseMigrationFlag(for version: DatabaseMigrationVersion) -> Bool
   func setKeychainMigrationFlag(migrated: Bool, for version: KeychainMigrationVersion)
   func keychainMigrationFlag(for version: KeychainMigrationVersion) -> Bool
-  func contactCacheMigrationFlag(for version: ContactCacheMigrationVersion) -> Bool
-  func setContactCacheMigrationFlag(migrated: Bool, for version: ContactCacheMigrationVersion)
 
 }
 
@@ -154,11 +152,14 @@ protocol TransactionBrokerType: AnyObject {
     in context: NSManagedObjectContext
     ) -> CKMTransaction
 
+  @discardableResult
+  func persistTemporaryTransaction(from lightningResponse: LNTransactionResponse,
+                                   in context: NSManagedObjectContext) -> CKMTransaction
+
   func containsRegularTransaction(in context: NSManagedObjectContext) -> IncomingOutgoingTuple
   func containsDropbitTransaction(in context: NSManagedObjectContext) -> IncomingOutgoingTuple
   func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext)
   func transactionsWithoutDayAveragePrice(in context: NSManagedObjectContext) -> Promise<[CKMTransaction]>
-
 }
 
 protocol UserBrokerType: AnyObject {

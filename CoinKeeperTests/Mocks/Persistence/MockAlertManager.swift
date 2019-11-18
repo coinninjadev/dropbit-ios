@@ -12,6 +12,14 @@ import Sheeeeeeeeet
 @testable import DropBit
 
 class MockAlertManager: AlertManagerType {
+  func debugAlert(with error: Error, debugAction action: @escaping CKCompletion) -> AlertControllerType {
+    let alertManager = AlertManager(notificationManager:
+      NotificationManager(permissionManager: PermissionManager(),
+                          networkInteractor: NetworkManager(persistenceManager: PersistenceManager(),
+                                                            analyticsManager: AnalyticsManager())))
+    return alertManager.alert(withTitle: "Error", description: error.localizedDescription, image: nil, style: .alert, actionConfigs: [])
+  }
+
   var urlOpener: URLOpener?
 
   func showBanner(with message: String, duration: AlertDuration?) {}

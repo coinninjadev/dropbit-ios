@@ -30,13 +30,6 @@ enum CurrencyCode: String {
     }
   }
 
-  var requiresFullDecimalPlaces: Bool {
-    switch self {
-    case .BTC:  return false
-    case .USD:  return true
-    }
-  }
-
   var symbol: String {
     switch self {
     case .BTC:	return "\u{20BF} "
@@ -44,11 +37,16 @@ enum CurrencyCode: String {
     }
   }
 
-  var integerSymbol: String? {
+  func integerSymbol(forAmount amount: Int) -> String? {
     switch self {
-    case .BTC:  return " sats"
+    case .BTC:  return amount == 1 ? " sat" : " sats"
     case .USD:  return nil
     }
+  }
+
+  func integerSymbol(forAmount amount: NSDecimalNumber) -> String? {
+    let fractionalUnits = amount.asFractionalUnits(of: self)
+    return integerSymbol(forAmount: fractionalUnits)
   }
 
   var isFiat: Bool {

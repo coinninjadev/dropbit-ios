@@ -224,7 +224,7 @@ class AlertManager: AlertManagerType {
     let senderDesc = update.senderDescription(phoneFormatter: self.phoneNumberFormatter)
     let dropbitTypeDescription = update.addressType == .btc ? "Bitcoin address" : "Lightning invoice"
     switch update.status {
-    case .addressSent:
+    case .addressProvided:
       let message = "We have sent a \(dropbitTypeDescription) to \(senderDesc) for \(update.fiatDescription) to be sent."
       self.showBanner(with: message, duration: .custom(8.0), alertKind: .info)
     case .completed:
@@ -242,6 +242,23 @@ class AlertManager: AlertManagerType {
     default:
       break
     }
+  }
+
+  private func sendDebugInfoAlertActionConfig(with action: @escaping CKCompletion) -> AlertActionConfiguration {
+    return AlertActionConfiguration(title: "Send Debug Info", style: .default, action: {
+      action()
+    })
+  }
+
+  func debugAlert(with error: Error, debugAction action: @escaping CKCompletion) -> AlertControllerType {
+    let message = """
+      An error occurred: \(error.localizedDescription).
+      If this problem continues, please contact support with your debug information
+    """
+    return createAlert(withTitle: "Error", description: message,
+                       image: nil,
+                       style: .alert,
+                       actionConfigs: [okAlertActionConfig, sendDebugInfoAlertActionConfig(with: action)])
   }
 
   func showBannerAlert(for response: MessageResponse, completion: CKCompletion? = nil) {
@@ -296,14 +313,16 @@ class AlertManager: AlertManagerType {
     case alert, walkthrough
   }
 
+  private var okAlertActionConfig: AlertActionConfigurationType {
+    return AlertActionConfiguration(title: "OK", style: .cancel, action: nil)
+  }
+
   func defaultAlert(withTitle title: String, description: String?) -> AlertControllerType {
-    let okConfig = AlertActionConfiguration(title: "OK", style: .cancel, action: nil)
-    let configs = [okConfig]
     return alert(withTitle: title,
                  description: description,
                  image: nil,
                  style: .alert,
-                 actionConfigs: configs)
+                 actionConfigs: [okAlertActionConfig])
   }
 
   func alertActionSheet(withTitle title: String?,

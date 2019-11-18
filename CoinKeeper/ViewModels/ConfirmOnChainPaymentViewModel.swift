@@ -11,6 +11,7 @@ import Contacts
 import CNBitcoinKit
 
 class BaseConfirmPaymentViewModel: DualAmountDisplayable {
+
   let paymentTarget: String? //address or encoded invoice
   let contact: ContactType?
   let walletTransactionType: WalletTransactionType
@@ -32,15 +33,26 @@ class BaseConfirmPaymentViewModel: DualAmountDisplayable {
     self.exchangeRates = exchangeRates
   }
 
-  /// The btcAmount and fromAmount may or may not be the same
-  var fromAmount: NSDecimalNumber {
-    if currencyPair.primary == .BTC {
-      return btcAmount
+  func selectedCurrency() -> SelectedCurrency {
+    return currencyPair.primary.isFiat ? .fiat : .BTC
+  }
+
+  var primaryAmountFontSize: CGFloat { 35 }
+
+  var bitcoinFormatter: BitcoinFormatter {
+    if selectedCurrency() == .BTC {
+      let font: UIFont = .bitcoinSymbolFont(primaryAmountFontSize)
+      return BitcoinFormatter(symbolType: .string, symbolFont: font)
     } else {
-      let converter = CurrencyConverter(rates: exchangeRates, fromAmount: btcAmount, currencyPair: currencyPair)
-      let fiatAmount = converter.amount(forCurrency: currencyPair.fiat) ?? .zero
-      return fiatAmount
+      return BitcoinFormatter(symbolType: .image)
     }
+  }
+
+  var fromAmount: NSDecimalNumber { btcAmount }
+
+  ///Custom implementation, ignoring currencyPair which is used for display order
+  var currencyConverter: CurrencyConverter {
+    return CurrencyConverter(fromBtcTo: currencyPair.fiat, fromAmount: fromAmount, rates: exchangeRates)
   }
 
   var memo: String? {

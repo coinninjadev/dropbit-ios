@@ -15,7 +15,7 @@ extension MockNetworkManager: TransactionNotificationRequestable {
     return Promise.value(())
   }
 
-  func fetchTransactionNotifications(forId id: String) -> Promise<[TransactionNotificationResponse]> {
+  func fetchTransactionNotifications(forIds ids: [String]) -> Promise<[TransactionNotificationResponse]> {
     return Promise.value([])
   }
 

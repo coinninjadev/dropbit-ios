@@ -111,6 +111,11 @@ protocol PersistenceDatabaseType: AnyObject {
     in context: NSManagedObjectContext)
 
   func persistTemporaryTransaction(
+    from response: LNTransactionResponse,
+    in context: NSManagedObjectContext
+  ) -> CKMTransaction
+
+  func persistTemporaryTransaction(
     from transactionData: CNBTransactionData,
     with outgoingTransactionData: OutgoingTransactionData,
     txid: String,

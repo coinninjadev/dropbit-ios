@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol CurrencySwappableAmountEditor: CurrencySwappableEditAmountViewDelegate, CurrencySwappableEditAmountViewModelDelegate,
   ExchangeRateUpdatable {
@@ -15,19 +16,41 @@ protocol CurrencySwappableAmountEditor: CurrencySwappableEditAmountViewDelegate,
   var editAmountView: CurrencySwappableEditAmountView! { get }
 
   func updateQRImage()
+  func currencySwappableAmountDataDidChange()
 }
 
 extension CurrencySwappableAmountEditor {
+
+  func currencySwappableAmountDataDidChange() {}
+
+  func viewModelDidBeginEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
+    refreshBothAmounts()
+    moveCursorToCorrectLocationIfNecessary()
+  }
+
+  func viewModelDidEndEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
+    refreshBothAmounts()
+  }
+
+  func viewModelNeedsSecondaryAmountRefresh(_ viewModel: CurrencySwappableEditAmountViewModel) {
+    refreshSecondaryAmount()
+  }
+
+  var editingIsActive: Bool {
+    return editAmountView.primaryAmountTextField.isFirstResponder
+  }
+
+  var maxPrimaryWidth: CGFloat {
+    return editAmountView.primaryAmountTextField.frame.width - 8
+  }
+
+  var standardPrimaryFontSize: CGFloat { 30 }
+  var reducedPrimaryFontSize: CGFloat { 20 }
 
   /// Call this during viewDidLoad
   func setupCurrencySwappableEditAmountView() {
     editAmountView.delegate = self
     editAmountView.primaryAmountTextField.delegate = editAmountViewModel
-
-    let textFieldDidChangeAction = #selector(CurrencySwappableEditAmountViewModel.primaryAmountTextFieldDidChange)
-    editAmountView.primaryAmountTextField.addTarget(editAmountViewModel,
-                                                    action: textFieldDidChangeAction,
-                                                    for: .editingChanged)
   }
 
   func swapViewDidSwap(_ swapView: CurrencySwappableEditAmountView) {
@@ -38,36 +61,35 @@ extension CurrencySwappableAmountEditor {
 
   /// Editor should call this in response to delegate method calls of CurrencySwappableEditAmountViewModelDelegate
   func refreshBothAmounts() {
-    let shouldHideZero = editAmountView.primaryAmountTextField.isFirstResponder
     let txType = editAmountViewModel.walletTransactionType
-    let labels = editAmountViewModel.dualAmountLabels(hidePrimaryZero: shouldHideZero, walletTransactionType: txType)
+    let labels = editAmountViewModel.editableDualAmountLabels(walletTxType: txType)
     editAmountView.update(with: labels)
   }
 
   func moveCursorToCorrectLocationIfNecessary() {
-    guard editAmountViewModel.walletTransactionType == .lightning,
-      editAmountViewModel.primaryCurrency == .BTC,
+    guard let textField = editAmountView.primaryAmountTextField,
+      editAmountViewModel.isEditingSats,
       let amount = SatsFormatter().stringWithoutSymbol(fromDecimal: editAmountViewModel.primaryAmount),
-      let newPosition = editAmountView.primaryAmountTextField.position(from:
-        editAmountView.primaryAmountTextField.beginningOfDocument, offset: amount.count) else { return }
+      let newPosition = textField.position(from: textField.beginningOfDocument, offset: amount.count)
+      else { return }
 
     if editAmountViewModel.primaryAmount == .zero {
-      editAmountView.primaryAmountTextField.selectedTextRange = editAmountView.primaryAmountTextField.textRange(
-        from: editAmountView.primaryAmountTextField.beginningOfDocument,
-        to: editAmountView.primaryAmountTextField.beginningOfDocument)
+      textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.beginningOfDocument)
     } else {
-      editAmountView.primaryAmountTextField.selectedTextRange = editAmountView.primaryAmountTextField.textRange(from: newPosition, to: newPosition)
+      textField.selectedTextRange = textField.textRange(from: newPosition, to: newPosition)
     }
   }
 
-  func refreshSecondaryAmount() {
-    let secondaryLabel = editAmountViewModel.dualAmountLabels(walletTransactionType: editAmountViewModel.walletTransactionType).secondary
-    editAmountView.secondaryAmountLabel.attributedText = secondaryLabel
-  }
+  func viewModelNeedsAmountLabelRefresh(_ viewModel: CurrencySwappableEditAmountViewModel, secondaryOnly: Bool) {
+    currencySwappableAmountDataDidChange()
 
-  func viewModelDidChangeAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
-    //Skip updating primary text field
-    refreshSecondaryAmount()
+    if secondaryOnly {
+      refreshSecondaryAmount()
+    } else {
+      refreshBothAmounts()
+      moveCursorToCorrectLocationIfNecessary()
+    }
+
     updateQRImage()
   }
 
@@ -76,6 +98,12 @@ extension CurrencySwappableAmountEditor {
   func updateEditAmountView(withRates rates: ExchangeRates) {
     editAmountViewModel.exchangeRates = rates
     refreshSecondaryAmount()
+  }
+
+  private func refreshSecondaryAmount() {
+    let walletTxType = editAmountViewModel.walletTransactionType
+    let secondaryLabel = editAmountViewModel.editableDualAmountLabels(walletTxType: walletTxType).secondary
+    editAmountView.secondaryAmountLabel.attributedText = secondaryLabel
   }
 
 }

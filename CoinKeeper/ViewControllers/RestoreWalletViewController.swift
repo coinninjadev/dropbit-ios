@@ -54,7 +54,7 @@ class RestoreWalletViewController: BaseViewController, StoryboardInitializable {
     let keypadToolbar: UIToolbar = UIToolbar()
     keypadToolbar.backgroundColor = .lightGrayBackground
     let doneButton = UIBarButtonItem(title: "BACK TO PREVIOUS WORD", style: .done, target: self, action: #selector(previousWordButtonWasTouched))
-    let attributes: [NSAttributedString.Key: Any] = [
+    let attributes: StringAttributes = [
       .font: UIFont.medium(14),
       .foregroundColor: UIColor.lightBlueTint]
     doneButton.setTitleTextAttributes(attributes, for: .normal)

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CNBitcoinKit
 import Result
 import CoreData
 import MessageUI
@@ -125,21 +124,11 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
         try context.saveRecursively()
         successFailVC.setMode(.success)
 
-        // When TweetMethodViewController requests DropBit send the tweet,
-        // we need to pass the resulting tweet ID back to the SuccessFailViewController,
-        // which doesn't have a direct relationship to the TweetMethodViewController.
-        let tweetCompletion: TweetCompletionHandler = { [weak successFailVC] (tweetId: String?) in
-          guard let id = tweetId, tweetId != WalletAddressRequestResponse.duplicateDeliveryID else { return }
-          let twitterURL = URL(string: TwitterEndpoints.tweetURL(id).urlString)
-          successFailVC?.setURL(twitterURL)
-        }
-
         if case let .twitter(twitterContact) = invitationDTO.contact.asDropBitReceiver {
           DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             if let topVC = self.navigationController.topViewController() {
               let tweetMethodVC = TweetMethodViewController.newInstance(twitterRecipient: twitterContact,
                                                                         addressRequestResponse: response,
-                                                                        tweetCompletion: tweetCompletion,
                                                                         delegate: self)
               topVC.present(tweetMethodVC, animated: true, completion: nil)
             }
