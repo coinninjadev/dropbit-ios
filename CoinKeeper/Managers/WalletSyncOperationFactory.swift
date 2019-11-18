@@ -59,6 +59,8 @@ class WalletSyncOperationFactory {
 
           let backgroundTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
           var caughtError: Error?
+          let walletDebugDesc = strongSelf.walletDebugDescription(with: dependencies, in: bgContext)
+          log.logMessage(walletDebugDesc, privateArgs: [], level: .info, location: nil)
           log.info("Sync routine: Starting.")
           strongSelf.performSync(with: dependencies, fullSync: isFullSync, in: bgContext)
             .catch(in: bgContext) { error in
@@ -101,6 +103,12 @@ class WalletSyncOperationFactory {
 
         return Promise.value(operation)
       }
+  }
+
+  private func walletDebugDescription(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> String {
+    let walletId = dependencies.persistenceManager.brokers.wallet.walletId(in: context) ?? "-"
+    let pubkey = dependencies.walletManager.hexEncodedPublicKey
+    return "Wallet ID: \(walletId) -- Public Key: \(pubkey)"
   }
 
   private func performSync(with dependencies: SyncDependencies,
