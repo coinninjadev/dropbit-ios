@@ -22,22 +22,11 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i07-k7-HM2">
                                         <rect key="frame" x="6" y="211.5" width="402" height="353"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FB2-3R-zWt">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FB2-3R-zWt" customClass="LoadLightningBalancesView" customModule="DropBit" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="36" width="402" height="26"/>
-                                                <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lightningLoadArrow" translatesAutoresizingMaskIntoConstraints="NO" id="lyr-IP-ogP">
-                                                        <rect key="frame" x="192" y="4" width="18" height="18"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="18" id="FqR-2U-eUL"/>
-                                                            <constraint firstAttribute="height" constant="18" id="Gkt-bU-dJz"/>
-                                                        </constraints>
-                                                    </imageView>
-                                                </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <constraints>
-                                                    <constraint firstItem="lyr-IP-ogP" firstAttribute="centerY" secondItem="FB2-3R-zWt" secondAttribute="centerY" id="DR0-cE-wq8"/>
                                                     <constraint firstAttribute="height" constant="26" id="NAe-mw-k5E"/>
-                                                    <constraint firstItem="lyr-IP-ogP" firstAttribute="centerX" secondItem="FB2-3R-zWt" secondAttribute="centerX" id="kHL-a5-ByT"/>
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e0T-Ma-Lhg">
@@ -116,7 +105,7 @@
                     </view>
                     <connections>
                         <outlet property="backgroundView" destination="YDJ-5D-pLX" id="Bdc-C0-Zhv"/>
-                        <outlet property="balanceContainer" destination="FB2-3R-zWt" id="i69-K1-8EQ"/>
+                        <outlet property="balanceView" destination="FB2-3R-zWt" id="RAk-yE-2Uo"/>
                         <outlet property="contentView" destination="i07-k7-HM2" id="19P-pY-URU"/>
                         <outlet property="customAmountButton" destination="aay-zN-0Ku" id="OkT-F9-Wti"/>
                         <outlet property="messageLabel" destination="XOe-ee-3jI" id="9qz-7g-b6k"/>
@@ -129,6 +118,5 @@
     </scenes>
     <resources>
         <image name="close" width="14" height="14"/>
-        <image name="lightningLoadArrow" width="16" height="12"/>
     </resources>
 </document>

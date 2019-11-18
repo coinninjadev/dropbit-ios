@@ -27,7 +27,7 @@ class LightningQuickLoadViewController: BaseViewController, StoryboardInitializa
 
   @IBOutlet var backgroundView: UIView!
   @IBOutlet var contentView: UIView!
-  @IBOutlet var balanceContainer: UIView!
+  @IBOutlet var balanceView: LoadLightningBalancesView!
   @IBOutlet var messageLabel: UILabel!
   @IBOutlet var customAmountButton: UIButton!
 

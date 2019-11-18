@@ -728,6 +728,8 @@
 		B5222063237F2CEB00F68280 /* LightningQuickLoadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5222062237F2CEB00F68280 /* LightningQuickLoadViewController.swift */; };
 		B5222065237F44ED00F68280 /* QuickLoadControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5222064237F44ED00F68280 /* QuickLoadControl.swift */; };
 		B5222067237F450100F68280 /* QuickLoadControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5222066237F450100F68280 /* QuickLoadControl.xib */; };
+		B522D2E623834A0700E1A7B2 /* LoadLightningBalancesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B522D2E523834A0700E1A7B2 /* LoadLightningBalancesView.xib */; };
+		B522D2E823834A1B00E1A7B2 /* LoadLightningBalancesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B522D2E723834A1B00E1A7B2 /* LoadLightningBalancesView.swift */; };
 		B523DFC220926E88008A789D /* Collection+IsNotEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = B523DFC120926E88008A789D /* Collection+IsNotEmpty.swift */; };
 		B524B242216CEB5200F669F4 /* MockNetworkManager+MessageRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B524B240216CEAAE00F669F4 /* MockNetworkManager+MessageRequestable.swift */; };
 		B5264B2F21909196009164F6 /* ResponseStringsTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5264B2E21909196009164F6 /* ResponseStringsTestable.swift */; };
@@ -1845,6 +1847,8 @@
 		B5222062237F2CEB00F68280 /* LightningQuickLoadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningQuickLoadViewController.swift; sourceTree = "<group>"; };
 		B5222064237F44ED00F68280 /* QuickLoadControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLoadControl.swift; sourceTree = "<group>"; };
 		B5222066237F450100F68280 /* QuickLoadControl.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickLoadControl.xib; sourceTree = "<group>"; };
+		B522D2E523834A0700E1A7B2 /* LoadLightningBalancesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadLightningBalancesView.xib; sourceTree = "<group>"; };
+		B522D2E723834A1B00E1A7B2 /* LoadLightningBalancesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadLightningBalancesView.swift; sourceTree = "<group>"; };
 		B523DFC120926E88008A789D /* Collection+IsNotEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+IsNotEmpty.swift"; sourceTree = "<group>"; };
 		B524B240216CEAAE00F669F4 /* MockNetworkManager+MessageRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+MessageRequestable.swift"; sourceTree = "<group>"; };
 		B5264B2E21909196009164F6 /* ResponseStringsTestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseStringsTestable.swift; sourceTree = "<group>"; };
@@ -3507,6 +3511,8 @@
 				B5B0DC7E221363910010AB2A /* PhoneNumberEntryView.swift */,
 				B5222066237F450100F68280 /* QuickLoadControl.xib */,
 				B5222064237F44ED00F68280 /* QuickLoadControl.swift */,
+				B522D2E523834A0700E1A7B2 /* LoadLightningBalancesView.xib */,
+				B522D2E723834A1B00E1A7B2 /* LoadLightningBalancesView.swift */,
 				B52A25C82077E42100F636A1 /* GrayCellSeparator.swift */,
 				A29CE0C82098F8CA00761B91 /* SuccessFailView.swift */,
 				3093B07B21EE36CF00B3EF9C /* TransactionHistoryRefreshView.swift */,
@@ -4239,6 +4245,7 @@
 				A216D79120B30C51005FBAC2 /* NoConnectionViewController.storyboard in Resources */,
 				3093B07E21EE36E400B3EF9C /* TransactionHistoryRefreshView.xib in Resources */,
 				3B9779B1202E416700C9C933 /* Montserrat-Light.ttf in Resources */,
+				B522D2E623834A0700E1A7B2 /* LoadLightningBalancesView.xib in Resources */,
 				B5FFFFC0226FB44E0029DB62 /* DropBitMeViewController.storyboard in Resources */,
 				A22F26B2235FB21400E5544E /* SF-Pro-Display-Medium.otf in Resources */,
 				B5B0DC81221364140010AB2A /* PhoneNumberEntryView.xib in Resources */,
@@ -5280,6 +5287,7 @@
 				3B5A88A4228B09260082BBA4 /* ContactCellSecondaryLabel.swift in Sources */,
 				A2B4EB002326B9F6005D0A65 /* LightningWalletAmountValidator.swift in Sources */,
 				3BA9F611208F6EDB0047C213 /* AppCoordinator+BalanceContainerDelegate.swift in Sources */,
+				B522D2E823834A1B00E1A7B2 /* LoadLightningBalancesView.swift in Sources */,
 				B5A98AEB224176C300DEF96F /* CKUserDefaults.swift in Sources */,
 				B5054149207D00270059C8F9 /* CKMAddress+CoreDataProperties.swift in Sources */,
 				B52CC6AB221EC63F00B00C9E /* ContactCacheDataWorker.swift in Sources */,
