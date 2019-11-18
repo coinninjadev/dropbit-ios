@@ -64,7 +64,7 @@ class MockPersistenceManager: PersistenceManagerType {
     from responses: [AddressTransactionSummaryResponse],
     in context: NSManagedObjectContext) {}
 
-  func persistReceivedSharedPayloads(_ payloads: [Data],
+  func persistReceivedSharedPayloads(_ payloads: [IdentifiedPayload],
                                      ofType walletTxType: WalletTransactionType,
                                      in context: NSManagedObjectContext) { }
 

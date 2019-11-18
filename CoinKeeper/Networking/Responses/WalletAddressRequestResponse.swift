@@ -74,6 +74,7 @@ public struct WalletAddressRequestMetadata: ResponseDecodable, CustomStringConve
   let sender: MetadataParticipant?
   let receiver: MetadataParticipant?
   var requestId: String?
+  var preauthId: String?
   let suppress: Bool?
   let addressType: String?
 
@@ -117,7 +118,7 @@ public struct WalletAddressRequestMetadata: ResponseDecodable, CustomStringConve
   }
 
   static var optionalStringKeys: [WritableKeyPath<WalletAddressRequestMetadata, String?>] {
-    return [\.requestId]
+    return [\.requestId, \.preauthId]
   }
 }
 

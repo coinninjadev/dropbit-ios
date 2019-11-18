@@ -25,6 +25,8 @@ public enum LNTransactionTarget: CoinNinjaTargetType {
 
   case pay(LNPayBody)
   case withdraw(LNWithdrawBody)
+  case preauth(LNCreatePaymentRequestBody)
+  case cancelPreauth(String)
 
   var basePath: String {
     return thunderdomeBasePath
@@ -32,8 +34,11 @@ public enum LNTransactionTarget: CoinNinjaTargetType {
 
   var subPath: String? {
     switch self {
-    case .pay:      return "pay"
-    case .withdraw: return "withdraw"
+    case .pay:        return "pay"
+    case .withdraw:   return "withdraw"
+    case .preauth:    return "pay/preauth"
+    case .cancelPreauth(let id):
+      return "pay/preauth/\(id)"
     }
   }
 
@@ -43,8 +48,10 @@ public enum LNTransactionTarget: CoinNinjaTargetType {
 
   public var method: Method {
     switch self {
-    case .pay:      return .post
-    case .withdraw: return .post
+    case .pay,
+         .preauth,
+         .withdraw:       return .post
+    case .cancelPreauth:  return .delete
     }
   }
 
@@ -52,8 +59,12 @@ public enum LNTransactionTarget: CoinNinjaTargetType {
     switch self {
     case .pay(let body):
       return .requestCustomJSONEncodable(body, encoder: customEncoder)
+    case .preauth(let body):
+      return .requestCustomJSONEncodable(body, encoder: customEncoder)
     case .withdraw(let body):
       return .requestCustomJSONEncodable(body, encoder: customEncoder)
+    case .cancelPreauth:
+      return .requestPlain
     }
   }
 }

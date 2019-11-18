@@ -17,6 +17,11 @@ protocol SendPaymentMemoViewDelegate: AnyObject {
   func didTapSharedMemoTooltip()
 }
 
+enum MemoEncryptionPolicy {
+  case encrypted
+  case unencryptedInvite
+}
+
 class SendPaymentMemoView: UIView {
 
   @IBOutlet var topBackgroundView: UIView!
@@ -59,7 +64,6 @@ class SendPaymentMemoView: UIView {
     checkboxBackgroundView.backgroundColor = .primaryActionButton
     checkboxBackgroundView.applyCornerRadius(3)
 
-    checkboxDescriptionLabel.text = "Securely send this memo with your transaction"
     checkboxDescriptionLabel.textColor = .darkGrayText
     checkboxDescriptionLabel.font = .regular(10)
   }
@@ -86,7 +90,7 @@ class SendPaymentMemoView: UIView {
     delegate?.didTapSharedMemoTooltip()
   }
 
-  func configure(memo: String?, isShared: Bool) {
+  func configure(memo: String?, isShared: Bool, encryptionPolicy: MemoEncryptionPolicy) {
     checkboxImage.isHidden = !isShared
 
     if let actualTitle = memo, actualTitle.isNotEmpty {
@@ -95,6 +99,13 @@ class SendPaymentMemoView: UIView {
     } else {
       memoLabel.text = "Add a memo"
       memoLabel.textColor = .darkGrayText
+    }
+
+    switch encryptionPolicy {
+    case .encrypted:
+      checkboxDescriptionLabel.text = "Securely send this memo with your transaction"
+    case .unencryptedInvite:
+      checkboxDescriptionLabel.text = "Send this invite message with your transaction"
     }
   }
 

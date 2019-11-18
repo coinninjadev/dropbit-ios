@@ -74,7 +74,7 @@ extension SharedPayloadProfileV2 {
 
 struct SharedPayloadV2: SharedPayloadCodable {
   let meta: SharedPayloadMetadata
-  let txid: String
+  var txid: String
   let info: SharedPayloadInfoV1
   var profile: SharedPayloadProfileV2?
 
@@ -88,6 +88,28 @@ struct SharedPayloadV2: SharedPayloadCodable {
                                           dropbitMe: nil,
                                           avatar: nil)
   }
+
+  init(preauthInvitationDTO invitationDTO: OutgoingInvitationDTO, senderIdentity: UserIdentityBody) throws {
+    guard let payloadDTO = invitationDTO.sharedPayloadDTO else {
+      throw CKPersistenceError.missingValue(key: "sharedPayloadDTO")
+    }
+
+    guard let amountInfo = payloadDTO.amountInfo else {
+      throw CKPersistenceError.missingValue(key: "amountInfo")
+    }
+
+    self.init(txid: "",
+              memo: payloadDTO.sharingObservantMemo,
+              amountInfo: amountInfo,
+              senderIdentity: senderIdentity)
+  }
+
+  func copy(withId txid: String) -> SharedPayloadV2 {
+    var copy = self
+    copy.txid = txid
+    return copy
+  }
+
 }
 
 /* Sample V2 Payload

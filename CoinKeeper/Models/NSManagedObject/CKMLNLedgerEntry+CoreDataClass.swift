@@ -35,13 +35,24 @@ public class CKMLNLedgerEntry: NSManagedObject {
       ///CKMWalletEntry with a temporary sent transaction matching the id
       let maybeFoundTempWalletEntry = CKMWalletEntry.findTemporary(withId: id, in: context)
 
-      newEntry.walletEntry = maybeFoundTempWalletEntry ?? CKMWalletEntry(wallet: wallet, sortDate: createdAt, insertInto: context)
+      ///CKMWalletEntry with a preauthorized lightning invitation matching the id
+      let idIsPreauth = id.starts(with: LNTransactionResult.preauthPrefix)
+      let maybePreauthWalletEntry: CKMWalletEntry? = idIsPreauth ? CKMWalletEntry.find(withPreauthId: id, in: context) : nil
+
+      if let existingWalletEntry = maybeFoundTempWalletEntry ?? maybePreauthWalletEntry {
+        newEntry.walletEntry = existingWalletEntry
+      } else {
+        newEntry.walletEntry = CKMWalletEntry(wallet: wallet, sortDate: createdAt, insertInto: context)
+      }
+
       return newEntry
     }
   }
 
-  static func create(with response: LNTransactionResult, in context: NSManagedObjectContext) -> CKMLNLedgerEntry {
+  static func create(with response: LNTransactionResult, walletEntry: CKMWalletEntry, in context: NSManagedObjectContext) -> CKMLNLedgerEntry {
     let newEntry = CKMLNLedgerEntry(insertInto: context)
+    walletEntry.ledgerEntry = newEntry
+    newEntry.walletEntry = walletEntry //set relationships first so that walletEntry properties can be set during configure()
     configure(newEntry, with: response, in: context)
     return newEntry
   }
@@ -70,7 +81,7 @@ public class CKMLNLedgerEntry: NSManagedObject {
     }
 
     // User may have added local memo
-    if let resultMemo = result.memo?.asNilIfEmpty(), entry.memo == nil {
+    if let resultMemo = result.memo?.asNilIfEmpty(), entry.memo == nil, !result.isPreauth {
       entry.memo = resultMemo
       entry.walletEntry?.memoSetByInvoice = true
     }
@@ -92,6 +103,20 @@ public class CKMLNLedgerEntry: NSManagedObject {
     } catch {
       log.error(error, message: "Could not execute fetch request for latest transaction")
       return nil
+    }
+  }
+
+  static func findPreauthEntries(in context: NSManagedObjectContext) -> [CKMLNLedgerEntry] {
+    let fetchRequest: NSFetchRequest<CKMLNLedgerEntry> = CKMLNLedgerEntry.fetchRequest()
+    let predicates = [CKPredicate.LedgerEntry.hasPreauthIdPrefix(),
+                      CKPredicate.LedgerEntry.withStatus(.pending)]
+    fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: predicates)
+
+    do {
+      return try context.fetch(fetchRequest)
+    } catch {
+      log.error(error, message: "Failed to fetch preauth ledger entries")
+      return []
     }
   }
 

@@ -152,9 +152,8 @@ extension NetworkManager: TransactionBroadcastable {
       return Promise(error: CKPersistenceError.missingValue(key: "amountInfo"))
     }
 
-    let sharingObservantMemo = sharedPayloadDTO.shouldShare ? (sharedPayloadDTO.memo ?? "") : ""
     let payload = SharedPayloadV2(txid: object.paymentId,
-                                  memo: sharingObservantMemo,
+                                  memo: sharedPayloadDTO.sharingObservantMemo,
                                   amountInfo: amountInfo,
                                   senderIdentity: object.senderIdentity)
 
