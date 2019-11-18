@@ -1,5 +1,5 @@
 //
-//  FetchImageTableViewCell.swift
+//  FetchImageType.swift
 //  DropBit
 //
 //  Created by Mitchell Malleo on 11/12/19.

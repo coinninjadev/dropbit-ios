@@ -24,8 +24,8 @@ class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
   @IBOutlet var tooltipButton: UIButton!
   @IBOutlet var stackView: UIStackView!
   @IBOutlet var attributeStackView: UIStackView!
-  var actionButton: PrimaryActionButton!
-  var buyWithApplePayButton: PKPaymentButton!
+  var actionButton: PrimaryActionButton = PrimaryActionButton()
+  var buyWithApplePayButton: PKPaymentButton = PKPaymentButton(paymentButtonType: .buy, paymentButtonStyle: .black)
 
   private var viewModel: BuyMerchantResponse?
   weak var delegate: PurchaseMerchantTableViewCellDelegate?
@@ -38,6 +38,7 @@ class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
 
     for view in attributeStackView.arrangedSubviews {
       attributeStackView.removeArrangedSubview(view)
+      view.removeFromSuperview()
     }
   }
 
@@ -57,25 +58,30 @@ class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
     viewModel = model
 
     logoImageView.image = model.image
-
-    actionButton.addTarget(self, action: #selector(actionButtonWasTouched), for: .touchUpInside)
     tooltipButton.isHidden = model.tooltipUrl == nil
 
     for attribute in model.attributes {
       addAttributeView(with: attribute)
     }
 
+    switch model.buyType {
+    case .device:
+      buyWithApplePayButton.isHidden = false
+      actionButton.isHidden = true
+    default:
+      buyWithApplePayButton.isHidden = true
+      actionButton.isHidden = false
+    }
+
     configureButtons(with: model.buyType)
   }
 
   private func setupButtons() {
-    actionButton = PrimaryActionButton()
     actionButton.translatesAutoresizingMaskIntoConstraints = false
     actionButton.heightAnchor.constraint(equalToConstant: 51).isActive = true
+    actionButton.addTarget(self, action: #selector(actionButtonWasTouched), for: .touchUpInside)
 
-    let button = PKPaymentButton(paymentButtonType: .buy, paymentButtonStyle: .black)
-    button.addTarget(self, action: #selector(applePayButtonWasTouched), for: .touchUpInside)
-    buyWithApplePayButton = button
+    buyWithApplePayButton.addTarget(self, action: #selector(applePayButtonWasTouched), for: .touchUpInside)
     buyWithApplePayButton.translatesAutoresizingMaskIntoConstraints = false
     buyWithApplePayButton.heightAnchor.constraint(equalToConstant: 51).isActive = true
   }
