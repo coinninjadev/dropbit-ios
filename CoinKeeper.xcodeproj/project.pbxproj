@@ -605,7 +605,7 @@
 		A2A530AE2092A84800B6F4DE /* String+TrimSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A530AD2092A84800B6F4DE /* String+TrimSymbol.swift */; };
 		A2A530BC20936A5B00B6F4DE /* ConfirmPaymentViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2A530BB20936A5B00B6F4DE /* ConfirmPaymentViewController.storyboard */; };
 		A2A530BE20936A6C00B6F4DE /* FloatingPoint+DegreeToRadians.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A530BD20936A6C00B6F4DE /* FloatingPoint+DegreeToRadians.swift */; };
-		A2A530C020936A7700B6F4DE /* ConfirmPaymentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A530BF20936A7700B6F4DE /* ConfirmPaymentButton.swift */; };
+		A2A530C020936A7700B6F4DE /* LongPressConfirmButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A530BF20936A7700B6F4DE /* LongPressConfirmButton.swift */; };
 		A2A530C220936A7F00B6F4DE /* ConfirmPaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A530C120936A7F00B6F4DE /* ConfirmPaymentViewController.swift */; };
 		A2A530C42093A72000B6F4DE /* AppCoordinator+ConfirmPaymentViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A530C32093A72000B6F4DE /* AppCoordinator+ConfirmPaymentViewControllerDelegate.swift */; };
 		A2A530CA20966D2F00B6F4DE /* String+Count.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A530C920966D2F00B6F4DE /* String+Count.swift */; };
@@ -1726,7 +1726,7 @@
 		A2A530AD2092A84800B6F4DE /* String+TrimSymbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+TrimSymbol.swift"; sourceTree = "<group>"; };
 		A2A530BB20936A5B00B6F4DE /* ConfirmPaymentViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ConfirmPaymentViewController.storyboard; sourceTree = "<group>"; };
 		A2A530BD20936A6C00B6F4DE /* FloatingPoint+DegreeToRadians.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FloatingPoint+DegreeToRadians.swift"; sourceTree = "<group>"; };
-		A2A530BF20936A7700B6F4DE /* ConfirmPaymentButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmPaymentButton.swift; sourceTree = "<group>"; };
+		A2A530BF20936A7700B6F4DE /* LongPressConfirmButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LongPressConfirmButton.swift; sourceTree = "<group>"; };
 		A2A530C120936A7F00B6F4DE /* ConfirmPaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmPaymentViewController.swift; sourceTree = "<group>"; };
 		A2A530C32093A72000B6F4DE /* AppCoordinator+ConfirmPaymentViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+ConfirmPaymentViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		A2A530C920966D2F00B6F4DE /* String+Count.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Count.swift"; sourceTree = "<group>"; };
@@ -3769,7 +3769,7 @@
 				B5F9500920E2D439001495E2 /* UnderlinedTextButton.swift */,
 				B5B37B18206AD713001816F6 /* CalculatorPaymentButton.swift */,
 				B582409320920E3F005D2F90 /* CompactActionButton.swift */,
-				A2A530BF20936A7700B6F4DE /* ConfirmPaymentButton.swift */,
+				A2A530BF20936A7700B6F4DE /* LongPressConfirmButton.swift */,
 				B559AF0E2180FE37001D44F2 /* MenuButton.swift */,
 				3B82692420331349009B11EC /* KeypadButton.swift */,
 				3BC9E5552049B08000444A53 /* PrimaryActionButton.swift */,
@@ -4819,7 +4819,7 @@
 				3B9930DF232ABF0D008EA112 /* LightningUpgradeStatusView.swift in Sources */,
 				3B325D4D219090CD0094897C /* RecoveryWordsIntroViewController.swift in Sources */,
 				B5C8F5C5216D37D300E3E85B /* CoinNinjaProvider.swift in Sources */,
-				A2A530C020936A7700B6F4DE /* ConfirmPaymentButton.swift in Sources */,
+				A2A530C020936A7700B6F4DE /* LongPressConfirmButton.swift in Sources */,
 				B5A3BA58215193BA005EE657 /* MessagesTarget.swift in Sources */,
 				3B57207D2233004E0048A8CF /* BaseCoreDataStack.swift in Sources */,
 				30BF4FED21B6E42A0018AE87 /* AppCoordinator+TransactionPopoverDetailsViewControllerDelegate.swift in Sources */,

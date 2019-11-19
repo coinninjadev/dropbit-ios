@@ -16,11 +16,17 @@ struct LightningQuickLoadViewModel {
 
   let balances: WalletBalances
   let currency: CurrencyCode
+  let controlConfigs: [QuickLoadControlConfig]
 
   init(balances: WalletBalances, currency: CurrencyCode) throws {
     //Validate the on chain and lightning balances, throw LightningWalletAmountValidatorError as appropriate
     self.balances = balances
     self.currency = currency
+    self.controlConfigs = LightningQuickLoadViewModel.configs(withMax: .one, currency: currency)
+  }
+
+  private static func configs(withMax max: NSDecimalNumber, currency: CurrencyCode) -> [QuickLoadControlConfig] {
+    return []
   }
 
 }
@@ -32,6 +38,8 @@ class LightningQuickLoadViewController: BaseViewController, StoryboardInitializa
   @IBOutlet var balanceView: LoadLightningBalancesView!
   @IBOutlet var messageLabel: UILabel!
   @IBOutlet var customAmountButton: UIButton!
+  @IBOutlet var topStackView: UIStackView!
+  @IBOutlet var bottomStackView: UIStackView!
 
   @IBAction func performClose(_ sender: Any) {
     delegate.viewControllerDidSelectClose(self)
@@ -69,6 +77,18 @@ class LightningQuickLoadViewController: BaseViewController, StoryboardInitializa
     customAmountButton.setTitleColor(.mediumGrayBackground, for: .normal)
 
     balanceView.configure(withFiatBalances: viewModel.balances, currency: viewModel.currency)
+
+    for (i, config) in viewModel.controlConfigs.enumerated() {
+      let control = QuickLoadControl(frame: .zero)
+      control.configure(title: config.amount.displayString, delegate: self)
+      //TODO: Set tag on LongPressConfirmButton to i
+    }
   }
 
+}
+
+extension LightningQuickLoadViewController: LongPressConfirmButtonDelegate {
+  func confirmationButtonDidConfirm(_ button: LongPressConfirmButton) {
+    print("Button at index \(button.tag) did confirm")
+  }
 }

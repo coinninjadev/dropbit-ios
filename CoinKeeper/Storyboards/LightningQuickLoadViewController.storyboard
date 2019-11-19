@@ -106,9 +106,11 @@
                     <connections>
                         <outlet property="backgroundView" destination="YDJ-5D-pLX" id="Bdc-C0-Zhv"/>
                         <outlet property="balanceView" destination="FB2-3R-zWt" id="RAk-yE-2Uo"/>
+                        <outlet property="bottomStackView" destination="WCA-zU-uA6" id="Tec-md-dE5"/>
                         <outlet property="contentView" destination="i07-k7-HM2" id="19P-pY-URU"/>
                         <outlet property="customAmountButton" destination="aay-zN-0Ku" id="OkT-F9-Wti"/>
                         <outlet property="messageLabel" destination="XOe-ee-3jI" id="9qz-7g-b6k"/>
+                        <outlet property="topStackView" destination="g8g-ys-u3f" id="bHj-fu-0Dv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hj9-3K-kpX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

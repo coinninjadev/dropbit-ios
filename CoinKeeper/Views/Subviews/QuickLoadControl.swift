@@ -16,9 +16,16 @@ struct QuickLoadControlConfig {
 
 class QuickLoadControl: UIView {
 
+  @IBOutlet var titleLabel: UILabel!
+
   required init?(coder: NSCoder) {
     super.init(coder: coder)
+    xibSetup()
+    initialize()
+  }
 
+  override init(frame: CGRect) {
+    super.init(frame: frame)
     initialize()
   }
 
@@ -26,7 +33,8 @@ class QuickLoadControl: UIView {
     //set colors on button
   }
 
-  func configure() {
-
+  func configure(title: String, delegate: LongPressConfirmButtonDelegate) {
+    titleLabel.text = title
   }
+
 }

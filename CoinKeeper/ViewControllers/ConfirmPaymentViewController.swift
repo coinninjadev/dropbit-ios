@@ -89,14 +89,12 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     super.viewDidLoad()
 
     setupViews()
-    confirmView.delegate = self
+    confirmView.confirmButton.delegate = self
 
     if let viewModel = viewModel {
       switch viewModel.walletTransactionType {
-      case .onChain:
-        confirmView.style = .onChain
-      case .lightning:
-        confirmView.style = .lightning
+      case .onChain:    confirmView.configure(withStyle: .onChain)
+      case .lightning:  confirmView.configure(withStyle: .lightning)
       }
     }
 
@@ -347,9 +345,9 @@ extension ConfirmPaymentViewController {
 
 }
 
-extension ConfirmPaymentViewController: ConfirmViewDelegate {
+extension ConfirmPaymentViewController: LongPressConfirmButtonDelegate {
 
-  func viewDidConfirm() {
+  func confirmationButtonDidConfirm(_ button: LongPressConfirmButton) {
     switch transactionType {
     case .invite:
       guard let inviteVM = viewModel as? ConfirmPaymentInviteViewModel else { return }

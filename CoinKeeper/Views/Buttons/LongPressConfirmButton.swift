@@ -1,5 +1,5 @@
 //
-//  ConfirmPaymentButton.swift
+//  LongPressConfirmButton.swift
 //  DropBit
 //
 //  Created by Mitchell on 4/26/18.
@@ -8,45 +8,51 @@
 
 import UIKit
 
-protocol ConfirmPaymentButtonDelegate: class {
-  func didConfirm()
+protocol LongPressConfirmButtonDelegate: class {
+  func confirmationButtonDidConfirm(_ button: LongPressConfirmButton)
 }
 
-class ConfirmPaymentButton: UIButton {
+class LongPressConfirmButton: UIButton {
 
   enum Style {
     case original
     case onChain
     case lightning
+
+    var color: UIColor {
+      switch self {
+      case .original:   return .lightBlueTint
+      case .onChain:    return .bitcoinOrange
+      case .lightning:  return .lightningBlue
+      }
+    }
+
+    var secondsToConfirm: Double {
+      switch self {
+      case .original, .onChain:   return 3.0
+      case .lightning:            return 1.5
+      }
+    }
   }
+
+  weak var delegate: LongPressConfirmButtonDelegate?
 
   private var backgroundBezierPath: UIBezierPath = UIBezierPath()
   private var backgroundShapeLayer: CAShapeLayer = CAShapeLayer()
   private var foregroundShapeLayer: CAShapeLayer = CAShapeLayer()
   private var circleAnimation: CABasicAnimation = CABasicAnimation()
-  private var longPressGestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer()
 
-  private let defaultSecondsToConfirm: Double = 3.0
-  var secondsToConfirm = 3.0
-  var style: Style {
-    didSet {
-      switch style {
-      case .original:
-        foregroundShapeLayer.strokeColor = UIColor.lightBlueTint.cgColor
-        secondsToConfirm = defaultSecondsToConfirm
-      case .onChain:
-        foregroundShapeLayer.strokeColor = UIColor.bitcoinOrange.cgColor
-        secondsToConfirm = defaultSecondsToConfirm
-      case .lightning:
-        foregroundShapeLayer.strokeColor = UIColor.lightningBlue.cgColor
-        secondsToConfirm = defaultSecondsToConfirm / 2.0
-      }
-      circleAnimation.duration = secondsToConfirm
-    }
+  private var feedbackGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
+  lazy private var longPressGestureRecognizer: UILongPressGestureRecognizer =
+    UILongPressGestureRecognizer(target: self, action: #selector(confirmButtonDidConfirm))
+
+  func configure(withStyle style: Style) {
+    foregroundShapeLayer.strokeColor = style.color.cgColor
+    circleAnimation.duration = style.secondsToConfirm
+    longPressGestureRecognizer.minimumPressDuration = style.secondsToConfirm
   }
 
   required init?(coder aDecoder: NSCoder) {
-    style = .original
     super.init(coder: aDecoder)
     initalize()
   }
@@ -55,13 +61,38 @@ class ConfirmPaymentButton: UIButton {
     setupLines()
     setupDefaults()
     setupCircleAnimation()
+
+    configure(withStyle: .original)
+    feedbackGenerator.prepare()
+    longPressGestureRecognizer.allowableMovement = 1000
+    self.addGestureRecognizer(longPressGestureRecognizer)
+    self.addTarget(self, action: #selector(tapDidBegin), for: .touchDown)
+    self.addTarget(self, action: #selector(tapDidEnd), for: .touchUpInside)
+    self.addTarget(self, action: #selector(tapDidEnd), for: .touchUpOutside)
   }
 
-  func animate() {
+  @objc func confirmButtonDidConfirm() {
+    if longPressGestureRecognizer.state == .began {
+      delegate?.confirmationButtonDidConfirm(self)
+    }
+
+    reset()
+  }
+
+  @objc func tapDidBegin() {
+    feedbackGenerator.impactOccurred()
+    animate()
+  }
+
+  @objc func tapDidEnd() {
+    reset()
+  }
+
+  private func animate() {
     startAnimation()
   }
 
-  func reset() {
+  private func reset() {
     foregroundShapeLayer.removeAllAnimations()
     foregroundShapeLayer.strokeEnd = 0.0
     backgroundShapeLayer.transform = CATransform3DMakeScale(1.0, 1.0, 1.0)
@@ -74,7 +105,6 @@ class ConfirmPaymentButton: UIButton {
 
   private func setupCircleAnimation() {
     circleAnimation = CABasicAnimation(keyPath: "strokeEnd")
-    circleAnimation.duration = secondsToConfirm
     circleAnimation.repeatCount = 1.0
     circleAnimation.fromValue = 0.0
     circleAnimation.toValue = 1.0
@@ -121,4 +151,5 @@ class ConfirmPaymentButton: UIButton {
     layer.addSublayer(backgroundShapeLayer)
     layer.addSublayer(foregroundShapeLayer)
   }
+
 }

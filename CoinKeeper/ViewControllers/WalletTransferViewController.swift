@@ -97,7 +97,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
       delegate.viewControllerShouldTrackEvent(event: .onChainToLightningPressed)
     }
 
-    confirmView.delegate = self
+    confirmView.confirmButton.delegate = self
     feesView.delegate = self
     editAmountView.delegate = self
     refreshBothAmounts()
@@ -240,8 +240,8 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
 
 }
 
-extension WalletTransferViewController: ConfirmViewDelegate {
-  func viewDidConfirm() {
+extension WalletTransferViewController: LongPressConfirmButtonDelegate {
+  func confirmationButtonDidConfirm(_ button: LongPressConfirmButton) {
     do {
       try CurrencyAmountValidator(balancesNetPending: delegate.balancesNetPending(),
                                   balanceToCheck: viewModel.walletTransactionType,
