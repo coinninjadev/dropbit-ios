@@ -1033,6 +1033,7 @@
 		B5C5FEF422BAC24300287FF7 /* MockTransactionBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5FEF322BAC24300287FF7 /* MockTransactionBroker.swift */; };
 		B5C5FEF622BAE1A900287FF7 /* MockedPersistenceTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5FEF522BAE1A900287FF7 /* MockedPersistenceTestCase.swift */; };
 		B5C5FEF822BAE59500287FF7 /* MockAlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5FEF722BAE59500287FF7 /* MockAlertManager.swift */; };
+		B5C882832384569A00CD929B /* LightningLoadBalanceLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C882822384569A00CD929B /* LightningLoadBalanceLabel.swift */; };
 		B5C8F5B5216CED9200E3E85B /* MockNetworkManager+TransactionBroadcastable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C8F5B4216CED9200E3E85B /* MockNetworkManager+TransactionBroadcastable.swift */; };
 		B5C8F5B7216CEE3A00E3E85B /* MockNetworkManager+TransactionRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C8F5B6216CEE3A00E3E85B /* MockNetworkManager+TransactionRequestable.swift */; };
 		B5C8F5B9216CEEBF00E3E85B /* MockNetworkManager+UserRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C8F5B8216CEEBF00E3E85B /* MockNetworkManager+UserRequestable.swift */; };
@@ -2147,6 +2148,7 @@
 		B5C5FEF322BAC24300287FF7 /* MockTransactionBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTransactionBroker.swift; sourceTree = "<group>"; };
 		B5C5FEF522BAE1A900287FF7 /* MockedPersistenceTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedPersistenceTestCase.swift; sourceTree = "<group>"; };
 		B5C5FEF722BAE59500287FF7 /* MockAlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAlertManager.swift; sourceTree = "<group>"; };
+		B5C882822384569A00CD929B /* LightningLoadBalanceLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningLoadBalanceLabel.swift; sourceTree = "<group>"; };
 		B5C8F5B4216CED9200E3E85B /* MockNetworkManager+TransactionBroadcastable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+TransactionBroadcastable.swift"; sourceTree = "<group>"; };
 		B5C8F5B6216CEE3A00E3E85B /* MockNetworkManager+TransactionRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+TransactionRequestable.swift"; sourceTree = "<group>"; };
 		B5C8F5B8216CEEBF00E3E85B /* MockNetworkManager+UserRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+UserRequestable.swift"; sourceTree = "<group>"; };
@@ -3755,6 +3757,7 @@
 				B59E2C8A22E7974000A75AFE /* WalletToggleTitleLabel.swift */,
 				A257CEC72314662C0063670B /* ExpirationLabel.swift */,
 				B5047CED2345186100F45DB8 /* PaddedLabel.swift */,
+				B5C882822384569A00CD929B /* LightningLoadBalanceLabel.swift */,
 			);
 			path = Labels;
 			sourceTree = "<group>";
@@ -5305,6 +5308,7 @@
 				B552EDFD211E33D000332BB5 /* AnalyticsManager.swift in Sources */,
 				3B1555E020D27B5000D6A70C /* TransactionVinResponse.swift in Sources */,
 				B57AF8022268C78400E5B0A6 /* AppCoordinator+ShareTransactionViewControllerDelegate.swift in Sources */,
+				B5C882832384569A00CD929B /* LightningLoadBalanceLabel.swift in Sources */,
 				3B0C4FDE22A1AC31000FE760 /* VerfiedTwitterUserIndicatorView.swift in Sources */,
 				3BA360882090BAD900732C43 /* NSManagedObject+Init.swift in Sources */,
 				3B3F1103205700A6003F86EF /* OnboardingErrorLabel.swift in Sources */,

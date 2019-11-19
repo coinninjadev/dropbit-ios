@@ -11,8 +11,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoadLightningBalancesView" customModule="DropBit" customModuleProvider="target">
             <connections>
                 <outlet property="containerView" destination="RTO-vh-HQV" id="J93-TE-7Wv"/>
-                <outlet property="lightningBalanceLabel" destination="6Qy-mj-8Fy" id="EQW-6G-kR2"/>
-                <outlet property="onChainBalanceLabel" destination="c7B-NK-Ko2" id="Qea-2v-j4W"/>
+                <outlet property="lightningBalanceLabel" destination="6Qy-mj-8Fy" id="Exg-vj-0aP"/>
+                <outlet property="onChainBalanceLabel" destination="c7B-NK-Ko2" id="90r-fv-dqE"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -23,8 +23,8 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RTO-vh-HQV">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c7B-NK-Ko2" customClass="PaddedLabel" customModule="DropBit" customModuleProvider="target">
-                            <rect key="frame" x="144" y="12" width="42" height="20.5"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c7B-NK-Ko2" customClass="LightningLoadBalanceLabel" customModule="DropBit" customModuleProvider="target">
+                            <rect key="frame" x="144" y="0.0" width="42" height="44"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -36,8 +36,8 @@
                                 <constraint firstAttribute="width" constant="26" id="Zo8-L4-4oI"/>
                             </constraints>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Qy-mj-8Fy" customClass="PaddedLabel" customModule="DropBit" customModuleProvider="target">
-                            <rect key="frame" x="228" y="12" width="42" height="20.5"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Qy-mj-8Fy" customClass="LightningLoadBalanceLabel" customModule="DropBit" customModuleProvider="target">
+                            <rect key="frame" x="228" y="0.0" width="42" height="44"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -46,11 +46,13 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="fQH-kU-s9Q" firstAttribute="centerY" secondItem="RTO-vh-HQV" secondAttribute="centerY" id="0ab-H2-IRL"/>
-                        <constraint firstItem="6Qy-mj-8Fy" firstAttribute="centerY" secondItem="RTO-vh-HQV" secondAttribute="centerY" id="5f9-7Z-MpG"/>
+                        <constraint firstItem="6Qy-mj-8Fy" firstAttribute="top" secondItem="RTO-vh-HQV" secondAttribute="top" id="5QW-hy-E6x"/>
+                        <constraint firstItem="c7B-NK-Ko2" firstAttribute="top" secondItem="RTO-vh-HQV" secondAttribute="top" id="KuQ-nb-hXh"/>
                         <constraint firstItem="fQH-kU-s9Q" firstAttribute="leading" secondItem="c7B-NK-Ko2" secondAttribute="trailing" constant="8" id="OTn-WV-icx"/>
+                        <constraint firstAttribute="bottom" secondItem="c7B-NK-Ko2" secondAttribute="bottom" id="SOq-0T-gZI"/>
                         <constraint firstItem="6Qy-mj-8Fy" firstAttribute="leading" secondItem="fQH-kU-s9Q" secondAttribute="trailing" constant="8" id="fbG-lb-1WR"/>
+                        <constraint firstAttribute="bottom" secondItem="6Qy-mj-8Fy" secondAttribute="bottom" id="kyE-zh-wJ2"/>
                         <constraint firstItem="fQH-kU-s9Q" firstAttribute="centerX" secondItem="RTO-vh-HQV" secondAttribute="centerX" id="tdQ-ue-aGq"/>
-                        <constraint firstItem="c7B-NK-Ko2" firstAttribute="centerY" secondItem="RTO-vh-HQV" secondAttribute="centerY" id="wvp-nS-sCI"/>
                     </constraints>
                 </view>
             </subviews>

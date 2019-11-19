@@ -15,10 +15,12 @@ protocol LightningQuickLoadViewControllerDelegate: ViewControllerDismissable {
 struct LightningQuickLoadViewModel {
 
   let balances: WalletBalances
+  let currency: CurrencyCode
 
-  init(balances: WalletBalances) throws {
+  init(balances: WalletBalances, currency: CurrencyCode) throws {
     //Validate the on chain and lightning balances, throw LightningWalletAmountValidatorError as appropriate
     self.balances = balances
+    self.currency = currency
   }
 
 }
@@ -45,7 +47,7 @@ class LightningQuickLoadViewController: BaseViewController, StoryboardInitializa
     vc.delegate = delegate
     return vc
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -60,10 +62,13 @@ class LightningQuickLoadViewController: BaseViewController, StoryboardInitializa
     messageLabel.text = "TAP + HOLD FOR INSTANT \nLIGHTNING LOAD"
     messageLabel.font = .semiBold(14)
     messageLabel.textColor = .darkGrayText
+    messageLabel.textAlignment = .center
 
     customAmountButton.setTitle("CUSTOM", for: .normal)
     customAmountButton.titleLabel?.font = .semiBold(20)
     customAmountButton.setTitleColor(.mediumGrayBackground, for: .normal)
+
+    balanceView.configure(withFiatBalances: viewModel.balances, currency: viewModel.currency)
   }
 
 }

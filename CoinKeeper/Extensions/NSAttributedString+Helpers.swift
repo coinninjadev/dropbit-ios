@@ -50,12 +50,15 @@ extension NSAttributedString {
                    title: String,
                    sharedColor: UIColor,
                    font: UIFont,
+                   titleOffset: Int = 0,
                    imageOffset: CGPoint = .zero,
+                   spaceCount: Int = 2,
                    trailingImage: Bool = false) {
 
     let attributes: StringAttributes = [
       .font: font,
-      .foregroundColor: sharedColor
+      .foregroundColor: sharedColor,
+      .baselineOffset: titleOffset
     ]
 
     let image = UIImage(imageLiteralResourceName: imageName).maskWithColor(color: sharedColor)
@@ -63,7 +66,7 @@ extension NSAttributedString {
                                              fontDescender: font.descender,
                                              imageSize: imageSize,
                                              offset: imageOffset)
-    let space = "  "
+    let space = String(repeating: " ", count: spaceCount)
     let attributedText = NSAttributedString(string: title, attributes: attributes)
 
     if trailingImage {

@@ -34,7 +34,7 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
       switch direction {
       case .toLightning:
         //TODO: get actual balances, show alert if view model is invalid
-        guard let vm = try? LightningQuickLoadViewModel(balances: WalletBalances(onChain: 1, lightning: 5)) else { return }
+        guard let vm = try? LightningQuickLoadViewModel(balances: WalletBalances(onChain: 1, lightning: 5), currency: .USD) else { return }
         let vc = LightningQuickLoadViewController.newInstance(viewModel: vm, delegate: strongSelf)
         vc.modalPresentationStyle = .overCurrentContext
         vc.modalTransitionStyle = .crossDissolve
