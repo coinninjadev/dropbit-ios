@@ -31,11 +31,21 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
     let actions: ActionSheet.SelectAction = { [weak self] sheet, item in
       guard let strongSelf = self, !item.isOkButton else { return }
       let direction: TransferDirection = item == toLightningItem ? .toLightning(nil) : .toOnChain(nil)
-      let exchangeRates = strongSelf.currencyController.exchangeRates
-      let viewModel = WalletTransferViewModel(direction: direction, amount: .custom, exchangeRates: exchangeRates)
-      let transferViewController = WalletTransferViewController.newInstance(delegate: strongSelf, viewModel: viewModel)
-      strongSelf.toggleChartAndBalance()
-      strongSelf.navigationController.present(transferViewController, animated: true, completion: nil)
+      switch direction {
+      case .toLightning:
+        guard let vm = try? LightningQuickLoadViewModel(balances: WalletBalances(onChain: 1, lightning: 5)) else { return }
+        let vc = LightningQuickLoadViewController.newInstance(viewModel: vm, delegate: strongSelf)
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.modalTransitionStyle = .crossDissolve
+        viewController.present(vc, animated: true, completion: nil)
+
+      case .toOnChain:
+        let exchangeRates = strongSelf.currencyController.exchangeRates
+        let viewModel = WalletTransferViewModel(direction: direction, amount: .custom, exchangeRates: exchangeRates)
+        let transferViewController = WalletTransferViewController.newInstance(delegate: strongSelf, viewModel: viewModel)
+        strongSelf.toggleChartAndBalance()
+        strongSelf.navigationController.present(transferViewController, animated: true, completion: nil)
+      }
     }
 
     alertManager.showActionSheet(in: viewController, with: [toLightningItem, toOnChainItem], actions: actions)
@@ -102,5 +112,9 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
     let sendPaymentViewController = SendPaymentViewController.newInstance(delegate: self, viewModel: sendPaymentVM, alertManager: alertManager)
     navigationController.present(sendPaymentViewController, animated: true)
   }
+
+}
+
+extension AppCoordinator: LightningQuickLoadViewControllerDelegate {
 
 }

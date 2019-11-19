@@ -13,9 +13,10 @@ class LoadLightningBalancesView: UIView {
   @IBOutlet var containerView: UIView!
   @IBOutlet var onChainBalanceLabel: PaddedLabel!
   @IBOutlet var lightningBalanceLabel: PaddedLabel!
-  
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
+
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    xibSetup()
     initialize()
   }
 
