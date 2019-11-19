@@ -100,11 +100,6 @@ class WalletAddressRequestResponseTests: XCTestCase, ResponseStringsTestable {
     let btcResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: nilBTCAmount))
     XCTAssertThrowsError(try WalletAddressRequestResponse.validateResponse(btcResponse),
                          "WalletAddressRequestResponse with nil btcAmount should throw error", { _ in })
-
-    let nilUSDAmount = MetadataAmount(btc: 100, usd: nil)
-    let usdResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: nilUSDAmount))
-    XCTAssertThrowsError(try WalletAddressRequestResponse.validateResponse(usdResponse),
-                         "WalletAddressRequestResponse with nil usdAmount should throw error", { _ in })
   }
 
   func testZeroAmountsThrowError() {
@@ -117,11 +112,6 @@ class WalletAddressRequestResponseTests: XCTestCase, ResponseStringsTestable {
     let btcResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: zeroBTCAmount))
     XCTAssertThrowsError(try WalletAddressRequestResponse.validateResponse(btcResponse),
                          "WalletAddressRequestResponse with btcAmount == 0 should throw error", { _ in })
-
-    let zeroUSDAmount = MetadataAmount(btc: 100, usd: 0)
-    let usdResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: zeroUSDAmount))
-    XCTAssertThrowsError(try WalletAddressRequestResponse.validateResponse(usdResponse),
-                         "WalletAddressRequestResponse with usdAmount == 0 should throw error", { _ in })
   }
 
   func testNegativeAmountsThrowError() {
@@ -134,11 +124,6 @@ class WalletAddressRequestResponseTests: XCTestCase, ResponseStringsTestable {
     let btcResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: negativeBTCAmount))
     XCTAssertThrowsError(try WalletAddressRequestResponse.validateResponse(btcResponse),
                          "WalletAddressRequestResponse with negative btcAmount should throw error", { _ in })
-
-    let negativeUSDAmount = MetadataAmount(btc: 100, usd: -1)
-    let usdResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: negativeUSDAmount))
-    XCTAssertThrowsError(try WalletAddressRequestResponse.validateResponse(usdResponse),
-                         "WalletAddressRequestResponse with negative usdAmount should throw error", { _ in })
   }
 
   func testPositiveAmountsDoNotThrowError() {
