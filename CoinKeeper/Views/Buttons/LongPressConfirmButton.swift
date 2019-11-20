@@ -35,12 +35,12 @@ struct ConfirmButtonConfig {
 
 class LongPressConfirmButton: UIButton {
 
-  weak var delegate: LongPressConfirmButtonDelegate?
-
   enum ScalingMethod: CGFloat {
     case standard = 1.5
     case minimal = 1.2
   }
+
+  private weak var delegate: LongPressConfirmButtonDelegate?
 
   private var scalingMethod: ScalingMethod = .standard
 

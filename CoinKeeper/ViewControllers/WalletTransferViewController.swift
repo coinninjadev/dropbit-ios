@@ -97,7 +97,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
       delegate.viewControllerShouldTrackEvent(event: .onChainToLightningPressed)
     }
 
-    confirmView.confirmButton.delegate = self
+    confirmView.confirmButton.configure(with: .original, delegate: self)
     feesView.delegate = self
     editAmountView.delegate = self
     refreshBothAmounts()

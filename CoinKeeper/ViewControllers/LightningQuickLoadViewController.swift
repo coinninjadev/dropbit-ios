@@ -105,7 +105,7 @@ class LightningQuickLoadViewController: BaseViewController, StoryboardInitializa
       let config = configs[i]
 
       let control = QuickLoadControl(frame: CGRect(origin: .zero, size: controlSize))
-      control.configure(title: config.displayAmount, index: i, isEnabled: config.isEnabled, delegate: self)
+      control.configure(with: config, index: i, delegate: self)
       control.translatesAutoresizingMaskIntoConstraints = false
       control.constrain(toSize: controlSize)
       stackView.addArrangedSubview(control)

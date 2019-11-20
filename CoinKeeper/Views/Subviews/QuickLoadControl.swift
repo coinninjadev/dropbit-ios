@@ -41,6 +41,8 @@ class QuickLoadControl: UIView {
 
   @IBOutlet var confirmButton: LongPressConfirmButton!
   @IBOutlet var titleLabel: UILabel!
+  @IBOutlet var maxLabel: UILabel!
+  @IBOutlet var titleLabelVerticalConstraint: NSLayoutConstraint!
 
   required init?(coder: NSCoder) {
     super.init(coder: coder)
@@ -56,6 +58,8 @@ class QuickLoadControl: UIView {
 
   private func initialize() {
     titleLabel.font = .semiBold(20)
+    maxLabel.font = .semiBold(12)
+    maxLabel.textColor = grayColor(true)
   }
 
   private func grayColor(_ isEnabled: Bool) -> UIColor {
@@ -63,12 +67,15 @@ class QuickLoadControl: UIView {
     return isEnabled ? standard : standard.withAlphaComponent(0.32)
   }
 
-  func configure(title: String, index: Int, isEnabled: Bool, delegate: LongPressConfirmButtonDelegate) {
-    let gray = grayColor(isEnabled)
-    titleLabel.text = title
+  func configure(with config: QuickLoadControlConfig, index: Int, delegate: LongPressConfirmButtonDelegate) {
+    let gray = grayColor(config.isEnabled)
+    titleLabel.text = config.displayAmount
     titleLabel.textColor = gray
-    confirmButton.delegate = delegate
+    confirmButton.isEnabled = config.isEnabled
     confirmButton.tag = index
+    maxLabel.isHidden = !config.isMax
+    titleLabelVerticalConstraint.constant = config.isMax ? -5 : 0
+
     let buttonConfig = ConfirmButtonConfig(foregroundColor: .lightningBlue,
                                            backgroundColor: gray,
                                            scalingMethod: .minimal,
