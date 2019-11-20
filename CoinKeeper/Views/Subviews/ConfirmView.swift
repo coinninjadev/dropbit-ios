@@ -32,8 +32,4 @@ class ConfirmView: UIView {
     tapAndHoldLabel.font = .medium(13)
   }
 
-  func configure(withStyle style: LongPressConfirmButton.Style) {
-    confirmButton.configure(withStyle: style)
-  }
-
 }

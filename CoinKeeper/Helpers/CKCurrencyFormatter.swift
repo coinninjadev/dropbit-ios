@@ -130,6 +130,13 @@ class FiatFormatter: CKCurrencyFormatter {
 
 }
 
+class RoundedFiatFormatter: FiatFormatter {
+
+  override func numberFormatterWithoutSymbol(for currency: CurrencyCode, asInteger: Bool = false) -> NumberFormatter {
+    return super.numberFormatterWithoutSymbol(for: currency, asInteger: true)
+  }
+}
+
 class EditingFiatAmountFormatter: CKCurrencyFormatter {
 
   init(currency: CurrencyCode) {

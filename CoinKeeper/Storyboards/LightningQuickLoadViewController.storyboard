@@ -46,18 +46,18 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g8g-ys-u3f">
-                                                <rect key="frame" x="41" y="121.5" width="320" height="67"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="g8g-ys-u3f">
+                                                <rect key="frame" x="41" y="121.5" width="320" height="74"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="67" id="odD-WJ-VRi"/>
+                                                    <constraint firstAttribute="height" constant="74" id="odD-WJ-VRi"/>
                                                     <constraint firstAttribute="width" constant="320" id="ykm-BM-oHo"/>
                                                 </constraints>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WCA-zU-uA6">
-                                                <rect key="frame" x="41" y="196.5" width="320" height="67"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="WCA-zU-uA6">
+                                                <rect key="frame" x="41" y="203.5" width="320" height="74"/>
                                             </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aay-zN-0Ku">
-                                                <rect key="frame" x="151" y="271.5" width="100" height="73.5"/>
+                                                <rect key="frame" x="151" y="285.5" width="100" height="59.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="100" id="NWO-op-NtE"/>
                                                 </constraints>

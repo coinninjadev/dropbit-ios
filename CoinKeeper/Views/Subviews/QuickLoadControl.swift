@@ -24,6 +24,17 @@ struct QuickLoadControlConfig {
     self.amount = maxAmount
     self.isMax = true
   }
+
+  var displayAmount: String {
+    let formatter: CKCurrencyFormatter
+    if isMax {
+      formatter = FiatFormatter(currency: amount.currency, withSymbol: true)
+    } else {
+      formatter = RoundedFiatFormatter(currency: amount.currency, withSymbol: true)
+    }
+    return formatter.string(fromDecimal: amount.amount) ?? "-"
+  }
+
 }
 
 class QuickLoadControl: UIView {
@@ -44,13 +55,24 @@ class QuickLoadControl: UIView {
   }
 
   private func initialize() {
-    confirmButton.configure(withStyle: .lightning)
+    titleLabel.font = .semiBold(20)
   }
 
-  func configure(title: String, index: Int, delegate: LongPressConfirmButtonDelegate) {
+  private func grayColor(_ isEnabled: Bool) -> UIColor {
+    let standard: UIColor = .mediumGrayBackground
+    return isEnabled ? standard : standard.withAlphaComponent(0.32)
+  }
+
+  func configure(title: String, index: Int, isEnabled: Bool, delegate: LongPressConfirmButtonDelegate) {
+    let gray = grayColor(isEnabled)
     titleLabel.text = title
+    titleLabel.textColor = gray
     confirmButton.delegate = delegate
     confirmButton.tag = index
+    let buttonConfig = ConfirmButtonConfig(foregroundColor: .lightningBlue,
+                                           backgroundColor: gray,
+                                           secondsToConfirm: 1.5)
+    confirmButton.configure(with: buttonConfig, delegate: delegate)
   }
 
 }

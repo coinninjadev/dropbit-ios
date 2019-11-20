@@ -12,28 +12,27 @@ protocol LongPressConfirmButtonDelegate: class {
   func confirmationButtonDidConfirm(_ button: LongPressConfirmButton)
 }
 
-class LongPressConfirmButton: UIButton {
+struct ConfirmButtonConfig {
 
-  enum Style {
-    case original
-    case onChain
-    case lightning
+  let foregroundColor: UIColor
+  var backgroundColor: UIColor = .darkGrayBackground
+  let secondsToConfirm: Double
 
-    var color: UIColor {
-      switch self {
-      case .original:   return .lightBlueTint
-      case .onChain:    return .bitcoinOrange
-      case .lightning:  return .lightningBlue
-      }
-    }
-
-    var secondsToConfirm: Double {
-      switch self {
-      case .original, .onChain:   return 3.0
-      case .lightning:            return 1.5
-      }
-    }
+  static var original: ConfirmButtonConfig {
+    ConfirmButtonConfig(foregroundColor: .lightBlueTint, secondsToConfirm: 3.0)
   }
+
+  static var onChain: ConfirmButtonConfig {
+    ConfirmButtonConfig(foregroundColor: .bitcoinOrange, secondsToConfirm: 3.0)
+  }
+
+  static var lightning: ConfirmButtonConfig {
+    ConfirmButtonConfig(foregroundColor: .lightningBlue, secondsToConfirm: 1.5)
+  }
+
+}
+
+class LongPressConfirmButton: UIButton {
 
   weak var delegate: LongPressConfirmButtonDelegate?
 
@@ -46,10 +45,12 @@ class LongPressConfirmButton: UIButton {
   lazy private var longPressGestureRecognizer: UILongPressGestureRecognizer =
     UILongPressGestureRecognizer(target: self, action: #selector(confirmButtonDidConfirm))
 
-  func configure(withStyle style: Style) {
-    foregroundShapeLayer.strokeColor = style.color.cgColor
-    circleAnimation.duration = style.secondsToConfirm
-    longPressGestureRecognizer.minimumPressDuration = style.secondsToConfirm
+  func configure(with config: ConfirmButtonConfig, delegate: LongPressConfirmButtonDelegate?) {
+    foregroundShapeLayer.strokeColor = config.foregroundColor.cgColor
+    backgroundShapeLayer.strokeColor = config.backgroundColor.cgColor
+    circleAnimation.duration = config.secondsToConfirm
+    longPressGestureRecognizer.minimumPressDuration = config.secondsToConfirm
+    self.delegate = delegate
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -62,7 +63,7 @@ class LongPressConfirmButton: UIButton {
     setupDefaults()
     setupCircleAnimation()
 
-    configure(withStyle: .original)
+    configure(with: .original, delegate: nil)
     feedbackGenerator.prepare()
     longPressGestureRecognizer.allowableMovement = 1000
     self.addGestureRecognizer(longPressGestureRecognizer)
@@ -130,7 +131,6 @@ class LongPressConfirmButton: UIButton {
     backgroundShapeLayer.path = backgroundBezierPath.cgPath
     backgroundShapeLayer.lineCap = CAShapeLayerLineCap.round
     backgroundShapeLayer.lineWidth = frame.size.height / lineWidthDivisor
-    backgroundShapeLayer.strokeColor = UIColor.darkGrayText.cgColor
     backgroundShapeLayer.fillColor = UIColor.clear.cgColor
     backgroundShapeLayer.strokeEnd = 1.0
     backgroundShapeLayer.zPosition = -1

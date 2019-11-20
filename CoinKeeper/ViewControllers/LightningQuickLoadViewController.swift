@@ -93,16 +93,16 @@ class LightningQuickLoadViewController: BaseViewController, StoryboardInitializa
 
     balanceView.configure(withFiatBalances: viewModel.balances, currency: viewModel.currency)
 
-    addControls(from: viewModel.controlConfigs, indexOffset: 0, to: topStackView)
-    addControls(from: viewModel.controlConfigs, indexOffset: 3, to: bottomStackView)
+    addControls(from: viewModel.controlConfigs, startIndex: 0, to: topStackView)
+    addControls(from: viewModel.controlConfigs, startIndex: 3, to: bottomStackView)
   }
 
-  private func addControls(from configs: [QuickLoadControlConfig], indexOffset: Int, to stackView: UIStackView) {
-    let endIndex = indexOffset + 3
-    for i in indexOffset..<endIndex {
+  private func addControls(from configs: [QuickLoadControlConfig], startIndex: Int, to stackView: UIStackView) {
+    let endIndex = startIndex + 3
+    for i in startIndex..<endIndex {
       let config = configs[i]
       let control = QuickLoadControl(frame: .zero)
-      control.configure(title: config.amount.displayString, index: i, delegate: self)
+      control.configure(title: config.displayAmount, index: i, isEnabled: config.isEnabled, delegate: self)
       stackView.addArrangedSubview(control)
     }
   }

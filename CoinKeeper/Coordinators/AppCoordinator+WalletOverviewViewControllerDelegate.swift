@@ -118,4 +118,12 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
 
 extension AppCoordinator: LightningQuickLoadViewControllerDelegate {
 
+  func viewControllerDidConfirmQuickLoad(_ viewController: LightningQuickLoadViewController, amount: Money, isMax: Bool) {
+
+  }
+
+  func viewControllerDidRequestCustomAmountLoad(_ viewController: LightningQuickLoadViewController) {
+
+  }
+
 }
