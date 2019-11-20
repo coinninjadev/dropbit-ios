@@ -12,10 +12,23 @@ struct QuickLoadControlConfig {
   let isEnabled: Bool
   let amount: Money
   let isMax: Bool
+
+  init(isEnabled: Bool, amount: Money) {
+    self.isEnabled = isEnabled
+    self.amount = amount
+    self.isMax = false
+  }
+
+  init(maxAmount: Money) {
+    self.isEnabled = true
+    self.amount = maxAmount
+    self.isMax = true
+  }
 }
 
 class QuickLoadControl: UIView {
 
+  @IBOutlet var confirmButton: LongPressConfirmButton!
   @IBOutlet var titleLabel: UILabel!
 
   required init?(coder: NSCoder) {
@@ -26,15 +39,18 @@ class QuickLoadControl: UIView {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
+    xibSetup()
     initialize()
   }
 
   private func initialize() {
-    //set colors on button
+    confirmButton.configure(withStyle: .lightning)
   }
 
-  func configure(title: String, delegate: LongPressConfirmButtonDelegate) {
+  func configure(title: String, index: Int, delegate: LongPressConfirmButtonDelegate) {
     titleLabel.text = title
+    confirmButton.delegate = delegate
+    confirmButton.tag = index
   }
 
 }

@@ -10,6 +10,11 @@ import UIKit
 
 protocol LightningQuickLoadViewControllerDelegate: ViewControllerDismissable {
 
+  func viewControllerDidConfirmQuickLoad(_ viewController: LightningQuickLoadViewController,
+                                         amount: Money,
+                                         isMax: Bool)
+
+  func viewControllerDidRequestCustomAmountLoad(_ viewController: LightningQuickLoadViewController)
 }
 
 struct LightningQuickLoadViewModel {
@@ -22,11 +27,17 @@ struct LightningQuickLoadViewModel {
     //Validate the on chain and lightning balances, throw LightningWalletAmountValidatorError as appropriate
     self.balances = balances
     self.currency = currency
-    self.controlConfigs = LightningQuickLoadViewModel.configs(withMax: .one, currency: currency)
+    self.controlConfigs = LightningQuickLoadViewModel.configs(withMax: NSDecimalNumber(value: 45.32), currency: currency)
   }
 
   private static func configs(withMax max: NSDecimalNumber, currency: CurrencyCode) -> [QuickLoadControlConfig] {
-    return []
+    let standardAmounts: [NSDecimalNumber] = [5, 10, 20, 50, 100].map { NSDecimalNumber(value: $0) }
+    let standardConfigs = standardAmounts.map { amount -> QuickLoadControlConfig in
+      let money = Money(amount: amount, currency: currency)
+      return QuickLoadControlConfig(isEnabled: amount <= max, amount: money)
+    }
+    let maxConfig = QuickLoadControlConfig(maxAmount: Money(amount: max, currency: currency))
+    return standardConfigs + [maxConfig]
   }
 
 }
@@ -43,6 +54,10 @@ class LightningQuickLoadViewController: BaseViewController, StoryboardInitializa
 
   @IBAction func performClose(_ sender: Any) {
     delegate.viewControllerDidSelectClose(self)
+  }
+
+  @IBAction func performCustomAmount(_ sender: Any) {
+    delegate.viewControllerDidRequestCustomAmountLoad(self)
   }
 
   private var viewModel: LightningQuickLoadViewModel!
@@ -78,17 +93,27 @@ class LightningQuickLoadViewController: BaseViewController, StoryboardInitializa
 
     balanceView.configure(withFiatBalances: viewModel.balances, currency: viewModel.currency)
 
-    for (i, config) in viewModel.controlConfigs.enumerated() {
+    addControls(from: viewModel.controlConfigs, indexOffset: 0, to: topStackView)
+    addControls(from: viewModel.controlConfigs, indexOffset: 3, to: bottomStackView)
+  }
+
+  private func addControls(from configs: [QuickLoadControlConfig], indexOffset: Int, to stackView: UIStackView) {
+    let endIndex = indexOffset + 3
+    for i in indexOffset..<endIndex {
+      let config = configs[i]
       let control = QuickLoadControl(frame: .zero)
-      control.configure(title: config.amount.displayString, delegate: self)
-      //TODO: Set tag on LongPressConfirmButton to i
+      control.configure(title: config.amount.displayString, index: i, delegate: self)
+      stackView.addArrangedSubview(control)
     }
   }
 
 }
 
 extension LightningQuickLoadViewController: LongPressConfirmButtonDelegate {
+
   func confirmationButtonDidConfirm(_ button: LongPressConfirmButton) {
-    print("Button at index \(button.tag) did confirm")
+    let config = viewModel.controlConfigs[button.tag]
+    delegate.viewControllerDidConfirmQuickLoad(self, amount: config.amount, isMax: config.isMax)
   }
+
 }

@@ -10,6 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="QuickLoadControl" customModule="DropBit" customModuleProvider="target">
             <connections>
+                <outlet property="confirmButton" destination="WCT-yH-bT3" id="3VF-B6-NC3"/>
                 <outlet property="titleLabel" destination="VXh-iP-4aZ" id="77B-fM-Lct"/>
             </connections>
         </placeholder>
