@@ -32,11 +32,11 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="WCT-yH-bT3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="0XQ-Xg-Jcy"/>
-                <constraint firstItem="VXh-iP-4aZ" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="54K-2U-OD7"/>
+                <constraint firstItem="VXh-iP-4aZ" firstAttribute="centerX" secondItem="WCT-yH-bT3" secondAttribute="centerX" id="7tj-xC-maL"/>
                 <constraint firstItem="WCT-yH-bT3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="G3m-GD-Gc3"/>
                 <constraint firstAttribute="bottom" secondItem="WCT-yH-bT3" secondAttribute="bottom" id="Leh-jc-VAY"/>
                 <constraint firstAttribute="trailing" secondItem="WCT-yH-bT3" secondAttribute="trailing" id="Wz5-ZD-gdQ"/>
-                <constraint firstItem="VXh-iP-4aZ" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="ggX-Pb-K1Y"/>
+                <constraint firstItem="VXh-iP-4aZ" firstAttribute="centerY" secondItem="WCT-yH-bT3" secondAttribute="centerY" id="w3G-GO-fZf"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
