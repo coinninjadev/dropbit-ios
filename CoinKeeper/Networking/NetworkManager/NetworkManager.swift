@@ -28,6 +28,7 @@ protocol NetworkManagerType: HeaderDelegate &
   NewsDataRequestable &
   UserRequestable &
   WalletRequestable &
+  MerchantRequestable &
   WalletAddressRequestable &
   WalletAddressRequestRequestable &
 NotificationNetworkInteractable {

@@ -1,5 +1,5 @@
 //
-//  BuyMerchantAttributeView.swift
+//  MerchantAttributeView.swift
 //  DropBit
 //
 //  Created by Mitchell Malleo on 11/12/19.
@@ -9,18 +9,18 @@
 import Foundation
 import UIKit
 
-protocol BuyMerchantAttributeViewDelegate: AnyObject {
+protocol MerchantAttributeViewDelegate: AnyObject {
   func attributeViewWasTouched(with url: URL)
 }
 
-class BuyMerchantAttributeView: UIView {
+class MerchantAttributeView: UIView {
 
   @IBOutlet var imageView: UIImageView!
   @IBOutlet var descriptionLabel: UILabel!
   @IBOutlet var linkButton: UIButton!
 
-  weak var delegate: BuyMerchantAttributeViewDelegate?
-  var viewModel: BuyMerchantAttribute?
+  weak var delegate: MerchantAttributeViewDelegate?
+  var viewModel: MerchantAttributeResponse?
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -29,7 +29,6 @@ class BuyMerchantAttributeView: UIView {
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
-    initialize()
   }
 
   private func initialize() {
@@ -42,7 +41,7 @@ class BuyMerchantAttributeView: UIView {
     backgroundColor = .lightGrayBackground
   }
 
-  func load(with model: BuyMerchantAttribute) {
+  func load(with model: MerchantAttributeResponse) {
     imageView.image = model.image
     viewModel = model
 
