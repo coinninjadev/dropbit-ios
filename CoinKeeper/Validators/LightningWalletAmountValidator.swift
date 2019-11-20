@@ -79,24 +79,8 @@ class LightningWalletAmountValidator: ValidatorType<CurrencyConverter> {
 
     let btcValue = value.btcAmount
 
-    switch btcValue {
-    case .notANumber: throw CurrencyStringValidatorError.notANumber
-    case .zero:       throw CurrencyStringValidatorError.isZero
-    default:          break
-    }
-
-    switch type {
-    case .onChain:
-      if btcValue > balancesNetPending.onChain {
-        let spendableMoney = Money(amount: balancesNetPending.onChain, currency: .BTC)
-        throw CurrencyAmountValidatorError.usableBalance(spendableMoney)
-      }
-    case .lightning:
-      if btcValue > balancesNetPending.lightning {
-        let spendableMoney = Money(amount: balancesNetPending.lightning, currency: .BTC)
-        throw CurrencyAmountValidatorError.usableBalance(spendableMoney)
-      }
-    }
+    try validateAmountIsNonZeroNumber(btcValue)
+    try validateBalanceNetPendingIsSufficient(forAmount: btcValue, balances: balancesNetPending, walletTxType: type)
 
     if !ignoringOptions.contains(.minReloadAmount) {
       if usdAmount < LightningWalletAmountValidator.minReloadAmount.amount {
@@ -112,6 +96,31 @@ class LightningWalletAmountValidator: ValidatorType<CurrencyConverter> {
         throw LightningWalletAmountValidatorError.walletMaximum
       }
     }
-
   }
+
+  private func validateAmountIsNonZeroNumber(_ amount: NSDecimalNumber) throws {
+    switch amount {
+    case .notANumber: throw CurrencyStringValidatorError.notANumber
+    case .zero:       throw CurrencyStringValidatorError.isZero
+    default:          break
+    }
+  }
+
+  private func validateBalanceNetPendingIsSufficient(forAmount amount: NSDecimalNumber,
+                                                     balances: WalletBalances,
+                                                     walletTxType: WalletTransactionType) throws {
+    switch walletTxType {
+    case .onChain:
+      if amount > balances.onChain {
+        let spendableMoney = Money(amount: balances.onChain, currency: .BTC)
+        throw CurrencyAmountValidatorError.usableBalance(spendableMoney)
+      }
+    case .lightning:
+      if amount > balances.lightning {
+        let spendableMoney = Money(amount: balances.lightning, currency: .BTC)
+        throw CurrencyAmountValidatorError.usableBalance(spendableMoney)
+      }
+    }
+  }
+
 }
