@@ -16,6 +16,7 @@ struct ConfirmButtonConfig {
 
   let foregroundColor: UIColor
   var backgroundColor: UIColor = .darkGrayBackground
+  var scalingMethod: LongPressConfirmButton.ScalingMethod = .standard
   let secondsToConfirm: Double
 
   static var original: ConfirmButtonConfig {
@@ -36,6 +37,13 @@ class LongPressConfirmButton: UIButton {
 
   weak var delegate: LongPressConfirmButtonDelegate?
 
+  enum ScalingMethod: CGFloat {
+    case standard = 1.5
+    case minimal = 1.2
+  }
+
+  private var scalingMethod: ScalingMethod = .standard
+
   private var backgroundBezierPath: UIBezierPath = UIBezierPath()
   private var backgroundShapeLayer: CAShapeLayer = CAShapeLayer()
   private var foregroundShapeLayer: CAShapeLayer = CAShapeLayer()
@@ -49,6 +57,7 @@ class LongPressConfirmButton: UIButton {
     foregroundShapeLayer.strokeColor = config.foregroundColor.cgColor
     backgroundShapeLayer.strokeColor = config.backgroundColor.cgColor
     circleAnimation.duration = config.secondsToConfirm
+    scalingMethod = config.scalingMethod
     longPressGestureRecognizer.minimumPressDuration = config.secondsToConfirm
     self.delegate = delegate
   }
@@ -114,7 +123,7 @@ class LongPressConfirmButton: UIButton {
 
   private func startAnimation() {
     foregroundShapeLayer.add(circleAnimation, forKey: "draw")
-    let scale: CGFloat = 1.5
+    let scale: CGFloat = scalingMethod.rawValue
     backgroundShapeLayer.transform = CATransform3DMakeScale(scale, scale, 1.0)
     foregroundShapeLayer.transform = CATransform3DMakeScale(scale, scale, 1.0)
   }

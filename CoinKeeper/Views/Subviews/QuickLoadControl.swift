@@ -71,6 +71,7 @@ class QuickLoadControl: UIView {
     confirmButton.tag = index
     let buttonConfig = ConfirmButtonConfig(foregroundColor: .lightningBlue,
                                            backgroundColor: gray,
+                                           scalingMethod: .minimal,
                                            secondsToConfirm: 1.5)
     confirmButton.configure(with: buttonConfig, delegate: delegate)
   }

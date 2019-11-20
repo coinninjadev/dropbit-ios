@@ -16,14 +16,14 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="70" height="64"/>
+            <rect key="frame" x="0.0" y="0.0" width="74" height="74"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WCT-yH-bT3" customClass="LongPressConfirmButton" customModule="DropBit" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="70" height="64"/>
+                    <rect key="frame" x="0.0" y="0.0" width="74" height="74"/>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VXh-iP-4aZ">
-                    <rect key="frame" x="14" y="21.5" width="42" height="21"/>
+                    <rect key="frame" x="16" y="26.5" width="42" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -31,12 +31,12 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="WCT-yH-bT3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="0XQ-Xg-Jcy"/>
-                <constraint firstItem="VXh-iP-4aZ" firstAttribute="centerX" secondItem="WCT-yH-bT3" secondAttribute="centerX" id="7tj-xC-maL"/>
-                <constraint firstItem="WCT-yH-bT3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="G3m-GD-Gc3"/>
-                <constraint firstAttribute="bottom" secondItem="WCT-yH-bT3" secondAttribute="bottom" id="Leh-jc-VAY"/>
-                <constraint firstAttribute="trailing" secondItem="WCT-yH-bT3" secondAttribute="trailing" id="Wz5-ZD-gdQ"/>
-                <constraint firstItem="VXh-iP-4aZ" firstAttribute="centerY" secondItem="WCT-yH-bT3" secondAttribute="centerY" id="w3G-GO-fZf"/>
+                <constraint firstItem="VXh-iP-4aZ" firstAttribute="centerY" secondItem="WCT-yH-bT3" secondAttribute="centerY" id="0vk-aU-w3J"/>
+                <constraint firstItem="VXh-iP-4aZ" firstAttribute="centerX" secondItem="WCT-yH-bT3" secondAttribute="centerX" id="Rt8-OT-A0x"/>
+                <constraint firstItem="WCT-yH-bT3" firstAttribute="bottom" secondItem="Hfk-eF-EsP" secondAttribute="bottom" id="aeH-qo-cPV"/>
+                <constraint firstItem="WCT-yH-bT3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="fuq-q3-uHe"/>
+                <constraint firstItem="WCT-yH-bT3" firstAttribute="trailing" secondItem="Hfk-eF-EsP" secondAttribute="trailing" id="l1I-2b-g7H"/>
+                <constraint firstItem="WCT-yH-bT3" firstAttribute="leading" secondItem="Hfk-eF-EsP" secondAttribute="leading" id="mcm-8Q-n0v"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>

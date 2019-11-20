@@ -27,4 +27,11 @@ extension UIView {
     NSLayoutConstraint.activate(desiredConstraints)
   }
 
+  func constrain(toSize size: CGSize) {
+    NSLayoutConstraint.activate([
+      self.widthAnchor.constraint(equalToConstant: size.width),
+      self.heightAnchor.constraint(equalToConstant: size.height)
+    ])
+  }
+
 }
