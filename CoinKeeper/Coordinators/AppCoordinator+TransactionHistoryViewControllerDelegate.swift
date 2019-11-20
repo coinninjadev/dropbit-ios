@@ -10,6 +10,7 @@ import Foundation
 import PromiseKit
 import UIKit
 import MMDrawerController
+import SVProgressHUD
 
 extension AppCoordinator: TransactionHistoryViewControllerDelegate {
 
@@ -36,48 +37,21 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
       let btcAddress = wmgr.createAddressDataSource()
         .nextAvailableReceiveAddress(forServerPool: false, indicesToSkip: [], in: context)?
         .address else { return }
-    let controller = GetBitcoinViewController.newInstance(delegate: self,
-                                                          viewModels: getBitcoinDataSource(),
-                                                          bitcoinAddress: btcAddress)
-    navigationController.pushViewController(controller, animated: true)
-  }
 
-  private func getBitcoinDataSource() -> [BuyMerchantResponse] {
-    var wyreAttributes: [BuyMerchantAttribute] = [], coinNinjaAttributes: [BuyMerchantAttribute] = []
+    alertManager.showActivityHUD(withStatus: nil)
 
-    wyreAttributes.append(BuyMerchantAttribute(type: .positive,
-                                               description: "Buy Bitcoin using Apple Pay"))
-    wyreAttributes.append(BuyMerchantAttribute(type: .positive,
-                                               description: "Takes less than 30 seconds"))
-    wyreAttributes.append(BuyMerchantAttribute(type: .negative,
-                                               description: "$500 daily limit"))
-    var attribute = BuyMerchantAttribute(type: .negative,
-                                         description: "Location restrictions may apply")
-    attribute.link = "https://support.sendwyre.com/en/articles/1863574-geographic-restrictions"
-    wyreAttributes.append(attribute)
+    networkManager.fetchMerchants()
+      .done { merchants in
+        let controller = GetBitcoinViewController.newInstance(delegate: self,
+                                                              viewModels: merchants.config,
+                                                              bitcoinAddress: btcAddress)
+        self.navigationController.pushViewController(controller, animated: true)
+    }.catch { error in
+      self.alertManager.showError(message: error.localizedDescription, forDuration: 2.0)
+    }.finally {
+      self.alertManager.hideActivityHUD(withDelay: nil, completion: nil)
+    }
 
-    let wyre = BuyMerchantResponse(image: UIImage(imageLiteralResourceName: "wyreLogo"),
-                                   tooltipUrl: "https://dropbit.app/tooltips/wyre",
-                                   attributes: wyreAttributes,
-                                   actionType: BuyMerchantBuyType.device.rawValue,
-                                   actionUrl: "")
-
-    coinNinjaAttributes.append(BuyMerchantAttribute(type: .positive,
-                                               description: "Can use cash to buy"))
-    coinNinjaAttributes.append(BuyMerchantAttribute(type: .positive,
-                                               description: "Can sell Bitcoin for cash"))
-    coinNinjaAttributes.append(BuyMerchantAttribute(type: .negative,
-                                               description: "May limit based on verification"))
-    coinNinjaAttributes.append(BuyMerchantAttribute(type: .negative,
-                                               description: "High fees"))
-
-    let coinNinja = BuyMerchantResponse(image: UIImage(imageLiteralResourceName: "coinNinjaLogo"),
-                                        tooltipUrl: nil,
-                                        attributes: coinNinjaAttributes,
-                                        actionType: BuyMerchantBuyType.atm.rawValue,
-                                        actionUrl: "")
-
-    return [wyre, coinNinja]
   }
 
   func viewControllerDidTapSpendBitcoin(_ viewController: UIViewController) {

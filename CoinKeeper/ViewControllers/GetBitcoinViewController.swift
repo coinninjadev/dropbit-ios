@@ -13,20 +13,23 @@ import PromiseKit
 protocol GetBitcoinViewControllerDelegate: URLOpener {
   func viewControllerFindBitcoinATMNearMe(_ viewController: GetBitcoinViewController)
   func viewControllerDidCopyAddress(_ viewController: UIViewController)
-  func viewControllerBuyWithApplePay(_ viewController: GetBitcoinViewController, bitcoinAddress: String)
+  func viewControllerDidPressMerchant(_ viewController: UIViewController,
+                                      type: MerchantCallToActionStyle,
+                                      url: URL)
 }
 
 final class GetBitcoinViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var tableView: UITableView!
 
-  var viewModels: [BuyMerchantResponse] = []
+  var viewModels: [MerchantResponse] = []
+
 
   private(set) weak var delegate: GetBitcoinViewControllerDelegate!
   private(set) var bitcoinAddress = ""
 
   static func newInstance(delegate: GetBitcoinViewControllerDelegate,
-                          viewModels: [BuyMerchantResponse],
+                          viewModels: [MerchantResponse],
                           bitcoinAddress: String) -> GetBitcoinViewController {
     let vc = GetBitcoinViewController.makeFromStoryboard()
     vc.delegate = delegate
@@ -114,16 +117,18 @@ extension GetBitcoinViewController: PurchaseMerchantTableViewCellDelegate {
     delegate.openURL(url, completionHandler: nil)
   }
 
-  func actionButtonWasPressed(with type: BuyMerchantBuyType, url: String) {
+  func actionButtonWasPressed(type: MerchantCallToActionStyle, url: String) {
+    guard let address = bitcoinAddress.asNilIfEmpty(),
+      let url = URL(string: "\(url)?address=\(address)") else { return }
+
     switch type {
     case .device:
-      delegate.viewControllerBuyWithApplePay(self, bitcoinAddress: bitcoinAddress)
+      delegate.viewControllerDidPressMerchant(self, type: type, url: url)
     case .atm:
       delegate.viewControllerFindBitcoinATMNearMe(self)
     case .default:
-      guard let url = URL(string: url) else { return }
       UIPasteboard.general.string = bitcoinAddress
-      delegate.openURLExternally(url, completionHandler: nil)
+      delegate.viewControllerDidPressMerchant(self, type: type, url: url)
     }
   }
 }

@@ -23,5 +23,6 @@ extension FetchImageType {
         completion(image)
       }
     }
+    dataTask?.resume()
   }
 }

@@ -33,15 +33,19 @@ extension AppCoordinator: GetBitcoinViewControllerDelegate {
     }
   }
 
-  func viewControllerBuyWithApplePay(_ viewController: GetBitcoinViewController, bitcoinAddress: String) {
-    analyticsManager.track(event: .buyWithQuickPay, with: nil)
-    guard bitcoinAddress.asNilIfEmpty() != nil else {
-      let warning = "An error occurred: No Bitcoin receive address was detected. Please try again later."
-      self.alertManager.showError(message: warning, forDuration: 2.0)
-      return
+  func viewControllerDidPressMerchant(_ viewController: UIViewController,
+                                      type: MerchantCallToActionStyle,
+                                      url: URL) {
+    switch type {
+    case .device:
+      analyticsManager.track(event: .buyWithQuickPay, with: nil)
+    case .default:
+      analyticsManager.track(event: .buyNowButton, with: nil)
+    default:
+      break
     }
+
     viewControllerRequestedAuthenticationSuspension(viewController)
-    guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyWithApplePay(bitcoinAddress)) else { return }
     openURLExternally(url, completionHandler: nil)
   }
 
