@@ -58,19 +58,9 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
   }
 
   private func createQuickLoadViewModel() throws -> LightningQuickLoadViewModel {
-    let btcBalances = self.spendableBalancesNetPending()
+    let balances = self.spendableBalancesNetPending()
     let rates = self.currencyController.exchangeRates
-    let quickLoadCurrency: CurrencyCode = .USD
-    let fiatBalances = convertBalances(btcBalances, to: quickLoadCurrency, with: rates)
-    return try LightningQuickLoadViewModel(fiatBalances: fiatBalances, currency: quickLoadCurrency)
-  }
-
-  private func convertBalances(_ balances: WalletBalances, to currency: CurrencyCode, with rates: ExchangeRates) -> WalletBalances {
-    let onChainConverter = CurrencyConverter(fromBtcTo: currency, fromAmount: balances.onChain, rates: rates)
-    let onChainFiat = onChainConverter.fiatAmount
-    let lightningConverter = CurrencyConverter(fromBtcTo: currency, fromAmount: balances.lightning, rates: rates)
-    let lightningFiat = lightningConverter.fiatAmount
-    return WalletBalances(onChain: onChainFiat, lightning: lightningFiat)
+    return try LightningQuickLoadViewModel(spendableBalances: balances, rates: rates, currency: .USD)
   }
 
   private func showQuickLoadBalanceError(for error: Error) {

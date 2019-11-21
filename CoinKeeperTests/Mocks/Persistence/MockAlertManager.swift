@@ -97,6 +97,10 @@ class MockAlertManager: AlertManagerType {
     return alertManager.alert(withTitle: title, description: description, image: image, style: style, actionConfigs: [])
   }
 
+  func okAlertActionConfig(action: CKCompletion?) -> AlertActionConfigurationType {
+    return AlertActionConfiguration(title: "OK", style: .cancel, action: action)
+  }
+
   var notificationManager: NotificationManagerType
 
   required init(notificationManager: NotificationManagerType) {

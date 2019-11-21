@@ -17,31 +17,6 @@ protocol LightningQuickLoadViewControllerDelegate: ViewControllerDismissable {
   func viewControllerDidRequestCustomAmountLoad(_ viewController: LightningQuickLoadViewController)
 }
 
-struct LightningQuickLoadViewModel {
-
-  let balances: WalletBalances
-  let currency: CurrencyCode
-  let controlConfigs: [QuickLoadControlConfig]
-
-  init(fiatBalances: WalletBalances, currency: CurrencyCode) throws {
-    //Validate the on chain and lightning balances, throw LightningWalletAmountValidatorError as appropriate
-    self.balances = fiatBalances
-    self.currency = currency
-    self.controlConfigs = LightningQuickLoadViewModel.configs(withMax: NSDecimalNumber(value: 45.32), currency: currency)
-  }
-
-  private static func configs(withMax max: NSDecimalNumber, currency: CurrencyCode) -> [QuickLoadControlConfig] {
-    let standardAmounts: [NSDecimalNumber] = [5, 10, 20, 50, 100].map { NSDecimalNumber(value: $0) }
-    let standardConfigs = standardAmounts.map { amount -> QuickLoadControlConfig in
-      let money = Money(amount: amount, currency: currency)
-      return QuickLoadControlConfig(isEnabled: amount <= max, amount: money)
-    }
-    let maxConfig = QuickLoadControlConfig(maxAmount: Money(amount: max, currency: currency))
-    return standardConfigs + [maxConfig]
-  }
-
-}
-
 class LightningQuickLoadViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var backgroundView: UIView!
