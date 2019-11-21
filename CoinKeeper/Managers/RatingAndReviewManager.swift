@@ -34,7 +34,7 @@ class RatingAndReviewManager: RatingAndReviewManagerType {
   }
 
   // MARK: private
-  func shouldPromptForReview(didReceiveFunds: Bool) -> Bool {
+  private func shouldPromptForReview(didReceiveFunds: Bool) -> Bool {
     guard let pmgr = persistenceManager else { return false }
 
     let now = Date()
