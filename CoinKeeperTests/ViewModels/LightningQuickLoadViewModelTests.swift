@@ -35,11 +35,30 @@ class LightningQuickLoadViewModelTests: XCTestCase {
   }
 
   func testHighLightningBalanceThrowsError() {
-
+    let balances = WalletBalances(onChain: .one, lightning: .one)
+    let expectedError = LightningWalletAmountValidatorError.walletMaximum
+    let rates = CurrencyConverter.sampleRates
+    do {
+      sut = try LightningQuickLoadViewModel(spendableBalances: balances, rates: rates, currency: .USD)
+      XCTFail("Should throw error")
+    } catch let error as LightningWalletAmountValidatorError {
+      XCTAssertEqual(error, expectedError)
+    } catch {
+      XCTFail("Threw unexpected error: \(error.localizedDescription)")
+    }
   }
 
   func testModerateOnChainBalanceEqualsMaxAmount() {
-
+    let expectedMaxFiatAmount = NSDecimalNumber(integerAmount: 2050, currency: .USD)
+    let rates = CurrencyConverter.sampleRates
+    let balanceConverter = CurrencyConverter(rates: rates, fromAmount: expectedMaxFiatAmount, currencyPair: .USD_BTC)
+    let balances = WalletBalances(onChain: balanceConverter.btcAmount, lightning: .zero)
+    do {
+      sut = try LightningQuickLoadViewModel(spendableBalances: balances, rates: rates, currency: .USD)
+      XCTAssertEqual(sut.controlConfigs.last!.amount.amount, expectedMaxFiatAmount)
+    } catch {
+      XCTFail("Threw unexpected error: \(error.localizedDescription)")
+    }
   }
 
   func testHighOnChainBalanceIsLimitedByMaxLightningBalance() {

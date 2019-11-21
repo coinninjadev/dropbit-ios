@@ -19,11 +19,18 @@ struct LightningQuickLoadViewModel {
   }
 
   init(spendableBalances: WalletBalances, rates: ExchangeRates, currency: CurrencyCode) throws {
-    let maxAmount = spendableBalances.onChain
     //Validate the on chain and lightning balances, throw LightningWalletAmountValidatorError as appropriate
+
+    let minStandardAmountConverter = CurrencyConverter(fromBtcTo: currency,
+                                                       fromAmount: spendableBalances.onChain,
+                                                       rates: rates)
+    let validator = LightningWalletAmountValidator(balancesNetPending: spendableBalances, walletType: .onChain)
+    try validator.validate(value: minStandardAmountConverter)
+    let maxAmount = validator.maxLoadAmount(using: rates)
+
     self.balances = spendableBalances
     self.currency = currency
-    self.controlConfigs = [] // LightningQuickLoadViewModel.configs(withMax: maxAmount, currency: currency)
+    self.controlConfigs = LightningQuickLoadViewModel.configs(withMax: maxAmount, currency: currency)
   }
 
   private static func configs(withMax max: NSDecimalNumber, currency: CurrencyCode) -> [QuickLoadControlConfig] {
