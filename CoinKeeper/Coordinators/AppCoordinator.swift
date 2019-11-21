@@ -51,6 +51,7 @@ class AppCoordinator: CoordinatorType {
   let messageManager: MessagesManagerType
   let persistenceCacheDataWorker: PersistenceCacheDataWorkerType
   let twitterAccessManager: TwitterAccessManagerType
+  let ratingAndReviewManager: RatingAndReviewManagerType
   let uiTestArguments: [UITestArgument]
 
   // swiftlint:disable:next weak_delegate
@@ -107,6 +108,7 @@ class AppCoordinator: CoordinatorType {
     messageManager: MessagesManagerType? = nil,
     currencyController: CurrencyController = CurrencyController(fiatCurrency: .USD),
     twitterAccessManager: TwitterAccessManagerType? = nil,
+    ratingAndReviewManager: RatingAndReviewManagerType? = nil,
     uiTestArguments: [UITestArgument] = []
     ) {
     currencyController.selectedCurrency = persistenceManager.brokers.preferences.selectedCurrency
@@ -142,6 +144,9 @@ class AppCoordinator: CoordinatorType {
     self.alertManager = alertMgr
     self.messageManager = MessageManager(alertManager: alertMgr, persistenceManager: persistenceManager)
     self.notificationManager = notificationMgr
+    self.ratingAndReviewManager = RatingAndReviewManager(persistenceManager: persistenceManager)
+
+    // now we can use `self` after initializing all properties
     self.notificationManager.delegate = self
     self.locationManager.delegate = self.locationDelegate
 

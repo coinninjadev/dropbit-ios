@@ -71,8 +71,12 @@ class WalletSyncOperationFactory {
             .finally {
               log.info("Sync routine: Finishing...")
               var contextHasInsertionsOrUpdates = false
+              var receivedFunds = false
               bgContext.performAndWait {
                 contextHasInsertionsOrUpdates = (bgContext.insertedObjects.isNotEmpty || bgContext.persistentUpdatedObjects.isNotEmpty)
+                let receivedOnChain = bgContext.insertedObjects.compactMap { $0 as? CKMTransaction }.isNotEmpty
+                let receivedLightning = bgContext.insertedObjects.compactMap { $0 as? CKMLNLedgerEntry }.isNotEmpty
+                receivedFunds = receivedOnChain || receivedLightning
                 do {
                   log.info("Sync routine: Saving database...")
                   try bgContext.saveRecursively()
@@ -86,6 +90,7 @@ class WalletSyncOperationFactory {
               CKNotificationCenter.publish(key: .didUpdateBalance, object: nil, userInfo: nil)
 
               dependencies.persistenceManager.brokers.activity.lastSuccessfulSync = Date()
+              dependencies.ratingAndReviewManager.promptForReviewIfNecessary(didReceiveFunds: receivedFunds)
               completion?(caughtError) //Only call completion handler once
 
               strongSelf.delegate?.syncManagerDidFinishSync()
