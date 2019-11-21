@@ -18,7 +18,7 @@ struct BuyMerchantAttribute {
 
   let type: BuyMerchantAttributeType
   let description: String
-  var link: String? = nil
+  var link: String?
 
   static var sampleJSON: String { return "" }
   static var requiredStringKeys: [KeyPath<BuyMerchantAttribute, String>] { return [\.description] }
