@@ -120,8 +120,8 @@ class PreferencesBroker: CKPersistenceBroker, PreferencesBrokerType {
     set { userDefaultsManager.set(newValue, for: .reviewLastRequestDate) }
   }
 
-  var reviewLastRequestVersion: String {
-    get { return userDefaultsManager.string(for: .reviewLastRequestVersion) ?? VersionInfo().appVersion }
+  var reviewLastRequestVersion: String? {
+    get { return userDefaultsManager.string(for: .reviewLastRequestVersion) }
     set { userDefaultsManager.set(newValue, for: .reviewLastRequestVersion) }
   }
 

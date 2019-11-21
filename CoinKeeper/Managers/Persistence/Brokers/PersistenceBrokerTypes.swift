@@ -133,7 +133,7 @@ protocol PreferencesBrokerType: AnyObject {
   var selectedWalletTransactionType: WalletTransactionType { get set }
   var lightningWalletLockedStatus: LockStatus { get set }
   var reviewLastRequestDate: Date? { get set }
-  var reviewLastRequestVersion: String { get set }
+  var reviewLastRequestVersion: String? { get set }
   var firstLaunchDate: Date { get }
 
 }

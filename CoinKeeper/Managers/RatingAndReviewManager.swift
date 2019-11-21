@@ -50,9 +50,10 @@ class RatingAndReviewManager: RatingAndReviewManagerType {
 
     // received funds, 48 hours after last attempt, different version
     guard let lastDate = lastPromptedDate,
-      let lastDatePlusBuffer = Calendar.current.date(byAdding: .day, value: 2, to: lastDate) else { return false }
+      let lastDatePlusBuffer = Calendar.current.date(byAdding: .day, value: 2, to: lastDate),
+      let lastPromptedVersion = pmgr.brokers.preferences.reviewLastRequestVersion
+    else { return false }
 
-    let lastPromptedVersion = pmgr.brokers.preferences.reviewLastRequestVersion
     let currentVersion = VersionInfo().appVersion
 
     if didReceiveFunds && (currentVersion != lastPromptedVersion) && (lastDatePlusBuffer < now) {

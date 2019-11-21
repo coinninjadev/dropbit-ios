@@ -24,6 +24,6 @@ class MockPreferencesBroker: CKPersistenceBroker, PreferencesBrokerType {
   var selectedWalletTransactionType: WalletTransactionType = .onChain
   var lightningWalletLockedStatus: LockStatus = .locked
   var reviewLastRequestDate: Date?
-  var reviewLastRequestVersion: String = "3.0"
+  var reviewLastRequestVersion: String? = "3.0"
   var firstLaunchDate: Date = Date()
 }
