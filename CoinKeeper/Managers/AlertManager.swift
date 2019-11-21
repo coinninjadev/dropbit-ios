@@ -315,8 +315,8 @@ class AlertManager: AlertManagerType {
     case alert, walkthrough
   }
 
-  private var okAlertActionConfig: AlertActionConfigurationType {
-    return AlertActionConfiguration(title: "OK", style: .cancel, action: nil)
+  func okAlertActionConfig(action: CKCompletion?) -> AlertActionConfigurationType {
+    return AlertActionConfiguration(title: "OK", style: .cancel, action: action)
   }
 
   func defaultAlert(withTitle title: String, description: String?) -> AlertControllerType {

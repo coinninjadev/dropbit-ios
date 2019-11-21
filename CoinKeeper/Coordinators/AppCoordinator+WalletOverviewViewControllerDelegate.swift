@@ -29,27 +29,59 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
     let toLightningItem = ActionSheetItem(title: "Load Lightning Wallet")
     let toOnChainItem = ActionSheetItem(title: "Withdraw From Lightning Wallet")
     let actions: ActionSheet.SelectAction = { [weak self] sheet, item in
-      guard let strongSelf = self, !item.isOkButton else { return }
+      guard let self = self, !item.isOkButton else { return }
       let direction: TransferDirection = item == toLightningItem ? .toLightning(nil) : .toOnChain(nil)
       switch direction {
       case .toLightning:
-        //TODO: get actual balances, show alert if view model is invalid
-        guard let vm = try? LightningQuickLoadViewModel(balances: WalletBalances(onChain: 1, lightning: 5), currency: .USD) else { return }
-        let vc = LightningQuickLoadViewController.newInstance(viewModel: vm, delegate: strongSelf)
-        vc.modalPresentationStyle = .overCurrentContext
-        vc.modalTransitionStyle = .crossDissolve
-        viewController.present(vc, animated: true, completion: nil)
+        do {
+          let vm = try self.createQuickLoadViewModel()
+          let vc = LightningQuickLoadViewController.newInstance(viewModel: vm, delegate: self)
+          vc.modalPresentationStyle = .overCurrentContext
+          vc.modalTransitionStyle = .crossDissolve
+          viewController.present(vc, animated: true, completion: nil)
+
+        } catch {
+          log.warn(error.localizedDescription)
+          self.showQuickLoadBalanceError(for: error)
+        }
 
       case .toOnChain:
-        let exchangeRates = strongSelf.currencyController.exchangeRates
+        let exchangeRates = self.currencyController.exchangeRates
         let viewModel = WalletTransferViewModel(direction: direction, amount: .custom, exchangeRates: exchangeRates)
-        let transferViewController = WalletTransferViewController.newInstance(delegate: strongSelf, viewModel: viewModel)
-        strongSelf.toggleChartAndBalance()
-        strongSelf.navigationController.present(transferViewController, animated: true, completion: nil)
+        let transferViewController = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel)
+        self.toggleChartAndBalance()
+        self.navigationController.present(transferViewController, animated: true, completion: nil)
       }
     }
 
     alertManager.showActionSheet(in: viewController, with: [toLightningItem, toOnChainItem], actions: actions)
+  }
+
+  private func createQuickLoadViewModel() throws -> LightningQuickLoadViewModel {
+    let btcBalances = self.spendableBalancesNetPending()
+    let rates = self.currencyController.exchangeRates
+    let quickLoadCurrency: CurrencyCode = .USD
+    let fiatBalances = convertBalances(btcBalances, to: quickLoadCurrency, with: rates)
+    return try LightningQuickLoadViewModel(fiatBalances: fiatBalances, currency: quickLoadCurrency)
+  }
+
+  private func convertBalances(_ balances: WalletBalances, to currency: CurrencyCode, with rates: ExchangeRates) -> WalletBalances {
+    let onChainConverter = CurrencyConverter(fromBtcTo: currency, fromAmount: balances.onChain, rates: rates)
+    let onChainFiat = onChainConverter.fiatAmount
+    let lightningConverter = CurrencyConverter(fromBtcTo: currency, fromAmount: balances.lightning, rates: rates)
+    let lightningFiat = lightningConverter.fiatAmount
+    return WalletBalances(onChain: onChainFiat, lightning: lightningFiat)
+  }
+
+  private func showQuickLoadBalanceError(for error: Error) {
+    let message = """
+    DropBit requires you to load a minimum of $5.00 to your Lightning wallet.
+    You don’t currently have enough funds to meet the minimum requirement.
+    """.removingMultilineLineBreaks()
+
+    let alertVM = AlertControllerViewModel(title: "", description: message, actions: [alertManager.okAlertActionConfig])
+    let alert = self.alertManager.alert(from: alertVM)
+    self.navigationController.present(alert, animated: true, completion: nil)
   }
 
   func viewControllerDidRequestPrimaryCurrencySwap() {

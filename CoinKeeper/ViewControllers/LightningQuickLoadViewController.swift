@@ -23,9 +23,9 @@ struct LightningQuickLoadViewModel {
   let currency: CurrencyCode
   let controlConfigs: [QuickLoadControlConfig]
 
-  init(balances: WalletBalances, currency: CurrencyCode) throws {
+  init(fiatBalances: WalletBalances, currency: CurrencyCode) throws {
     //Validate the on chain and lightning balances, throw LightningWalletAmountValidatorError as appropriate
-    self.balances = balances
+    self.balances = fiatBalances
     self.currency = currency
     self.controlConfigs = LightningQuickLoadViewModel.configs(withMax: NSDecimalNumber(value: 45.32), currency: currency)
   }

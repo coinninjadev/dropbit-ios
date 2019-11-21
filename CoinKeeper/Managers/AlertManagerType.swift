@@ -39,6 +39,8 @@ protocol AlertManagerType: CKBannerViewDelegate {
     actionConfigs: [AlertActionConfigurationType]
     ) -> AlertControllerType
 
+  func okAlertActionConfig(action: CKCompletion?) -> AlertActionConfigurationType
+
   var urlOpener: URLOpener? { get set }
 
   func showSuccess(message: String, forDuration duration: TimeInterval?)
@@ -75,6 +77,10 @@ extension AlertManagerType {
   // Satisfies protocol requirement and redirects to function with duration if this function without duration is called
   func showBanner(with message: String) {
     showBanner(with: message, duration: .default, alertKind: .info, tapAction: nil) // default parameter
+  }
+
+  var okAlertActionConfig: AlertActionConfigurationType {
+    okAlertActionConfig(action: nil)
   }
 
 }
