@@ -12,7 +12,6 @@ import PromiseKit
 @testable import DropBit
 
 class MockPreferencesBroker: CKPersistenceBroker, PreferencesBrokerType {
-
   var dustProtectionMinimumAmount: Int = 0
   var dustProtectionIsEnabled: Bool = false
   var yearlyPriceHighNotificationIsEnabled: Bool = false
@@ -24,5 +23,7 @@ class MockPreferencesBroker: CKPersistenceBroker, PreferencesBrokerType {
   var preferredTransactionFeeType: TransactionFeeType = .default
   var selectedWalletTransactionType: WalletTransactionType = .onChain
   var lightningWalletLockedStatus: LockStatus = .locked
-
+  var reviewLastRequestDate: Date?
+  var reviewLastRequestVersion: String = "3.0"
+  var firstLaunchDate: Date = Date()
 }
