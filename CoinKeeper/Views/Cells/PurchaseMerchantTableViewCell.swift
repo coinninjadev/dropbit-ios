@@ -90,13 +90,13 @@ class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
   }
 
   private func configureButtons(with buyType: MerchantCallToActionStyle) {
+    let font = UIFont.medium(18)
     switch buyType {
     case .device:
       stackView.removeArrangedSubview(actionButton)
       stackView.addArrangedSubview(buyWithApplePayButton)
     case .atm:
       let mapPinImage = UIImage(imageLiteralResourceName: "mapPin")
-      let font = UIFont.medium(18)
       let attributes: StringAttributes = [
         .font: font,
         .foregroundColor: UIColor.white
@@ -112,8 +112,12 @@ class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
       stackView.removeArrangedSubview(buyWithApplePayButton)
       stackView.addArrangedSubview(actionButton)
     case .default:
-      actionButton.style = .green
-      actionButton.setAttributedTitle(NSAttributedString(string: "BUY NOW"), for: .normal)
+      let attributes: StringAttributes = [
+        .font: font,
+        .foregroundColor: UIColor.white
+      ]
+      actionButton.style = .neonGreen
+      actionButton.setAttributedTitle(NSAttributedString(string: "BUY NOW", attributes: attributes), for: .normal)
       actionButton.setImage(nil, for: .normal)
       stackView.removeArrangedSubview(buyWithApplePayButton)
       stackView.addArrangedSubview(actionButton)

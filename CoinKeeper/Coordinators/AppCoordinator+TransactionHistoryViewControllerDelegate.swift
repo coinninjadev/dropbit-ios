@@ -43,13 +43,12 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
     networkManager.fetchMerchants()
       .done { merchants in
         let controller = GetBitcoinViewController.newInstance(delegate: self,
-                                                              viewModels: merchants.config,
+                                                              viewModels: merchants.config.buy,
                                                               bitcoinAddress: btcAddress)
         self.navigationController.pushViewController(controller, animated: true)
+        self.alertManager.hideActivityHUD(withDelay: nil, completion: nil)
     }.catch { error in
       self.alertManager.showError(message: error.localizedDescription, forDuration: 2.0)
-    }.finally {
-      self.alertManager.hideActivityHUD(withDelay: nil, completion: nil)
     }
 
   }
