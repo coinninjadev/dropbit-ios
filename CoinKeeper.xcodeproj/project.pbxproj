@@ -640,6 +640,7 @@
 		A2E984752385ADC700107C53 /* MockNetworkManager+MerchantRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E984742385ADC700107C53 /* MockNetworkManager+MerchantRequestable.swift */; };
 		A2E984772385C24100107C53 /* MockPurchaseMerchantTableViewCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E984762385C24100107C53 /* MockPurchaseMerchantTableViewCellDelegate.swift */; };
 		A2E9847B2385D2DF00107C53 /* MockMerchantAttributeViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E9847A2385D2DF00107C53 /* MockMerchantAttributeViewDelegate.swift */; };
+		A2E9847D23886DE300107C53 /* MerchantBuyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E9847C23886DE200107C53 /* MerchantBuyResponse.swift */; };
 		A2EF78D72384608300321809 /* MerchantTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EF78D62384608300321809 /* MerchantTarget.swift */; };
 		A2EF78D92384642000321809 /* NetworkManager+MerchantRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EF78D82384642000321809 /* NetworkManager+MerchantRequestable.swift */; };
 		A2EF78DB23848BF600321809 /* MerchantConfigurationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EF78DA23848BF600321809 /* MerchantConfigurationResponse.swift */; };
@@ -1752,6 +1753,7 @@
 		A2E984742385ADC700107C53 /* MockNetworkManager+MerchantRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+MerchantRequestable.swift"; sourceTree = "<group>"; };
 		A2E984762385C24100107C53 /* MockPurchaseMerchantTableViewCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPurchaseMerchantTableViewCellDelegate.swift; sourceTree = "<group>"; };
 		A2E9847A2385D2DF00107C53 /* MockMerchantAttributeViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMerchantAttributeViewDelegate.swift; sourceTree = "<group>"; };
+		A2E9847C23886DE200107C53 /* MerchantBuyResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantBuyResponse.swift; sourceTree = "<group>"; };
 		A2EF78D62384608300321809 /* MerchantTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantTarget.swift; sourceTree = "<group>"; };
 		A2EF78D82384642000321809 /* NetworkManager+MerchantRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+MerchantRequestable.swift"; sourceTree = "<group>"; };
 		A2EF78DA23848BF600321809 /* MerchantConfigurationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantConfigurationResponse.swift; sourceTree = "<group>"; };
@@ -3280,6 +3282,7 @@
 				A2E984692384529500107C53 /* MerchantAttributeResponse.swift */,
 				A2E9846B2384538800107C53 /* MerchantCallToActionResponse.swift */,
 				A2EF78DA23848BF600321809 /* MerchantConfigurationResponse.swift */,
+				A2E9847C23886DE200107C53 /* MerchantBuyResponse.swift */,
 			);
 			path = Responses;
 			sourceTree = "<group>";
@@ -4603,6 +4606,7 @@
 				B5401C5B228C7AE8004C77BC /* AppCoordinator+Analytics.swift in Sources */,
 				B52CC6AD221ED41700B00C9E /* NSManagedObjectContext+PerformRethrow.swift in Sources */,
 				3BAB144B204F3CD0001D41A2 /* OnboardingTitleLabel.swift in Sources */,
+				A2E9847D23886DE300107C53 /* MerchantBuyResponse.swift in Sources */,
 				B589C20220C1EB72006A8FDB /* PaymentAmountValidatable.swift in Sources */,
 				B5E7F21E22146B9000358A24 /* CountryCodePickerCell.swift in Sources */,
 				B56E15992167DB7B003B69D4 /* NetworkManager+TransactionBroadcastable.swift in Sources */,
