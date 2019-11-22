@@ -15,7 +15,7 @@ extension MockNetworkManager: LightningRequestable {
     return Promise { _ in }
   }
 
-  func estimateLightningWithdrawlFees(to address: String, sats: Int) -> Promise<LNTransactionResponse> {
+  func estimateLightningWithdrawalFees(to address: String, sats: Int) -> Promise<LNTransactionResponse> {
     return Promise { _ in }
   }
 

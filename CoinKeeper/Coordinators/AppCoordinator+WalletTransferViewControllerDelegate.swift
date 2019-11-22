@@ -16,7 +16,7 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
     guard let receiveAddress = self.nextReceiveAddressForRequestPay() else { return Promise { _ in } }
     let sats = btcAmount.asFractionalUnits(of: .BTC)
 
-    return networkManager.estimateLightningWithdrawlFees(to: receiveAddress, sats: sats)
+    return networkManager.estimateLightningWithdrawalFees(to: receiveAddress, sats: sats)
   }
 
   func viewControllerDidConfirmWithdraw(_ viewController: UIViewController, btcAmount: NSDecimalNumber) {
