@@ -1,5 +1,5 @@
 //
-//  AppCoordinator+LightningReloadDelegate.swift
+//  AppCoordinator+EmptyStateLightningLoadDelegate.swift
 //  DropBit
 //
 //  Created by Mitchell Malleo on 9/6/19.
@@ -8,19 +8,15 @@
 
 import Foundation
 
-extension AppCoordinator: LightningReloadDelegate {
+extension AppCoordinator: EmptyStateLightningLoadDelegate {
 
   func didRequestLightningLoad(withAmount amount: TransferAmount) {
     let dollars = NSDecimalNumber(integerAmount: amount.value, currency: .USD)
-    let exchangeRates = self.currencyController.exchangeRates
-    let currencyPair = CurrencyPair(primary: .USD, fiat: .USD)
-    let converter = CurrencyConverter(rates: exchangeRates, fromAmount: dollars, currencyPair: currencyPair)
-    guard let btcAmount = converter.convertedAmount() else { return }
     trackReloaded(amount: amount)
-    let context = self.persistenceManager.viewContext
-    self.buildLoadLightningPaymentData(btcAmount: btcAmount, exchangeRates: exchangeRates, in: context)
+    self.lightningPaymentData(forFiatAmount: dollars, isMax: false)
       .done { paymentData in
-        let viewModel = WalletTransferViewModel(direction: .toLightning(paymentData), amount: amount, exchangeRates: exchangeRates)
+        let rates = self.currencyController.exchangeRates
+        let viewModel = WalletTransferViewModel(direction: .toLightning(paymentData), amount: amount, exchangeRates: rates)
         let walletTransferViewController = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel)
         self.navigationController.present(walletTransferViewController, animated: true, completion: nil)
       }

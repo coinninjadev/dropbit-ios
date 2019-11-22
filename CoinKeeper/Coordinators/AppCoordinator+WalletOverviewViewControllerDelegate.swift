@@ -140,12 +140,12 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
 
 extension AppCoordinator: LightningQuickLoadViewControllerDelegate {
 
-  func viewControllerDidConfirmQuickLoad(_ viewController: LightningQuickLoadViewController, amount: Money, isMax: Bool) {
-
-  }
-
   func viewControllerDidRequestCustomAmountLoad(_ viewController: LightningQuickLoadViewController) {
-
+    let exchangeRates = self.currencyController.exchangeRates
+    let viewModel = WalletTransferViewModel(direction: .toLightning(nil), amount: .custom, exchangeRates: exchangeRates)
+    let transferViewController = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel)
+    self.toggleChartAndBalance()
+    self.navigationController.present(transferViewController, animated: true, completion: nil)
   }
 
 }

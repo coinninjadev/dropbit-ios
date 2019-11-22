@@ -16,14 +16,6 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
 
   func viewController(
     _ viewController: UIViewController,
-    sendMaxFundsTo address: String,
-    feeRate: Double) -> Promise<CNBTransactionData> {
-    guard walletManager != nil else { return Promise(error: CKPersistenceError.noManagedWallet) }
-    return sendMaxFundsTo(address: address, feeRate: feeRate)
-  }
-
-  func viewController(
-    _ viewController: UIViewController,
     sendingMax txData: CNBTransactionData,
     to address: String,
     inputs: SendingDelegateInputs) {

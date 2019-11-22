@@ -334,6 +334,7 @@ class WalletManager: WalletManagerType {
       let usableVouts = self.usableVouts(in: bgContext)
       let allAvailableOutputs = self.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
 
+      ///This initializer uses CNBTransactionReplaceabilityOption.MustNotBeRBF
       result = CNBTransactionData(
         allUsableOutputs: allAvailableOutputs,
         coin: coin,

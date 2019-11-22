@@ -26,11 +26,6 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
 
   func viewControllerDidSelectCloseWithToggle(_ viewController: UIViewController) { }
 
-  func sendMaxFundsTo(address destinationAddress: String,
-                      feeRate: Double) -> Promise<CNBTransactionData> {
-    return Promise { _ in }
-  }
-
   func viewControllerDidTapReceivePayment(_ viewController: UIViewController,
                                           converter: CurrencyConverter, walletTransactionType: WalletTransactionType) {}
 
@@ -53,7 +48,7 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     return nil
   }
 
-  func buildLoadLightningPaymentData(btcAmount: NSDecimalNumber,
+  func buildLoadLightningPaymentData(selectedAmount: SelectedBTCAmount,
                                      exchangeRates: ExchangeRates,
                                      in context: NSManagedObjectContext) -> Promise<PaymentData> {
     return Promise { _ in }
@@ -83,6 +78,10 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     } else {
       return Promise(error: TransactionDataError.insufficientFunds)
     }
+  }
+
+  func transactionDataSendingMaxFunds(toAddress destinationAddress: String) -> Promise<CNBTransactionData> {
+    return Promise { _ in }
   }
 
   func balancesNetPending() -> WalletBalances {

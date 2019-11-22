@@ -16,15 +16,20 @@ struct PaymentData {
   var outgoingData: OutgoingTransactionData
 }
 
-protocol PaymentBuildingDelegate {
-  func sendMaxFundsTo(address destinationAddress: String,
-                      feeRate: Double) -> Promise<CNBTransactionData>
+enum SelectedBTCAmount {
+  case specific(NSDecimalNumber)
+  case max
+}
+
+protocol PaymentBuildingDelegate: CurrencyValueDataSourceType {
+
+  func transactionDataSendingMaxFunds(toAddress destinationAddress: String) -> Promise<CNBTransactionData>
 
   func configureOutgoingTransactionData(with dto: OutgoingTransactionData,
                                         address: String?,
                                         inputs: SendingDelegateInputs) -> OutgoingTransactionData
 
-  func buildLoadLightningPaymentData(btcAmount: NSDecimalNumber,
+  func buildLoadLightningPaymentData(selectedAmount: SelectedBTCAmount,
                                      exchangeRates: ExchangeRates,
                                      in context: NSManagedObjectContext) -> Promise<PaymentData>
 
@@ -32,7 +37,16 @@ protocol PaymentBuildingDelegate {
 
 extension AppCoordinator: PaymentBuildingDelegate {
 
-  func buildLoadLightningPaymentData(btcAmount: NSDecimalNumber,
+  func transactionDataSendingMaxFunds(toAddress destinationAddress: String) -> Promise<CNBTransactionData> {
+    return latestFees()
+      .compactMap { self.usableFeeRate(from: $0) }
+      .then { feeRate -> Promise<CNBTransactionData> in
+        guard let wmgr = self.walletManager else { return Promise(error: CKPersistenceError.noManagedWallet) }
+        return wmgr.transactionDataSendingMax(to: destinationAddress, withFeeRate: feeRate)
+    }
+  }
+
+  func buildLoadLightningPaymentData(selectedAmount: SelectedBTCAmount,
                                      exchangeRates: ExchangeRates,
                                      in context: NSManagedObjectContext) -> Promise<PaymentData> {
     let wallet = CKMWallet.findOrCreate(in: context)
@@ -47,7 +61,7 @@ extension AppCoordinator: PaymentBuildingDelegate {
           return Promise(error: error)
         }
         let feeRate: Double = feeRates.low
-        let maybePaymentData = self.buildNonReplaceableTransactionData(btcAmount: btcAmount,
+        let maybePaymentData = self.buildNonReplaceableTransactionData(selectedAmount: selectedAmount,
                                                                        address: lightningAccount.address,
                                                                        exchangeRates: exchangeRates,
                                                                        feeRate: feeRate)
@@ -67,7 +81,7 @@ extension AppCoordinator: PaymentBuildingDelegate {
   }
 
   private func buildNonReplaceableTransactionData(
-    btcAmount: NSDecimalNumber,
+    selectedAmount: SelectedBTCAmount,
     address: String,
     exchangeRates: ExchangeRates,
     feeRate: Double) -> PaymentData? {
@@ -82,20 +96,17 @@ extension AppCoordinator: PaymentBuildingDelegate {
       rbfReplaceabilityOption: .MustNotBeRBF)
 
     outgoingTransactionData = configureOutgoingTransactionData(with: outgoingTransactionData, address: address, inputs: inputs)
-    guard let bitcoinKitTransactionData = walletManager?.failableTransactionData(
-      forPayment: btcAmount,
-      to: address,
-      withFeeRate: feeRate,
-      rbfOption: .MustNotBeRBF) else { return nil }
-
-    return PaymentData(broadcastData: bitcoinKitTransactionData, outgoingData: outgoingTransactionData)
+    guard let broadcastData = nonReplaceableBroadcastData(for: selectedAmount, to: address, feeRate: feeRate) else { return nil }
+    return PaymentData(broadcastData: broadcastData, outgoingData: outgoingTransactionData)
   }
 
-  func sendMaxFundsTo(address destinationAddress: String,
-                      feeRate: Double) -> Promise<CNBTransactionData> {
-    guard let wmgr = walletManager else { return Promise(error: CKPersistenceError.noManagedWallet) }
-    let data = wmgr.transactionDataSendingMax(to: destinationAddress, withFeeRate: feeRate)
-    return data
+  private func nonReplaceableBroadcastData(for selectedAmount: SelectedBTCAmount, to address: String, feeRate: Double) -> CNBTransactionData? {
+    switch selectedAmount {
+    case .specific(let btcAmount):
+      return walletManager?.failableTransactionData(forPayment: btcAmount, to: address, withFeeRate: feeRate, rbfOption: .MustNotBeRBF)
+    case .max:
+      return walletManager?.failableTransactionDataSendingMax(to: address, withFeeRate: feeRate)
+    }
   }
 
   func configureOutgoingTransactionData(with dto: OutgoingTransactionData,

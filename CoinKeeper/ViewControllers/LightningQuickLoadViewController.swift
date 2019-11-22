@@ -7,9 +7,15 @@
 //
 
 import UIKit
+import PromiseKit
 
-protocol LightningQuickLoadViewControllerDelegate: ViewControllerDismissable {
-  func viewControllerDidConfirmQuickLoad(_ viewController: LightningQuickLoadViewController, amount: Money, isMax: Bool)
+protocol LightningLoadable {
+  func viewControllerDidConfirmLoad(_ viewController: UIViewController, paymentData: PaymentData)
+  func lightningPaymentData(forFiatAmount fiatAmount: NSDecimalNumber, isMax: Bool) -> Promise<PaymentData>
+  func lightningPaymentData(forBTCAmount btcAmount: NSDecimalNumber) -> Promise<PaymentData>
+}
+
+protocol LightningQuickLoadViewControllerDelegate: ViewControllerDismissable, LightningLoadable {
   func viewControllerDidRequestCustomAmountLoad(_ viewController: LightningQuickLoadViewController)
 }
 
@@ -89,7 +95,8 @@ extension LightningQuickLoadViewController: LongPressConfirmButtonDelegate {
 
   func confirmationButtonDidConfirm(_ button: LongPressConfirmButton) {
     let config = viewModel.controlConfigs[button.tag]
-    delegate.viewControllerDidConfirmQuickLoad(self, amount: config.amount, isMax: config.isMax)
+    delegate.lightningPaymentData(forFiatAmount: config.amount.amount, isMax: config.isMax)
+      .done { self.delegate.viewControllerDidConfirmLoad(self, paymentData: $0) }.cauterize()
   }
 
 }
