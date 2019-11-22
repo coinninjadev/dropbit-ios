@@ -9,11 +9,7 @@
 import UIKit
 
 protocol LightningQuickLoadViewControllerDelegate: ViewControllerDismissable {
-
-  func viewControllerDidConfirmQuickLoad(_ viewController: LightningQuickLoadViewController,
-                                         amount: Money,
-                                         isMax: Bool)
-
+  func viewControllerDidConfirmQuickLoad(_ viewController: LightningQuickLoadViewController, amount: Money, isMax: Bool)
   func viewControllerDidRequestCustomAmountLoad(_ viewController: LightningQuickLoadViewController)
 }
 

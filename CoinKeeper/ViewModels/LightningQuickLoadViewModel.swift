@@ -19,17 +19,31 @@ struct LightningQuickLoadViewModel {
   }
 
   init(spendableBalances: WalletBalances, rates: ExchangeRates, currency: CurrencyCode) throws {
-    //Validate the on chain and lightning balances, throw LightningWalletAmountValidatorError as appropriate
+    guard let minFiatAmount = LightningQuickLoadViewModel.standardAmounts.first else {
+      throw CKSystemError.missingValue(key: "standardAmounts.min")
+    }
 
-    let minStandardAmountConverter = CurrencyConverter(fromBtcTo: currency,
-                                                       fromAmount: spendableBalances.onChain,
-                                                       rates: rates)
-    let validator = LightningWalletAmountValidator(balancesNetPending: spendableBalances, walletType: .onChain)
-    try validator.validate(value: minStandardAmountConverter)
-    let maxAmount = validator.maxLoadAmount(using: rates)
+    ///Run these validations separately to produce correct error message
+    //check on chain balance exceeds minFiatAmount
+    let minStandardAmountConverter = CurrencyConverter(rates: rates, fromAmount: minFiatAmount, currencyPair: .USD_BTC)
+    let onChainBalanceValidator = LightningWalletAmountValidator(balancesNetPending: spendableBalances,
+                                                                 walletType: .onChain, ignoring: [.maxWalletValue])
+    do {
+      try onChainBalanceValidator.validate(value: minStandardAmountConverter)
+    } catch {
+      //map usableBalance error to
+      throw LightningWalletAmountValidatorError.reloadMinimum
+    }
+
+    //check lightning wallet has capacity for the minFiatAmount
+    let minReloadValidator = LightningWalletAmountValidator(balancesNetPending: spendableBalances,
+                                                            walletType: .onChain, ignoring: [.minReloadAmount])
+    try minReloadValidator.validate(value: minStandardAmountConverter)
 
     self.balances = spendableBalances
     self.currency = currency
+
+    let maxAmount = minReloadValidator.maxLoadAmount(using: rates)
     self.controlConfigs = LightningQuickLoadViewModel.configs(withMax: maxAmount, currency: currency)
   }
 

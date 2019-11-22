@@ -10,7 +10,7 @@ import Foundation
 
 enum LightningWalletAmountValidatorError: ValidatorTypeError {
   case walletMaximum
-  case reloadMinimum //Should be BTC
+  case reloadMinimum
   case invalidAmount
 
   var debugMessage: String {

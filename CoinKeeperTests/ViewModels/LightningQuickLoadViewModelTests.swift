@@ -49,12 +49,12 @@ class LightningQuickLoadViewModelTests: XCTestCase {
   }
 
   func testModerateOnChainBalanceEqualsMaxAmount() {
-    let expectedMaxFiatAmount = NSDecimalNumber(integerAmount: 2050, currency: .USD)
+    let expectedMaxFiatAmount = NSDecimalNumber(integerAmount: 20_50, currency: .USD)
     let rates = CurrencyConverter.sampleRates
     let balanceConverter = CurrencyConverter(rates: rates, fromAmount: expectedMaxFiatAmount, currencyPair: .USD_BTC)
-    let balances = WalletBalances(onChain: balanceConverter.btcAmount, lightning: .zero)
+    let btcBalances = WalletBalances(onChain: balanceConverter.btcAmount, lightning: .zero)
     do {
-      sut = try LightningQuickLoadViewModel(spendableBalances: balances, rates: rates, currency: .USD)
+      sut = try LightningQuickLoadViewModel(spendableBalances: btcBalances, rates: rates, currency: .USD)
       XCTAssertEqual(sut.controlConfigs.last!.amount.amount, expectedMaxFiatAmount)
     } catch {
       XCTFail("Threw unexpected error: \(error.localizedDescription)")
@@ -62,7 +62,33 @@ class LightningQuickLoadViewModelTests: XCTestCase {
   }
 
   func testHighOnChainBalanceIsLimitedByMaxLightningBalance() {
+    let expectedMaxFiatAmount = NSDecimalNumber(integerAmount: 20_00, currency: .USD)
+    let lightningFiatBalance = NSDecimalNumber(integerAmount: 180_00, currency: .USD)
+    let rates = CurrencyConverter.sampleRates
+    let balanceConverter = CurrencyConverter(rates: rates, fromAmount: lightningFiatBalance, currencyPair: .USD_BTC)
+    let btcBalances = WalletBalances(onChain: .one, lightning: balanceConverter.btcAmount)
+    do {
+      sut = try LightningQuickLoadViewModel(spendableBalances: btcBalances, rates: rates, currency: .USD)
+      XCTAssertEqual(sut.controlConfigs.last!.amount.amount, expectedMaxFiatAmount)
+    } catch {
+      XCTFail("Threw unexpected error: \(error.localizedDescription)")
+    }
+  }
 
+  func testHigherStandardAmountsAreDisabledByMaxAmount() {
+    let onChainFiatBalance = NSDecimalNumber(integerAmount: 45_00, currency: .USD)
+    let rates = CurrencyConverter.sampleRates
+    let balanceConverter = CurrencyConverter(rates: rates, fromAmount: onChainFiatBalance, currencyPair: .USD_BTC)
+    let btcBalances = WalletBalances(onChain: balanceConverter.btcAmount, lightning: .zero)
+    do {
+      sut = try LightningQuickLoadViewModel(spendableBalances: btcBalances, rates: rates, currency: .USD)
+      let expectedEnabledValues: [NSDecimalNumber] = [5, 10, 20, 45].map { NSDecimalNumber(value: $0) }
+      let actualEnabledValues = sut.controlConfigs.filter { $0.isEnabled }.map { $0.amount.amount }
+      XCTAssertEqual(expectedEnabledValues, actualEnabledValues)
+
+    } catch {
+      XCTFail("Threw unexpected error: \(error.localizedDescription)")
+    }
   }
 
 }
