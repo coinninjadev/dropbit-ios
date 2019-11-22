@@ -84,6 +84,10 @@ class PrimaryActionButtonStyle {
     return LightTextButtonStyle(background: .appleGreen)
   }
 
+  static var neonGreen: PrimaryActionButtonStyle {
+    return LightTextButtonStyle(background: .neonGreen)
+  }
+
   static var orange: PrimaryActionButtonStyle {
     return LightTextButtonStyle(background: .mango)
   }

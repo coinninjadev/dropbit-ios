@@ -10,7 +10,7 @@ import Foundation
 
 struct MerchantConfigurationResponse: ResponseDecodable {
   let updatedAt: Date?
-  let config: [MerchantResponse]
+  let config: MerchantBuyResponse
 }
 
 extension MerchantConfigurationResponse {
