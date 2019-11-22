@@ -18,10 +18,11 @@ enum LightningWalletAmountValidatorError: ValidatorTypeError {
     case .invalidAmount:
       return "There was an unexpected error, please re-sync your wallet in settings"
     case .walletMaximum:
+      let symbol = LightningWalletAmountValidator.maxWalletValue.currency.symbol
+      let maxAmount = LightningWalletAmountValidator.maxWalletValue.amount
+      let amountDesc = symbol + String(describing: maxAmount)
       return """
-      DropBit only allows you to load a maximum of
-      \(LightningWalletAmountValidator.maxWalletValue.currency.symbol)
-      \(LightningWalletAmountValidator.maxWalletValue.amount)
+      DropBit only allows you to load a maximum of \(amountDesc)
       to your lightning wallet
       """.removingMultilineLineBreaks()
     case .reloadMinimum:
