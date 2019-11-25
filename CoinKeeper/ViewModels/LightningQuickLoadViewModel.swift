@@ -14,6 +14,10 @@ struct LightningQuickLoadViewModel {
   let currency: CurrencyCode
   let controlConfigs: [QuickLoadControlConfig]
 
+  ///If true, sending max should send all spendable utxos.
+  ///If false, sending max should send the specific amount shown.
+  let maxIsLimitedByOnChainBalance: Bool
+
   static var standardAmounts: [NSDecimalNumber] {
     return [5, 10, 20, 50, 100].map { NSDecimalNumber(value: $0) }
   }
@@ -43,8 +47,9 @@ struct LightningQuickLoadViewModel {
     self.balances = spendableBalances
     self.currency = currency
 
-    let maxAmount = minReloadValidator.maxLoadAmount(using: rates)
-    self.controlConfigs = LightningQuickLoadViewModel.configs(withMax: maxAmount, currency: currency)
+    let maxAmountResults = minReloadValidator.maxLoadAmount(using: rates)
+    self.controlConfigs = LightningQuickLoadViewModel.configs(withMax: maxAmountResults.amount, currency: currency)
+    self.maxIsLimitedByOnChainBalance = maxAmountResults.limitIsOnChainBalance
   }
 
   private static func configs(withMax max: NSDecimalNumber, currency: CurrencyCode) -> [QuickLoadControlConfig] {

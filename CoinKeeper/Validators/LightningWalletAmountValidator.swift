@@ -100,15 +100,20 @@ class LightningWalletAmountValidator: ValidatorType<CurrencyConverter> {
     }
   }
 
-  ///Returns the max amount that the user can load into their lightning wallet, given their current balances and max lightning balance
-  func maxLoadAmount(using rates: ExchangeRates) -> NSDecimalNumber {
+  ///Returns a tuple of the max amount that the user can load into their lightning wallet
+  ///and a boolean representing whether the user's on-chain balance was the primary constraint.
+  func maxLoadAmount(using rates: ExchangeRates) -> (amount: NSDecimalNumber, limitIsOnChainBalance: Bool) {
     let fiatBalances = balances(inFiat: .USD, using: rates)
     let maxLightningBalance = LightningWalletAmountValidator.maxWalletValue.amount
 
     let lightningBalanceFiatCapacity: NSDecimalNumber = maxLightningBalance.subtracting(fiatBalances.lightning)
-    guard lightningBalanceFiatCapacity.isPositiveNumber else { return .zero }
+    guard lightningBalanceFiatCapacity.isPositiveNumber else { return (.zero, false) }
 
-    return min(lightningBalanceFiatCapacity, fiatBalances.onChain)
+    if fiatBalances.onChain < lightningBalanceFiatCapacity {
+      return (fiatBalances.onChain, true)
+    } else {
+      return (lightningBalanceFiatCapacity, false)
+    }
   }
 
   private func balances(inFiat currency: CurrencyCode, using rates: ExchangeRates) -> WalletBalances {
