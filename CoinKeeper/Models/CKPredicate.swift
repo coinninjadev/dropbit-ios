@@ -369,6 +369,11 @@ struct CKPredicate {
       let path = #keyPath(CKMWalletEntry.temporarySentTransaction.txid)
       return NSPredicate(format: "\(path) == %@", id)
     }
+
+    static func preauthId(_ id: String) -> NSPredicate {
+      let path = #keyPath(CKMWalletEntry.invitation.preauthId)
+      return NSPredicate(format: "\(path) == %@", id)
+    }
   }
 
   struct LedgerEntry {
@@ -395,6 +400,16 @@ struct CKPredicate {
     static func invalid() -> NSPredicate {
       let walletEntryPath = #keyPath(CKMLNLedgerEntry.walletEntry)
       return NSPredicate(format: "\(walletEntryPath) == nil")
+    }
+
+    static func hasPreauthIdPrefix() -> NSPredicate {
+      let path = #keyPath(CKMLNLedgerEntry.id)
+      return NSPredicate(format: "\(path) BEGINSWITH %@", LNTransactionResult.preauthPrefix)
+    }
+
+    static func withStatus(_ status: CKMLNTransactionStatus) -> NSPredicate {
+      let path = #keyPath(CKMLNLedgerEntry.status)
+      return NSPredicate(format: "\(path) == %d", status.rawValue)
     }
   }
 }

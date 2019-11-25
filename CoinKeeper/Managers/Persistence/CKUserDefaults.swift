@@ -55,6 +55,9 @@ class CKUserDefaults: PersistenceUserDefaultsType {
     case selectedWalletTransactionType
     case lightningWalletLockedStatus
     case regtest
+    case reviewLastRequestDate
+    case reviewLastRequestVersion
+    case firstLaunchDate
 
     var defaultsString: String { return self.rawValue }
   }

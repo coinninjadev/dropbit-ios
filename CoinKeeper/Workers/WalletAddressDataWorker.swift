@@ -138,7 +138,16 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   func cancelInvitation(withID invitationID: String, in context: NSManagedObjectContext) -> Promise<Void> {
     let request = WalletAddressRequest(walletAddressRequestStatus: .canceled)
     return networkManager.updateWalletAddressRequest(for: invitationID, with: request)
-      .done(in: context) { self.cancelInvitationLocally(with: $0, in: context) }
+      .then(in: context) { warResponse -> Promise<WalletAddressRequestResponse> in
+        if let preauthId = warResponse.metadata?.preauthId {
+          return self.networkManager.cancelPreauthorizedLightningPayment(withId: preauthId)
+            .get(in: context) { self.persistenceManager.brokers.lightning.persistPaymentResponse($0, in: context) }
+            .map { _ in warResponse }
+        } else {
+          return .value(warResponse)
+        }
+    }
+    .done(in: context) { self.cancelInvitationLocally(with: $0, in: context) }
   }
 
   func cancelInvitationLocally(with response: WalletAddressRequestResponse, in context: NSManagedObjectContext) {

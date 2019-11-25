@@ -148,7 +148,8 @@ class CKLogger: Logger {
     return symbols.joined(separator: ", ")
   }
 
-  private func logMessage(_ message: String, privateArgs: [CVarArg], level: LogLevel, location: String) {
+  func logMessage(_ message: String, privateArgs: [CVarArg], level: LogLevel, location: String?) {
+    let locationText = location ?? "-_-"
     #if DEBUG
     let symbolicatedMessage: String
     if privateArgs.isEmpty { //safety check to handle logging web content that may contain symbols
@@ -157,12 +158,12 @@ class CKLogger: Logger {
       symbolicatedMessage = String(format: message, arguments: privateArgs)
     }
 
-    let prefixedMessage = "[\(location)] \(symbolicatedMessage)\n"
+    let prefixedMessage = "[\(locationText)] \(symbolicatedMessage)\n"
     super.logMessage({prefixedMessage}, with: level)
 
     #else
     // ignore privateArgs
-    let prefixedMessage = "[\(location)] \(message)\n"
+    let prefixedMessage = "[\(locationText)] \(message)\n"
     let tokens = ["%@", "%d", "%i", "%f"]
 
     let cleanedMessage = prefixedMessage.replacingOccurrences(of: tokens, with: "[private]")

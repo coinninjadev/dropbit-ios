@@ -55,6 +55,7 @@
         <attribute name="counterpartyName" optional="YES" attributeType="String"/>
         <attribute name="fees" attributeType="Integer 64" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="String"/>
+        <attribute name="preauthId" optional="YES" attributeType="String"/>
         <attribute name="sentDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="side" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="status" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -263,7 +264,7 @@
         <element name="CKMCounterparty" positionX="-1964" positionY="-63" width="128" height="73"/>
         <element name="CKMCounterpartyAddress" positionX="-1935" positionY="351" width="128" height="73"/>
         <element name="CKMDerivativePath" positionX="-972" positionY="315" width="128" height="163"/>
-        <element name="CKMInvitation" positionX="-1674" positionY="-36" width="144" height="285"/>
+        <element name="CKMInvitation" positionX="-1674" positionY="-36" width="144" height="298"/>
         <element name="CKMLNAccount" positionX="160" positionY="192" width="128" height="135"/>
         <element name="CKMLNInvoice" positionX="-2215.80078125" positionY="195.44140625" width="128" height="195"/>
         <element name="CKMLNLedgerEntry" positionX="-2173.94140625" positionY="494.7109375" width="128" height="283"/>

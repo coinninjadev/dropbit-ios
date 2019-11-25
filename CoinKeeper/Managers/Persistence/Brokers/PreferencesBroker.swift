@@ -114,4 +114,24 @@ class PreferencesBroker: CKPersistenceBroker, PreferencesBrokerType {
     get { return userDefaultsManager.bool(for: .dontShowLightningRefill) }
     set { userDefaultsManager.set(newValue, for: .dontShowLightningRefill) }
   }
+
+  var reviewLastRequestDate: Date? {
+    get { return self.userDefaultsManager.date(for: .reviewLastRequestDate) }
+    set { userDefaultsManager.set(newValue, for: .reviewLastRequestDate) }
+  }
+
+  var reviewLastRequestVersion: String? {
+    get { return userDefaultsManager.string(for: .reviewLastRequestVersion) }
+    set { userDefaultsManager.set(newValue, for: .reviewLastRequestVersion) }
+  }
+
+  var firstLaunchDate: Date {
+    get {
+      if userDefaultsManager.date(for: .firstLaunchDate) == nil {
+        userDefaultsManager.set(Date(), for: .firstLaunchDate)
+      }
+      return userDefaultsManager.date(for: .firstLaunchDate) ?? Date()
+    }
+    set { userDefaultsManager.set(newValue, for: .firstLaunchDate) }
+  }
 }

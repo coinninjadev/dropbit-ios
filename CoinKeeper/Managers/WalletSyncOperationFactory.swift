@@ -59,6 +59,8 @@ class WalletSyncOperationFactory {
 
           let backgroundTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
           var caughtError: Error?
+          let walletDebugDesc = strongSelf.walletDebugDescription(with: dependencies, in: bgContext)
+          log.logMessage(walletDebugDesc, privateArgs: [], level: .info, location: nil)
           log.info("Sync routine: Starting.")
           strongSelf.performSync(with: dependencies, fullSync: isFullSync, in: bgContext)
             .catch(in: bgContext) { error in
@@ -69,8 +71,12 @@ class WalletSyncOperationFactory {
             .finally {
               log.info("Sync routine: Finishing...")
               var contextHasInsertionsOrUpdates = false
+              var receivedFunds = false
               bgContext.performAndWait {
                 contextHasInsertionsOrUpdates = (bgContext.insertedObjects.isNotEmpty || bgContext.persistentUpdatedObjects.isNotEmpty)
+                let receivedOnChain = bgContext.insertedObjects.compactMap { $0 as? CKMTransaction }.isNotEmpty
+                let receivedLightning = bgContext.insertedObjects.compactMap { $0 as? CKMLNLedgerEntry }.isNotEmpty
+                receivedFunds = receivedOnChain || receivedLightning
                 do {
                   log.info("Sync routine: Saving database...")
                   try bgContext.saveRecursively()
@@ -84,6 +90,7 @@ class WalletSyncOperationFactory {
               CKNotificationCenter.publish(key: .didUpdateBalance, object: nil, userInfo: nil)
 
               dependencies.persistenceManager.brokers.activity.lastSuccessfulSync = Date()
+              dependencies.ratingAndReviewManager.promptForReviewIfNecessary(didReceiveFunds: receivedFunds)
               completion?(caughtError) //Only call completion handler once
 
               strongSelf.delegate?.syncManagerDidFinishSync()
@@ -101,6 +108,12 @@ class WalletSyncOperationFactory {
 
         return Promise.value(operation)
       }
+  }
+
+  private func walletDebugDescription(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> String {
+    let walletId = dependencies.persistenceManager.brokers.wallet.walletId(in: context) ?? "-"
+    let pubkey = dependencies.walletManager.hexEncodedPublicKey
+    return "Wallet ID: \(walletId) -- Public Key: \(pubkey)"
   }
 
   private func performSync(with dependencies: SyncDependencies,
@@ -171,11 +184,7 @@ class WalletSyncOperationFactory {
 
   func updateLightningAccount(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<LNAccountResponse> {
     return dependencies.networkManager.getOrCreateLightningAccount()
-      .get(in: context) { lnAccountResponse in
-        guard let wallet = CKMWallet.find(in: context) else { return }
-
-        dependencies.persistenceManager.brokers.lightning.persistAccountResponse(lnAccountResponse, forWallet: wallet, in: context)
-    }
+      .get(in: context) { dependencies.persistenceManager.brokers.lightning.persistAccountResponse($0, in: context) }
   }
 
   private func checkAndVerifyUser(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {

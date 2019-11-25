@@ -13,7 +13,7 @@ import Moya
 
 protocol PurchaseMerchantTableViewCellDelegate: AnyObject {
   func attributeLinkWasTouched(with url: URL)
-  func actionButtonWasPressed(with type: BuyMerchantBuyType, url: String)
+  func actionButtonWasPressed(type: MerchantCallToActionStyle, url: String)
   func tooltipButtonWasPressed(with url: URL)
 }
 
@@ -27,7 +27,7 @@ class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
   var actionButton: PrimaryActionButton = PrimaryActionButton()
   var buyWithApplePayButton: PKPaymentButton = PKPaymentButton(paymentButtonType: .buy, paymentButtonStyle: .black)
 
-  private var viewModel: BuyMerchantResponse?
+  private var viewModel: MerchantResponse?
   weak var delegate: PurchaseMerchantTableViewCellDelegate?
   var dataTask: URLSessionDataTask?
 
@@ -54,17 +54,20 @@ class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
     setupButtons()
   }
 
-  func load(with model: BuyMerchantResponse) {
+  func load(with model: MerchantResponse) {
     viewModel = model
 
-    logoImageView.image = model.image
-    tooltipButton.isHidden = model.tooltipUrl == nil
+    fetchImage(at: model.image) { [weak self] image in
+      self?.logoImageView.image = image
+    }
+
+    tooltipButton.isHidden = model.tooltip == nil
 
     for attribute in model.attributes {
       addAttributeView(with: attribute)
     }
 
-    switch model.buyType {
+    switch model.cta.actionStyle {
     case .device:
       buyWithApplePayButton.isHidden = false
       actionButton.isHidden = true
@@ -73,7 +76,7 @@ class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
       actionButton.isHidden = false
     }
 
-    configureButtons(with: model.buyType)
+    configureButtons(with: model.cta.actionStyle)
   }
 
   private func setupButtons() {
@@ -86,14 +89,14 @@ class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
     buyWithApplePayButton.heightAnchor.constraint(equalToConstant: 51).isActive = true
   }
 
-  private func configureButtons(with buyType: BuyMerchantBuyType) {
+  private func configureButtons(with buyType: MerchantCallToActionStyle) {
+    let font = UIFont.medium(18)
     switch buyType {
     case .device:
       stackView.removeArrangedSubview(actionButton)
       stackView.addArrangedSubview(buyWithApplePayButton)
     case .atm:
       let mapPinImage = UIImage(imageLiteralResourceName: "mapPin")
-      let font = UIFont.medium(18)
       let attributes: StringAttributes = [
         .font: font,
         .foregroundColor: UIColor.white
@@ -109,43 +112,51 @@ class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
       stackView.removeArrangedSubview(buyWithApplePayButton)
       stackView.addArrangedSubview(actionButton)
     case .default:
-      actionButton.style = .green
-      actionButton.setAttributedTitle(NSAttributedString(string: "BUY NOW"), for: .normal)
+      let attributes: StringAttributes = [
+        .font: font,
+        .foregroundColor: UIColor.white
+      ]
+      actionButton.style = .neonGreen
+      actionButton.setAttributedTitle(NSAttributedString(string: "BUY NOW", attributes: attributes), for: .normal)
       actionButton.setImage(nil, for: .normal)
       stackView.removeArrangedSubview(buyWithApplePayButton)
       stackView.addArrangedSubview(actionButton)
     }
   }
 
-  private func addAttributeView(with attribute: BuyMerchantAttribute) {
-    let view = BuyMerchantAttributeView(frame: .zero)
+  private func addAttributeView(with attribute: MerchantAttributeResponse) {
+    let view = MerchantAttributeView(frame: .zero)
     view.delegate = self
     view.load(with: attribute)
     attributeStackView.addArrangedSubview(view)
   }
 
   @IBAction func tooltipButtonWasTouched() {
-    guard let tooltipUrl = viewModel?.tooltipUrl, let url = URL(string: tooltipUrl) else { return }
+    guard let tooltipUrl = viewModel?.tooltip, let url = URL(string: tooltipUrl) else { return }
     delegate?.tooltipButtonWasPressed(with: url)
   }
 
   @objc func actionButtonWasTouched() {
-    guard let viewModel = viewModel else { return }
-    delegate?.actionButtonWasPressed(with: viewModel.buyType, url: viewModel.actionUrl)
+    merchantCallToActionWasPressed()
   }
 
   @objc func applePayButtonWasTouched() {
     if PKPaymentAuthorizationController.canMakePayments() {
-      guard let viewModel = viewModel else { return }
-      delegate?.actionButtonWasPressed(with: viewModel.buyType, url: viewModel.actionUrl)
+      merchantCallToActionWasPressed()
     } else {
       PKPassLibrary().openPaymentSetup()
     }
   }
 
+  private func merchantCallToActionWasPressed() {
+    guard let viewModel = viewModel else { return }
+    delegate?.actionButtonWasPressed(type: viewModel.cta.actionStyle,
+                                     url: viewModel.cta.link)
+  }
+
 }
 
-extension PurchaseMerchantTableViewCell: BuyMerchantAttributeViewDelegate {
+extension PurchaseMerchantTableViewCell: MerchantAttributeViewDelegate {
 
   func attributeViewWasTouched(with url: URL) {
     delegate?.attributeLinkWasTouched(with: url)

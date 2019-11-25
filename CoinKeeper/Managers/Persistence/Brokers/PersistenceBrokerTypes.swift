@@ -50,7 +50,6 @@ protocol LightningBrokerType: AnyObject {
 
   func getAccount(forWallet wallet: CKMWallet, in context: NSManagedObjectContext) -> CKMLNAccount
   func persistAccountResponse(_ response: LNAccountResponse,
-                              forWallet wallet: CKMWallet,
                               in context: NSManagedObjectContext)
   func persistLedgerResponse(_ response: LNLedgerResponse,
                              forWallet wallet: CKMWallet,
@@ -59,6 +58,8 @@ protocol LightningBrokerType: AnyObject {
                               receiver: OutgoingDropBitReceiver?,
                               invitation: CKMInvitation?,
                               inputs: LightningPaymentInputs?,
+                              in context: NSManagedObjectContext)
+  func persistPaymentResponse(_ response: LNTransactionResponse,
                               in context: NSManagedObjectContext)
   func deleteInvalidWalletEntries(in context: NSManagedObjectContext)
   func deleteInvalidLedgerEntries(in context: NSManagedObjectContext)
@@ -131,6 +132,9 @@ protocol PreferencesBrokerType: AnyObject {
   var dontShowLightningRefill: Bool { get set }
   var selectedWalletTransactionType: WalletTransactionType { get set }
   var lightningWalletLockedStatus: LockStatus { get set }
+  var reviewLastRequestDate: Date? { get set }
+  var reviewLastRequestVersion: String? { get set }
+  var firstLaunchDate: Date { get }
 
 }
 

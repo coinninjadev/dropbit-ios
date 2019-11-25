@@ -102,6 +102,7 @@ public struct WalletAddressRequestBody: Encodable {
   let requestId: String
   let suppress: Bool
   let addressType: String
+  var preauthId: String?
 
   init(amount: BitcoinUSDPair,
        receiver: UserIdentityBody,

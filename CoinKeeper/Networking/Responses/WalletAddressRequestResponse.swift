@@ -74,6 +74,7 @@ public struct WalletAddressRequestMetadata: ResponseDecodable, CustomStringConve
   let sender: MetadataParticipant?
   let receiver: MetadataParticipant?
   var requestId: String?
+  var preauthId: String?
   let suppress: Bool?
   let addressType: String?
 
@@ -117,7 +118,7 @@ public struct WalletAddressRequestMetadata: ResponseDecodable, CustomStringConve
   }
 
   static var optionalStringKeys: [WritableKeyPath<WalletAddressRequestMetadata, String?>] {
-    return [\.requestId]
+    return [\.requestId, \.preauthId]
   }
 }
 
@@ -284,7 +285,6 @@ extension WalletAddressRequestResponse {
 
   static func validateResponse(_ response: WalletAddressRequestResponse) throws -> WalletAddressRequestResponse {
     let btcKeyPath = WalletAddressRequestResponseKey.btcAmount.path
-    let usdKeyPath = WalletAddressRequestResponseKey.usdAmount.path
 
     guard let responseMetadata = response.metadata else {
       throw CKNetworkError.responseMissingValue(keyPath: WalletAddressRequestResponseKey.metadata.path)
@@ -296,16 +296,8 @@ extension WalletAddressRequestResponse {
       throw CKNetworkError.responseMissingValue(keyPath: btcKeyPath)
     }
 
-    guard let usdAmount = metadata.amount?.usd else {
-      throw CKNetworkError.responseMissingValue(keyPath: usdKeyPath)
-    }
-
     guard btcAmount > 0, btcAmount < MAX_SATOSHI else {
       throw CKNetworkError.invalidValue(keyPath: btcKeyPath, value: String(btcAmount), response: response)
-    }
-
-    guard usdAmount > 0 else {
-      throw CKNetworkError.invalidValue(keyPath: usdKeyPath, value: String(usdAmount), response: response)
     }
 
     let stringValidatedResponse = try response.validateStringValues()

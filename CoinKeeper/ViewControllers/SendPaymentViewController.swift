@@ -195,7 +195,7 @@ CurrencySwappableAmountEditor {
     refreshBothAmounts()
     let sharedMemoAllowed = delegate.viewControllerShouldInitiallyAllowMemoSharing(self)
     viewModel.sharedMemoAllowed = sharedMemoAllowed
-    memoContainerView.configure(memo: nil, isShared: sharedMemoAllowed)
+    memoContainerView.configure(memo: nil, isShared: sharedMemoAllowed, encryptionPolicy: viewModel.memoEncryptionPolicy)
     delegate.sendPaymentViewControllerDidLoad(self)
     walletToggleView.delegate = self
   }
@@ -374,7 +374,9 @@ extension SendPaymentViewController {
   }
 
   func updateMemoContainer() {
-    self.memoContainerView.configure(memo: viewModel.memo, isShared: viewModel.sharedMemoDesired)
+    self.memoContainerView.configure(memo: viewModel.memo,
+                                     isShared: viewModel.sharedMemoDesired,
+                                     encryptionPolicy: viewModel.memoEncryptionPolicy)
     self.memoContainerView.bottomBackgroundView.isHidden = !viewModel.shouldShowSharedMemoBox
 
     UIView.animate(withDuration: 0.2, animations: { [weak self] in
@@ -502,14 +504,15 @@ extension SendPaymentViewController {
       ///updateViewWithModel() will call this function again to apply the new `.contact` recipient type.
       self.delegate.viewController(self, checkForContactFromGenericContact: contact) { possibleValidatedContact in
         if let validatedContact = possibleValidatedContact {
-          self.viewModel.paymentRecipient = PaymentRecipient.contact(validatedContact)
+          self.viewModel.paymentRecipient = PaymentRecipient.phoneContact(validatedContact)
           self.updateViewWithModel()
           self.hideRecipientInputViews()
         } else {
+          self.updateMemoContainer() //update message for encryption policy
           self.showPhoneEntryView(with: contact)
         }
       }
-    case .contact, .twitterContact:
+    case .phoneContact, .twitterContact:
       self.hideRecipientInputViews()
     }
   }
@@ -547,7 +550,7 @@ extension SendPaymentViewController {
 extension SendPaymentViewController: SelectedValidContactDelegate {
 
   func update(withSelectedContact contact: ContactType) {
-    self.viewModel.paymentRecipient = .contact(contact)
+    self.viewModel.paymentRecipient = .phoneContact(contact)
     updateViewWithModel()
   }
 
@@ -631,7 +634,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
     } else {
       phoneNumberEntryView.textField.selectedBack()
     }
-    return false  // manage this manually
+    return false //manage this manually
   }
 
   private func showInvalidPhoneNumberAlert() {
@@ -691,7 +694,7 @@ extension SendPaymentViewController {
 
   private func validateInvitationMaximum(against btcAmount: NSDecimalNumber) throws {
     guard let recipient = viewModel.paymentRecipient,
-      case let .contact(contact) = recipient,
+      case let .phoneContact(contact) = recipient,
       contact.kind != .registeredUser
       else { return }
 
@@ -707,7 +710,7 @@ extension SendPaymentViewController {
     }
 
     switch recipient {
-    case .contact(let contact):
+    case .phoneContact(let contact):
       try validatePayment(toContact: contact)
     case .phoneNumber(let genericContact):
       try validatePayment(toContact: genericContact)
@@ -783,7 +786,7 @@ extension SendPaymentViewController {
     var newContact = contact
     newContact.kind = kind
     switch contact.asDropBitReceiver {
-    case .phone(let contact): self.viewModel.paymentRecipient = .contact(contact)
+    case .phone(let contact): self.viewModel.paymentRecipient = .phoneContact(contact)
     case .twitter(let contact): self.viewModel.paymentRecipient = .twitterContact(contact)
     }
 

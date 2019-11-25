@@ -104,6 +104,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     }
     let since = fullSync ? nil : lastSyncDate
     return getLightningLedger(since: since)
+      .then(in: context) { self.replacePreauthorizedInvoicesWithFinalIfNeeded(ledgerResponse: $0, in: context) }
       .get(in: context) { response in
         ///Run deletion before persisting the ledger so that it doesn't interfere with wallet
         ///entries whose inverse relationships are not set until the context is saved.
@@ -115,7 +116,10 @@ class TransactionDataWorker: TransactionDataWorkerType {
     }
     .then(in: context) { response -> Promise<Void> in
       let threshold = self.fourteenDaysAgo
-      let recentLedgerEntryIds = response.ledger.filter { $0.type == .lightning && $0.createdAt > threshold }.map { $0.cleanedId }
+      let resultFilter: ((LNTransactionResult) -> Bool) = { res in
+        return res.type == .lightning && res.createdAt > threshold && !res.isPreauth
+      }
+      let recentLedgerEntryIds = response.ledger.filter(resultFilter).map { $0.cleanedId }
 
       let entriesToFetch = lnBroker.getLedgerEntriesWithoutPayloads(matchingIds: recentLedgerEntryIds, in: context)
       let idsToFetch = entriesToFetch.compactMap { $0.id }
@@ -152,6 +156,32 @@ class TransactionDataWorker: TransactionDataWorkerType {
           return self.getLightningLedger(since: date, recursiveResponse: response, offset: newPage)
         }
     }
+  }
+
+  ///This should be called before persisting the ledgerResponse as a whole
+  ///to avoid creating a new CKMLNLedgerEntry for the new/final invoice.
+  private func replacePreauthorizedInvoicesWithFinalIfNeeded(ledgerResponse: LNLedgerResponse,
+                                                             in context: NSManagedObjectContext) -> Promise<LNLedgerResponse> {
+    let preauthLedgerEntries = CKMLNLedgerEntry.findPreauthEntries(in: context)
+    guard preauthLedgerEntries.isNotEmpty else { return .value(ledgerResponse) }
+
+    return self.networkManager.getWalletAddressRequests(forSide: .sent)
+      .get(in: context) { responses in
+        for preauthLedgerEntry in preauthLedgerEntries {
+          guard let walletEntry = preauthLedgerEntry.walletEntry,
+            let invitation = walletEntry.invitation,
+            let matchingWAR = responses.first(where: { $0.id == invitation.id }),
+            let finalInvoiceId = matchingWAR.txid?.asNilIfEmpty(),
+            let finalTxResult = ledgerResponse.ledger.first(where: { $0.cleanedId == finalInvoiceId })
+            else { continue }
+
+          _ = CKMLNLedgerEntry.create(with: finalTxResult, walletEntry: walletEntry, in: context)
+          invitation.configure(withAddressRequestResponse: matchingWAR, side: .sent)
+
+          log.debug("Did replace preauthorized invoice with final; preauth: \(preauthLedgerEntry.id ?? "-"), final: \(finalTxResult.cleanedId)")
+          context.delete(preauthLedgerEntry)
+        }
+    }.map { _ in ledgerResponse }
   }
 
   func processOnChainLightningTransfers(withLedger ledgerResults: [LNTransactionResult],
@@ -440,7 +470,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
                                                in context: NSManagedObjectContext) {
     guard responses.isNotEmpty else { return }
 
-    let decryptedPayloads: [Data]
+    let decryptedPayloads: [IdentifiedPayload]
     switch walletTxType {
     case .onChain:
       decryptedPayloads = decryptedOnChainPayloads(from: responses, in: context)
@@ -453,21 +483,19 @@ class TransactionDataWorker: TransactionDataWorkerType {
   }
 
   private func decryptedOnChainPayloads(from responses: [TransactionNotificationResponse],
-                                        in context: NSManagedObjectContext) -> [Data] {
+                                        in context: NSManagedObjectContext) -> [IdentifiedPayload] {
     let cryptor = CKCryptor(walletManager: self.walletManager)
-
-    let decryptionInputs = responses.compactMap { res -> (payload: String, address: String)? in
-      guard let payload = res.encryptedPayload else { return nil }
-      return (payload, res.address)
-    }
-
     let addressDataSource = walletManager.createAddressDataSource()
-    let decryptedPayloads: [Data] = decryptionInputs.compactMap { inputs in
-      guard addressDataSource.checkAddressExists(for: inputs.address, in: context) != nil else { return nil }
+
+    let decryptedPayloads: [IdentifiedPayload] = responses.compactMap { response in
+      guard let payload = response.encryptedPayload,
+        addressDataSource.checkAddressExists(for: response.address, in: context) != nil
+        else { return nil }
+
       do {
-        let payloadData = try cryptor.decrypt(payloadAsBase64String: inputs.payload, withReceiveAddress: inputs.address, in: context)
+        let payloadData = try cryptor.decrypt(payloadAsBase64String: payload, withReceiveAddress: response.address, in: context)
         log.debug("Successfully decrypted onChain payload")
-        return payloadData
+        return IdentifiedPayload(decryptedPayload: payloadData, txid: response.txid)
       } catch {
         log.error(error, message: "Failed to decrypt onChain payload")
         return nil
@@ -476,14 +504,14 @@ class TransactionDataWorker: TransactionDataWorkerType {
     return decryptedPayloads
   }
 
-  private func decryptLightningPayloads(from responses: [TransactionNotificationResponse]) -> [Data] {
+  private func decryptLightningPayloads(from responses: [TransactionNotificationResponse]) -> [IdentifiedPayload] {
     let cryptor = CKCryptor(walletManager: self.walletManager)
-    let decryptedPayloads: [Data] = responses.compactMap { response in
+    let decryptedPayloads: [IdentifiedPayload] = responses.compactMap { response in
       guard let payloadString = response.encryptedPayload else { return nil }
       do {
         let payloadData = try cryptor.decryptWithDefaultPrivateKey(payloadAsBase64String: payloadString)
         log.debug("Successfully decrypted lightning payload")
-        return payloadData
+        return IdentifiedPayload(decryptedPayload: payloadData, txid: response.txid)
       } catch {
         log.error(error, message: "Failed to decrypt lightning payload")
         return nil

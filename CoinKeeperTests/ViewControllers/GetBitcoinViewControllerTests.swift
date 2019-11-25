@@ -35,6 +35,7 @@ class GetBitcoinViewControllerTests: XCTestCase {
 }
 
 class MockGetBitcoinViewControllerDelegate: GetBitcoinViewControllerDelegate {
+  func viewControllerDidPressMerchant(_ viewController: UIViewController, type: MerchantCallToActionStyle, url: URL) {}
 
   func openURL(_ url: URL, completionHandler completion: CKCompletion?) {}
 
