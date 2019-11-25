@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-platform :ios, '11.0'
+platform :ios, '12.2'
 inhibit_all_warnings!
 
 def shared_pods
@@ -8,6 +8,7 @@ def shared_pods
   pod 'Permission/Notifications', git: 'https://github.com/SixFiveSoftware/Permission.git', commit: '659c257'
   pod 'Permission/Contacts', git: 'https://github.com/SixFiveSoftware/Permission.git', commit: '659c257'
   pod 'Permission/Location', git: 'https://github.com/SixFiveSoftware/Permission.git', commit: '659c257'
+  pod 'Permission/Photos', git: 'https://github.com/SixFiveSoftware/Permission.git', commit: '659c257'
   pod 'SVProgressHUD', '~> 2.2.5'
   pod 'Moya', '~> 13.0.1'
   pod 'ReachabilitySwift', '~> 4.3.1'

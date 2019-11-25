@@ -10,6 +10,8 @@ import UIKit
 import AVFoundation
 import SVProgressHUD
 
+typealias PhotoViewController = UIViewController & UIImagePickerControllerDelegate & UINavigationControllerDelegate
+
 //swiftlint:disable class_delegate_protocol
 protocol ScanQRViewControllerDelegate: PaymentRequestResolver, LightningInvoiceResolver, ViewControllerDismissable {
 
@@ -19,6 +21,7 @@ protocol ScanQRViewControllerDelegate: PaymentRequestResolver, LightningInvoiceR
   func viewControllerDidScan(_ viewController: UIViewController, lightningInvoice: String, completion: @escaping CKCompletion)
 
   func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: Error?)
+  func viewControllerDidPressPhotoButton(_ viewController: PhotoViewController)
 
 }
 
@@ -27,6 +30,7 @@ class ScanQRViewController: BaseViewController, StoryboardInitializable {
   @IBOutlet var closeButton: UIButton!
   @IBOutlet var flashButton: UIButton!
   @IBOutlet var scanBoxImageView: UIImageView!
+  @IBOutlet var photosButton: UIButton!
 
   var bitcoinAddressValidator: CompositeValidator = {
     return CompositeValidator<String>(validators: [StringEmptyValidator(), BitcoinAddressValidator()])
@@ -117,19 +121,29 @@ class ScanQRViewController: BaseViewController, StoryboardInitializable {
   @IBAction func closeButtonWasTouched() {
     delegate.viewControllerDidSelectClose(self)
   }
+
+  @IBAction func photoButtonWasTouched() {
+    delegate.viewControllerDidPressPhotoButton(self)
+  }
 }
+
+extension ScanQRViewController: UINavigationControllerDelegate {}
 
 extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
 
   func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
     guard metadataObjects.isNotEmpty else { return }
     let rawCodes = metadataObjects.compactMap { $0 as? AVMetadataMachineReadableCodeObject }
-    let lightningQRCodes = rawCodes.compactMap { $0.stringValue }.compactMap { LightningURL(string: $0) }
+    let destinations = rawCodes.compactMap { $0.stringValue }
+    handle(possibleDestinations: destinations)
+  }
 
+  private func handle(possibleDestinations: [String]) {
+    let lightningQRCodes = possibleDestinations.compactMap { LightningURL(string: $0) }
     if let lightningQRCode = lightningQRCodes.first, currentLockStatus != .locked {
       handle(lightningQRInvoice: lightningQRCode)
     } else {
-      let bitcoinQRCodes = rawCodes.compactMap { OnChainQRCode(readableObject: $0) }
+      let bitcoinQRCodes = possibleDestinations.compactMap { OnChainQRCode(string: $0) }
       guard let qrCode = bitcoinQRCodes.first else { return }
       handle(bitcoinQRCode: qrCode)
     }
@@ -140,8 +154,9 @@ extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
     didCaptureQRCode = true
 
     SVProgressHUD.show()
-    delegate.viewControllerDidScan(self, lightningInvoice: lightningUrl.invoice, completion: {
+    delegate.viewControllerDidScan(self, lightningInvoice: lightningUrl.invoice, completion: { [weak self] in
       SVProgressHUD.dismiss()
+      self?.didCaptureQRCode = false
     })
   }
 
@@ -161,6 +176,24 @@ extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
       } catch {
         delegate.viewControllerDidAttemptInvalidDestination(self, error: error)
       }
+    }
+  }
+}
+
+extension ScanQRViewController: UIImagePickerControllerDelegate {
+
+  func imagePickerController(_ picker: UIImagePickerController,
+                             didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+    guard let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage,
+        let detector = CIDetector(ofType: CIDetectorTypeQRCode,
+                                  context: nil,
+                                  options: [CIDetectorAccuracy: CIDetectorAccuracyHigh]),
+        let ciImage = CIImage(image: pickedImage),
+        let features = detector.features(in: ciImage) as? [CIQRCodeFeature] else { return }
+
+    let qrCode = features.reduce("") { "\($0)\($1.messageString ?? "")" }
+    picker.dismiss(animated: true) { [weak self] in
+      self?.handle(possibleDestinations: [qrCode])
     }
   }
 }

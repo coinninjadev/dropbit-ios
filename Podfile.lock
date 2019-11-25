@@ -31,6 +31,8 @@ PODS:
     - Permission/Core
   - Permission/Notifications (2.0.4):
     - Permission/Core
+  - Permission/Photos (2.0.4):
+    - Permission/Core
   - PhoneNumberKit (2.6.0):
     - PhoneNumberKit/PhoneNumberKitCore (= 2.6.0)
     - PhoneNumberKit/UIKit (= 2.6.0)
@@ -54,6 +56,7 @@ DEPENDENCIES:
   - Permission/Contacts (from `https://github.com/SixFiveSoftware/Permission.git`, commit `659c257`)
   - Permission/Location (from `https://github.com/SixFiveSoftware/Permission.git`, commit `659c257`)
   - Permission/Notifications (from `https://github.com/SixFiveSoftware/Permission.git`, commit `659c257`)
+  - Permission/Photos (from `https://github.com/SixFiveSoftware/Permission.git`, commit `659c257`)
   - PhoneNumberKit (from `https://github.com/blwinters/PhoneNumberKit.git`, commit `6222471`)
   - ReachabilitySwift (~> 4.3.1)
   - RNCryptor (~> 5.1.0)
@@ -113,6 +116,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   Willow: a6310f9aedcb6f4de8c35b94fd3416a660ae9280
 
-PODFILE CHECKSUM: acc0ea10d7154dd0303c7e161b267c3127133566
+PODFILE CHECKSUM: f832055c32194da552c568340dacc9dd45349b21
 
 COCOAPODS: 1.7.4
