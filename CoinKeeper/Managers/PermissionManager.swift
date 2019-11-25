@@ -12,6 +12,7 @@ import UserNotifications
 
 enum PermissionKind {
   case contacts
+  case photos
   case camera
   case notification
   case location
@@ -46,6 +47,7 @@ class PermissionManager: PermissionManagerType {
     var permission: Permission
 
     switch kind {
+    case .photos: permission = Permission.photos
     case .contacts: permission = Permission.contacts
     case .camera:   permission = Permission.camera
     case .location: permission = Permission.locationWhenInUse
@@ -71,6 +73,8 @@ class PermissionManager: PermissionManagerType {
 
   func permissionStatus(for kind: PermissionKind) -> PermissionStatus {
     switch kind {
+    case .photos:
+      return Permission.photos.status
     case .contacts:
       return Permission.contacts.status
     case .camera:

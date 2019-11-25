@@ -64,6 +64,8 @@
 	<string>Allow access to find Bitcoin ATMs or use Bitcoin near you</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Allow access to find Bitcoin ATMs or use Bitcoin near you</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Used to find QR codes</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Montserrat-Black.ttf</string>
