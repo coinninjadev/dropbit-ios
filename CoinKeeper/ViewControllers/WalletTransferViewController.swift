@@ -100,6 +100,14 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     buildTransactionIfNecessary()
   }
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    if viewModel.btcAmount == .zero {
+      editAmountView.primaryAmountTextField.becomeFirstResponder()
+    }
+  }
+
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
     updateEditAmountView(withRates: exchangeRateManager.exchangeRates)
   }
