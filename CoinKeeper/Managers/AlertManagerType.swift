@@ -13,7 +13,7 @@ import Sheeeeeeeeet
 protocol AlertManagerType: CKBannerViewDelegate {
 
   func alert(
-    withTitle title: String,
+    withTitle title: String?,
     description: String?,
     image: UIImage?,
     style: AlertManager.AlertStyle,
@@ -31,7 +31,7 @@ protocol AlertManagerType: CKBannerViewDelegate {
   func debugAlert(with error: Error, debugAction action: @escaping CKCompletion) -> AlertControllerType
 
   func alert(
-    withTitle title: String,
+    withTitle title: String?,
     description: String?,
     image: UIImage?,
     style: AlertManager.AlertStyle,
@@ -45,7 +45,7 @@ protocol AlertManagerType: CKBannerViewDelegate {
 
   func showSuccess(message: String, forDuration duration: TimeInterval?)
   func showError(message: String, forDuration duration: TimeInterval?)
-  func defaultAlert(withTitle title: String, description: String?) -> AlertControllerType
+  func defaultAlert(withTitle title: String?, description: String?) -> AlertControllerType
 
   // Workaround for default parameter
   func showBanner(with message: String)

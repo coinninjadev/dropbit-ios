@@ -57,7 +57,7 @@ class AlertManager: AlertManagerType {
     sheet.present(in: viewController, from: nil)
   }
 
-  func alert(withTitle title: String,
+  func alert(withTitle title: String?,
              description: String?,
              image: UIImage?,
              style: AlertManager.AlertStyle,
@@ -70,7 +70,7 @@ class AlertManager: AlertManagerType {
                        actionConfigs: actionConfigs)
   }
 
-  func alert(withTitle title: String,
+  func alert(withTitle title: String?,
              description: String?,
              image: UIImage?,
              style: AlertManager.AlertStyle,
@@ -277,7 +277,7 @@ class AlertManager: AlertManagerType {
     showBanner(with: title, duration: nil, alertKind: kind, completion: completion, url: response.link)
   }
 
-  private func createAlert(withTitle title: String,
+  private func createAlert(withTitle title: String?,
                            description: String?,
                            image: UIImage?,
                            style: AlertManager.AlertStyle,
@@ -319,7 +319,7 @@ class AlertManager: AlertManagerType {
     return AlertActionConfiguration(title: "OK", style: .cancel, action: action)
   }
 
-  func defaultAlert(withTitle title: String, description: String?) -> AlertControllerType {
+  func defaultAlert(withTitle title: String?, description: String?) -> AlertControllerType {
     return alert(withTitle: title,
                  description: description,
                  image: nil,
