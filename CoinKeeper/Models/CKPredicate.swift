@@ -53,6 +53,11 @@ struct CKPredicate {
       return NSPredicate(format: "\(idPath) BEGINSWITH %@", CKMInvitation.unacknowledgementPrefix)
     }
 
+    static func invitationHasPreauthPrefix() -> NSPredicate {
+      let idPath = #keyPath(CKMInvitation.preauthId)
+      return NSPredicate(format: "%K BEGINSWITH[cd] %@", idPath, CKMLNLedgerEntry.preAuthPrefix)
+    }
+
     static func withStatuses(_ statuses: [InvitationStatus]) -> NSPredicate {
       let statusValues = statuses.map { $0.rawValue }
       let path = #keyPath(CKMInvitation.status)
@@ -363,6 +368,15 @@ struct CKPredicate {
       let ledgerEntryPredicate = NSPredicate(format: "\(ledgerEntryPath) == nil")
       let tempTxPredicate = NSPredicate(format: "\(tempTxPath) == nil")
       return NSCompoundPredicate(type: .and, subpredicates: [invitationPredicate, ledgerEntryPredicate, tempTxPredicate])
+    }
+
+    static func allPreAuthsWithoutInvite() -> NSPredicate {
+      let invitationPath = #keyPath(CKMWalletEntry.invitation)
+      let ledgerEntryPath = #keyPath(CKMWalletEntry.ledgerEntry.id)
+
+      let invitationPredicate = NSPredicate(format: "%K == nil", invitationPath)
+      let ledgerEntryPredicate = NSPredicate(format: "%K BEGINSWITH[cd] %@", ledgerEntryPath, CKMLNLedgerEntry.preAuthPrefix)
+      return NSCompoundPredicate(type: .and, subpredicates: [invitationPredicate, ledgerEntryPredicate])
     }
 
     static func tempId(_ id: String) -> NSPredicate {
