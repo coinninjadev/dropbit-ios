@@ -68,7 +68,7 @@ class LightningQuickLoadViewController: BaseViewController, StoryboardInitializa
     customAmountButton.titleLabel?.font = .semiBold(20)
     customAmountButton.setTitleColor(.mediumGrayBackground, for: .normal)
 
-    balanceView.configure(withFiatBalances: viewModel.balances, currency: viewModel.currency)
+    balanceView.configure(withFiatBalances: viewModel.fiatBalances, currency: viewModel.fiatCurrency)
 
     addControls(from: viewModel.controlConfigs, startIndex: 0, to: topStackView)
     addControls(from: viewModel.controlConfigs, startIndex: 3, to: bottomStackView)

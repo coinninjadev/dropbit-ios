@@ -10,8 +10,9 @@ import Foundation
 
 struct LightningQuickLoadViewModel {
 
-  let balances: WalletBalances
-  let currency: CurrencyCode
+  let btcBalances: WalletBalances
+  let fiatBalances: WalletBalances
+  let fiatCurrency: CurrencyCode
   let controlConfigs: [QuickLoadControlConfig]
 
   ///If true, sending max should send all spendable utxos.
@@ -22,7 +23,7 @@ struct LightningQuickLoadViewModel {
     return [5, 10, 20, 50, 100].map { NSDecimalNumber(value: $0) }
   }
 
-  init(spendableBalances: WalletBalances, rates: ExchangeRates, currency: CurrencyCode) throws {
+  init(spendableBalances: WalletBalances, rates: ExchangeRates, fiatCurrency: CurrencyCode) throws {
     guard let minFiatAmount = LightningQuickLoadViewModel.standardAmounts.first else {
       throw CKSystemError.missingValue(key: "standardAmounts.min")
     }
@@ -44,12 +45,19 @@ struct LightningQuickLoadViewModel {
                                                             walletType: .onChain, ignoring: [.minReloadAmount])
     try minReloadValidator.validate(value: minStandardAmountConverter)
 
-    self.balances = spendableBalances
-    self.currency = currency
-
-    let maxAmountResults = minReloadValidator.maxLoadAmount(using: rates)
-    self.controlConfigs = LightningQuickLoadViewModel.configs(withMax: maxAmountResults.amount, currency: currency)
+    self.btcBalances = spendableBalances
+    self.fiatCurrency = fiatCurrency
+    let fiatBalances = LightningQuickLoadViewModel.convertBalances(spendableBalances, toFiat: fiatCurrency, using: rates)
+    self.fiatBalances = fiatBalances
+    let maxAmountResults = minReloadValidator.maxLoadAmount(using: fiatBalances)
+    self.controlConfigs = LightningQuickLoadViewModel.configs(withMax: maxAmountResults.amount, currency: fiatCurrency)
     self.maxIsLimitedByOnChainBalance = maxAmountResults.limitIsOnChainBalance
+  }
+
+  private static func convertBalances(_ btcBalances: WalletBalances, toFiat currency: CurrencyCode, using rates: ExchangeRates) -> WalletBalances {
+    let onChainConverter = CurrencyConverter(fromBtcTo: currency, fromAmount: btcBalances.onChain, rates: rates)
+    let lightningConverter = CurrencyConverter(fromBtcTo: currency, fromAmount: btcBalances.lightning, rates: rates)
+    return WalletBalances(onChain: onChainConverter.fiatAmount, lightning: lightningConverter.fiatAmount)
   }
 
   private static func configs(withMax max: NSDecimalNumber, currency: CurrencyCode) -> [QuickLoadControlConfig] {
