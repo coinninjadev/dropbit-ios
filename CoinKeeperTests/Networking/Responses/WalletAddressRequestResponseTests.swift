@@ -150,6 +150,29 @@ class WalletAddressRequestResponseTests: XCTestCase, ResponseStringsTestable {
                          "WalletAddressRequestResponse with max satoshi amount should throw error", { _ in })
   }
 
+  func testWithoutPreauthId_isSatisfiedForSending() {
+    guard let sample = decodedSampleJSON() else {
+      XCTFail(decodingFailureMessage)
+      return
+    }
+
+    let nilPreauthResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(preauthId: nil))
+    XCTAssertTrue(nilPreauthResponse.isSatisfiedForSending)
+
+    let emptyPreauthResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(preauthId: ""))
+    XCTAssertTrue(emptyPreauthResponse.isSatisfiedForSending)
+  }
+
+  func testWithPreauthId_isNotSatisfiedForSending() {
+    guard let sample = decodedSampleJSON() else {
+      XCTFail(decodingFailureMessage)
+      return
+    }
+
+    let nilPreauthResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(preauthId: "ABC123"))
+    XCTAssertFalse(nilPreauthResponse.isSatisfiedForSending)
+  }
+
   func testEmptyOptionalStringsConvertToNil() {
     guard let sample = decodedSampleJSON() else {
       XCTFail(decodingFailureMessage)
@@ -239,7 +262,13 @@ extension WalletAddressRequestResponse: EmptyStringCopyable {
 extension WalletAddressRequestMetadata {
 
   init(amount: MetadataAmount) {
-    self.init(amount: amount, sender: nil, receiver: nil,
-              requestId: nil, suppress: nil, addressType: nil)
+    self.init(amount: amount, sender: nil, receiver: nil, requestId: nil,
+              preauthId: nil, suppress: nil, addressType: nil)
   }
+
+  init(preauthId: String?) {
+    self.init(amount: nil, sender: nil, receiver: nil, requestId: nil,
+              preauthId: preauthId, suppress: nil, addressType: nil)
+  }
+
 }
