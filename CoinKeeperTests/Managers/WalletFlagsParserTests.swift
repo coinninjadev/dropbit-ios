@@ -80,4 +80,79 @@ class WalletFlagsParserTests: XCTestCase {
     parser.deactivate()
     XCTAssertEqual(parser.flags, 0b1_0000_0001)
   }
+
+  // backed up
+  func testSetBackedUpTrueFromFalse() {
+    let parser = WalletFlagsParser(flags: 18) // 0b00010010
+    parser.setBackedUp(true)
+    XCTAssertEqual(parser.flags, 0b10_0001_0010)
+  }
+
+  func testSetBackedUpFalseFromTrue() {
+    let parser = WalletFlagsParser(flags: 0b10_0001_0010) // 0b00010010
+    parser.setBackedUp(false)
+    XCTAssertEqual(parser.flags, 0b00_0001_0010)
+  }
+
+  func testSetBackedUpTrueFromTrue() {
+    let parser = WalletFlagsParser(flags: 530) // 0b00010010
+    parser.setBackedUp(true)
+    XCTAssertEqual(parser.flags, 0b10_0001_0010)
+  }
+
+  func testSetBackedUpFalseFromFalse() {
+    let parser = WalletFlagsParser(flags: 0b1_0010) // 0b00010010
+    parser.setBackedUp(false)
+    XCTAssertEqual(parser.flags, 0b1_0010)
+  }
+
+  // has btc balance
+  func testSetHasBTCBalanceTrueFromFalse() {
+    let parser = WalletFlagsParser(flags: 0b010_0001_0010)
+    parser.setHasBTCBalance(true)
+    XCTAssertEqual(parser.flags, 0b110_0001_0010)
+  }
+
+  func testSetHasBTCBalanceFalseFromTrue() {
+    let parser = WalletFlagsParser(flags: 0b110_0001_0010)
+    parser.setHasBTCBalance(false)
+    XCTAssertEqual(parser.flags, 0b010_0001_0010)
+  }
+
+  func testSetHasBTCBalanceTrueFromTrue() {
+    let parser = WalletFlagsParser(flags: 0b110_0001_0010)
+    parser.setHasBTCBalance(true)
+    XCTAssertEqual(parser.flags, 0b110_0001_0010)
+  }
+
+  func testSetHasBTCBalanceFalseFromFalse() {
+    let parser = WalletFlagsParser(flags: 0b010_0001_0010)
+    parser.setHasBTCBalance(false)
+    XCTAssertEqual(parser.flags, 0b010_0001_0010)
+  }
+
+  // has lightning balance
+  func testSetHasLightningBalanceTrueFromFalse() {
+    let parser = WalletFlagsParser(flags: 0b0010_0001_0010)
+    parser.setHasLightningBalance(true)
+    XCTAssertEqual(parser.flags, 0b1010_0001_0010)
+  }
+
+  func testSetHasLightningBalanceFalseFromTrue() {
+    let parser = WalletFlagsParser(flags: 0b1010_0001_0010)
+    parser.setHasLightningBalance(false)
+    XCTAssertEqual(parser.flags, 0b0010_0001_0010)
+  }
+
+  func testSetHasLightningBalanceTrueFromTrue() {
+    let parser = WalletFlagsParser(flags: 0b1010_0001_0010)
+    parser.setHasLightningBalance(true)
+    XCTAssertEqual(parser.flags, 0b1010_0001_0010)
+  }
+
+  func testSetHasLightningBalanceFalseFromFalse() {
+    let parser = WalletFlagsParser(flags: 0b0010_0001_0010)
+    parser.setHasLightningBalance(false)
+    XCTAssertEqual(parser.flags, 0b0010_0001_0010)
+  }
 }
