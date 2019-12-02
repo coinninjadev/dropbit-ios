@@ -16,6 +16,7 @@ struct DrawerData {
     case verify
     case spend
     case support
+    case earn
   }
 
   var image: UIImage?

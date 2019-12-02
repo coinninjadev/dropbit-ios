@@ -186,8 +186,12 @@ struct TransactionCellCounterpartyConfig {
   let displayName: String?
   let displayPhoneNumber: String?
   let twitterConfig: TransactionCellTwitterConfig?
+  let avatarConfig: TransactionCellAvatarConfig?
 
-  init(displayName: String? = nil, displayPhoneNumber: String? = nil, twitterConfig: TransactionCellTwitterConfig? = nil) {
+  init(displayName: String? = nil,
+       displayPhoneNumber: String? = nil,
+       twitterConfig: TransactionCellTwitterConfig? = nil,
+       avatarConfig: TransactionCellAvatarConfig? = nil) {
     guard (displayName != nil) || (displayPhoneNumber != nil) || (twitterConfig != nil) else {
       let message = "At least one parameter should be non-nil when initializing the counterparty config"
       log.error(message)
@@ -196,13 +200,18 @@ struct TransactionCellCounterpartyConfig {
     self.displayName = displayName
     self.displayPhoneNumber = displayPhoneNumber
     self.twitterConfig = twitterConfig
+    self.avatarConfig = avatarConfig
   }
 
-  init?(failableWithName displayName: String?, displayPhoneNumber: String?, twitterConfig: TransactionCellTwitterConfig?) {
+  init?(failableWithName displayName: String?,
+        displayPhoneNumber: String?,
+        twitterConfig: TransactionCellTwitterConfig?,
+        avatarConfig: TransactionCellAvatarConfig? = nil) {
     guard (displayName != nil) || (displayPhoneNumber != nil) || (twitterConfig != nil) else { return nil }
     self.displayName = displayName
     self.displayPhoneNumber = displayPhoneNumber
     self.twitterConfig = twitterConfig
+    self.avatarConfig = avatarConfig
   }
 
 }
@@ -234,22 +243,19 @@ struct SummaryCellAmountLabels {
   let pillIsAmount: Bool
 }
 
-struct TransactionCellDirectionConfig {
-  let bgColor: UIColor
-  let image: UIImage
-}
-
 struct TransactionCellAvatarConfig {
   let image: UIImage
+  var bgColor: UIColor = .clear
 }
 
 struct SummaryCellLeadingImageConfig {
   let avatarConfig: TransactionCellAvatarConfig?
-  let directionConfig: TransactionCellDirectionConfig?
+  let directionConfig: TransactionCellAvatarConfig?
+  let twitterConfig: TransactionCellTwitterConfig?
 
   /// Falls back to use the directionConfig if twitterConfig is missing image data
   init(twitterConfig: TransactionCellTwitterConfig?,
-       directionConfig: TransactionCellDirectionConfig) {
+       directionConfig: TransactionCellAvatarConfig) {
     if let avatarImage = twitterConfig?.avatar {
       self.avatarConfig = TransactionCellAvatarConfig(image: avatarImage)
       self.directionConfig = nil
@@ -257,6 +263,14 @@ struct SummaryCellLeadingImageConfig {
       self.avatarConfig = nil
       self.directionConfig = directionConfig
     }
+
+    self.twitterConfig = twitterConfig
+  }
+
+  init(avatarConfig: TransactionCellAvatarConfig) {
+    self.avatarConfig = avatarConfig
+    self.directionConfig = nil
+    self.twitterConfig = nil
   }
 
 }

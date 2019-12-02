@@ -11,7 +11,7 @@ import UIKit
 class TransactionHistorySummaryCell: UICollectionViewCell {
 
   @IBOutlet var directionView: TransactionDirectionView!
-  @IBOutlet var twitterAvatarView: TwitterAvatarView!
+  @IBOutlet var avatarView: AvatarView!
   @IBOutlet var descriptionLabel: TransactionHistoryCounterpartyLabel!
   @IBOutlet var subtitleLabel: SummaryCellSubtitleLabel!
   @IBOutlet var amountStackView: UIStackView!
@@ -27,7 +27,7 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
   override func prepareForReuse() {
     super.prepareForReuse()
 
-    twitterAvatarView.isHidden = true
+    avatarView.isHidden = true
     directionView.isHidden = true
     amountStackView.arrangedSubviews.forEach { subview in
       amountStackView.removeArrangedSubview(subview)
@@ -47,7 +47,7 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     layer.maskedCorners = isAtTop ? .top : .none
 
     configureIsHidden(with: values)
-    configureLeadingViews(with: values.leadingImageConfig, cellBgColor: values.cellBackgroundColor)
+    configureLeadingViews(with: values.leadingImageConfig)
     descriptionLabel.text = values.summaryTransactionDescription
     subtitleLabel.font = values.subtitleFont
     subtitleLabel.text = values.subtitleText
@@ -61,17 +61,18 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
   /// Configures isHidden for all subviews of this cell where that property varies
   private func configureIsHidden(with values: TransactionSummaryCellDisplayable) {
     directionView.isHidden = values.shouldHideDirectionView
-    twitterAvatarView.isHidden = values.shouldHideAvatarView
+    avatarView.isHidden = values.shouldHideAvatarView
+    avatarView.twitterLogoImageView.isHidden = values.shouldHideTwitterLogo
     subtitleLabel.isHidden = values.shouldHideSubtitleLabel
   }
 
-  private func configureLeadingViews(with leadingConfig: SummaryCellLeadingImageConfig, cellBgColor: UIColor) {
+  private func configureLeadingViews(with leadingConfig: SummaryCellLeadingImageConfig) {
     if let directionConfig = leadingConfig.directionConfig {
       self.directionView.configure(image: directionConfig.image, bgColor: directionConfig.bgColor)
     }
 
     if let avatarConfig = leadingConfig.avatarConfig {
-      self.twitterAvatarView.configure(with: avatarConfig.image, logoBackgroundColor: cellBgColor)
+      self.avatarView.configure(with: avatarConfig.image, logoBackgroundColor: avatarConfig.bgColor, kind: .generic)
     }
   }
 

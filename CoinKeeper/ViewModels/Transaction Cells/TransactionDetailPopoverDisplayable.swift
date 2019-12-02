@@ -9,7 +9,7 @@
 import UIKit
 
 protocol TransactionDetailPopoverDisplayable {
-  var directionConfig: TransactionCellDirectionConfig { get }
+  var directionConfig: TransactionCellAvatarConfig { get }
   var detailStatusText: String { get }
   var breakdownItems: [TransactionPopoverBreakdownItem] { get }
   var txid: String { get }

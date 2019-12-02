@@ -69,7 +69,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="vhf-Te-YuS">
                                         <rect key="frame" x="0.0" y="0.0" width="360" height="92.5"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YsJ-dg-KD9" customClass="TwitterAvatarView" customModule="DropBit" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YsJ-dg-KD9" customClass="AvatarView" customModule="DropBit" customModuleProvider="target">
                                                 <rect key="frame" x="154" y="0.0" width="52" height="72"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <constraints>
@@ -217,6 +217,7 @@
             <size key="customSize" width="339" height="425"/>
             <connections>
                 <outlet property="addMemoButton" destination="2pm-yR-54f" id="mtx-Ji-bb8"/>
+                <outlet property="avatarView" destination="YsJ-dg-KD9" id="YyR-Fs-i1R"/>
                 <outlet property="closeButton" destination="4Kc-dJ-AiE" id="LcN-GZ-0DU"/>
                 <outlet property="counterpartyLabel" destination="7cn-MI-Bku" id="vxZ-RA-GuA"/>
                 <outlet property="dateLabel" destination="RT6-N2-m4e" id="4It-80-EbE"/>
@@ -227,7 +228,6 @@
                 <outlet property="questionMarkButton" destination="TIt-mX-a4E" id="YZD-C4-bAQ"/>
                 <outlet property="secondaryAmountLabel" destination="fJn-Cf-Sn1" id="rhP-Yu-hk5"/>
                 <outlet property="statusLabel" destination="Nfg-iz-TlG" id="mJY-bo-dIq"/>
-                <outlet property="twitterAvatarView" destination="YsJ-dg-KD9" id="NhY-Mz-swI"/>
                 <outlet property="underlyingContentView" destination="HY4-mA-A7R" id="dS5-eU-tXe"/>
                 <outlet property="warningLabel" destination="biq-EA-EIs" id="lg1-e2-59D"/>
             </connections>

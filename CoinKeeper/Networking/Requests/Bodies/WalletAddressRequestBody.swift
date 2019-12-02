@@ -13,7 +13,7 @@ struct WalletAddressRequestAmount: Codable {
   let btc: Int
 }
 
-public struct UserIdentityBody: Codable {
+public class UserIdentityBody: Codable {
   let type: String
   let identity: String
   var handle: String?

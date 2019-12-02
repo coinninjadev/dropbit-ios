@@ -16,6 +16,10 @@ extension AppCoordinator: BadgeUpdateDelegate {
 
 extension AppCoordinator: DrawerViewControllerDelegate {
 
+  func earnButtonWasTouched() {
+    drawerController?.toggle(.left, animated: true, completion: nil)
+  }
+
   func backupWordsWasTouched() {
     analyticsManager.track(event: .backupWordsButtonPressed, with: nil)
     drawerController?.toggle(.left, animated: true, completion: nil)

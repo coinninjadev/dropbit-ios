@@ -33,6 +33,7 @@ extension CKMWalletEntry {
   @NSManaged public var phoneNumber: CKMPhoneNumber?
   @NSManaged public var sharedPayload: CKMTransactionSharedPayload?
   @NSManaged public var invitation: CKMInvitation?
+  @NSManaged public var counterparty: CKMCounterparty?
   @NSManaged public var temporarySentTransaction: CKMTemporarySentTransaction?
 
 }

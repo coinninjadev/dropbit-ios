@@ -8,7 +8,12 @@
 
 import UIKit
 
-class TwitterAvatarView: UIView {
+class AvatarView: UIView {
+
+  enum Kind {
+    case generic
+    case twitter
+  }
 
   private(set) var avatarImageView: UIImageView!
   private(set) var twitterLogoImageView: UIImageView!
@@ -24,9 +29,10 @@ class TwitterAvatarView: UIView {
   }
 
   /// `logoBackgroundColor` is used for the small circle behind the Twitter bird
-  func configure(with image: UIImage, logoBackgroundColor: UIColor) {
-    avatarImageView.image = image
+  func configure(with image: UIImage, logoBackgroundColor: UIColor, kind: Kind) {
+    avatarImageView.backgroundColor = logoBackgroundColor
     twitterLogoImageView.backgroundColor = logoBackgroundColor
+    avatarImageView.image = image
   }
 
   private func initialize() {

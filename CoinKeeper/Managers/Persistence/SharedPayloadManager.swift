@@ -29,6 +29,7 @@ protocol SharedPayloadManagerType: AnyObject {
 struct PayloadCounterparties {
   let phoneNumber: CKMPhoneNumber?
   let twitterContact: CKMTwitterContact?
+  let counterparty: CKMCounterparty?
 }
 
 struct PayloadPersistenceDependencies {
@@ -101,6 +102,7 @@ class SharedPayloadManager: SharedPayloadManagerType {
       let counterparties = payload.payloadCounterparties(with: deps)
       if targetObject.phoneNumber == nil { targetObject.phoneNumber = counterparties?.phoneNumber }
       if targetObject.twitterContact == nil { targetObject.twitterContact = counterparties?.twitterContact }
+      if targetObject.counterparty == nil { targetObject.counterparty = counterparties?.counterparty }
     }
   }
 
@@ -123,6 +125,14 @@ protocol SharedPayloadConfigurable: AnyObject {
   var phoneNumber: CKMPhoneNumber? { get set }
   var twitterContact: CKMTwitterContact? { get set }
   var sharedPayload: CKMTransactionSharedPayload? { get set }
+  var counterparty: CKMCounterparty? { get set }
+}
+
+extension SharedPayloadConfigurable {
+  var counterparty: CKMCounterparty? {
+    get { return nil }
+    set { }
+  }
 }
 
 extension CKMTransaction: SharedPayloadConfigurable { }
@@ -158,7 +168,9 @@ extension PersistablePayload {
       managedPhoneNumber.counterparty = CKMCounterparty.findOrCreate(with: name, in: deps.context)
     }
 
-    return PayloadCounterparties(phoneNumber: managedPhoneNumber, twitterContact: nil)
+    return PayloadCounterparties(phoneNumber: managedPhoneNumber,
+                                 twitterContact: nil,
+                                 counterparty: nil)
   }
 
 }
