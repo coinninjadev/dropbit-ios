@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 ///Holds shared logic
 class LightningViewModelObject {
@@ -80,6 +81,10 @@ class LightningTransactionViewModelObject: LightningViewModelObject, Transaction
     return status == .pending && direction == .in && isLightningTransfer
   }
 
+  var isReferralBonus: Bool {
+    return ledgerEntry.walletEntry?.counterparty?.type == .referral
+  }
+
   var primaryDate: Date {
     return walletEntry.sortDate
   }
@@ -107,11 +112,18 @@ class LightningTransactionViewModelObject: LightningViewModelObject, Transaction
 
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
     let maybeTwitter = ledgerEntry.walletEntry?.twitterContact.flatMap { TransactionCellTwitterConfig(contact: $0) }
-    let maybeName = priorityCounterpartyName(with: maybeTwitter, invitation: nil, phoneNumber: ledgerEntry.walletEntry?.phoneNumber)
+    let maybeName = priorityCounterpartyName(with: maybeTwitter, invitation: nil,
+                                             phoneNumber: ledgerEntry.walletEntry?.phoneNumber,
+                                             counterparty: ledgerEntry.walletEntry?.counterparty)
+    var maybeAvatar: TransactionCellAvatarConfig?
+    if let avatarData = walletEntry.counterparty?.profileImageData, let maybeImage = UIImage(data: avatarData) {
+      maybeAvatar = TransactionCellAvatarConfig(image: maybeImage, bgColor: .lightningBlue)
+    }
     let maybeNumber = priorityPhoneNumber(for: deviceCountryCode, invitation: nil, phoneNumber: ledgerEntry.walletEntry?.phoneNumber)
     return TransactionCellCounterpartyConfig(failableWithName: maybeName,
                                              displayPhoneNumber: maybeNumber,
-                                             twitterConfig: maybeTwitter)
+                                             twitterConfig: maybeTwitter,
+                                             avatarConfig: maybeAvatar)
   }
 
 }
@@ -171,6 +183,8 @@ class LightningInvitationViewModelObject: LightningViewModelObject, TransactionD
   var lightningInvoice: String? {
     return nil
   }
+
+  var isReferralBonus: Bool { return false } //Invitations cannot be referral bonuses
 
   func amountFactory(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsFactoryType {
     return TransactionAmountsFactory(walletEntry: walletEntry, fiatCurrency: fiatCurrency,
@@ -253,6 +267,7 @@ class LightningLoadTemporaryViewModelObject: LightningViewModelObject, Transacti
   let isLightningUpgrade: Bool = false
   let isSentToSelf: Bool = false
   let isPendingTransferToLightning: Bool = false
+  let isReferralBonus: Bool = false
 
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? { nil }
 
@@ -284,6 +299,7 @@ struct FallbackViewModelObject: TransactionDetailCellViewModelObject {
   var encodedInvoice: String?
   var paymentIdIsValid: Bool
   var invitationStatus: InvitationStatus?
+  var isReferralBonus: Bool = false
 
   init(walletTxType: WalletTransactionType) {
     self.walletTxType = walletTxType

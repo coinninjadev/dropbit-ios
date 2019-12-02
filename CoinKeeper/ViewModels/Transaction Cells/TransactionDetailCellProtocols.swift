@@ -11,9 +11,10 @@ import UIKit
 /// Provides all variable values directly necessary to configure the TransactionHistoryDetailCell UI.
 /// Fixed values (colors, font sizes, etc.) are provided by the cell itself.
 protocol TransactionDetailCellDisplayable {
-  var directionConfig: TransactionCellDirectionConfig { get }
+  var directionConfig: TransactionCellAvatarConfig { get }
   var detailStatusText: String { get }
   var detailStatusColor: UIColor { get }
+  var counterpartyConfig: TransactionCellCounterpartyConfig? { get }
   var twitterConfig: TransactionCellTwitterConfig? { get }
   var counterpartyText: String? { get }
   var detailAmountLabels: DetailCellAmountLabels { get }
@@ -28,7 +29,9 @@ protocol TransactionDetailCellDisplayable {
   var detailCellType: TransactionDetailCellType { get }
   var cellBackgroundColor: UIColor { get }
   var isLightningTransfer: Bool { get }
+  var isReferralBonus: Bool { get }
   var shouldHideAvatarView: Bool { get }
+  var shouldHideAvatarViewAccent: Bool { get }
   var shouldHideMemoView: Bool { get }
 
 }
@@ -48,9 +51,10 @@ extension TransactionDetailCellDisplayable {
   var shouldHideAddMemoButton: Bool { return !canAddMemo }
   var shouldHideMessageLabel: Bool { return messageText == nil }
   var shouldHideProgressView: Bool { return progressConfig == nil }
-  var shouldHideBottomButton: Bool { return actionButtonConfig == nil }
+  var shouldHideBottomButton: Bool { return actionButtonConfig == nil || isReferralBonus }
   var shouldHideHistoricalValuesLabel: Bool { return detailAmountLabels.historicalPriceAttributedText == nil }
-  var shouldHideTwitterShareButton: Bool { return isLightningTransfer }
+  var shouldHideAvatarViewAccent: Bool { return isReferralBonus }
+  var shouldHideTwitterShareButton: Bool { return isLightningTransfer || isReferralBonus }
 
 }
 
@@ -112,14 +116,14 @@ extension TransactionDetailCellViewModelType {
     return direction == .in
   }
 
-  var directionConfig: TransactionCellDirectionConfig {
+  var directionConfig: TransactionCellAvatarConfig {
     let isValidDropBit = isDropBit && isValidTransaction
 
     let useBasicDirection = isLightningTransfer || isValidDropBit
     if useBasicDirection {
-      return TransactionCellDirectionConfig(bgColor: basicDirectionColor, image: basicDirectionImage)
+      return TransactionCellAvatarConfig(image: basicDirectionImage, bgColor: basicDirectionColor)
     } else {
-      return TransactionCellDirectionConfig(bgColor: accentColor, image: relevantDirectionImage)
+      return TransactionCellAvatarConfig(image: relevantDirectionImage, bgColor: accentColor)
     }
 
   }

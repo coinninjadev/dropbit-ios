@@ -65,7 +65,7 @@ class TransactionHistoryDetailBaseCell: CollectionViewCardCell {
   @IBOutlet var closeButton: UIButton!
   @IBOutlet var directionView: TransactionDirectionView!
   @IBOutlet var statusLabel: TransactionDetailStatusLabel!
-  @IBOutlet var twitterAvatarView: TwitterAvatarView!
+  @IBOutlet var avatarView: AvatarView!
   @IBOutlet var counterpartyLabel: TransactionDetailCounterpartyLabel!
   @IBOutlet var primaryAmountLabel: TransactionDetailPrimaryAmountLabel!
   @IBOutlet var secondaryAmountLabel: TransactionDetailSecondaryAmountLabel!
@@ -111,11 +111,13 @@ class TransactionHistoryDetailBaseCell: CollectionViewCardCell {
     self.directionView.configure(image: values.directionConfig.image, bgColor: values.directionConfig.bgColor)
     self.statusLabel.text = values.detailStatusText
     self.statusLabel.textColor = values.detailStatusColor
-    self.twitterAvatarView.isHidden = values.shouldHideAvatarView
+    self.avatarView.twitterLogoImageView.isHidden = values.shouldHideAvatarViewAccent
+    self.avatarView.isHidden = values.shouldHideAvatarView
     if let avatar = values.twitterConfig?.avatar {
-      self.twitterAvatarView.configure(with: avatar, logoBackgroundColor: values.cellBackgroundColor)
+      self.avatarView.configure(with: avatar, logoBackgroundColor: values.cellBackgroundColor, kind: .twitter)
+    } else if let config = values.counterpartyConfig?.avatarConfig {
+      self.avatarView.configure(with: config.image, logoBackgroundColor: config.bgColor, kind: .generic)
     }
-
     self.counterpartyLabel.isHidden = values.shouldHideCounterpartyLabel
     self.counterpartyLabel.text = values.counterpartyText
 

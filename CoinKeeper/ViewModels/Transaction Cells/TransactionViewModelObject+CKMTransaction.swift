@@ -32,7 +32,10 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
     let relevantTwitterContact = self.invitation?.counterpartyTwitterContact ?? self.twitterContact
     let maybeTwitter = relevantTwitterContact.flatMap { TransactionCellTwitterConfig(contact: $0) }
-    let maybeName = priorityCounterpartyName(with: maybeTwitter, invitation: invitation, phoneNumber: phoneNumber)
+    let maybeName = priorityCounterpartyName(with: maybeTwitter,
+                                             invitation: invitation,
+                                             phoneNumber: phoneNumber,
+                                             counterparty: counterparty)
     let maybeNumber = priorityPhoneNumber(for: deviceCountryCode, invitation: invitation, phoneNumber: phoneNumber)
     return TransactionCellCounterpartyConfig(failableWithName: maybeName,
                                              displayPhoneNumber: maybeNumber,
@@ -42,6 +45,8 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
   var isPendingTransferToLightning: Bool {
     return false
   }
+
+  var isReferralBonus: Bool { return false } //CKMTransactions cannot be referral bonuses
 
   var receiverAddress: String? {
     switch direction {

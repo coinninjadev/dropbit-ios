@@ -99,7 +99,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="37Q-hB-r71">
                                         <rect key="frame" x="0.0" y="45" width="283" height="114.5"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KxV-R5-48X" customClass="TwitterAvatarView" customModule="DropBit" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KxV-R5-48X" customClass="AvatarView" customModule="DropBit" customModuleProvider="target">
                                                 <rect key="frame" x="115.5" y="0.0" width="52" height="72"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
@@ -319,6 +319,7 @@
             <connections>
                 <outlet property="addMemoButton" destination="AaP-xk-DBt" id="CZh-CY-mZz"/>
                 <outlet property="addressView" destination="hLb-Hq-5s7" id="1wK-Bk-dSx"/>
+                <outlet property="avatarView" destination="KxV-R5-48X" id="WDd-JD-2lf"/>
                 <outlet property="bottomBufferView" destination="d8V-VH-nZh" id="Vd3-wg-sez"/>
                 <outlet property="bottomButton" destination="xxv-sM-Z5W" id="8D8-7p-m6F"/>
                 <outlet property="closeButton" destination="NgB-5f-0UF" id="jKq-ld-MT1"/>
@@ -336,7 +337,6 @@
                 <outlet property="questionMarkButton" destination="xcI-7b-2Eg" id="EUu-EV-P0K"/>
                 <outlet property="secondaryAmountLabel" destination="7bI-qJ-R1m" id="29e-yM-3o4"/>
                 <outlet property="statusLabel" destination="6eD-f4-eiO" id="kRS-kv-cRS"/>
-                <outlet property="twitterAvatarView" destination="KxV-R5-48X" id="Nbg-Eg-Gka"/>
                 <outlet property="twitterShareButton" destination="6Q7-sU-DGF" id="c3e-Td-chh"/>
                 <outlet property="underlyingContentView" destination="K2H-9f-uij" id="gU5-pn-T4u"/>
             </connections>

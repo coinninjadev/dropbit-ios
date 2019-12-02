@@ -28,7 +28,7 @@
                                             <constraint firstAttribute="width" secondItem="ocX-t8-liS" secondAttribute="height" multiplier="1:1" id="zly-xn-F5E"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CCd-Cq-cEl" customClass="TwitterAvatarView" customModule="DropBit" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CCd-Cq-cEl" customClass="AvatarView" customModule="DropBit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="52" height="72"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
@@ -130,10 +130,10 @@
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <connections>
                 <outlet property="amountStackView" destination="kDp-oC-28k" id="cAD-0d-RHr"/>
+                <outlet property="avatarView" destination="CCd-Cq-cEl" id="UAJ-hq-VBN"/>
                 <outlet property="descriptionLabel" destination="TP3-zp-1a8" id="kCz-YO-X6W"/>
                 <outlet property="directionView" destination="ocX-t8-liS" id="v3X-t7-QpL"/>
                 <outlet property="subtitleLabel" destination="5A3-sw-8Pr" id="Xpw-Fa-KBb"/>
-                <outlet property="twitterAvatarView" destination="CCd-Cq-cEl" id="UAJ-hq-VBN"/>
             </connections>
             <point key="canvasLocation" x="24.5" y="52"/>
         </collectionViewCell>

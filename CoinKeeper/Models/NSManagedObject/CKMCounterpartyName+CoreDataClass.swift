@@ -13,9 +13,16 @@ import CoreData
 @objc(CKMCounterparty)
 public class CKMCounterparty: NSManagedObject {
 
-  public convenience init(name: String, insertInto context: NSManagedObjectContext) {
+  public convenience init(name: String,
+                          insertInto context: NSManagedObjectContext,
+                          profileImageData: Data? = nil) {
     self.init(insertInto: context)
+    self.profileImageData = profileImageData
     self.name = name
+  }
+
+  var type: Kind {
+    return Kind(rawValue: kind ?? "default") ?? .default
   }
 
   static func findOrCreate(with name: String, in context: NSManagedObjectContext) -> CKMCounterparty {
