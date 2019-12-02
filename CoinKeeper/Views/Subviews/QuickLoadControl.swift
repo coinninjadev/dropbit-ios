@@ -64,7 +64,7 @@ class QuickLoadControl: UIView {
 
   private func grayColor(_ isEnabled: Bool) -> UIColor {
     let standard: UIColor = .mediumGrayBackground
-    return isEnabled ? standard : standard.withAlphaComponent(0.32)
+    return isEnabled ? standard : standard.withAlphaComponent(0.5)
   }
 
   func configure(with config: QuickLoadControlConfig, index: Int, delegate: LongPressConfirmButtonDelegate) {
