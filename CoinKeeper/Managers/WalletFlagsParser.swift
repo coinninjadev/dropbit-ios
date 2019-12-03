@@ -78,6 +78,10 @@ class WalletFlagsParser {
     return self
   }
 
+  var isWalletBackedUp: Bool {
+    return (flags >> WalletFlagsParser.hasBackedUpBitShift) == 1
+  }
+
   @discardableResult
   func setHasBTCBalance(_ hasBalance: Bool) -> WalletFlagsParser {
     let newVal = hasBalance ? 1 : 0
@@ -85,10 +89,18 @@ class WalletFlagsParser {
     return self
   }
 
+  var hasBTCBalance: Bool {
+    return (flags >> WalletFlagsParser.hasBTCBalanceBitShift) == 1
+  }
+
   @discardableResult
   func setHasLightningBalance(_ hasBalance: Bool) -> WalletFlagsParser {
     let newVal = hasBalance ? 1 : 0
     flags = (flags & ~WalletFlagsParser.hasLightningBalanceBit) | (newVal << WalletFlagsParser.hasLightningBalanceBitShift)
     return self
+  }
+
+  var hasLightningBalance: Bool {
+    return (flags >> WalletFlagsParser.hasLightningBalanceBitShift) == 1
   }
 }
