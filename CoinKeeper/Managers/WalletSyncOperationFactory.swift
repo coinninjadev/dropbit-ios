@@ -136,6 +136,7 @@ class WalletSyncOperationFactory {
       .then(in: context) { _ in self.fetchAndFulfillReceivedAddressRequests(with: dependencies, in: context) }
       .then(in: context) { _ in dependencies.delegate.showAlertsForSyncedChanges(in: context) }
       .then(in: context) { _ in dependencies.twitterAccessManager.inflateTwitterUsersIfNeeded(in: context) }
+      .then(in: context) { _ in self.updateFlagsIfNeeded(dependencies: dependencies, context: context) }
   }
 
   private func updateLightningAccountStatusAfterSuccessfulResponse(_ dependencies: SyncDependencies, account: LNAccountResponse) {
@@ -260,6 +261,32 @@ class WalletSyncOperationFactory {
 
       default: break
       }
+    }
+  }
+
+  private func updateFlagsIfNeeded(dependencies: SyncDependencies, context: NSManagedObjectContext) -> Promise<Void> {
+    guard let wallet = CKMWallet.find(in: context) else { return Promise.value(()) } // wallet should always exist here, so continue promise chain
+    let parser = WalletFlagsParser(flags: wallet.flags)
+    let localIsBackedUp = parser.isWalletBackedUp
+    let localHasBTCBalance = parser.hasBTCBalance
+    let localHasLightningBalance = parser.hasLightningBalance
+
+    let isBackedUp = dependencies.persistenceManager.brokers.wallet.walletWordsBackedUp()
+    let spendableBalance = dependencies.walletManager.spendableBalance(in: context)
+    let hasBTCBalance = spendableBalance.onChain > 0
+    let hasLightningBalance = spendableBalance.lightning > 0
+
+    var hasChanges = false
+    hasChanges = hasChanges || (localIsBackedUp != isBackedUp)
+    hasChanges = hasChanges || (localHasBTCBalance != hasBTCBalance)
+    hasChanges = hasChanges || (localHasLightningBalance != hasLightningBalance)
+
+    if hasChanges {
+      parser.setBackedUp(isBackedUp).setHasBTCBalance(hasBTCBalance).setHasLightningBalance(hasLightningBalance)
+      return dependencies.networkManager.updateWallet(walletFlags: parser.flags)
+        .done(in: context) { try? dependencies.persistenceManager.brokers.wallet.persistWalletResponse(from: $0, in: context) }
+    } else {
+      return Promise.value(())
     }
   }
 
