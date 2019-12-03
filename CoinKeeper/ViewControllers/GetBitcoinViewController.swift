@@ -24,7 +24,6 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
 
   var viewModels: [MerchantResponse] = []
 
-
   private(set) weak var delegate: GetBitcoinViewControllerDelegate!
   private(set) var bitcoinAddress = ""
 
