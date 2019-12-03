@@ -29,11 +29,7 @@ public class CKMTemporarySentTransaction: NSManagedObject {
 
     let hasOnChainTxPredicate = CKPredicate.TemporarySentTransaction.withOnChainTransaction()
 
-    // Doesn't have an inactive invitation
-    let inactiveInvitationPredicate = CKPredicate.TemporarySentTransaction.withInactiveInvitation()
-    let notInactiveInvitationPredicate = NSCompoundPredicate(notPredicateWithSubpredicate: inactiveInvitationPredicate)
-
-    // Broadcast not detected as failed
+    let notInactiveInvitationPredicate = CKPredicate.TemporarySentTransaction.withoutInactiveInvitation()
     let txNotFailedPredicate = CKPredicate.TemporarySentTransaction.broadcastFailed(is: false)
     let andPredicates = [hasOnChainTxPredicate, notInactiveInvitationPredicate, txNotFailedPredicate]
     fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: andPredicates)

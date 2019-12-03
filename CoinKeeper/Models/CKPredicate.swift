@@ -108,6 +108,11 @@ struct CKPredicate {
       return NSCompoundPredicate(type: .and, subpredicates: [invitationExists(), inactiveInvitationStatus()])
     }
 
+    static func withoutInactiveInvitation() -> NSPredicate {
+      let inactiveInvitationPredicate = CKPredicate.TemporarySentTransaction.withInactiveInvitation()
+      return NSCompoundPredicate(notPredicateWithSubpredicate: inactiveInvitationPredicate)
+    }
+
     static func broadcastFailed(is value: Bool) -> NSPredicate {
       let path = #keyPath(CKMTemporarySentTransaction.transaction.broadcastFailed)
       return NSPredicate(format: "\(path) == %@", NSNumber(value: value))
