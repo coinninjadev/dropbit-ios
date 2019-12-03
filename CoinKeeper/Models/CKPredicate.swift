@@ -99,7 +99,7 @@ struct CKPredicate {
       return NSPredicate(format: "\(statusPath) == \(canceled) OR \(statusPath) == %d", expired)
     }
 
-    static func withTransaction() -> NSPredicate {
+    static func withOnChainTransaction() -> NSPredicate {
       let path = #keyPath(CKMTemporarySentTransaction.transaction)
       return NSPredicate(format: "\(path) != nil")
     }

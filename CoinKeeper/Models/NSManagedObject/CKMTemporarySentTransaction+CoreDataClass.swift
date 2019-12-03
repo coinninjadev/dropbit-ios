@@ -27,7 +27,7 @@ public class CKMTemporarySentTransaction: NSManagedObject {
   static func findAllActiveOnChain(in context: NSManagedObjectContext) -> [CKMTemporarySentTransaction] {
     let fetchRequest: NSFetchRequest<CKMTemporarySentTransaction> = CKMTemporarySentTransaction.fetchRequest()
 
-    let hasOnChainTxPredicate = CKPredicate.TemporarySentTransaction.withTransaction()
+    let hasOnChainTxPredicate = CKPredicate.TemporarySentTransaction.withOnChainTransaction()
 
     // Doesn't have an inactive invitation
     let inactiveInvitationPredicate = CKPredicate.TemporarySentTransaction.withInactiveInvitation()
