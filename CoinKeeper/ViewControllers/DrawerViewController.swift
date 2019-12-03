@@ -11,6 +11,7 @@ import UIKit
 protocol DrawerViewControllerDelegate: CurrencyValueDataSourceType & BadgeUpdateDelegate {
   func backupWordsWasTouched()
   func settingsButtonWasTouched()
+  func earnButtonWasTouched()
   func verifyButtonWasTouched()
   func spendButtonWasTouched()
   func supportButtonWasTouched()
@@ -88,6 +89,7 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
 
     let getBitcoinImage = UIImage(imageLiteralResourceName: "drawerGetBitcoinIcon")
     let settingsImage = UIImage(imageLiteralResourceName: "drawerSettingsIcon")
+    let earnImage = UIImage(imageLiteralResourceName: "giftIcon").withRenderingMode(.alwaysTemplate)
     let verifyIcon = UIImage(imageLiteralResourceName: "drawerPhoneVerificationIcon")
     let spendIcon = UIImage(imageLiteralResourceName: "drawerSpendBitcoinIcon")
     let supportIcon = UIImage(imageLiteralResourceName: "drawerSupportIcon")
@@ -98,6 +100,7 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
     let settingsData: [DrawerData] = [
       backupWordsDrawerData(),
       DrawerData(image: getBitcoinImage, title: "Get Bitcoin", kind: .getBitcoin),
+      DrawerData(image: earnImage, title: "Earn", kind: .earn),
       DrawerData(image: settingsImage, title: "Settings", kind: .settings, badgeCriteria: settingsCritera, badgeOffset: circularIconOffset),
       DrawerData(image: verifyIcon, title: "Verify", kind: .verify, badgeCriteria: verifyCriteria, badgeOffset: circularIconOffset),
       DrawerData(image: spendIcon, title: "Spend", kind: .spend),
@@ -124,6 +127,8 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
       delegate.supportButtonWasTouched()
     case .getBitcoin:
       delegate.getBitcoinButtonWasTouched()
+    case .earn:
+      delegate.earnButtonWasTouched()
     }
   }
 }

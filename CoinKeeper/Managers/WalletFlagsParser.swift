@@ -26,6 +26,12 @@ class WalletFlagsParser {
   static let purposePatternShift = 4
   static let deactivatedBit = 0x0100  // 0b_0000_0001_0000_0000
   static let deactivatedBitShift = 8
+  static let hasBackedUpBit = 0x0200  // 0b_0000_0010_0000_0000
+  static let hasBackedUpBitShift = 9
+  static let hasBTCBalanceBit = 0x0400  // 0b_0000_0100_0000_0000
+  static let hasBTCBalanceBitShift = 10
+  static let hasLightningBalanceBit = 0x0800  // 0b_0000_1000_0000_0000
+  static let hasLightningBalanceBitShift = 11
 
   private(set) var flags: Int
 
@@ -63,5 +69,38 @@ class WalletFlagsParser {
   func deactivate() -> WalletFlagsParser {
     flags = flags | (1 << WalletFlagsParser.deactivatedBitShift)
     return self
+  }
+
+  @discardableResult
+  func setBackedUp(_ backedUp: Bool) -> WalletFlagsParser {
+    let newVal = backedUp ? 1 : 0
+    flags = (flags & ~WalletFlagsParser.hasBackedUpBit) | (newVal << WalletFlagsParser.hasBackedUpBitShift)
+    return self
+  }
+
+  var isWalletBackedUp: Bool {
+    return (flags >> WalletFlagsParser.hasBackedUpBitShift) == 1
+  }
+
+  @discardableResult
+  func setHasBTCBalance(_ hasBalance: Bool) -> WalletFlagsParser {
+    let newVal = hasBalance ? 1 : 0
+    flags = (flags & ~WalletFlagsParser.hasBTCBalanceBit) | (newVal << WalletFlagsParser.hasBTCBalanceBitShift)
+    return self
+  }
+
+  var hasBTCBalance: Bool {
+    return (flags >> WalletFlagsParser.hasBTCBalanceBitShift) == 1
+  }
+
+  @discardableResult
+  func setHasLightningBalance(_ hasBalance: Bool) -> WalletFlagsParser {
+    let newVal = hasBalance ? 1 : 0
+    flags = (flags & ~WalletFlagsParser.hasLightningBalanceBit) | (newVal << WalletFlagsParser.hasLightningBalanceBitShift)
+    return self
+  }
+
+  var hasLightningBalance: Bool {
+    return (flags >> WalletFlagsParser.hasLightningBalanceBitShift) == 1
   }
 }

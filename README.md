@@ -12,7 +12,7 @@ Ensure you have the prerequisites listed below, then go to the "Installing, Test
 * Xcode >= 9.2
 * Xcode command line tools (`xcode-select --install`)
 * macOS >= 10.13
-* ruby >= 2.5.0
+* ruby >= 2.5.0 (2.6.5 currently used)
 * Bundler (`gem install bundler`)
 * [HomeBrew](https://brew.sh)
 

@@ -1,10 +1,10 @@
 PODS:
-  - Alamofire (4.9.1)
+  - Alamofire (4.9.0)
   - DZNEmptyDataSet (1.8.1)
   - JKSteppedProgressBar (0.5.0)
-  - Mixpanel-swift (2.6.7):
-    - Mixpanel-swift/Complete (= 2.6.7)
-  - Mixpanel-swift/Complete (2.6.7)
+  - Mixpanel-swift (2.6.6):
+    - Mixpanel-swift/Complete (= 2.6.6)
+  - Mixpanel-swift/Complete (2.6.6)
   - MMDrawerController (0.6.0):
     - MMDrawerController/Core (= 0.6.0)
     - MMDrawerController/MMDrawerBarButtonItem (= 0.6.0)
@@ -101,10 +101,10 @@ CHECKOUT OPTIONS:
     :git: https://github.com/blwinters/PhoneNumberKit.git
 
 SPEC CHECKSUMS:
-  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  Alamofire: afc3e7c6db61476cb45cdd23fed06bad03bbc321
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   JKSteppedProgressBar: e61561a7faee1a4a216ac4510b4b6d1a3760e318
-  Mixpanel-swift: 9118aa461d7ad4bb66718b0d4d826e6487bb0105
+  Mixpanel-swift: 39c6c0331336d7d0d5ded8936db7c96955d5c11b
   MMDrawerController: e3a54a5570388463ad3b36975251575b50c4e1a0
   Moya: f4a4b80ff2f8a4ffc208dfb31cd91636622fee6e
   Permission: c53c7235f14d76cd2851364df0a7cf05b464037f

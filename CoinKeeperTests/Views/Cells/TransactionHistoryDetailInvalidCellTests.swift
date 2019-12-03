@@ -37,7 +37,7 @@ class TransactionHistoryDetailInvalidCellTests: XCTestCase {
     XCTAssertNotNil(sut.closeButton, "closeButton should be connected")
     XCTAssertNotNil(sut.directionView, "directionView should be connected")
     XCTAssertNotNil(sut.statusLabel, "statusLabel should be connected")
-    XCTAssertNotNil(sut.twitterAvatarView, "twitterAvatarView should be connected")
+    XCTAssertNotNil(sut.avatarView, "twitterAvatarView should be connected")
     XCTAssertNotNil(sut.counterpartyLabel, "counterpartyLabel should be connected")
     XCTAssertNotNil(sut.primaryAmountLabel, "primaryAmountLabel should be connected")
     XCTAssertNotNil(sut.secondaryAmountLabel, "secondaryAmountLabel should be connected")

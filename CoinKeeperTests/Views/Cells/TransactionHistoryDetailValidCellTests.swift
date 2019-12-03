@@ -42,7 +42,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertNotNil(sut.closeButton, "closeButton should be connected")
     XCTAssertNotNil(sut.directionView, "directionView should be connected")
     XCTAssertNotNil(sut.statusLabel, "statusLabel should be connected")
-    XCTAssertNotNil(sut.twitterAvatarView, "twitterAvatarView should be connected")
+    XCTAssertNotNil(sut.avatarView, "twitterAvatarView should be connected")
     XCTAssertNotNil(sut.counterpartyLabel, "counterpartyLabel should be connected")
     XCTAssertNotNil(sut.primaryAmountLabel, "primaryAmountLabel should be connected")
     XCTAssertNotNil(sut.secondaryAmountLabel, "secondaryAmountLabel should be connected")
@@ -375,24 +375,24 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     let expectedImage = counterpartyConfig.twitterConfig?.avatar
     let viewModel = MockDetailCellVM(counterpartyConfig: counterpartyConfig)
     sut.configure(with: viewModel, delegate: mockDelegate)
-    XCTAssertFalse(sut.twitterAvatarView.isHidden)
-    XCTAssertFalse(sut.twitterAvatarView.avatarImageView.isHidden)
-    XCTAssertFalse(sut.twitterAvatarView.twitterLogoImageView.isHidden)
-    XCTAssertEqual(sut.twitterAvatarView.avatarImageView.image, expectedImage)
+    XCTAssertFalse(sut.avatarView.isHidden)
+    XCTAssertFalse(sut.avatarView.avatarImageView.isHidden)
+    XCTAssertFalse(sut.avatarView.twitterLogoImageView.isHidden)
+    XCTAssertEqual(sut.avatarView.avatarImageView.image, expectedImage)
   }
 
   func testPhoneConfig_hidesAvatarView() {
     let counterpartyConfig = TransactionCellCounterpartyConfig(displayPhoneNumber: "(555) 123-4567")
     let viewModel = MockDetailCellVM(counterpartyConfig: counterpartyConfig)
     sut.configure(with: viewModel, delegate: mockDelegate)
-    XCTAssertTrue(sut.twitterAvatarView.isHidden)
+    XCTAssertTrue(sut.avatarView.isHidden)
     XCTAssertFalse(sut.directionView.isHidden)
   }
 
   func testNilCounterpartyConfig_hidesAvatarView() {
     let viewModel = MockDetailCellVM()
     sut.configure(with: viewModel, delegate: mockDelegate)
-    XCTAssertTrue(sut.twitterAvatarView.isHidden)
+    XCTAssertTrue(sut.avatarView.isHidden)
   }
 
   // MARK: Counterparty label

@@ -12,12 +12,19 @@ import CoreData
 
 extension CKMCounterparty {
 
+  enum Kind: String {
+    case `default`
+    case referral
+  }
+
   @nonobjc public class func fetchRequest() -> NSFetchRequest<CKMCounterparty> {
     return NSFetchRequest<CKMCounterparty>(entityName: "CKMCounterparty")
   }
 
   @NSManaged public var name: String
   @NSManaged public var phoneNumbers: Set<CKMPhoneNumber>
+  @NSManaged public var kind: String?
+  @NSManaged public var profileImageData: Data?
 
 }
 

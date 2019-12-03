@@ -21,14 +21,18 @@ class DrawerCell: UITableViewCell, Badgeable {
   override func awakeFromNib() {
     super.awakeFromNib()
     selectionStyle = .none
-    titleLabel.font = .light(11.6)
+    titleLabel.font = .medium(11.6)
     titleLabel.textColor = UIColor.white
     backgroundColor = .darkBlueBackground
   }
 
   func load(with data: DrawerData, badgeInfo: BadgeInfo) {
     iconImageView.image = data.image
+    iconImageView.tintColor = data.kind == .earn ? .neonGreen : nil
+
     titleLabel.text = data.title
+    titleLabel.textColor = data.kind == .earn ? .neonGreen : .white
+
     badgeDisplayCriteria = data.badgeCriteria
     badgeOffset = data.badgeOffset
     updateBadge(with: badgeInfo)
