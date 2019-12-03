@@ -396,10 +396,18 @@ class AppCoordinator: CoordinatorType {
     launchStateManager.unauthenticateUser()
   }
 
+
+  private var walletOverviewViewController: WalletOverviewViewController? {
+    guard let topViewController = (navigationController.topViewController() as? MMDrawerController) else { return nil }
+    return topViewController.centerViewController as? WalletOverviewViewController
+  }
+
   func toggleChartAndBalance() {
-    guard let topViewController = (navigationController.topViewController() as? MMDrawerController),
-      let walletViewController = topViewController.centerViewController as? WalletOverviewViewController else { return }
-    walletViewController.topBar.toggleChartAndBalance()
+    walletOverviewViewController?.topBar.toggleChartAndBalance()
+  }
+
+  func selectLightningWallet() {
+    walletOverviewViewController?.walletToggleView.lightningWalletWasTouched()
   }
 
   func showLightningLockAlertIfNecessary() -> Bool {

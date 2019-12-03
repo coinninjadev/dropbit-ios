@@ -79,6 +79,7 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
   func viewControllerDidConfirmLoad(_ viewController: UIViewController, paymentData transactionData: PaymentData) {
     viewController.dismiss(animated: false) {
       self.toggleChartAndBalance()
+      self.selectLightningWallet()
       self.handleSuccessfulOnChainPaymentVerification(with: transactionData.broadcastData,
                                                outgoingTransactionData: transactionData.outgoingData,
                                                isInternalBroadcast: true)
