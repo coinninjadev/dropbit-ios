@@ -25,20 +25,29 @@ public class CKMTemporarySentTransaction: NSManagedObject {
   }
 
   static func findAllActiveOnChain(in context: NSManagedObjectContext) -> [CKMTemporarySentTransaction] {
-    let fetchRequest: NSFetchRequest<CKMTemporarySentTransaction> = CKMTemporarySentTransaction.fetchRequest()
-
     let hasOnChainTxPredicate = CKPredicate.TemporarySentTransaction.withOnChainTransaction()
-
     let notInactiveInvitationPredicate = CKPredicate.TemporarySentTransaction.withoutInactiveInvitation()
     let txNotFailedPredicate = CKPredicate.TemporarySentTransaction.broadcastFailed(is: false)
     let andPredicates = [hasOnChainTxPredicate, notInactiveInvitationPredicate, txNotFailedPredicate]
-    fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: andPredicates)
+    let predicate = NSCompoundPredicate(type: .and, subpredicates: andPredicates)
 
-    return fetchTempTransactions(from: fetchRequest, in: context)
+    return fetchTempTransactions(matching: predicate, in: context)
   }
 
-  private static func fetchTempTransactions(from fetchRequest: NSFetchRequest<CKMTemporarySentTransaction>,
+  static func findAllActiveLightning(in context: NSManagedObjectContext) -> [CKMTemporarySentTransaction] {
+    let hasWalletEntryPredicate = CKPredicate.TemporarySentTransaction.withWalletEntry()
+    let notInactiveInvitationPredicate = CKPredicate.TemporarySentTransaction.withoutInactiveInvitation()
+    let andPredicates = [hasWalletEntryPredicate, notInactiveInvitationPredicate]
+    let predicate = NSCompoundPredicate(type: .and, subpredicates: andPredicates)
+
+    return fetchTempTransactions(matching: predicate, in: context)
+  }
+
+  private static func fetchTempTransactions(matching predicate: NSPredicate,
                                             in context: NSManagedObjectContext) -> [CKMTemporarySentTransaction] {
+    let fetchRequest: NSFetchRequest<CKMTemporarySentTransaction> = CKMTemporarySentTransaction.fetchRequest()
+    fetchRequest.predicate = predicate
+
     var result: [CKMTemporarySentTransaction] = []
     context.performAndWait {
       do {

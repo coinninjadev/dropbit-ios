@@ -104,6 +104,11 @@ struct CKPredicate {
       return NSPredicate(format: "\(path) != nil")
     }
 
+    static func withWalletEntry() -> NSPredicate {
+      let path = #keyPath(CKMTemporarySentTransaction.walletEntry)
+      return NSPredicate(format: "\(path) != nil")
+    }
+
     static func withInactiveInvitation() -> NSPredicate {
       return NSCompoundPredicate(type: .and, subpredicates: [invitationExists(), inactiveInvitationStatus()])
     }
