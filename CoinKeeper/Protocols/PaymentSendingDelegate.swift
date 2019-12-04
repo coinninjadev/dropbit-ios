@@ -54,7 +54,7 @@ extension PaymentSendingDelegate {
     let config = AlertActionConfiguration(title: "OK", style: .default, action: action)
     let configs = [config]
     let alert = alertManager.alert(
-      withTitle: "",
+      withTitle: nil,
       description: localizedDescription,
       image: nil,
       style: .alert,

@@ -13,7 +13,7 @@ import Sheeeeeeeeet
 protocol AlertManagerType: CKBannerViewDelegate {
 
   func alert(
-    withTitle title: String,
+    withTitle title: String?,
     description: String?,
     image: UIImage?,
     style: AlertManager.AlertStyle,
@@ -31,7 +31,7 @@ protocol AlertManagerType: CKBannerViewDelegate {
   func debugAlert(with error: Error, debugAction action: @escaping CKCompletion) -> AlertControllerType
 
   func alert(
-    withTitle title: String,
+    withTitle title: String?,
     description: String?,
     image: UIImage?,
     style: AlertManager.AlertStyle,
@@ -39,11 +39,13 @@ protocol AlertManagerType: CKBannerViewDelegate {
     actionConfigs: [AlertActionConfigurationType]
     ) -> AlertControllerType
 
+  func okAlertActionConfig(action: CKCompletion?) -> AlertActionConfigurationType
+
   var urlOpener: URLOpener? { get set }
 
   func showSuccess(message: String, forDuration duration: TimeInterval?)
   func showError(message: String, forDuration duration: TimeInterval?)
-  func defaultAlert(withTitle title: String, description: String?) -> AlertControllerType
+  func defaultAlert(withTitle title: String?, description: String?) -> AlertControllerType
 
   // Workaround for default parameter
   func showBanner(with message: String)
@@ -75,6 +77,10 @@ extension AlertManagerType {
   // Satisfies protocol requirement and redirects to function with duration if this function without duration is called
   func showBanner(with message: String) {
     showBanner(with: message, duration: .default, alertKind: .info, tapAction: nil) // default parameter
+  }
+
+  var okAlertActionConfig: AlertActionConfigurationType {
+    okAlertActionConfig(action: nil)
   }
 
 }

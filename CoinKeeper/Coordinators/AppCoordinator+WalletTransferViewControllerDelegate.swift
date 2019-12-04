@@ -16,7 +16,7 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
     guard let receiveAddress = self.nextReceiveAddressForRequestPay() else { return Promise { _ in } }
     let sats = btcAmount.asFractionalUnits(of: .BTC)
 
-    return networkManager.estimateLightningWithdrawlFees(to: receiveAddress, sats: sats)
+    return networkManager.estimateLightningWithdrawalFees(to: receiveAddress, sats: sats)
   }
 
   func viewControllerDidConfirmWithdraw(_ viewController: UIViewController, btcAmount: NSDecimalNumber) {
@@ -59,17 +59,27 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
     }
   }
 
-  func viewControllerNeedsTransactionData(_ viewController: UIViewController,
-                                          btcAmount: NSDecimalNumber,
-                                          exchangeRates: ExchangeRates) -> Promise<PaymentData> {
+  func lightningPaymentData(forFiatAmount fiatAmount: NSDecimalNumber, isMax: Bool) -> Promise<PaymentData> {
     let context = self.persistenceManager.viewContext
-    return buildLoadLightningPaymentData(btcAmount: btcAmount, exchangeRates: exchangeRates, in: context)
+    let exchangeRates = self.currencyController.exchangeRates
+    let converter = CurrencyConverter(rates: exchangeRates, fromAmount: fiatAmount, currencyPair: .USD_BTC)
+    if isMax {
+      return buildLoadLightningPaymentData(selectedAmount: .max, exchangeRates: exchangeRates, in: context)
+    } else {
+      return buildLoadLightningPaymentData(selectedAmount: .specific(converter.btcAmount), exchangeRates: exchangeRates, in: context)
+    }
   }
 
-  func viewControllerDidConfirmLoad(_ viewController: UIViewController,
-                                    paymentData transactionData: PaymentData) {
+  func lightningPaymentData(forBTCAmount btcAmount: NSDecimalNumber) -> Promise<PaymentData> {
+    let context = self.persistenceManager.viewContext
+    let exchangeRates = self.currencyController.exchangeRates
+    return buildLoadLightningPaymentData(selectedAmount: .specific(btcAmount), exchangeRates: exchangeRates, in: context)
+  }
+
+  func viewControllerDidConfirmLoad(_ viewController: UIViewController, paymentData transactionData: PaymentData) {
     viewController.dismiss(animated: false) {
       self.toggleChartAndBalance()
+      self.selectLightningWallet()
       self.handleSuccessfulOnChainPaymentVerification(with: transactionData.broadcastData,
                                                outgoingTransactionData: transactionData.outgoingData,
                                                isInternalBroadcast: true)

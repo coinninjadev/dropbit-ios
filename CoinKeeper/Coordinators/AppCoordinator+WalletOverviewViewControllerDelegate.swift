@@ -29,16 +29,69 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
     let toLightningItem = ActionSheetItem(title: "Load Lightning Wallet")
     let toOnChainItem = ActionSheetItem(title: "Withdraw From Lightning Wallet")
     let actions: ActionSheet.SelectAction = { [weak self] sheet, item in
-      guard let strongSelf = self, !item.isOkButton else { return }
+      guard let self = self, !item.isOkButton else { return }
       let direction: TransferDirection = item == toLightningItem ? .toLightning(nil) : .toOnChain(nil)
-      let exchangeRates = strongSelf.currencyController.exchangeRates
-      let viewModel = WalletTransferViewModel(direction: direction, amount: .custom, exchangeRates: exchangeRates)
-      let transferViewController = WalletTransferViewController.newInstance(delegate: strongSelf, viewModel: viewModel)
-      strongSelf.toggleChartAndBalance()
-      strongSelf.navigationController.present(transferViewController, animated: true, completion: nil)
+      switch direction {
+      case .toLightning:
+        do {
+          let vm = try self.createQuickLoadViewModel()
+          let vc = LightningQuickLoadViewController.newInstance(viewModel: vm, delegate: self)
+          vc.modalPresentationStyle = .overCurrentContext
+          vc.modalTransitionStyle = .crossDissolve
+          viewController.present(vc, animated: true, completion: nil)
+
+        } catch {
+          log.warn(error.localizedDescription)
+          self.showQuickLoadBalanceError(for: error, viewController: viewController)
+        }
+
+      case .toOnChain:
+        let exchangeRates = self.currencyController.exchangeRates
+        let viewModel = WalletTransferViewModel(direction: direction, amount: .custom, exchangeRates: exchangeRates)
+        let transferViewController = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel)
+        self.toggleChartAndBalance()
+        self.navigationController.present(transferViewController, animated: true, completion: nil)
+      }
     }
 
     alertManager.showActionSheet(in: viewController, with: [toLightningItem, toOnChainItem], actions: actions)
+  }
+
+  private func createQuickLoadViewModel() throws -> LightningQuickLoadViewModel {
+    let balances = self.spendableBalancesNetPending()
+    let rates = self.currencyController.exchangeRates
+    return try LightningQuickLoadViewModel(spendableBalances: balances, rates: rates, fiatCurrency: .USD)
+  }
+
+  private func showQuickLoadBalanceError(for error: Error, viewController: UIViewController) {
+    func showDefaultAlert(withMessage message: String) {
+      self.alertManager.showError(message: message, forDuration: 5)
+    }
+
+    if let validatorError = error as? LightningWalletAmountValidatorError {
+      switch validatorError {
+      case .reloadMinimum:
+        let message = """
+        DropBit requires you to load a minimum of $5.00 to your Lightning wallet.
+        You don’t currently have enough funds to meet the minimum requirement.
+        """.removingMultilineLineBreaks()
+
+        let buyBitcoinAction = AlertActionConfiguration(title: "Buy Bitcoin", style: .default) {
+          self.viewControllerDidTapGetBitcoin(viewController)
+        }
+
+        let alertVM = AlertControllerViewModel(title: nil, description: message, actions: [buyBitcoinAction,
+                                                                                           alertManager.okAlertActionConfig])
+        let alert = self.alertManager.alert(from: alertVM)
+        self.navigationController.present(alert, animated: true, completion: nil)
+      default:
+        let message = validatorError.displayMessage ?? validatorError.localizedDescription
+        showDefaultAlert(withMessage: message)
+      }
+
+    } else {
+      showDefaultAlert(withMessage: error.localizedDescription)
+    }
   }
 
   func viewControllerDidRequestPrimaryCurrencySwap() {
@@ -101,6 +154,20 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
     let sendPaymentVM = SendPaymentViewModel(editAmountViewModel: swappableVM, walletTransactionType: walletTransactionType)
     let sendPaymentViewController = SendPaymentViewController.newInstance(delegate: self, viewModel: sendPaymentVM, alertManager: alertManager)
     navigationController.present(sendPaymentViewController, animated: true)
+  }
+
+}
+
+extension AppCoordinator: LightningQuickLoadViewControllerDelegate {
+
+  func viewControllerDidRequestCustomAmountLoad(_ viewController: LightningQuickLoadViewController) {
+    viewController.dismiss(animated: true) {
+      let exchangeRates = self.currencyController.exchangeRates
+      let viewModel = WalletTransferViewModel(direction: .toLightning(nil), amount: .custom, exchangeRates: exchangeRates)
+      let transferViewController = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel)
+      self.toggleChartAndBalance()
+      self.navigationController.present(transferViewController, animated: true, completion: nil)
+    }
   }
 
 }

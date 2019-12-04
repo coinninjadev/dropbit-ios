@@ -271,6 +271,7 @@ extension AppCoordinator: PaymentSendingDelegate {
         }
         self.trackIfUserHasABalance()
 
+        CKNotificationCenter.publish(key: .didUpdateBalance, object: nil, userInfo: nil)
         self.didBroadcastTransaction()
       }.catch { error in
         let nsError = error as NSError

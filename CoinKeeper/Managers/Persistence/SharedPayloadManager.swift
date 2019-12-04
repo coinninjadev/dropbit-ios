@@ -128,6 +128,7 @@ protocol SharedPayloadConfigurable: AnyObject {
   var counterparty: CKMCounterparty? { get set }
 }
 
+//swiftlint:disable unused_setter_value
 extension SharedPayloadConfigurable {
   var counterparty: CKMCounterparty? {
     get { return nil }

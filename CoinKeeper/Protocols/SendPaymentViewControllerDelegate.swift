@@ -58,11 +58,7 @@ struct SendOnChainPaymentInputs {
   let rbfReplaceabilityOption: CNBTransactionReplaceabilityOption
 }
 
-protocol SendPaymentViewControllerRoutingDelegate: AnyObject, PaymentBuildingDelegate {
-
-  func viewController(_ viewController: UIViewController,
-                      sendMaxFundsTo address: String,
-                      feeRate: Double) -> Promise<CNBTransactionData>
+protocol SendPaymentViewControllerRoutingDelegate: PaymentBuildingDelegate {
 
   func viewController(_ viewController: UIViewController,
                       sendingMax data: CNBTransactionData,

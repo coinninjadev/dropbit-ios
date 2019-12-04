@@ -12,7 +12,10 @@ extension CKMLNAccount {
 
   @NSManaged public var id: String
   @NSManaged public var balance: Int
+
+  ///incoming `btc` transactions with status `pending`
   @NSManaged public var pendingIn: Int
+
   @NSManaged public var pendingOut: Int
   @NSManaged public var address: String
   @NSManaged public var wallet: CKMWallet

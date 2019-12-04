@@ -9,16 +9,10 @@
 import Foundation
 import UIKit
 
-protocol ConfirmViewDelegate: class {
-  func viewDidConfirm()
-}
-
 class ConfirmView: UIView {
 
   @IBOutlet var tapAndHoldLabel: UILabel!
-  @IBOutlet var confirmButton: ConfirmPaymentButton!
-
-  weak var delegate: ConfirmViewDelegate?
+  @IBOutlet var confirmButton: LongPressConfirmButton!
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
@@ -30,46 +24,12 @@ class ConfirmView: UIView {
     xibSetup()
   }
 
-  var style: ConfirmPaymentButton.Style = .original {
-    didSet {
-      confirmButton.style = style
-      confirmLongPressGestureRecognizer.minimumPressDuration = confirmButton.secondsToConfirm
-    }
-  }
-
-  lazy private var confirmLongPressGestureRecognizer: UILongPressGestureRecognizer =
-    UILongPressGestureRecognizer(target: self, action: #selector(confirmButtonDidConfirm))
-
-  private var feedbackGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
-
   override func awakeFromNib() {
     super.awakeFromNib()
     backgroundColor = .clear
 
-    feedbackGenerator.prepare()
-    confirmLongPressGestureRecognizer.allowableMovement = 1000
-    confirmLongPressGestureRecognizer.minimumPressDuration = confirmButton.secondsToConfirm
-    confirmButton.addGestureRecognizer(confirmLongPressGestureRecognizer)
-
     tapAndHoldLabel.textColor = .darkGrayText
     tapAndHoldLabel.font = .medium(13)
-    confirmButton.style = style
   }
 
-  @IBAction func confirmButtonWasHeld() {
-    feedbackGenerator.impactOccurred()
-    confirmButton.animate()
-  }
-
-  @IBAction func confirmButtonWasReleased() {
-    confirmButton.reset()
-  }
-
-  @objc func confirmButtonDidConfirm() {
-    if confirmLongPressGestureRecognizer.state == .began {
-      delegate?.viewDidConfirm()
-    }
-
-    confirmButton.reset()
-  }
 }

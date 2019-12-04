@@ -16,14 +16,6 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
 
   func viewController(
     _ viewController: UIViewController,
-    sendMaxFundsTo address: String,
-    feeRate: Double) -> Promise<CNBTransactionData> {
-    guard walletManager != nil else { return Promise(error: CKPersistenceError.noManagedWallet) }
-    return sendMaxFundsTo(address: address, feeRate: feeRate)
-  }
-
-  func viewController(
-    _ viewController: UIViewController,
     sendingMax txData: CNBTransactionData,
     to address: String,
     inputs: SendingDelegateInputs) {
@@ -358,7 +350,7 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
     if let txError = error as? TransactionDataError {
       let messageDescription = txError.messageDescription
       let config = AlertActionConfiguration(title: "OK", style: .default, action: nil)
-      let alert = self.alertManager.alert(withTitle: "", description: messageDescription, image: nil, style: .alert, actionConfigs: [config])
+      let alert = self.alertManager.alert(withTitle: nil, description: messageDescription, image: nil, style: .alert, actionConfigs: [config])
       self.navigationController.present(alert, animated: true, completion: nil)
     }
   }

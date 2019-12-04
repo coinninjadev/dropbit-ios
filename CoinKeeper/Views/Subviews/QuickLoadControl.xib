@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="QuickLoadControl" customModule="DropBit" customModuleProvider="target">
+            <connections>
+                <outlet property="confirmButton" destination="WCT-yH-bT3" id="3VF-B6-NC3"/>
+                <outlet property="maxLabel" destination="W3W-vm-Ssl" id="dqg-m1-AEQ"/>
+                <outlet property="titleLabel" destination="VXh-iP-4aZ" id="77B-fM-Lct"/>
+                <outlet property="titleLabelVerticalConstraint" destination="0vk-aU-w3J" id="K9O-Ln-yQ9"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="74" height="74"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WCT-yH-bT3" customClass="LongPressConfirmButton" customModule="DropBit" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="74" height="74"/>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="VXh-iP-4aZ">
+                    <rect key="frame" x="13" y="26.5" width="48" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="48" id="SYT-G9-2WI"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MAX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W3W-vm-Ssl">
+                    <rect key="frame" x="21.5" y="47.5" width="31" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="VXh-iP-4aZ" firstAttribute="centerY" secondItem="WCT-yH-bT3" secondAttribute="centerY" id="0vk-aU-w3J"/>
+                <constraint firstItem="W3W-vm-Ssl" firstAttribute="centerX" secondItem="VXh-iP-4aZ" secondAttribute="centerX" id="4jB-h9-QMc"/>
+                <constraint firstItem="VXh-iP-4aZ" firstAttribute="centerX" secondItem="WCT-yH-bT3" secondAttribute="centerX" id="Rt8-OT-A0x"/>
+                <constraint firstItem="WCT-yH-bT3" firstAttribute="bottom" secondItem="Hfk-eF-EsP" secondAttribute="bottom" id="aeH-qo-cPV"/>
+                <constraint firstItem="WCT-yH-bT3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="fuq-q3-uHe"/>
+                <constraint firstItem="W3W-vm-Ssl" firstAttribute="top" secondItem="VXh-iP-4aZ" secondAttribute="bottom" id="ixk-ma-PmJ"/>
+                <constraint firstItem="WCT-yH-bT3" firstAttribute="trailing" secondItem="Hfk-eF-EsP" secondAttribute="trailing" id="l1I-2b-g7H"/>
+                <constraint firstItem="WCT-yH-bT3" firstAttribute="leading" secondItem="Hfk-eF-EsP" secondAttribute="leading" id="mcm-8Q-n0v"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="Hfk-eF-EsP"/>
+            <point key="canvasLocation" x="-76.811594202898561" y="-105.13392857142857"/>
+        </view>
+    </objects>
+</document>

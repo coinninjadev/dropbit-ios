@@ -99,13 +99,23 @@ struct CKPredicate {
       return NSPredicate(format: "\(statusPath) == \(canceled) OR \(statusPath) == %d", expired)
     }
 
-    static func withTransaction() -> NSPredicate {
+    static func withOnChainTransaction() -> NSPredicate {
       let path = #keyPath(CKMTemporarySentTransaction.transaction)
+      return NSPredicate(format: "\(path) != nil")
+    }
+
+    static func withWalletEntry() -> NSPredicate {
+      let path = #keyPath(CKMTemporarySentTransaction.walletEntry)
       return NSPredicate(format: "\(path) != nil")
     }
 
     static func withInactiveInvitation() -> NSPredicate {
       return NSCompoundPredicate(type: .and, subpredicates: [invitationExists(), inactiveInvitationStatus()])
+    }
+
+    static func withoutInactiveInvitation() -> NSPredicate {
+      let inactiveInvitationPredicate = CKPredicate.TemporarySentTransaction.withInactiveInvitation()
+      return NSCompoundPredicate(notPredicateWithSubpredicate: inactiveInvitationPredicate)
     }
 
     static func broadcastFailed(is value: Bool) -> NSPredicate {

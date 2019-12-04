@@ -31,7 +31,8 @@ protocol WalletManagerType: AnyObject {
   /// number of confirmations affects isSpendable, returns a min of 0
   func spendableBalance(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int)
 
-  func activeTemporarySentTxTotal(in context: NSManagedObjectContext) -> Int
+  func activeTemporarySentTxTotal(forType walletTxType: WalletTransactionType,
+                                  in context: NSManagedObjectContext) -> Int
 
   func transactionData(forPayment payment: NSDecimalNumber,
                        to address: String,
@@ -175,8 +176,15 @@ class WalletManager: WalletManagerType {
     return AddressDataSource(wallet: self.wallet, persistenceManager: self.persistenceManager)
   }
 
-  func activeTemporarySentTxTotal(in context: NSManagedObjectContext) -> Int {
-    let tempTransactions = CKMTemporarySentTransaction.findAllActiveOnChain(in: context)
+  func activeTemporarySentTxTotal(forType walletTxType: WalletTransactionType,
+                                  in context: NSManagedObjectContext) -> Int {
+    let tempTransactions: [CKMTemporarySentTransaction]
+    switch walletTxType {
+    case .onChain:    tempTransactions = CKMTemporarySentTransaction.findAllActiveOnChain(in: context)
+    case .lightning:  tempTransactions = CKMTemporarySentTransaction.findAllActiveLightning(in: context)
+    }
+
+    //use totalAmount for both walletTxTypes since we cover fees for lightning load transactions
     let total = tempTransactions.reduce(0) { $0 + $1.totalAmount }
     return total
   }
@@ -184,12 +192,14 @@ class WalletManager: WalletManagerType {
   func balanceNetPending(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int) {
     let wallet = CKMWallet.findOrCreate(in: context)
     let atss = CKMAddressTransactionSummary.findAll(matching: self.coin, in: context)
-    let lightningAccount = persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
     let atsAmount = atss.reduce(0) { $0 + $1.netAmount }
-    let tempSentTxTotal = activeTemporarySentTxTotal(in: context)
-    let netBalance = atsAmount - tempSentTxTotal
-    let netLightningBalance = lightningAccount.balance
-    return (onChain: netBalance, lightning: netLightningBalance)
+    let tempSentTxTotal = activeTemporarySentTxTotal(forType: .onChain, in: context)
+    let netOnChainBalance = atsAmount - tempSentTxTotal
+
+    let lightningAccount = persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
+    let tempSentLightningTotal = activeTemporarySentTxTotal(forType: .lightning, in: context)
+    let netLightningBalance = lightningAccount.balance + lightningAccount.pendingIn + tempSentLightningTotal
+    return (onChain: netOnChainBalance, lightning: netLightningBalance)
   }
 
   func spendableBalance(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int) {
@@ -334,6 +344,7 @@ class WalletManager: WalletManagerType {
       let usableVouts = self.usableVouts(in: bgContext)
       let allAvailableOutputs = self.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
 
+      ///This initializer uses CNBTransactionReplaceabilityOption.MustNotBeRBF
       result = CNBTransactionData(
         allUsableOutputs: allAvailableOutputs,
         coin: coin,

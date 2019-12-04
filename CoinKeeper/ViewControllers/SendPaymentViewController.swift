@@ -115,27 +115,22 @@ CurrencySwappableAmountEditor {
 
   @IBAction func performSendMax() {
     let tempAddress = ""
-    self.delegate.latestFees()
-      .compactMap { self.delegate.usableFeeRate(from: $0) }
-      .then { feeRate -> Promise<CNBTransactionData> in
-        guard let delegate = self.delegate else { fatalError("delegate is required") }
-        return delegate.viewController(self, sendMaxFundsTo: tempAddress, feeRate: feeRate)
-      }
-      .done {txData in
+    self.delegate.transactionDataSendingMaxFunds(toAddress: tempAddress)
+      .done { txData in
         self.viewModel.sendMax(with: txData)
         self.refreshBothAmounts()
         self.sendMaxButton.isHidden = true
-      }
-      .catch { _ in
-        let action = AlertActionConfiguration.init(title: "OK", style: .default, action: nil)
-        let alertViewModel = AlertControllerViewModel(
-          title: "Insufficient Funds",
-          description: "There are not enough funds to cover the transaction and network fee.",
-          image: nil,
-          style: .alert,
-          actions: [action]
-        )
-        self.delegate.viewControllerDidRequestAlert(self, viewModel: alertViewModel)
+    }
+    .catch { _ in
+      let action = AlertActionConfiguration.init(title: "OK", style: .default, action: nil)
+      let alertViewModel = AlertControllerViewModel(
+        title: "Insufficient Funds",
+        description: "There are not enough funds to cover the transaction and network fee.",
+        image: nil,
+        style: .alert,
+        actions: [action]
+      )
+      self.delegate.viewControllerDidRequestAlert(self, viewModel: alertViewModel)
     }
   }
 
