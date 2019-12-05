@@ -522,6 +522,7 @@
 		A246C82722CBA83F00AF1F52 /* PriceTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A246C82622CBA83F00AF1F52 /* PriceTarget.swift */; };
 		A246C82922CCF87500AF1F52 /* WalletOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A246C82822CCF87500AF1F52 /* WalletOverviewViewController.swift */; };
 		A246C82D22CCF8A000AF1F52 /* WalletOverviewViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A246C82C22CCF8A000AF1F52 /* WalletOverviewViewController.storyboard */; };
+		A24933762396B9AD0030C421 /* AppCoordinator+EarnViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24933752396B9AD0030C421 /* AppCoordinator+EarnViewControllerDelegate.swift */; };
 		A24B9E802305B92400852718 /* LightningBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B9E7F2305B92400852718 /* LightningBroker.swift */; };
 		A24B9E822306E67A00852718 /* MockLightningBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B9E812306E67A00852718 /* MockLightningBroker.swift */; };
 		A24B9E8A230AF1D300852718 /* LightningInvoiceResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B9E89230AF1D300852718 /* LightningInvoiceResolver.swift */; };
@@ -547,6 +548,10 @@
 		A260E8D720FD0C67008343F9 /* TutorialScreenViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A260E8D620FD0C67008343F9 /* TutorialScreenViewController.storyboard */; };
 		A260E8D920FD0F28008343F9 /* TutorialScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E8D820FD0F28008343F9 /* TutorialScreenViewModel.swift */; };
 		A260E8DB20FD312B008343F9 /* UIView+Enabler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E8DA20FD312B008343F9 /* UIView+Enabler.swift */; };
+		A267F51323958AAC0098170E /* EarnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A267F51223958AAC0098170E /* EarnViewController.swift */; };
+		A267F51523958ABC0098170E /* EarnViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A267F51423958ABC0098170E /* EarnViewController.storyboard */; };
+		A267F5172395A4C70098170E /* EmojiDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A267F5162395A4C70098170E /* EmojiDetailView.swift */; };
+		A267F5192395A4D30098170E /* EmojiDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A267F5182395A4D30098170E /* EmojiDetailView.xib */; };
 		A268F13322E9E9F300410040 /* WalletBalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A268F13222E9E9F300410040 /* WalletBalanceView.swift */; };
 		A268F13522E9EABD00410040 /* WalletBalanceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A268F13422E9EABD00410040 /* WalletBalanceView.xib */; };
 		A268F13722E9EFEC00410040 /* DualBalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A268F13622E9EFEC00410040 /* DualBalanceView.swift */; };
@@ -1646,6 +1651,7 @@
 		A246C82622CBA83F00AF1F52 /* PriceTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTarget.swift; sourceTree = "<group>"; };
 		A246C82822CCF87500AF1F52 /* WalletOverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletOverviewViewController.swift; sourceTree = "<group>"; };
 		A246C82C22CCF8A000AF1F52 /* WalletOverviewViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = WalletOverviewViewController.storyboard; sourceTree = "<group>"; };
+		A24933752396B9AD0030C421 /* AppCoordinator+EarnViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+EarnViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		A24B9E7F2305B92400852718 /* LightningBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningBroker.swift; sourceTree = "<group>"; };
 		A24B9E812306E67A00852718 /* MockLightningBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLightningBroker.swift; sourceTree = "<group>"; };
 		A24B9E89230AF1D300852718 /* LightningInvoiceResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningInvoiceResolver.swift; sourceTree = "<group>"; };
@@ -1671,6 +1677,10 @@
 		A260E8D620FD0C67008343F9 /* TutorialScreenViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TutorialScreenViewController.storyboard; sourceTree = "<group>"; };
 		A260E8D820FD0F28008343F9 /* TutorialScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialScreenViewModel.swift; sourceTree = "<group>"; };
 		A260E8DA20FD312B008343F9 /* UIView+Enabler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Enabler.swift"; sourceTree = "<group>"; };
+		A267F51223958AAC0098170E /* EarnViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnViewController.swift; sourceTree = "<group>"; };
+		A267F51423958ABC0098170E /* EarnViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = EarnViewController.storyboard; sourceTree = "<group>"; };
+		A267F5162395A4C70098170E /* EmojiDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiDetailView.swift; sourceTree = "<group>"; };
+		A267F5182395A4D30098170E /* EmojiDetailView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmojiDetailView.xib; sourceTree = "<group>"; };
 		A268F13222E9E9F300410040 /* WalletBalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletBalanceView.swift; sourceTree = "<group>"; };
 		A268F13422E9EABD00410040 /* WalletBalanceView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletBalanceView.xib; sourceTree = "<group>"; };
 		A268F13622E9EFEC00410040 /* DualBalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DualBalanceView.swift; sourceTree = "<group>"; };
@@ -2500,6 +2510,7 @@
 				A2317008237087E70047BCD1 /* AppCoordinator+DebugDelegate.swift */,
 				A231700C23708AB50047BCD1 /* AppCoordinator+ViewControllerURLDelegate.swift */,
 				A231700E2370B5340047BCD1 /* AppCoordinator+SupportVIewControllerDelegate.swift */,
+				A24933752396B9AD0030C421 /* AppCoordinator+EarnViewControllerDelegate.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -3044,6 +3055,7 @@
 				3B598FE923196A8000FF50CD /* LightningUpgradeStatusViewController.swift */,
 				3B598FEF2319719E00FF50CD /* LightningUpgradePageViewController.swift */,
 				3B936ADE2322C2B30067CA97 /* LightningUpgradeCompleteViewController.swift */,
+				A267F51223958AAC0098170E /* EarnViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -3100,6 +3112,7 @@
 				A2085153232ED95B007843DE /* LightningUpgradeStartViewController.storyboard */,
 				3B936ADC2322C1250067CA97 /* LightningUpgradeCompleteViewController.storyboard */,
 				3B0C785523197B0A00D4C216 /* LightningUpgradePageViewController.storyboard */,
+				A267F51423958ABC0098170E /* EarnViewController.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -3572,6 +3585,8 @@
 				3B9930E0232ABF21008EA112 /* LightningUpgradeStatusView.xib */,
 				A2372874237B1DEF00086FEC /* MerchantAttributeView.swift */,
 				A2372876237B1F2B00086FEC /* MerchantAttributeView.xib */,
+				A267F5162395A4C70098170E /* EmojiDetailView.swift */,
+				A267F5182395A4D30098170E /* EmojiDetailView.xib */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -4235,6 +4250,7 @@
 				A268F13522E9EABD00410040 /* WalletBalanceView.xib in Resources */,
 				3B86F78A203C6D4E00D15231 /* PinEntryViewController.storyboard in Resources */,
 				3BFA718E203F2AB300774D59 /* PinDisplayView.xib in Resources */,
+				A267F51523958ABC0098170E /* EarnViewController.storyboard in Resources */,
 				5BE594E7207FC62B00862A0A /* ScanQRViewController.storyboard in Resources */,
 				5B404284208CDD71005624B0 /* SendPaymentViewController.storyboard in Resources */,
 				A2952F7322BBBAAB00BDCE65 /* NewsTitleCell.xib in Resources */,
@@ -4243,6 +4259,7 @@
 				3B5052B12045FAD7000C739F /* BackupRecoveryWordsViewController.storyboard in Resources */,
 				3B47037F2253B68700977784 /* SendReceiveActionView.xib in Resources */,
 				A2A530BC20936A5B00B6F4DE /* ConfirmPaymentViewController.storyboard in Resources */,
+				A267F5192395A4D30098170E /* EmojiDetailView.xib in Resources */,
 				A2952F7522BBBAAB00BDCE65 /* PriceCell.xib in Resources */,
 				3B5A889E228AF3D90082BBA4 /* TwitterUserTableViewCell.xib in Resources */,
 				B597B7BA23441BAF0020E20F /* TransactionHistoryDetailInvoiceCell.xib in Resources */,
@@ -4410,6 +4427,7 @@
 				"${PODS_ROOT}/Target Support Files/Pods-DropBit/Pods-DropBit-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire-framework/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/DZNEmptyDataSet-framework/DZNEmptyDataSet.framework",
+				"${BUILT_PRODUCTS_DIR}/Hero-framework/Hero.framework",
 				"${BUILT_PRODUCTS_DIR}/JKSteppedProgressBar-framework/JKSteppedProgressBar.framework",
 				"${BUILT_PRODUCTS_DIR}/MMDrawerController-framework/MMDrawerController.framework",
 				"${BUILT_PRODUCTS_DIR}/Mixpanel-swift/Mixpanel.framework",
@@ -4427,6 +4445,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DZNEmptyDataSet.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hero.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JKSteppedProgressBar.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MMDrawerController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mixpanel.framework",
@@ -4628,6 +4647,7 @@
 				3BF5807E20E2ADC500DD7F95 /* Applicable.swift in Sources */,
 				B53D7ECC2119FCA300D1DCBF /* BCITransactionResponse.swift in Sources */,
 				A2FE198E2301E29700C2412D /* ConfirmView.swift in Sources */,
+				A267F5172395A4C70098170E /* EmojiDetailView.swift in Sources */,
 				B597AF6F225682F600660B0E /* MessagerDelegate.swift in Sources */,
 				A2AA3778210112C000633F83 /* UIImageView+GIF.swift in Sources */,
 				B57F06832243CF0200C147D2 /* TimeInterval+Constants.swift in Sources */,
@@ -4762,6 +4782,7 @@
 				B582409420920E3F005D2F90 /* CompactActionButton.swift in Sources */,
 				B5401C5D228C89D1004C77BC /* WorkerFactory.swift in Sources */,
 				B5473279233D584D008AE08B /* MockSummaryDataGenerator.swift in Sources */,
+				A267F51323958AAC0098170E /* EarnViewController.swift in Sources */,
 				3B23126720DA6D0E0099A557 /* TransactionHistoryDetailCellAddressView.swift in Sources */,
 				B597B7BE23443C720020E20F /* TransactionDetailInvoiceCellProtocols.swift in Sources */,
 				B542BE752237093800E01C30 /* ExamplePhoneNumberLabel.swift in Sources */,
@@ -4968,6 +4989,7 @@
 				B56E15932167DA07003B69D4 /* NetworkManager+UserRequestable.swift in Sources */,
 				3B2658472215CFCC008A8615 /* MailerDelegate.swift in Sources */,
 				B552EDED211E33D000332BB5 /* HashingManager.swift in Sources */,
+				A24933762396B9AD0030C421 /* AppCoordinator+EarnViewControllerDelegate.swift in Sources */,
 				3B44961D21B065C200A4E912 /* MemoEntryViewController.swift in Sources */,
 				B527AFBD2195CFF6007D9484 /* UIView+AccessibilityIdentifier.swift in Sources */,
 				B5DDB0F521DE5ED200A25929 /* KeychainMigrationWorker.swift in Sources */,

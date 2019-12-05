@@ -1,6 +1,7 @@
 PODS:
   - Alamofire (4.9.0)
   - DZNEmptyDataSet (1.8.1)
+  - Hero (1.4.0)
   - JKSteppedProgressBar (0.5.0)
   - Mixpanel-swift (2.6.6):
     - Mixpanel-swift/Complete (= 2.6.6)
@@ -48,6 +49,7 @@ PODS:
 
 DEPENDENCIES:
   - DZNEmptyDataSet (~> 1.8.1)
+  - Hero
   - JKSteppedProgressBar (from `https://github.com/MitchellMalleo/JKSteppedProgressBar.git`, commit `0519aa3`)
   - Mixpanel-swift (~> 2.6.2)
   - MMDrawerController (~> 0.6.0)
@@ -68,6 +70,7 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - DZNEmptyDataSet
+    - Hero
     - Mixpanel-swift
     - MMDrawerController
     - Moya
@@ -103,6 +106,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: afc3e7c6db61476cb45cdd23fed06bad03bbc321
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
+  Hero: bac92350d7201a1a940003e0767c7b52ce7c99a1
   JKSteppedProgressBar: e61561a7faee1a4a216ac4510b4b6d1a3760e318
   Mixpanel-swift: 39c6c0331336d7d0d5ded8936db7c96955d5c11b
   MMDrawerController: e3a54a5570388463ad3b36975251575b50c4e1a0

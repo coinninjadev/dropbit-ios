@@ -44,11 +44,13 @@ struct CoinNinjaUrlFactory {
     case quickPayTrackPurchase(String)
     case buyAtATM(CLLocationCoordinate2D?)
     case dropBitMe(handle: String)
+    case dropBitMeReferral(handle: String)
     case dropBitMeLearnMore
     case lightningUpgrade
     case dropBitAppLightningWithdrawalFees
     case lightningLoadTooltip
     case legacyWords
+    case restrictions
 
     var domain: String {
       switch self {
@@ -91,9 +93,11 @@ struct CoinNinjaUrlFactory {
            .dropbitTransactionTooltipIncoming,
            .lightningLoadTooltip,
            .lightningUpgrade,
+           .restrictions,
            .legacyWords:
         return "https://dropbit.app/"
       case .dropBitMe,
+           .dropBitMeReferral,
            .dropBitMeLearnMore:
         #if DEBUG
         return "https://test.dropbit.me/"
@@ -137,6 +141,8 @@ struct CoinNinjaUrlFactory {
         return "termsofuse"
       case .privacyPolicy:
         return "privacypolicy"
+      case .restrictions:
+        return "\(tooltipBreadcrumb)referral"
       case .detailsTooltip:
         return "\(tooltipBreadcrumb)transactiondetails"
       case .myAddressesTooltip:
@@ -177,6 +183,8 @@ struct CoinNinjaUrlFactory {
         } else {
           return "news/webview/load-map?type=atms"
         }
+      case .dropBitMeReferral(let handle):
+        return "\(handle)/download"
       case .dropBitMe(let handle):
         return handle
       case .dropBitAppLightningWithdrawalFees:

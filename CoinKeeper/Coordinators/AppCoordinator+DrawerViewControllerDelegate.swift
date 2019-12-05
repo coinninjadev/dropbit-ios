@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Hero
 
 extension AppCoordinator: BadgeUpdateDelegate {
   func viewControllerDidRequestBadgeUpdate(_ viewController: UIViewController) {
@@ -17,7 +18,22 @@ extension AppCoordinator: BadgeUpdateDelegate {
 extension AppCoordinator: DrawerViewControllerDelegate {
 
   func earnButtonWasTouched() {
-    drawerController?.toggle(.left, animated: true, completion: nil)
+    analyticsManager.track(event: .earnButtonPressed, with: nil)
+    drawerController?.toggle(.left, animated: true, completion: { _ in
+      let context = self.persistenceManager.viewContext
+      var url: URL?
+      if let identity = self.persistenceManager.brokers.user.getUserPublicURLInfo(in: context)?.primaryIdentity {
+        url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMeReferral(handle: identity.handle))
+      }
+
+      let controller = EarnViewController.newInstance(delegate: self,
+                                                      referralLink: url?.absoluteString)
+      controller.hero.isEnabled = true
+      controller.hero.modalAnimationType = .zoom
+      controller.modalPresentationStyle = .custom
+      controller.modalTransitionStyle = UIModalTransitionStyle.coverVertical
+      self.navigationController.present(controller, animated: true)
+    })
   }
 
   func backupWordsWasTouched() {
