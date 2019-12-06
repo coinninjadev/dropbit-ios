@@ -10,6 +10,7 @@ import Foundation
 
 public struct UpdateWalletBody: Encodable {
   let flags: Int
+  let referrer: String?
 }
 
 public struct CreateWalletBody: Encodable {

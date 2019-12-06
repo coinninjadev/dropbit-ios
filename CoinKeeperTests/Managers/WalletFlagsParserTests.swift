@@ -179,4 +179,16 @@ class WalletFlagsParserTests: XCTestCase {
     XCTAssertEqual(parser.flags, 0b0010_0001_0010)
     XCTAssertFalse(parser.hasLightningBalance)
   }
+
+  func testSettingMultipleFlagsEvaluatesProperly() {
+    let parser = WalletFlagsParser(flags: 18)
+    XCTAssertFalse(parser.isWalletBackedUp)
+    XCTAssertFalse(parser.hasBTCBalance)
+    XCTAssertFalse(parser.hasLightningBalance)
+
+    parser.setBackedUp(true).setHasBTCBalance(true).setHasLightningBalance(true)
+    XCTAssertTrue(parser.isWalletBackedUp)
+    XCTAssertTrue(parser.hasBTCBalance)
+    XCTAssertTrue(parser.hasLightningBalance)
+  }
 }

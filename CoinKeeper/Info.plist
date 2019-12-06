@@ -40,6 +40,26 @@
 				<string>dropbit</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.coinninja.CoinKeeper.dynamicLinks</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.coinninja.CoinKeeper</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.coinninja.CoinKeeper.dynamicLinks.beta</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.coinninja.CoinKeeper.beta</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>

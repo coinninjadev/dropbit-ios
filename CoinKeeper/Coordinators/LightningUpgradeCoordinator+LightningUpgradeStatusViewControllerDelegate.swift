@@ -27,7 +27,7 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
     let context = parent.persistenceManager.createBackgroundContext()
 
     existingFlags.deactivate()
-    return parent.networkManager.updateWallet(walletFlags: existingFlags.flags)
+    return parent.networkManager.updateWallet(walletFlags: existingFlags.flags, referrer: nil)
       .then { (response: WalletResponse) -> Promise<Void> in
         let flagsParser = WalletFlagsParser(flags: response.flags)
         guard flagsParser.walletDeactivated else { throw CKWalletError.failedToDeactivate }

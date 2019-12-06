@@ -24,7 +24,7 @@ extension MockNetworkManager: WalletRequestable {
     return Promise { _ in }
   }
 
-  func updateWallet(walletFlags: Int) -> Promise<WalletResponse> {
+  func updateWallet(walletFlags: Int, referrer: String?) -> Promise<WalletResponse> {
     return Promise { _ in }
   }
 

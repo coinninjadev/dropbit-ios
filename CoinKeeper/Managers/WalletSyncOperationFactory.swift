@@ -24,6 +24,7 @@ protocol WalletSyncDelegate: AnyObject {
 class WalletSyncOperationFactory {
 
   weak var delegate: SerialQueueManagerDelegate?
+  var walletNeedsUpdate = false
 
   init(delegate: SerialQueueManagerDelegate) {
     self.delegate = delegate
@@ -136,7 +137,7 @@ class WalletSyncOperationFactory {
       .then(in: context) { _ in self.fetchAndFulfillReceivedAddressRequests(with: dependencies, in: context) }
       .then(in: context) { _ in dependencies.delegate.showAlertsForSyncedChanges(in: context) }
       .then(in: context) { _ in dependencies.twitterAccessManager.inflateTwitterUsersIfNeeded(in: context) }
-      .then(in: context) { _ in self.updateFlagsIfNeeded(dependencies: dependencies, context: context) }
+      .then(in: context) { _ in self.updateWalletIfNeeded(dependencies: dependencies, context: context) }
   }
 
   private func updateLightningAccountStatusAfterSuccessfulResponse(_ dependencies: SyncDependencies, account: LNAccountResponse) {
@@ -264,7 +265,7 @@ class WalletSyncOperationFactory {
     }
   }
 
-  private func updateFlagsIfNeeded(dependencies: SyncDependencies, context: NSManagedObjectContext) -> Promise<Void> {
+  private func updateWalletIfNeeded(dependencies: SyncDependencies, context: NSManagedObjectContext) -> Promise<Void> {
     guard let wallet = CKMWallet.find(in: context) else { return Promise.value(()) } // wallet should always exist here, so continue promise chain
     let parser = WalletFlagsParser(flags: wallet.flags)
     let localIsBackedUp = parser.isWalletBackedUp
@@ -281,9 +282,11 @@ class WalletSyncOperationFactory {
     hasChanges = hasChanges || (localHasBTCBalance != hasBTCBalance)
     hasChanges = hasChanges || (localHasLightningBalance != hasLightningBalance)
 
-    if hasChanges {
+    if hasChanges || self.walletNeedsUpdate {
+      self.walletNeedsUpdate = false
+      let maybeReferrer = dependencies.persistenceManager.brokers.user.referredBy
       parser.setBackedUp(isBackedUp).setHasBTCBalance(hasBTCBalance).setHasLightningBalance(hasLightningBalance)
-      return dependencies.networkManager.updateWallet(walletFlags: parser.flags)
+      return dependencies.networkManager.updateWallet(walletFlags: parser.flags, referrer: maybeReferrer)
         .done(in: context) { try? dependencies.persistenceManager.brokers.wallet.persistWalletResponse(from: $0, in: context) }
     } else {
       return Promise.value(())

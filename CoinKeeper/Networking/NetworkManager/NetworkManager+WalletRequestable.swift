@@ -10,7 +10,7 @@ import PromiseKit
 
 protocol WalletRequestable: AnyObject {
   func createWallet(withPublicKey key: String, walletFlags: Int) -> Promise<WalletResponse>
-  func updateWallet(walletFlags: Int) -> Promise<WalletResponse>
+  func updateWallet(walletFlags: Int, referrer: String?) -> Promise<WalletResponse>
   func replaceWallet(body: ReplaceWalletBody) -> Promise<WalletResponse>
   func getWallet() -> Promise<WalletResponse>
   func walletCheckIn() -> Promise<CheckInResponse>
@@ -25,8 +25,8 @@ extension NetworkManager: WalletRequestable {
     return cnProvider.request(WalletTarget.create(body))
   }
 
-  func updateWallet(walletFlags: Int) -> Promise<WalletResponse> {
-    let body = UpdateWalletBody(flags: walletFlags)
+  func updateWallet(walletFlags: Int, referrer: String?) -> Promise<WalletResponse> {
+    let body = UpdateWalletBody(flags: walletFlags, referrer: referrer)
     return cnProvider.request(WalletTarget.update(body))
   }
 

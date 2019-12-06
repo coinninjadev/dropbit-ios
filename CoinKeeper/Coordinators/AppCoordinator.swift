@@ -17,6 +17,7 @@ import CoreLocation
 import PhoneNumberKit
 import MessageUI
 import Contacts
+import Firebase
 
 protocol CoordinatorType: class {
   func start()
@@ -247,12 +248,29 @@ class AppCoordinator: CoordinatorType {
     }
   }
 
+  func handleDynamicLink(_ dynamicLink: DynamicLink?) -> Bool {
+    guard let dynamicLink = dynamicLink,
+      let deepLink = dynamicLink.url,
+      let referrer = deepLink.pathComponents.last
+      else { return false }
+
+    let existingValue: String? = persistenceManager.brokers.user.referredBy?.asNilIfEmpty()
+    if existingValue == nil { //do not change referrer once set; patching multiple times with the same value is okay
+      persistenceManager.brokers.user.referredBy = referrer
+    }
+    serialQueueManager.walletSyncOperationFactory?.walletNeedsUpdate = true
+
+    return true
+  }
+
   func start() {
     applyUITestArguments(uiTestArguments)
     analyticsManager.start()
     analyticsManager.optIn()
     networkManager.start()
     connectionManager.delegate = self
+
+    setupDynamicLinks()
 
     persistenceManager.brokers.activity.setFirstOpenDateIfNil(date: Date())
 
@@ -352,6 +370,29 @@ class AppCoordinator: CoordinatorType {
         self.continueSetupFlow()
       })
     }
+  }
+
+  private func setupDynamicLinks() {
+    var plistFilename = "GoogleService-Prod-Info"
+    #if DEBUG
+        plistFilename = "GoogleService-Test-Info"
+    #endif
+
+    guard let filePath = Bundle.main.path(forResource: plistFilename, ofType: "plist"),
+      let options = FirebaseOptions(contentsOfFile: filePath)
+      else { return }
+
+    options.apiKey = apiKeys.firebaseKey
+    options.deepLinkURLScheme = Bundle.main.bundleIdentifier
+
+    FirebaseApp.configure(options: options)
+    DynamicLinks.performDiagnostics(completion: { output, hasErrors in
+      if hasErrors {
+        log.error(output)
+      } else {
+        log.debug(output)
+      }
+    })
   }
 
   private func refreshTwitterAvatar() {

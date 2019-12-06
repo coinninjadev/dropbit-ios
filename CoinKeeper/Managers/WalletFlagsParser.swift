@@ -79,7 +79,7 @@ class WalletFlagsParser {
   }
 
   var isWalletBackedUp: Bool {
-    return (flags >> WalletFlagsParser.hasBackedUpBitShift) == 1
+    return (flags & WalletFlagsParser.hasBackedUpBit) == WalletFlagsParser.hasBackedUpBit
   }
 
   @discardableResult
@@ -90,7 +90,7 @@ class WalletFlagsParser {
   }
 
   var hasBTCBalance: Bool {
-    return (flags >> WalletFlagsParser.hasBTCBalanceBitShift) == 1
+    return (flags & WalletFlagsParser.hasBTCBalanceBit) == WalletFlagsParser.hasBTCBalanceBit
   }
 
   @discardableResult
@@ -101,6 +101,6 @@ class WalletFlagsParser {
   }
 
   var hasLightningBalance: Bool {
-    return (flags >> WalletFlagsParser.hasLightningBalanceBitShift) == 1
+    return (flags & WalletFlagsParser.hasLightningBalanceBit) == WalletFlagsParser.hasLightningBalanceBit
   }
 }

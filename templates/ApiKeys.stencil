@@ -1,6 +1,7 @@
 public struct ApiKeys {
   let analyticsProdKey: String
   let analyticsTestKey: String
+  let firebaseKey: String
 
   var analyticsKey: String {
     #if DEBUG
@@ -11,4 +12,4 @@ public struct ApiKeys {
   }
 }
 
-public let apiKeys = ApiKeys(analyticsProdKey: "{{ argument.analyticsProdKey }}", analyticsTestKey: "{{ argument.analyticsTestKey }}")
+public let apiKeys = ApiKeys(analyticsProdKey: "{{ argument.analyticsProdKey }}", analyticsTestKey: "{{ argument.analyticsTestKey }}", firebaseKey: "{{ argument.firebaseApiKey }}")

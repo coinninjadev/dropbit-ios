@@ -58,6 +58,7 @@ class CKUserDefaults: PersistenceUserDefaultsType {
     case reviewLastRequestDate
     case reviewLastRequestVersion
     case firstLaunchDate
+    case referredBy
 
     var defaultsString: String { return self.rawValue }
   }
