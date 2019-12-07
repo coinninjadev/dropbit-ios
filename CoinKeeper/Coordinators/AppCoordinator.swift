@@ -373,6 +373,8 @@ class AppCoordinator: CoordinatorType {
   }
 
   private func setupDynamicLinks() {
+    guard FirebaseApp.app() == nil else { return }
+
     var plistFilename = "GoogleService-Prod-Info"
     #if DEBUG
         plistFilename = "GoogleService-Test-Info"
