@@ -15,7 +15,7 @@ class AppDelegateTests: XCTestCase {
     super.setUp()
     self.sut = UIApplication.shared.delegate as? AppDelegate
     self.mockCoordinator = MockAppCoordinator()
-    self.sut.coordinator = mockCoordinator
+    self.sut._coordinator = mockCoordinator
   }
 
   override func tearDown() {

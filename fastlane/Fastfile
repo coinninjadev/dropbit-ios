@@ -73,6 +73,7 @@ platform :ios do
       "deviceEndpointProdApplication=#{ENV['DEVICE_ENDPOINT_PROD_APPLICATION']}",
       "deviceEndpointTestApplication=#{ENV['DEVICE_ENDPOINT_TEST_APPLICATION']}",
       "fakeWords=#{ENV['GENERATED_FAKE_WORDS']}",
+      "firebaseApiKey=#{ENV['FIREBASE_API_KEY']}",
       "recoverOnlyWords=#{ENV['GENERATED_RECOVER_ONLY_WORDS']}",
       "recoverOnlyFirstMainnetAddress=#{ENV['GENERATED_RECOVER_FIRST_MAINNET_ADDRESS']}",
       "recoverOnlyLegacyWords=#{ENV['GENERATED_RECOVER_ONLY_LEGACY_WORDS']}",

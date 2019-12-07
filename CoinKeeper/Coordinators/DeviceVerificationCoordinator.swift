@@ -101,8 +101,10 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
       self.registerAndPersistWalletIfNecessary(delegate: delegate, in: context)
         .then(in: context) { delegate.twitterAccessManager.authorizedTwitterCredentials(presentingViewController: presentingViewController) }
         .then(in: context) { creds -> Promise<(String, VerifyUserBody, TwitterOAuthStorage)> in
+          let maybeReferrer = delegate.persistenceManager.brokers.user.referredBy
+          let verifyBody = VerifyUserBody(twitterCredentials: creds, referrer: maybeReferrer)
           return self.addTwitterUserIdentity(credentials: creds, delegate: delegate, in: context)
-          .then { userResponse in return Promise.value((userResponse.id, VerifyUserBody(twitterCredentials: creds), creds)) }
+          .then { userResponse in return Promise.value((userResponse.id, verifyBody, creds)) }
         }
         .then(in: context) { userId, body, creds -> Promise<UserResponse> in
           return delegate.networkManager.verifyUser(id: userId, body: body)
@@ -330,7 +332,8 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     guard let phoneNumber = self.userSuppliedPhoneNumber else { fatalError("Programmer error: call didEnterPhoneNumber: first") }
     let bgContext = delegate.persistenceManager.createBackgroundContext()
     bgContext.perform {
-      let body = VerifyUserBody(phoneNumber: phoneNumber, code: code)
+      let maybeReferrer = delegate.persistenceManager.brokers.user.referredBy
+      let body = VerifyUserBody(phoneNumber: phoneNumber, code: code, referrer: maybeReferrer)
       delegate.networkManager.verifyUser(id: userId, body: body)
         .get(in: bgContext) { response in delegate.persistenceManager.brokers.user.persistUserId(response.id, in: bgContext) }
         .then(in: bgContext) { self.checkAndPersistVerificationStatus(from: $0, crDelegate: delegate, in: bgContext) }

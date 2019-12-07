@@ -12,6 +12,11 @@ import PromiseKit
 
 class UserBroker: CKPersistenceBroker, UserBrokerType {
 
+  var referredBy: String? {
+    get { return userDefaultsManager.string(for: .referredBy) }
+    set { userDefaultsManager.set(newValue, for: .referredBy) }
+  }
+
   /// Will only persist a non-empty string to protect when that is returned by the server for some routes
   func persistUserId(_ userId: String, in context: NSManagedObjectContext) {
     guard userId.isNotEmpty else { return }

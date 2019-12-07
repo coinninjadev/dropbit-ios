@@ -19,6 +19,8 @@ def shared_pods
   pod 'Willow', '~> 5.0'
   pod 'Hero'
   pod 'Sheeeeeeeeet', '~> 2.0.2'
+  pod 'Firebase/Analytics'
+  pod 'Firebase/DynamicLinks'
 end
 
 target 'DropBit' do

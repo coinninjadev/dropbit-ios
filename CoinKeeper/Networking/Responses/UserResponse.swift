@@ -33,17 +33,20 @@ public struct VerifyUserBody: Encodable {
   let type: String
   let identity: String
   let code: String
+  let referrer: String?
 
-  init(phoneNumber: GlobalPhoneNumber, code: String) {
+  init(phoneNumber: GlobalPhoneNumber, code: String, referrer: String?) {
     self.type = UserIdentityType.phone.rawValue
     self.identity = phoneNumber.sanitizedGlobalNumber()
     self.code = code
+    self.referrer = referrer
   }
 
-  init(twitterCredentials: TwitterOAuthStorage) {
+  init(twitterCredentials: TwitterOAuthStorage, referrer: String?) {
     self.type = UserIdentityType.twitter.rawValue
     self.identity = twitterCredentials.twitterUserId
     self.code = twitterCredentials.twitterOAuthToken + ":" + twitterCredentials.twitterOAuthTokenSecret
+    self.referrer = referrer
   }
 }
 
