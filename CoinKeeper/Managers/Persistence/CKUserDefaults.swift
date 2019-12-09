@@ -11,6 +11,10 @@ import Foundation
 class CKUserDefaults: PersistenceUserDefaultsType {
 
   let standardDefaults = UserDefaults.standard
+  lazy var configDefaults: UserDefaults = {
+    let suiteName = (Bundle.main.bundleIdentifier ?? "") + ".config"
+    return UserDefaults(suiteName: suiteName)!
+  }()
 
   enum Value: String {
     case optIn
