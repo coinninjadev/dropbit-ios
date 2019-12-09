@@ -944,10 +944,10 @@
 		B586099F21B9EA23004C5AB7 /* MockMoyaError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B586099E21B9EA23004C5AB7 /* MockMoyaError.swift */; };
 		B5866B4722DD143B0064B622 /* CurrencySwappableEditAmountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5866B4622DD143B0064B622 /* CurrencySwappableEditAmountViewModel.swift */; };
 		B586770A239AD63800DA1768 /* GoogleService-Test-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B5867709239AD63700DA1768 /* GoogleService-Test-Info.plist */; };
-		B586770C239AD6ED00DA1768 /* GoogleService-Prod-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B586770B239AD6ED00DA1768 /* GoogleService-Prod-Info.plist */; };
-		B586770D239AD6F200DA1768 /* GoogleService-Prod-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B586770B239AD6ED00DA1768 /* GoogleService-Prod-Info.plist */; };
-		B586770E239AD6F300DA1768 /* GoogleService-Prod-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B586770B239AD6ED00DA1768 /* GoogleService-Prod-Info.plist */; };
-		B586770F239AD6F300DA1768 /* GoogleService-Prod-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B586770B239AD6ED00DA1768 /* GoogleService-Prod-Info.plist */; };
+		B586770C239AD6ED00DA1768 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B586770B239AD6ED00DA1768 /* GoogleService-Info.plist */; };
+		B586770D239AD6F200DA1768 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B586770B239AD6ED00DA1768 /* GoogleService-Info.plist */; };
+		B586770E239AD6F300DA1768 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B586770B239AD6ED00DA1768 /* GoogleService-Info.plist */; };
+		B586770F239AD6F300DA1768 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B586770B239AD6ED00DA1768 /* GoogleService-Info.plist */; };
 		B5867710239AD6F600DA1768 /* GoogleService-Test-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B5867709239AD63700DA1768 /* GoogleService-Test-Info.plist */; };
 		B5867711239AD6F700DA1768 /* GoogleService-Test-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B5867709239AD63700DA1768 /* GoogleService-Test-Info.plist */; };
 		B5867712239AD6F700DA1768 /* GoogleService-Test-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B5867709239AD63700DA1768 /* GoogleService-Test-Info.plist */; };
@@ -2082,7 +2082,7 @@
 		B586099E21B9EA23004C5AB7 /* MockMoyaError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMoyaError.swift; sourceTree = "<group>"; };
 		B5866B4622DD143B0064B622 /* CurrencySwappableEditAmountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySwappableEditAmountViewModel.swift; sourceTree = "<group>"; };
 		B5867709239AD63700DA1768 /* GoogleService-Test-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Test-Info.plist"; sourceTree = "<group>"; };
-		B586770B239AD6ED00DA1768 /* GoogleService-Prod-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Prod-Info.plist"; sourceTree = "<group>"; };
+		B586770B239AD6ED00DA1768 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B586C26721B768E700B99257 /* SendPaymentViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentViewModelTests.swift; sourceTree = "<group>"; };
 		B586F5022175084000682D17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B589C20120C1EB72006A8FDB /* PaymentAmountValidatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentAmountValidatable.swift; sourceTree = "<group>"; };
@@ -2379,7 +2379,7 @@
 				A26C768E2108BE96001EB738 /* licenses.html */,
 				3B124E162020EB2B00431E2E /* Assets.xcassets */,
 				3B124E1B2020EB2B00431E2E /* Info.plist */,
-				B586770B239AD6ED00DA1768 /* GoogleService-Prod-Info.plist */,
+				B586770B239AD6ED00DA1768 /* GoogleService-Info.plist */,
 				B5867709239AD63700DA1768 /* GoogleService-Test-Info.plist */,
 			);
 			path = CoinKeeper;
@@ -4320,7 +4320,7 @@
 				B5839FB122949EE5006BA6AF /* ClaimInviteMethodViewController.storyboard in Resources */,
 				3B9779A8202E416700C9C933 /* Montserrat-ExtraBoldItalic.ttf in Resources */,
 				B56C414621F7713B005668E3 /* ConfirmPaymentMemoView.xib in Resources */,
-				B586770C239AD6ED00DA1768 /* GoogleService-Prod-Info.plist in Resources */,
+				B586770C239AD6ED00DA1768 /* GoogleService-Info.plist in Resources */,
 				4AF433262093BD4100B11BC9 /* DeviceVerificationViewController.storyboard in Resources */,
 				3B9779A7202E416700C9C933 /* Montserrat-Black.ttf in Resources */,
 				A2952F7822BBBAAB00BDCE65 /* LineChartCell.xib in Resources */,
@@ -4405,7 +4405,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				403B454C2075594F00DA53E9 /* Settings.bundle in Resources */,
-				B586770D239AD6F200DA1768 /* GoogleService-Prod-Info.plist in Resources */,
+				B586770D239AD6F200DA1768 /* GoogleService-Info.plist in Resources */,
 				B5867710239AD6F600DA1768 /* GoogleService-Test-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4415,7 +4415,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B2871F822FB245B00CAB027 /* com.coinninja.CoinKeeper.beta 2019-08-07 11:12.53.832.xcappdata in Resources */,
-				B586770F239AD6F300DA1768 /* GoogleService-Prod-Info.plist in Resources */,
+				B586770F239AD6F300DA1768 /* GoogleService-Info.plist in Resources */,
 				B5867712239AD6F700DA1768 /* GoogleService-Test-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4424,7 +4424,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B586770E239AD6F300DA1768 /* GoogleService-Prod-Info.plist in Resources */,
+				B586770E239AD6F300DA1768 /* GoogleService-Info.plist in Resources */,
 				B5867711239AD6F700DA1768 /* GoogleService-Test-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
