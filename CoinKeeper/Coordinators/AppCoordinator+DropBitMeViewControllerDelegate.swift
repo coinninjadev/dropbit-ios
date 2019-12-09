@@ -26,7 +26,9 @@ extension AppCoordinator: DropBitMeViewControllerDelegate {
       .done(in: bgContext) { _ in
         try bgContext.saveRecursively()
         if let urlInfo = self.persistenceManager.brokers.user.getUserPublicURLInfo(in: bgContext) {
-          let avatarData = CKMUser.find(in: bgContext)?.avatar
+          let user = CKMUser.find(in: bgContext)
+          let avatarData = user?.avatar
+          let holidayType = user?.holidayType ?? .bitcoin
           DispatchQueue.main.async {
             if let dropbitMeVC = viewController as? DropBitMeViewController,
               let handle = urlInfo.primaryIdentity?.handle,
@@ -37,7 +39,7 @@ extension AppCoordinator: DropBitMeViewControllerDelegate {
               } else {
                 state = .disabled
               }
-              let config = DropBitMeConfig(state: state, userAvatarData: avatarData)
+              let config = DropBitMeConfig(state: state, userAvatarData: avatarData, holidayType: holidayType)
               dropbitMeVC.configure(with: config)
             }
           }

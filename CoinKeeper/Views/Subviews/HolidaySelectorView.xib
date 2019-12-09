@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HolidaySelectorView" customModule="DropBit" customModuleProvider="target">
+            <connections>
+                <outlet property="detailLabel" destination="uRb-Vc-Cja" id="Kxl-LD-k6d"/>
+                <outlet property="firstButton" destination="84P-Ti-yOg" id="LRS-hs-70q"/>
+                <outlet property="fourthButton" destination="OFh-Vj-p8W" id="1cE-84-6GM"/>
+                <outlet property="secondButton" destination="F7x-GW-vzs" id="1ap-Ag-zEu"/>
+                <outlet property="thirdButton" destination="TK9-dr-zRr" id="kwD-I7-LSC"/>
+                <outlet property="titleLabel" destination="qdV-u0-10A" id="YhJ-e7-ss9"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="190"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="S0T-CY-oah">
+                    <rect key="frame" x="0.0" y="15" width="414" height="165"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cutomize your page and ask for  Bitcoin as a gift for the holiday" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qdV-u0-10A">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="48"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="48" id="PEY-55-nTn"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to select a theme for your page" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uRb-Vc-Cja">
+                            <rect key="frame" x="0.0" y="58" width="414" height="23.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="IKr-68-CDd">
+                            <rect key="frame" x="0.0" y="91.5" width="414" height="73.5"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="84P-Ti-yOg" customClass="VerticalCenterButton" customModule="DropBit" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="103.5" height="73.5"/>
+                                    <state key="normal" title="Button" image="holidayBitcoinIcon"/>
+                                    <connections>
+                                        <action selector="holidayButtonWasTouched:" destination="-1" eventType="touchUpInside" id="BaG-o3-nfK"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F7x-GW-vzs" customClass="VerticalCenterButton" customModule="DropBit" customModuleProvider="target">
+                                    <rect key="frame" x="103.5" y="0.0" width="103.5" height="73.5"/>
+                                    <state key="normal" title="Button" image="holidayIcon"/>
+                                    <connections>
+                                        <action selector="holidayButtonWasTouched:" destination="-1" eventType="touchUpInside" id="oAC-Iw-Crj"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TK9-dr-zRr" customClass="VerticalCenterButton" customModule="DropBit" customModuleProvider="target">
+                                    <rect key="frame" x="207" y="0.0" width="103.5" height="73.5"/>
+                                    <state key="normal" title="Button" image="christmasIcon"/>
+                                    <connections>
+                                        <action selector="holidayButtonWasTouched:" destination="-1" eventType="touchUpInside" id="MMS-Wr-fP1"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OFh-Vj-p8W" customClass="VerticalCenterButton" customModule="DropBit" customModuleProvider="target">
+                                    <rect key="frame" x="310.5" y="0.0" width="103.5" height="73.5"/>
+                                    <state key="normal" title="Button" image="hanukkahIcon"/>
+                                    <connections>
+                                        <action selector="holidayButtonWasTouched:" destination="-1" eventType="touchUpInside" id="P7y-fI-COS"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="S0T-CY-oah" secondAttribute="trailing" id="5rz-eL-0Ps"/>
+                <constraint firstItem="S0T-CY-oah" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Fqb-ts-6zf"/>
+                <constraint firstItem="S0T-CY-oah" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="15" id="JHR-RJ-GrR"/>
+                <constraint firstAttribute="bottom" secondItem="S0T-CY-oah" secondAttribute="bottom" constant="10" id="PS9-Ei-PXH"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="107" y="38"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="christmasIcon" width="55" height="55"/>
+        <image name="hanukkahIcon" width="54" height="55"/>
+        <image name="holidayBitcoinIcon" width="54" height="55"/>
+        <image name="holidayIcon" width="54" height="55"/>
+    </resources>
+</document>

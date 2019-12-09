@@ -514,6 +514,8 @@
 		A237287B237C9E9900086FEC /* BitcoinAddressTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A237287A237C9E9900086FEC /* BitcoinAddressTableViewCell.swift */; };
 		A237287D237CA12100086FEC /* BitcoinAddressTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A237287C237CA12100086FEC /* BitcoinAddressTableViewCell.xib */; };
 		A23BB4C9237B03D300D8FBD1 /* PurchaseMerchantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A23BB4C8237B03D300D8FBD1 /* PurchaseMerchantTableViewCell.swift */; };
+		A243269A23995BF100DDCED9 /* VerticalCenterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A243269923995BF100DDCED9 /* VerticalCenterButton.swift */; };
+		A243269C2399753800DDCED9 /* AppCoordinator+HolidaySelectorViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A243269B2399753800DDCED9 /* AppCoordinator+HolidaySelectorViewDelegate.swift */; };
 		A24525352100EBC80024D5F8 /* Gifu.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A24525342100EBC80024D5F8 /* Gifu.framework */; };
 		A245C6D020D9537400D99983 /* WalletAddressRequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = A245C6CF20D9537400D99983 /* WalletAddressRequestBody.swift */; };
 		A246C82122CA562D00AF1F52 /* NetworkManager+NewsDataRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A246C82022CA562D00AF1F52 /* NetworkManager+NewsDataRequestable.swift */; };
@@ -568,6 +570,9 @@
 		A2893BBE20FD4C5A00E96B07 /* BasePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2893BBD20FD4C5A00E96B07 /* BasePageViewController.swift */; };
 		A2893BC020FD4E7700E96B07 /* UIViewController+ToolbarUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2893BBF20FD4E7700E96B07 /* UIViewController+ToolbarUtilities.swift */; };
 		A2893BC220FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2893BC120FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift */; };
+		A289FEFB23983998002DB6B0 /* HolidaySelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A289FEFA23983998002DB6B0 /* HolidaySelectorView.swift */; };
+		A289FEFD239839B6002DB6B0 /* HolidaySelectorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A289FEFC239839B6002DB6B0 /* HolidaySelectorView.xib */; };
+		A289FEFF23983CC7002DB6B0 /* UIButton+Vertical.swift in Sources */ = {isa = PBXBuildFile; fileRef = A289FEFE23983CC7002DB6B0 /* UIButton+Vertical.swift */; };
 		A293E35020F67F390099ED69 /* SuccessFailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A293E34F20F67F390099ED69 /* SuccessFailViewModel.swift */; };
 		A293E35220F798920099ED69 /* TransactionHistoryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A293E35120F798920099ED69 /* TransactionHistoryEmptyView.swift */; };
 		A2952F6222BA85F800BDCE65 /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2952F6122BA85F800BDCE65 /* NewsViewController.swift */; };
@@ -1651,6 +1656,8 @@
 		A237287A237C9E9900086FEC /* BitcoinAddressTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinAddressTableViewCell.swift; sourceTree = "<group>"; };
 		A237287C237CA12100086FEC /* BitcoinAddressTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BitcoinAddressTableViewCell.xib; sourceTree = "<group>"; };
 		A23BB4C8237B03D300D8FBD1 /* PurchaseMerchantTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseMerchantTableViewCell.swift; sourceTree = "<group>"; };
+		A243269923995BF100DDCED9 /* VerticalCenterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalCenterButton.swift; sourceTree = "<group>"; };
+		A243269B2399753800DDCED9 /* AppCoordinator+HolidaySelectorViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+HolidaySelectorViewDelegate.swift"; sourceTree = "<group>"; };
 		A24525342100EBC80024D5F8 /* Gifu.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Gifu.framework; path = Carthage/Build/iOS/Gifu.framework; sourceTree = "<group>"; };
 		A245C6CF20D9537400D99983 /* WalletAddressRequestBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressRequestBody.swift; sourceTree = "<group>"; };
 		A246C82022CA562D00AF1F52 /* NetworkManager+NewsDataRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+NewsDataRequestable.swift"; sourceTree = "<group>"; };
@@ -1705,6 +1712,9 @@
 		A2893BBD20FD4C5A00E96B07 /* BasePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePageViewController.swift; sourceTree = "<group>"; };
 		A2893BBF20FD4E7700E96B07 /* UIViewController+ToolbarUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ToolbarUtilities.swift"; sourceTree = "<group>"; };
 		A2893BC120FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+TutorialViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		A289FEFA23983998002DB6B0 /* HolidaySelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HolidaySelectorView.swift; sourceTree = "<group>"; };
+		A289FEFC239839B6002DB6B0 /* HolidaySelectorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HolidaySelectorView.xib; sourceTree = "<group>"; };
+		A289FEFE23983CC7002DB6B0 /* UIButton+Vertical.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Vertical.swift"; sourceTree = "<group>"; };
 		A293E34F20F67F390099ED69 /* SuccessFailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessFailViewModel.swift; sourceTree = "<group>"; };
 		A293E35120F798920099ED69 /* TransactionHistoryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryEmptyView.swift; sourceTree = "<group>"; };
 		A2952F6122BA85F800BDCE65 /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
@@ -2523,6 +2533,7 @@
 				A231700C23708AB50047BCD1 /* AppCoordinator+ViewControllerURLDelegate.swift */,
 				A231700E2370B5340047BCD1 /* AppCoordinator+SupportVIewControllerDelegate.swift */,
 				A24933752396B9AD0030C421 /* AppCoordinator+EarnViewControllerDelegate.swift */,
+				A243269B2399753800DDCED9 /* AppCoordinator+HolidaySelectorViewDelegate.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -2582,6 +2593,7 @@
 				3B731D372253D97A0044B4F8 /* UIView+Fade.swift */,
 				A2FE198522FDDD3A00C2412D /* NSAttributedString+WalletTypeIdentifiers.swift */,
 				A2B4EB012326D406005D0A65 /* NSDecimalNumber+Arithmetic.swift */,
+				A289FEFE23983CC7002DB6B0 /* UIButton+Vertical.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3597,6 +3609,8 @@
 				3B9930E0232ABF21008EA112 /* LightningUpgradeStatusView.xib */,
 				A2372874237B1DEF00086FEC /* MerchantAttributeView.swift */,
 				A2372876237B1F2B00086FEC /* MerchantAttributeView.xib */,
+				A289FEFA23983998002DB6B0 /* HolidaySelectorView.swift */,
+				A289FEFC239839B6002DB6B0 /* HolidaySelectorView.xib */,
 				A267F5162395A4C70098170E /* EmojiDetailView.swift */,
 				A267F5182395A4D30098170E /* EmojiDetailView.xib */,
 			);
@@ -3816,6 +3830,7 @@
 				3B547A712280AEE5007B0366 /* ChangeRemoveVerificationButton.swift */,
 				A2FE19872301A09C00C2412D /* LightningActionButton.swift */,
 				A278BB512332C3490036C7D5 /* DarkActionButton.swift */,
+				A243269923995BF100DDCED9 /* VerticalCenterButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -4297,6 +4312,7 @@
 				3BC456FF20288D7300CC36B1 /* LaunchScreen.storyboard in Resources */,
 				3BCBFCB4229EADF400F633BA /* SupportViewController.storyboard in Resources */,
 				A2FE198422FB0F5C00C2412D /* TryLightningViewController.storyboard in Resources */,
+				A289FEFD239839B6002DB6B0 /* HolidaySelectorView.xib in Resources */,
 				3B7D1952229F167600C07FBE /* SettingSwitchCell.xib in Resources */,
 				3BC9E55C204D92AC00444A53 /* BackupRecoveryWordsCell.xib in Resources */,
 				5B91E3A22076C86400DD9A86 /* DrawerCell.xib in Resources */,
@@ -4742,6 +4758,7 @@
 				A24B9E8C230B13F200852718 /* LightningURL.swift in Sources */,
 				B5EABAAF21FB8E8B00E32E08 /* TransactionNotificationTarget.swift in Sources */,
 				4AF4332220935C8D00B11BC9 /* DeviceVerificationCoordinator.swift in Sources */,
+				A289FEFB23983998002DB6B0 /* HolidaySelectorView.swift in Sources */,
 				3BDFADFE2267B1FB0077DEF2 /* BlockstreamProvider.swift in Sources */,
 				B505A87C2076C79700AACB23 /* TransactionHistoryDetailLabel.swift in Sources */,
 				B5EEDAA02209E225009434DC /* WalletSyncOperationFactory.swift in Sources */,
@@ -4779,6 +4796,7 @@
 				B558B86522B9365B0033AFBD /* MigrationBroker.swift in Sources */,
 				3B3779EF219C6B2800F79683 /* BackupWordsReminderDrawerCell.swift in Sources */,
 				B5A42A9A217A3E0F00EB32CB /* KeyPathDescribable.swift in Sources */,
+				A243269C2399753800DDCED9 /* AppCoordinator+HolidaySelectorViewDelegate.swift in Sources */,
 				B5C2E02B20BC721E00F21928 /* WalletAddressResponse.swift in Sources */,
 				B5401C61228C9437004C77BC /* AppCoordinator+URLs.swift in Sources */,
 				3BB05AC1209CF407000297E1 /* Typealiases.swift in Sources */,
@@ -4814,6 +4832,7 @@
 				3BA9F60F208F6EBF0047C213 /* AppCoordinator+RequestPayViewControllerDelegate.swift in Sources */,
 				3B73B2752281E33900F4C551 /* TwitterOAuth.generated.swift in Sources */,
 				4A75CAF92090FB0D00E8E653 /* DeviceVerificationViewController.swift in Sources */,
+				A289FEFF23983CC7002DB6B0 /* UIButton+Vertical.swift in Sources */,
 				B526760720F5059F003144A7 /* PriceTransactionResponse.swift in Sources */,
 				403AAD5E2063513900F7A2BA /* Model.xcdatamodeld in Sources */,
 				30C0974E219C64F80064F19E /* Int+NSDecimalNumber.swift in Sources */,
@@ -4827,6 +4846,7 @@
 				3B44962821B16D1000A4E912 /* UIApplication+Screenshot.swift in Sources */,
 				B52E1DBC2302F50800AA652D /* CKMLNLedgerEntry+CoreDataClass.swift in Sources */,
 				A220A97B20B5E0E400C30149 /* SettingsViewController.swift in Sources */,
+				A243269A23995BF100DDCED9 /* VerticalCenterButton.swift in Sources */,
 				B5F32BA62124D05E00B1F89F /* CKStrings.swift in Sources */,
 				B5EABAB621FB932E00E32E08 /* NetworkManager+TransactionNotificationRequestable.swift in Sources */,
 				A2085150232EA185007843DE /* AppCoordinator+TwitterTweetingDelegate.swift in Sources */,

@@ -10,6 +10,9 @@
 import PromiseKit
 
 extension MockNetworkManager: UserRequestable {
+  func patchHolidayType(holidayType: HolidayType) -> Promise<UserResponse> {
+    return Promise { _ in }
+  }
 
   func createUser(walletId: String, body: UserIdentityBody) -> Promise<UserResponse> {
     return Promise { _ in }
