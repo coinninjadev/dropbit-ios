@@ -8,7 +8,8 @@
 
 import UIKit
 
-protocol DropBitMeViewControllerDelegate: ViewControllerDismissable, CopyToClipboardMessageDisplayable {
+protocol DropBitMeViewControllerDelegate: ViewControllerDismissable,
+  URLOpener, HolidaySelectorViewDelegate {
   func viewControllerDidEnableDropBitMeURL(_ viewController: UIViewController, shouldEnable: Bool)
   func viewControllerDidTapLearnMore(_ viewController: UIViewController)
   func viewControllerDidSelectVerify(_ viewController: UIViewController)
@@ -25,8 +26,12 @@ struct DropBitMeConfig {
 
   var state: DropBitMeState = .notVerified
   var avatar: UIImage?
+  var holidayType: HolidayType
 
-  init(publicURLInfo: UserPublicURLInfo?, verifiedFirstTime: Bool, userAvatarData: Data? = nil) {
+  init(publicURLInfo: UserPublicURLInfo?,
+       verifiedFirstTime: Bool,
+       userAvatarData: Data? = nil,
+       holidayType: HolidayType) {
     if let info = publicURLInfo {
       if info.private {
         self.state = .disabled
@@ -40,18 +45,21 @@ struct DropBitMeConfig {
       self.state = .notVerified
     }
 
+    self.holidayType = holidayType
     userAvatarData.map { self.avatar = UIImage(data: $0) }
+
   }
 
-  init(state: DropBitMeState, userAvatarData: Data? = nil) {
+  init(state: DropBitMeState, userAvatarData: Data? = nil, holidayType: HolidayType) {
     self.state = state
+    self.holidayType = holidayType
     userAvatarData.map { self.avatar = UIImage(data: $0) }
   }
 }
 
 class DropBitMeViewController: BaseViewController, StoryboardInitializable {
 
-  private var config: DropBitMeConfig = DropBitMeConfig(publicURLInfo: nil, verifiedFirstTime: false)
+  private var config: DropBitMeConfig = DropBitMeConfig(publicURLInfo: nil, verifiedFirstTime: false, holidayType: .bitcoin)
   private weak var delegate: DropBitMeViewControllerDelegate!
 
   @IBOutlet var semiOpaqueBackgroundView: UIView!
@@ -73,6 +81,7 @@ class DropBitMeViewController: BaseViewController, StoryboardInitializable {
   @IBOutlet var avatarImageView: UIImageView!
   @IBOutlet var dropBitMeURLButton: LightBorderedButton!
   @IBOutlet var primaryButton: PrimaryActionButton!
+  @IBOutlet var holidaySelectorView: HolidaySelectorView!
   @IBOutlet var secondaryButton: UIButton!
   @IBOutlet var closeButton: UIButton!
 
@@ -84,10 +93,9 @@ class DropBitMeViewController: BaseViewController, StoryboardInitializable {
     delegate.viewControllerDidSelectClose(self)
   }
 
-  @IBAction func copyDropBitURL(_ sender: Any) {
+  @IBAction func openDropbitURL(_ sender: Any) {
     guard case let .verified(dropBitMeURL, _) = self.config.state else { return }
-    UIPasteboard.general.string = dropBitMeURL.absoluteString
-    delegate.viewControllerSuccessfullyCopiedToClipboard(message: "DropBit.me URL copied!", viewController: self)
+    delegate.openURL(dropBitMeURL, completionHandler: nil)
   }
 
   @IBAction func performPrimaryAction(_ sender: Any) {
@@ -138,13 +146,20 @@ class DropBitMeViewController: BaseViewController, StoryboardInitializable {
 
     setupVerificationSuccessButton()
 
+    holidaySelectorView.delegate = delegate
+    holidaySelectorView.selectButton(type: config.holidayType)
+
     messageLabel.textColor = .darkBlueText
     messageLabel.font = .popoverMessage
 
     dropBitMeURLButton.titleLabel?.font = .popoverMessage
+    dropBitMeURLButton.contentHorizontalAlignment = .left
+    dropBitMeURLButton.titleLabel?.adjustsFontSizeToFitWidth = true
+
+    dropBitMeURLButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 40)
     dropBitMeURLButton.setTitleColor(.darkBlueText, for: .normal)
 
-    secondaryButton.setTitleColor(.darkBlueText, for: .normal)
+    secondaryButton.setTitleColor(.white, for: .normal)
     secondaryButton.titleLabel?.font = .semiBold(12)
 
     configure(with: self.config)
@@ -182,18 +197,21 @@ class DropBitMeViewController: BaseViewController, StoryboardInitializable {
       avatarImageView.image = config.avatar
       let radius = avatarImageView.frame.width / 2.0
       avatarImageView.applyCornerRadius(radius)
+      holidaySelectorView.alpha = 1.0
 
     case .notVerified:
       primaryButton.style = .standard
       primaryButton.setTitle("VERIFY MY ACCOUNT", for: .normal)
       secondaryButton.isHidden = true
       avatarButton.alpha = 0.0
+      holidaySelectorView.alpha = 0.0
 
     case .disabled:
       primaryButton.style = .darkBlue
       primaryButton.setTitle("ENABLE MY URL", for: .normal)
       secondaryButton.setTitle("Learn more", for: .normal)
       avatarButton.alpha = 0.0
+      holidaySelectorView.alpha = 0.0
     }
   }
 

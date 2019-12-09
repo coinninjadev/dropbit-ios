@@ -17,6 +17,7 @@ protocol UserRequestable: AnyObject {
   func getUser() -> Promise<UserResponse>
   func queryUsers(identityHashes: [String]) -> Promise<StringDictResponse>
   func updateUserPublicURL(isPrivate: Bool) -> Promise<UserResponse>
+  func patchHolidayType(holidayType: HolidayType) -> Promise<UserResponse>
 
   /**
    This is typically used when the entered verification code is incorrect or expired.
@@ -64,6 +65,10 @@ extension NetworkManager: UserRequestable {
           throw error
         }
     }
+  }
+
+  func patchHolidayType(holidayType: HolidayType) -> Promise<UserResponse> {
+    return cnProvider.request(UserTarget.patchProfile(holidayType))
   }
 
   func verifyUser(id: String, body: VerifyUserBody) -> Promise<UserResponse> {

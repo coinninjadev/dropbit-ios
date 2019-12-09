@@ -40,9 +40,14 @@ extension AppCoordinator: WalletOverviewTopBarDelegate {
     guard let topVC = self.navigationController.topViewController() else { return }
 
     let context = self.persistenceManager.viewContext
-    let avatarData = CKMUser.find(in: context)?.avatar
+    let user = CKMUser.find(in: context)
+    let avatarData = user?.avatar
+    let holidayType = user?.holidayType ?? .bitcoin
     let publicURLInfo: UserPublicURLInfo? = self.persistenceManager.brokers.user.getUserPublicURLInfo(in: context)
-    let config = DropBitMeConfig(publicURLInfo: publicURLInfo, verifiedFirstTime: verifiedFirstTime, userAvatarData: avatarData)
+    let config = DropBitMeConfig(publicURLInfo: publicURLInfo,
+                                 verifiedFirstTime: verifiedFirstTime,
+                                 userAvatarData: avatarData,
+                                 holidayType: holidayType)
 
     let dropBitMeVC = DropBitMeViewController.newInstance(config: config, delegate: self)
     topVC.present(dropBitMeVC, animated: true, completion: nil)

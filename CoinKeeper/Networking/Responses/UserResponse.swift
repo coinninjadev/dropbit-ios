@@ -57,6 +57,14 @@ public enum UserVerificationStatus: String {
   case verified
 }
 
+public struct UserPatchBody: Encodable {
+  let profile: UserPatchProfileBody
+}
+
+public struct UserPatchProfileBody: Encodable {
+  let frameId: Int16
+}
+
 public struct UserPatchPrivateBody: Encodable {
   let `private`: Bool
 }
