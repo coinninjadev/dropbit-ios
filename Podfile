@@ -21,6 +21,7 @@ def shared_pods
   pod 'Sheeeeeeeeet', '~> 2.0.2'
   pod 'Firebase/Analytics'
   pod 'Firebase/DynamicLinks'
+  pod 'JustTweak', git: 'https://github.com/justeat/JustTweak.git', commit: '3365dcc'
 end
 
 target 'DropBit' do
