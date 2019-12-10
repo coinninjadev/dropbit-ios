@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol DrawerViewControllerDelegate: CurrencyValueDataSourceType & BadgeUpdateDelegate {
+protocol DrawerViewControllerDelegate: CurrencyValueDataSourceType & BadgeUpdateDelegate & FeatureConfigDataSource {
   func backupWordsWasTouched()
   func settingsButtonWasTouched()
   func earnButtonWasTouched()
@@ -19,13 +19,15 @@ protocol DrawerViewControllerDelegate: CurrencyValueDataSourceType & BadgeUpdate
   var badgeManager: BadgeManagerType { get }
 }
 
-class DrawerViewController: BaseViewController, StoryboardInitializable {
+class DrawerViewController: BaseViewController, StoryboardInitializable, FeatureConfigurable {
 
   private(set) weak var delegate: DrawerViewControllerDelegate!
 
+  var featureConfigDataSource: FeatureConfigDataSource? { delegate }
   var drawerTableViewDDS: DrawerTableViewDDS?
 
   var badgeNotificationToken: NotificationToken?
+  var featureConfigNotificationToken: NotificationToken?
 
   // MARK: outlets
   @IBOutlet var drawerTableView: UITableView!
@@ -51,35 +53,22 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
     drawerTableView.registerNib(cellType: BackupWordsReminderDrawerCell.self)
     drawerTableView.registerHeaderFooter(headerFooterType: DrawerTableViewHeader.self)
 
-    configureDrawerData()
+    reloadFeatureConfigurableView()
     setupDataSource()
 
     delegate.viewControllerDidRequestBadgeUpdate(self)
     self.subscribeToBadgeNotifications(with: delegate.badgeManager)
+    self.subscribeToFeatureConfigurationUpdates()
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    configureDrawerData()
+    reloadFeatureConfigurableView()
   }
 
-  private func setupDataSource() {
-    let settingsActionHandler: (DrawerData.Kind) -> Void = { [weak self] (kind) in
-      self?.buttonWasTouched(for: kind)
-    }
+  func reloadFeatureConfigurableView() {
+    guard let config = self.featureConfigDataSource?.currentConfig() else { return }
 
-    drawerTableViewDDS = DrawerTableViewDDS(settingsActionHandler: settingsActionHandler)
-    drawerTableViewDDS?.currencyValueManager = delegate
-    drawerTableView.delegate = drawerTableViewDDS
-    drawerTableView.dataSource = drawerTableViewDDS
-    drawerTableView.backgroundColor = .clear
-    drawerTableView.showsVerticalScrollIndicator = false
-    drawerTableView.separatorStyle = .none
-    drawerTableView.alwaysBounceVertical = false
-    drawerTableView.reloadData()
-  }
-
-  private func configureDrawerData() {
     let circularIconOffset = ViewOffset(dx: 7, dy: -2)
 
     let backupWordsDrawerData: () -> DrawerData? = { [weak self] in
@@ -107,9 +96,34 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
       DrawerData(image: supportIcon, title: "Support", kind: .support)
       ]
       .compactMap { $0 }
+      .filter { self.itemIsEnabled($0, respecting: config)}
 
     drawerTableViewDDS?.settingsData = settingsData
 
+    drawerTableView.reloadData()
+  }
+
+  private func itemIsEnabled(_ item: DrawerData, respecting config: FeatureConfig) -> Bool {
+    if config.shouldDisable(.referrals) && item.kind == .earn {
+      return false
+    } else {
+      return true
+    }
+  }
+
+  private func setupDataSource() {
+    let settingsActionHandler: (DrawerData.Kind) -> Void = { [weak self] (kind) in
+      self?.buttonWasTouched(for: kind)
+    }
+
+    drawerTableViewDDS = DrawerTableViewDDS(settingsActionHandler: settingsActionHandler)
+    drawerTableViewDDS?.currencyValueManager = delegate
+    drawerTableView.delegate = drawerTableViewDDS
+    drawerTableView.dataSource = drawerTableViewDDS
+    drawerTableView.backgroundColor = .clear
+    drawerTableView.showsVerticalScrollIndicator = false
+    drawerTableView.separatorStyle = .none
+    drawerTableView.alwaysBounceVertical = false
     drawerTableView.reloadData()
   }
 
@@ -137,7 +151,7 @@ extension DrawerViewController: BadgeDisplayable {
 
   func didReceiveBadgeUpdate(badgeInfo: BadgeInfo) {
     drawerTableViewDDS?.latestBadgeInfo = badgeInfo
-    configureDrawerData()
+    reloadFeatureConfigurableView()
   }
 
 }
