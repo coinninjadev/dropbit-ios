@@ -27,21 +27,19 @@ public class CKMVout: NSManagedObject {
     fetchRequest.fetchLimit = 1
 
     var vout: CKMVout!
-    context.performAndWait {
-      do {
-        fetchRequest.predicate = try CKPredicate.Vout.matching(response: response)
-        if let foundVout = try context.fetch(fetchRequest).first {
-          vout = foundVout
-          if fullSync {
-            vout.configure(with: response, in: context)
-          }
-        } else {
-          vout = CKMVout(insertInto: context)
+    do {
+      fetchRequest.predicate = try CKPredicate.Vout.matching(response: response)
+      if let foundVout = try context.fetch(fetchRequest).first {
+        vout = foundVout
+        if fullSync {
           vout.configure(with: response, in: context)
         }
-      } catch {
-        // nil
+      } else {
+        vout = CKMVout(insertInto: context)
+        vout.configure(with: response, in: context)
       }
+    } catch {
+      // nil
     }
 
     return vout
@@ -107,13 +105,11 @@ public class CKMVout: NSManagedObject {
     addressFetchRequest.predicate = addressPredicate
     addressFetchRequest.fetchLimit = 1
 
-    context.performAndWait {
-      do {
-        self.address = try context.fetch(addressFetchRequest).first
-        self.isSpent = false // will be re-evaluated later
-      } catch {
-        self.address = nil
-      }
+    do {
+      self.address = try context.fetch(addressFetchRequest).first
+      self.isSpent = false // will be re-evaluated later
+    } catch {
+      self.address = nil
     }
   }
 
@@ -130,25 +126,10 @@ public class CKMVout: NSManagedObject {
     voutFetchRequest.fetchLimit = 1
 
     var result: CKMVout?
-    context.performAndWait {
-      do {
-        result = try context.fetch(voutFetchRequest).first
-      } catch {
-        result = nil
-      }
-    }
-    return result
-  }
-
-  static func findAll(in context: NSManagedObjectContext) -> [CKMVout] {
-    let request: NSFetchRequest<CKMVout> = CKMVout.fetchRequest()
-    var result: [CKMVout] = []
-    context.performAndWait {
-      do {
-        result = try context.fetch(request)
-      } catch {
-        result = []
-      }
+    do {
+      result = try context.fetch(voutFetchRequest).first
+    } catch {
+      result = nil
     }
     return result
   }

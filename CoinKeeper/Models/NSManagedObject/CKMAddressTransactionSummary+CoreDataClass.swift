@@ -18,34 +18,11 @@ public class CKMAddressTransactionSummary: NSManagedObject {
     let fetchRequest: NSFetchRequest<CKMAddressTransactionSummary> = CKMAddressTransactionSummary.fetchRequest()
 
     var result: [CKMAddressTransactionSummary] = []
-    context.performAndWait {
-      do {
-        result = try context.fetch(fetchRequest)
-      } catch {
-        result = []
-      }
+    do {
+      result = try context.fetch(fetchRequest)
+    } catch {
+      result = []
     }
-    return result
-  }
-
-  static func findAll(
-    byATSResponses responses: [AddressTransactionSummaryResponse],
-    in context: NSManagedObjectContext
-    ) -> [CKMAddressTransactionSummary] {
-
-    var result: [CKMAddressTransactionSummary] = []
-
-    context.performAndWait {
-      let fetchRequest: NSFetchRequest<CKMAddressTransactionSummary> = CKMAddressTransactionSummary.fetchRequest()
-      do {
-        let all = try context.fetch(fetchRequest)
-        let filtered = responses.compactMap { response in all.first { $0.txid == response.txid && $0.addressId == response.address } }
-        result = filtered
-      } catch {
-        result = []
-      }
-    }
-
     return result
   }
 
