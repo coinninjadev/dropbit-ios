@@ -91,8 +91,9 @@ class CKDatabase: PersistenceDatabaseType {
   func unverifyUser(in context: NSManagedObjectContext) {
     var user: CKMUser?
 
-    context.performAndWait {
-      let allServerAddresses = serverPoolAddresses(in: context)
+    context.perform { [weak self] in
+      guard let strongSelf = self else { return }
+      let allServerAddresses = strongSelf.serverPoolAddresses(in: context)
       let serverDerivativePaths = allServerAddresses.compactMap { $0.derivativePath }.filter { $0.address == nil }
       allServerAddresses.forEach { context.delete($0) }
       serverDerivativePaths.forEach { context.delete($0) }
