@@ -99,13 +99,11 @@ class ContactCacheManager: ContactCacheManagerType {
 
   func managedContactComponents(forGlobalPhoneNumber number: GlobalPhoneNumber) -> ManagedContactComponents? {
     var components: ManagedContactComponents?
-    viewContext.performAndWait {
-      if let foundMetadata = validatedMetadata(for: number, in: viewContext),
-        let displayName = foundMetadata.firstDisplayNameForCachedPhoneNumbers(),
-        let phoneInputs = ManagedPhoneNumberInputs(countryCode: foundMetadata.countryCode, nationalNumber: foundMetadata.nationalNumber) {
-        let counterpartyInputs = ManagedCounterpartyInputs(name: displayName)
-        components = ManagedContactComponents(counterpartyInputs: counterpartyInputs, phonenumberInputs: phoneInputs)
-      }
+    if let foundMetadata = validatedMetadata(for: number, in: viewContext),
+      let displayName = foundMetadata.firstDisplayNameForCachedPhoneNumbers(),
+      let phoneInputs = ManagedPhoneNumberInputs(countryCode: foundMetadata.countryCode, nationalNumber: foundMetadata.nationalNumber) {
+      let counterpartyInputs = ManagedCounterpartyInputs(name: displayName)
+      components = ManagedContactComponents(counterpartyInputs: counterpartyInputs, phonenumberInputs: phoneInputs)
     }
     return components
   }

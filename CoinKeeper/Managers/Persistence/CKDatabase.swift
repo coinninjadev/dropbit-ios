@@ -155,7 +155,7 @@ class CKDatabase: PersistenceDatabaseType {
 
   func persistVerificationStatus(_ status: String, in context: NSManagedObjectContext) -> Promise<UserVerificationStatus> {
     return Promise { seal in
-      context.performAndWait {
+      context.perform {
         guard let user = CKMUser.find(in: context) else {
           seal.reject(CKPersistenceError.noUser)
           return
@@ -178,12 +178,11 @@ class CKDatabase: PersistenceDatabaseType {
       let addressString = metaAddress.address
       let path = DerivativePathResponse(derivativePath: metaAddress.derivationPath)
 
-      context.performAndWait {
+      context.perform {
         let newAddress = CKMServerAddress(address: addressString, createdAt: createdAt, insertInto: context)
         newAddress.derivativePath = CKMDerivativePath.findOrCreate(with: path, in: context)
+        seal.fulfill(()) //no need to return the created object(s), fulfill with Void
       }
-
-      seal.fulfill(()) //no need to return the created object(s), fulfill with Void
     }
   }
 
@@ -317,13 +316,13 @@ class CKDatabase: PersistenceDatabaseType {
   }
 
   func updateLastReceiveAddressIndex(index: Int?, in context: NSManagedObjectContext) {
-    context.performAndWait {
+    context.perform {
       CKMWallet.find(in: context)?.lastReceivedIndex = index ?? CKMWallet.defaultLastIndex
     }
   }
 
   func updateLastChangeAddressIndex(index: Int?, in context: NSManagedObjectContext) {
-    context.performAndWait {
+    context.perform {
       CKMWallet.find(in: context)?.lastChangeIndex = index ?? CKMWallet.defaultLastIndex
     }
   }
