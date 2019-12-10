@@ -651,10 +651,9 @@
 		A2E984752385ADC700107C53 /* MockNetworkManager+MerchantRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E984742385ADC700107C53 /* MockNetworkManager+MerchantRequestable.swift */; };
 		A2E984772385C24100107C53 /* MockPurchaseMerchantTableViewCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E984762385C24100107C53 /* MockPurchaseMerchantTableViewCellDelegate.swift */; };
 		A2E9847B2385D2DF00107C53 /* MockMerchantAttributeViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E9847A2385D2DF00107C53 /* MockMerchantAttributeViewDelegate.swift */; };
-		A2E9847D23886DE300107C53 /* MerchantBuyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E9847C23886DE200107C53 /* MerchantBuyResponse.swift */; };
 		A2EF78D72384608300321809 /* MerchantTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EF78D62384608300321809 /* MerchantTarget.swift */; };
 		A2EF78D92384642000321809 /* NetworkManager+MerchantRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EF78D82384642000321809 /* NetworkManager+MerchantRequestable.swift */; };
-		A2EF78DB23848BF600321809 /* MerchantConfigurationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EF78DA23848BF600321809 /* MerchantConfigurationResponse.swift */; };
+		A2EF78DB23848BF600321809 /* ConfigResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EF78DA23848BF600321809 /* ConfigResponse.swift */; };
 		A2FDC54122D37BFA004B0EDD /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2FDC54022D37BFA004B0EDD /* Charts.framework */; };
 		A2FE198222FB0E5A00C2412D /* TryLightningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2FE198122FB0E5A00C2412D /* TryLightningViewController.swift */; };
 		A2FE198422FB0F5C00C2412D /* TryLightningViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2FE198322FB0F5C00C2412D /* TryLightningViewController.storyboard */; };
@@ -913,6 +912,7 @@
 		B56F3F3B237C614600949B37 /* TransactionNotificationsElasticQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56F3F3A237C614600949B37 /* TransactionNotificationsElasticQuery.swift */; };
 		B5705450230B4812006DD57F /* Typealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB05AC0209CF407000297E1 /* Typealiases.swift */; };
 		B5730E27239FF54A00106E19 /* FeatureConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5730E26239FF54A00106E19 /* FeatureConfigurable.swift */; };
+		B5730E2923A0026700106E19 /* ConfigResponseItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5730E2823A0026700106E19 /* ConfigResponseItems.swift */; };
 		B575B61622E9F68700CECFB7 /* LNLedgerTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B575B61522E9F68700CECFB7 /* LNLedgerTarget.swift */; };
 		B575B61822E9F84800CECFB7 /* NetworkManager+LightningRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B575B61722E9F84800CECFB7 /* NetworkManager+LightningRequestable.swift */; };
 		B575B61B22E9FCCD00CECFB7 /* MockNetworkManager+LightningRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B575B61922E9FCBE00CECFB7 /* MockNetworkManager+LightningRequestable.swift */; };
@@ -1795,10 +1795,9 @@
 		A2E984742385ADC700107C53 /* MockNetworkManager+MerchantRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+MerchantRequestable.swift"; sourceTree = "<group>"; };
 		A2E984762385C24100107C53 /* MockPurchaseMerchantTableViewCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPurchaseMerchantTableViewCellDelegate.swift; sourceTree = "<group>"; };
 		A2E9847A2385D2DF00107C53 /* MockMerchantAttributeViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMerchantAttributeViewDelegate.swift; sourceTree = "<group>"; };
-		A2E9847C23886DE200107C53 /* MerchantBuyResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantBuyResponse.swift; sourceTree = "<group>"; };
 		A2EF78D62384608300321809 /* MerchantTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantTarget.swift; sourceTree = "<group>"; };
 		A2EF78D82384642000321809 /* NetworkManager+MerchantRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+MerchantRequestable.swift"; sourceTree = "<group>"; };
-		A2EF78DA23848BF600321809 /* MerchantConfigurationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantConfigurationResponse.swift; sourceTree = "<group>"; };
+		A2EF78DA23848BF600321809 /* ConfigResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigResponse.swift; sourceTree = "<group>"; };
 		A2FDC54022D37BFA004B0EDD /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = Carthage/Build/iOS/Charts.framework; sourceTree = "<group>"; };
 		A2FE198122FB0E5A00C2412D /* TryLightningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TryLightningViewController.swift; sourceTree = "<group>"; };
 		A2FE198322FB0F5C00C2412D /* TryLightningViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TryLightningViewController.storyboard; sourceTree = "<group>"; };
@@ -2055,6 +2054,7 @@
 		B56F36AB233AB82200984A51 /* ConfirmPaymentMemoViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPaymentMemoViewTests.swift; sourceTree = "<group>"; };
 		B56F3F3A237C614600949B37 /* TransactionNotificationsElasticQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionNotificationsElasticQuery.swift; sourceTree = "<group>"; };
 		B5730E26239FF54A00106E19 /* FeatureConfigurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureConfigurable.swift; sourceTree = "<group>"; };
+		B5730E2823A0026700106E19 /* ConfigResponseItems.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigResponseItems.swift; sourceTree = "<group>"; };
 		B575B61522E9F68700CECFB7 /* LNLedgerTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LNLedgerTarget.swift; sourceTree = "<group>"; };
 		B575B61722E9F84800CECFB7 /* NetworkManager+LightningRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+LightningRequestable.swift"; sourceTree = "<group>"; };
 		B575B61922E9FCBE00CECFB7 /* MockNetworkManager+LightningRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+LightningRequestable.swift"; sourceTree = "<group>"; };
@@ -3349,8 +3349,8 @@
 				A2372870237B069000086FEC /* MerchantResponse.swift */,
 				A2E984692384529500107C53 /* MerchantAttributeResponse.swift */,
 				A2E9846B2384538800107C53 /* MerchantCallToActionResponse.swift */,
-				A2EF78DA23848BF600321809 /* MerchantConfigurationResponse.swift */,
-				A2E9847C23886DE200107C53 /* MerchantBuyResponse.swift */,
+				A2EF78DA23848BF600321809 /* ConfigResponse.swift */,
+				B5730E2823A0026700106E19 /* ConfigResponseItems.swift */,
 			);
 			path = Responses;
 			sourceTree = "<group>";
@@ -4708,7 +4708,6 @@
 				B5401C5B228C7AE8004C77BC /* AppCoordinator+Analytics.swift in Sources */,
 				B52CC6AD221ED41700B00C9E /* NSManagedObjectContext+PerformRethrow.swift in Sources */,
 				3BAB144B204F3CD0001D41A2 /* OnboardingTitleLabel.swift in Sources */,
-				A2E9847D23886DE300107C53 /* MerchantBuyResponse.swift in Sources */,
 				B589C20220C1EB72006A8FDB /* PaymentAmountValidatable.swift in Sources */,
 				B5E7F21E22146B9000358A24 /* CountryCodePickerCell.swift in Sources */,
 				B56E15992167DB7B003B69D4 /* NetworkManager+TransactionBroadcastable.swift in Sources */,
@@ -4941,7 +4940,7 @@
 				3B00C269220DC78B001FC46B /* DeviceEndpoint.generated.swift in Sources */,
 				B5BA3A7722F22B0E001E41A7 /* TransactionSummaryCellProtocols.swift in Sources */,
 				B5C5FEDB22BA834800287FF7 /* PersistenceBrokerTypes.swift in Sources */,
-				A2EF78DB23848BF600321809 /* MerchantConfigurationResponse.swift in Sources */,
+				A2EF78DB23848BF600321809 /* ConfigResponse.swift in Sources */,
 				B5A98AE72241741F00DEF96F /* CKKeychain.swift in Sources */,
 				A2952F8222BD250100BDCE65 /* AppCoordinator+NewsViewControllerDelegate.swift in Sources */,
 				B52A25BF2077CA7C00F636A1 /* TransactionHistorySecondaryAmountLabel.swift in Sources */,
@@ -5251,6 +5250,7 @@
 				5B62D55D2087732700E9D466 /* SendPaymentViewModel.swift in Sources */,
 				B584767020E141BF00F5FE60 /* SettingsTableViewSectionHeader.swift in Sources */,
 				A200574F20B5FD68007074D9 /* AppCoordinator+SettingsViewControllerDelegate.swift in Sources */,
+				B5730E2923A0026700106E19 /* ConfigResponseItems.swift in Sources */,
 				B541DF5720A332DA00C621EB /* AppCoordinator+PlaceholderViewControllerDelegate.swift in Sources */,
 				3B6FDADB2050146E0091916A /* VerifyRecoveryWordCellData.swift in Sources */,
 				3B598FE82318542500FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift in Sources */,

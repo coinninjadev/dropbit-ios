@@ -9,7 +9,7 @@
 import Moya
 
 public enum MerchantTarget: CoinNinjaTargetType {
-  typealias ResponseType = MerchantConfigurationResponse
+  typealias ResponseType = ConfigResponse
 
   case fetch
 }

@@ -1,5 +1,5 @@
 //
-//  NetworkManager+MerchantRequestable.swift
+//  NetworkManager+ConfigRequestable.swift
 //  DropBit
 //
 //  Created by Mitchell Malleo on 11/19/19.
@@ -9,13 +9,13 @@
 import Foundation
 import PromiseKit
 
-protocol MerchantRequestable: AnyObject {
-  func fetchMerchants() -> Promise<MerchantConfigurationResponse>
+protocol ConfigRequestable: AnyObject {
+  func fetchConfig() -> Promise<ConfigResponse>
 }
 
-extension NetworkManager: MerchantRequestable {
+extension NetworkManager: ConfigRequestable {
 
-  func fetchMerchants() -> Promise<MerchantConfigurationResponse> {
+  func fetchConfig() -> Promise<ConfigResponse> {
     return cnProvider.request(MerchantTarget.fetch)
   }
 
