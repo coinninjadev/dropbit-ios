@@ -104,10 +104,9 @@ class DrawerViewController: BaseViewController, StoryboardInitializable, Feature
   }
 
   private func itemIsEnabled(_ item: DrawerData, respecting config: FeatureConfig) -> Bool {
-    if config.shouldDisable(.referrals) && item.kind == .earn {
-      return false
-    } else {
-      return true
+    switch item.kind {
+    case .earn:   return config.shouldEnable(.referrals)
+    default:      return true
     }
   }
 
