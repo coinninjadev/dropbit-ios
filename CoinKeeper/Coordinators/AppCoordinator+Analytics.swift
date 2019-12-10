@@ -61,12 +61,12 @@ extension AppCoordinator {
       return
     }
 
-    var balance = 0
-    var lightningBalance = 0
+    var bal: (onChain: Int, lightning: Int) = (0, 0)
     bgContext.performAndWait {
-      balance = wmgr.spendableBalance(in: bgContext).onChain
-      lightningBalance = wmgr.spendableBalance(in: bgContext).lightning
+      bal = wmgr.spendableBalance(in: bgContext)
     }
+    let balance = bal.onChain
+    let lightningBalance = bal.lightning
 
     let balanceIsPositive = balance > 0
     let lightningBalanceIsPositive = lightningBalance > 0
