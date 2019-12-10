@@ -19,16 +19,19 @@ extension AppCoordinator: VerificationStatusViewControllerDelegate {
     return persistenceManager.keychainManager.oauthCredentials()?.formattedScreenName
   }
 
-  func viewControllerDidRequestAddresses() -> [ServerAddressViewModel] {
-    var addresses: [ServerAddressViewModel] = []
-
-    let context = persistenceManager.createBackgroundContext()
-    context.performAndWait {
-      addresses = persistenceManager.brokers.user.serverPoolAddresses(in: context)
-        .compactMap { ServerAddressViewModel(serverAddress: $0) }
+  func viewControllerDidRequestAddresses() -> Promise<[ServerAddressViewModel]> {
+    return Promise { seal in
+      let context = persistenceManager.createBackgroundContext()
+      context.perform { [weak self] in
+        guard let strongSelf = self else {
+          seal.fulfill([])
+          return
+        }
+        let addresses = strongSelf.persistenceManager.brokers.user.serverPoolAddresses(in: context)
+          .compactMap(ServerAddressViewModel.init)
+        seal.fulfill(addresses)
+      }
     }
-
-    return addresses
   }
 
   func viewControllerDidRequestToUnverifyPhone(_ viewController: UIViewController, successfulCompletion: @escaping CKCompletion) {
