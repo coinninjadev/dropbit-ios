@@ -113,21 +113,15 @@ class CKDatabase: PersistenceDatabaseType {
   }
 
   func removeWalletId(in context: NSManagedObjectContext) {
-    guard let wallet = CKMWallet.find(in: context) else {
-      return
-    }
-
-    wallet.id = nil
+    CKMWallet.find(in: context)?.id = nil
   }
 
   func walletId(in context: NSManagedObjectContext) -> String? {
-    let id = CKMWallet.find(in: context)?.id
-    return id
+    return CKMWallet.find(in: context)?.id
   }
 
   func walletFlags(in context: NSManagedObjectContext) -> Int {
-    guard let wallet = CKMWallet.find(in: context) else { return 0 }
-    return wallet.flags
+    return CKMWallet.find(in: context)?.flags ?? 0
   }
 
   func persistWalletResponse(_ response: WalletResponse, in context: NSManagedObjectContext) throws {
