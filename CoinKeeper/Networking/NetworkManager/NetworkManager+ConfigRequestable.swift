@@ -16,7 +16,7 @@ protocol ConfigRequestable: AnyObject {
 extension NetworkManager: ConfigRequestable {
 
   func fetchConfig() -> Promise<ConfigResponse> {
-    return cnProvider.request(MerchantTarget.fetch)
+    return cnProvider.request(ConfigTarget.fetch)
   }
 
 }

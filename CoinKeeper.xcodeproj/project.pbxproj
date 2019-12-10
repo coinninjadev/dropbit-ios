@@ -651,8 +651,8 @@
 		A2E984752385ADC700107C53 /* MockNetworkManager+MerchantRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E984742385ADC700107C53 /* MockNetworkManager+MerchantRequestable.swift */; };
 		A2E984772385C24100107C53 /* MockPurchaseMerchantTableViewCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E984762385C24100107C53 /* MockPurchaseMerchantTableViewCellDelegate.swift */; };
 		A2E9847B2385D2DF00107C53 /* MockMerchantAttributeViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E9847A2385D2DF00107C53 /* MockMerchantAttributeViewDelegate.swift */; };
-		A2EF78D72384608300321809 /* MerchantTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EF78D62384608300321809 /* MerchantTarget.swift */; };
-		A2EF78D92384642000321809 /* NetworkManager+MerchantRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EF78D82384642000321809 /* NetworkManager+MerchantRequestable.swift */; };
+		A2EF78D72384608300321809 /* ConfigTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EF78D62384608300321809 /* ConfigTarget.swift */; };
+		A2EF78D92384642000321809 /* NetworkManager+ConfigRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EF78D82384642000321809 /* NetworkManager+ConfigRequestable.swift */; };
 		A2EF78DB23848BF600321809 /* ConfigResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EF78DA23848BF600321809 /* ConfigResponse.swift */; };
 		A2FDC54122D37BFA004B0EDD /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2FDC54022D37BFA004B0EDD /* Charts.framework */; };
 		A2FE198222FB0E5A00C2412D /* TryLightningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2FE198122FB0E5A00C2412D /* TryLightningViewController.swift */; };
@@ -1795,8 +1795,8 @@
 		A2E984742385ADC700107C53 /* MockNetworkManager+MerchantRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+MerchantRequestable.swift"; sourceTree = "<group>"; };
 		A2E984762385C24100107C53 /* MockPurchaseMerchantTableViewCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPurchaseMerchantTableViewCellDelegate.swift; sourceTree = "<group>"; };
 		A2E9847A2385D2DF00107C53 /* MockMerchantAttributeViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMerchantAttributeViewDelegate.swift; sourceTree = "<group>"; };
-		A2EF78D62384608300321809 /* MerchantTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantTarget.swift; sourceTree = "<group>"; };
-		A2EF78D82384642000321809 /* NetworkManager+MerchantRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+MerchantRequestable.swift"; sourceTree = "<group>"; };
+		A2EF78D62384608300321809 /* ConfigTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigTarget.swift; sourceTree = "<group>"; };
+		A2EF78D82384642000321809 /* NetworkManager+ConfigRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+ConfigRequestable.swift"; sourceTree = "<group>"; };
 		A2EF78DA23848BF600321809 /* ConfigResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigResponse.swift; sourceTree = "<group>"; };
 		A2FDC54022D37BFA004B0EDD /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = Carthage/Build/iOS/Charts.framework; sourceTree = "<group>"; };
 		A2FE198122FB0E5A00C2412D /* TryLightningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TryLightningViewController.swift; sourceTree = "<group>"; };
@@ -3745,13 +3745,16 @@
 			children = (
 				4A251737207515FF0030FCA2 /* NetworkManager.swift */,
 				B56E158C2167C176003B69D4 /* NetworkManager+AddressRequestable.swift */,
-				B56E15A02167E6F1003B69D4 /* NetworkManager+CurrencyValueDataSourceType.swift */,
 				A2573FB52368983300060BEE /* NetworkManager+BlockchainInfoRequestable.swift */,
+				A2EF78D82384642000321809 /* NetworkManager+ConfigRequestable.swift */,
+				B56E15A02167E6F1003B69D4 /* NetworkManager+CurrencyValueDataSourceType.swift */,
 				B56E15A62167EAE6003B69D4 /* NetworkManager+DeviceRequestable.swift */,
 				B5C8F5CA216D3A8800E3E85B /* NetworkManager+DeviceEndpointRequestable.swift */,
 				B52B1E0B21A315DC0000B9CF /* NetworkManager+MerchantPaymentRequestRequestable.swift */,
 				B56E15A42167EAAD003B69D4 /* NetworkManager+MessagesRequestable.swift */,
+				3B474154217A4B4A004DA223 /* NetworkManager+NotificationNetworkInteractable.swift */,
 				B56E15A22167EA26003B69D4 /* NetworkManager+PricingRequestable.swift */,
+				3BF3B0C2217379B60021E45F /* NetworkManager+SubscribeToWalletRequestable.swift */,
 				B56E15982167DB7B003B69D4 /* NetworkManager+TransactionBroadcastable.swift */,
 				B56E15942167DAD0003B69D4 /* NetworkManager+TransactionRequestable.swift */,
 				B5EABAB521FB932E00E32E08 /* NetworkManager+TransactionNotificationRequestable.swift */,
@@ -3759,11 +3762,8 @@
 				B56E15962167DB26003B69D4 /* NetworkManager+WalletRequestable.swift */,
 				B56E15902167D955003B69D4 /* NetworkManager+WalletAddressRequestable.swift */,
 				B56E158E2167D89E003B69D4 /* NetworkManager+WalletAddressRequestRequestable.swift */,
-				3BF3B0C2217379B60021E45F /* NetworkManager+SubscribeToWalletRequestable.swift */,
-				3B474154217A4B4A004DA223 /* NetworkManager+NotificationNetworkInteractable.swift */,
 				A246C82022CA562D00AF1F52 /* NetworkManager+NewsDataRequestable.swift */,
 				B575B61722E9F84800CECFB7 /* NetworkManager+LightningRequestable.swift */,
-				A2EF78D82384642000321809 /* NetworkManager+MerchantRequestable.swift */,
 			);
 			path = NetworkManager;
 			sourceTree = "<group>";
@@ -3950,6 +3950,7 @@
 				B50ACBB121662C7B00E877DF /* CoinNinjaTargetType.swift */,
 				B5A3BA532151939B005EE657 /* AddressesTarget.swift */,
 				B5488F9022F4DC6D00E27B8F /* BroadcastTarget.swift */,
+				A2EF78D62384608300321809 /* ConfigTarget.swift */,
 				B5779F6D216D3DCB00E52B27 /* DeviceEndpointTarget.swift */,
 				B50ACBAF216627AB00E877DF /* DevicesTarget.swift */,
 				B5A3BA57215193BA005EE657 /* MessagesTarget.swift */,
@@ -3972,7 +3973,6 @@
 				A246C82622CBA83F00AF1F52 /* PriceTarget.swift */,
 				3B219B3622C3AAD1007EDFCC /* NotificationTopicSubscriptionTarget.swift */,
 				A2573FAB23687AE600060BEE /* CoinNinjaBroadcastTarget.swift */,
-				A2EF78D62384608300321809 /* MerchantTarget.swift */,
 			);
 			path = Targets;
 			sourceTree = "<group>";
@@ -4960,7 +4960,7 @@
 				B54A421B2080066E005B40A9 /* TransactionDetailBottomButton.swift in Sources */,
 				B5076A8423466E21007D8FCC /* TransactionAmountsFactory.swift in Sources */,
 				B56639CF22B1944200FA0EC3 /* UIButton+Helpers.swift in Sources */,
-				A2EF78D92384642000321809 /* NetworkManager+MerchantRequestable.swift in Sources */,
+				A2EF78D92384642000321809 /* NetworkManager+ConfigRequestable.swift in Sources */,
 				B54A4219207FF38F005B40A9 /* TransactionDetailDateLabel.swift in Sources */,
 				B56E158F2167D89E003B69D4 /* NetworkManager+WalletAddressRequestRequestable.swift in Sources */,
 				3BEE0603235F78EA004BDCEB /* GetBitcoinSuccessViewController.swift in Sources */,
@@ -5311,7 +5311,7 @@
 				A246C82922CCF87500AF1F52 /* WalletOverviewViewController.swift in Sources */,
 				3B474167217FB853004DA223 /* NotificationTopicSubscriptionBody.swift in Sources */,
 				B552EDFA211E33D000332BB5 /* CKPhoneNumberFormatter.swift in Sources */,
-				A2EF78D72384608300321809 /* MerchantTarget.swift in Sources */,
+				A2EF78D72384608300321809 /* ConfigTarget.swift in Sources */,
 				3BA360852090B0C100732C43 /* CKMTransaction+CoreDataProperties.swift in Sources */,
 				3B86F78C203C6DCD00D15231 /* PinEntryViewController.swift in Sources */,
 				B5A3BA5E215193E6005EE657 /* UserTarget.swift in Sources */,
