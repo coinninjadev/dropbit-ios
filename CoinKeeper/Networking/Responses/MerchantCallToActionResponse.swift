@@ -17,6 +17,8 @@ enum MerchantCallToActionStyle: String {
 struct MerchantCallToActionResponse: ResponseDecodable {
   let style: String
   let link: String
+  let title: String?
+  let color: String?
 
   var actionStyle: MerchantCallToActionStyle {
     return MerchantCallToActionStyle(rawValue: style) ?? .default
