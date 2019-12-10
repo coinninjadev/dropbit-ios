@@ -47,6 +47,7 @@ class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
 
     selectionStyle = .none
     backgroundColor = .lightGrayBackground
+    actionButton.applyCornerRadius(5)
     containerView.backgroundColor = .lightGrayBackground
     containerView.applyCornerRadius(10)
     containerView.layer.borderWidth = 1
@@ -76,7 +77,7 @@ class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
       actionButton.isHidden = false
     }
 
-    configureButtons(with: model.cta.actionStyle)
+    configureButtons(with: model.cta)
   }
 
   private func setupButtons() {
@@ -89,9 +90,9 @@ class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
     buyWithApplePayButton.heightAnchor.constraint(equalToConstant: 51).isActive = true
   }
 
-  private func configureButtons(with buyType: MerchantCallToActionStyle) {
+  private func configureButtons(with buyType: MerchantCallToActionResponse) {
     let font = UIFont.medium(18)
-    switch buyType {
+    switch buyType.actionStyle {
     case .device:
       stackView.removeArrangedSubview(actionButton)
       stackView.addArrangedSubview(buyWithApplePayButton)
@@ -116,8 +117,8 @@ class PurchaseMerchantTableViewCell: UITableViewCell, FetchImageType {
         .font: font,
         .foregroundColor: UIColor.white
       ]
-      actionButton.style = .neonGreen
-      actionButton.setAttributedTitle(NSAttributedString(string: "BUY NOW", attributes: attributes), for: .normal)
+      actionButton.backgroundColor = UIColor(hex: buyType.color ?? "") ?? .neonGreen
+      actionButton.setAttributedTitle(NSAttributedString(string: buyType.title ?? "BUY NOW", attributes: attributes), for: .normal)
       actionButton.setImage(nil, for: .normal)
       stackView.removeArrangedSubview(buyWithApplePayButton)
       stackView.addArrangedSubview(actionButton)
