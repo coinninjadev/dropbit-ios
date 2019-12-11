@@ -184,7 +184,7 @@ struct CoinNinjaUrlFactory {
           return "news/webview/load-map?type=atms"
         }
       case .dropBitMeReferral(let handle):
-        return "\(handle)/download"
+        return "download/\(handle)"
       case .dropBitMe(let handle):
         return handle
       case .dropBitAppLightningWithdrawalFees:
