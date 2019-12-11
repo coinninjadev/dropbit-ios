@@ -58,7 +58,7 @@ class MockContactCacheManager: ContactCacheManagerType {
     return nil
   }
 
-  func managedContactComponents(forGlobalPhoneNumber number: GlobalPhoneNumber) -> ManagedContactComponents? {
+  func managedContactComponents(forGlobalPhoneNumber number: GlobalPhoneNumber, in context: NSManagedObjectContext) -> ManagedContactComponents? {
     return nil
   }
 
