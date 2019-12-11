@@ -62,10 +62,8 @@ class CKDatabase: PersistenceDatabaseType {
     log.info("Currently batch deleting \(entityName)")
     let results = try fetch.execute()
 
-    context.performThrowingAndWait {
-      for result in results { context.delete(result) }
-      log.info("Successfully batch deleted \(entityName)")
-    }
+    for result in results { context.delete(result) }
+    log.info("Successfully batch deleted \(entityName)")
   }
 
   func deleteAll(in context: NSManagedObjectContext) throws {

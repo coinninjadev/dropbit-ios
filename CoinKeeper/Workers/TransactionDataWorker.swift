@@ -534,30 +534,31 @@ class TransactionDataWorker: TransactionDataWorkerType {
   /// Marks the provided transaction as failed if its relevant txid does not appear on blockchain.info
   private func failTransactionIfNotOnBCI(_ tx: CKMTransaction) -> Promise<Void> {
     guard let context = tx.managedObjectContext else { return Promise.value(()) }
-    var relevantTxid = ""
-    context.performAndWait {
-      relevantTxid = tx.invitation?.txid ?? tx.txid
+    return Promise<String> { seal in
+      context.perform {
+        let txid = tx.invitation?.txid ?? tx.txid
+        seal.fulfill(txid)
+      }
     }
+    .then { txid in self.networkManager.confirmFailedTransaction(with: txid) }
+    .get(in: context) { [weak self] didConfirmFailure in
+      if didConfirmFailure {
+        tx.markAsFailed()
 
-    return self.networkManager.confirmFailedTransaction(with: relevantTxid)
-      .get(in: context) { [weak self] didConfirmFailure in
-        if didConfirmFailure {
-          tx.markAsFailed()
+        let voutDebugDesc = tx.temporarySentTransaction?.reservedVouts.map { $0.debugDescription }.joined(separator: "\n") ?? ""
+        let analyticsError = "txid: \(tx.txid) :: reserved_vouts: \(voutDebugDesc)"
+        let eventValue = AnalyticsEventValue(key: .broadcastFailed, value: analyticsError)
 
-          let voutDebugDesc = tx.temporarySentTransaction?.reservedVouts.map { $0.debugDescription }.joined(separator: "\n") ?? ""
-          let analyticsError = "txid: \(tx.txid) :: reserved_vouts: \(voutDebugDesc)"
-          let eventValue = AnalyticsEventValue(key: .broadcastFailed, value: analyticsError)
-
-          if tx.invitation == nil {
-            self?.analyticsManager.track(event: .failedToBroadcastTransaction, with: eventValue)
+        if tx.invitation == nil {
+          self?.analyticsManager.track(event: .failedToBroadcastTransaction, with: eventValue)
+        } else {
+          if tx.isIncoming {
+            self?.analyticsManager.track(event: .failedToReceiveDropbit, with: nil)
           } else {
-            if tx.isIncoming {
-              self?.analyticsManager.track(event: .failedToReceiveDropbit, with: nil)
-            } else {
-              self?.analyticsManager.track(event: .failedToSendDropbit, with: eventValue)
-            }
+            self?.analyticsManager.track(event: .failedToSendDropbit, with: eventValue)
           }
         }
+      }
     }.asVoid()
   }
 
@@ -582,17 +583,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
       guard let ckmTransaction = transactionIterator.next() else {
         return nil
       }
-      return Promise { seal in
-        context.performAndWait {
-          self.fetchAndSetDayAveragePrice(for: ckmTransaction, in: context)
-            .done(in: context) {
-              seal.fulfill(())
-          }
-          .catch { error in
-            seal.reject(error)
-          }
-        }
-      }
+      return self.fetchAndSetDayAveragePrice(for: ckmTransaction, in: context)
     }
 
     return when(fulfilled: promiseIterator, concurrently: 5).asVoid()

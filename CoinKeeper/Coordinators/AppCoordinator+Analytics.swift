@@ -61,18 +61,21 @@ extension AppCoordinator {
       return
     }
 
-    var bal: (onChain: Int, lightning: Int) = (0, 0)
-    bgContext.performAndWait {
-      bal = wmgr.spendableBalance(in: bgContext)
-    }
-    let balance = bal.onChain
-    let lightningBalance = bal.lightning
+    bgContext.perform {
+      let bal = wmgr.spendableBalance(in: bgContext)
+      let balance = bal.onChain
+      let lightningBalance = bal.lightning
 
-    let balanceIsPositive = balance > 0
-    let lightningBalanceIsPositive = lightningBalance > 0
-    analyticsManager.track(property: MixpanelProperty(key: .hasBTCBalance, value: balanceIsPositive))
-    analyticsManager.track(property: MixpanelProperty(key: .hasLightningBalance, value: lightningBalanceIsPositive))
-    analyticsManager.track(property: MixpanelProperty(key: .relativeWalletRange, value: AnalyticsRelativeWalletRange(satoshis: balance).rawValue))
+      let balanceIsPositive = balance > 0
+      let lightningBalanceIsPositive = lightningBalance > 0
+
+      DispatchQueue.main.async {
+        self.analyticsManager.track(property: MixpanelProperty(key: .hasBTCBalance, value: balanceIsPositive))
+        self.analyticsManager.track(property: MixpanelProperty(key: .hasLightningBalance, value: lightningBalanceIsPositive))
+        self.analyticsManager.track(property: MixpanelProperty(key: .relativeWalletRange, value: AnalyticsRelativeWalletRange(satoshis: balance).rawValue))
+      }
+    }
+
   }
 
 }
