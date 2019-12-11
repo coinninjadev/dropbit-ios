@@ -1098,7 +1098,6 @@
 		B5DDB0F521DE5ED200A25929 /* KeychainMigrationWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DDB0F421DE5ED200A25929 /* KeychainMigrationWorker.swift */; };
 		B5DDB0F721DE69C100A25929 /* KeychainMigratorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DDB0F621DE69C100A25929 /* KeychainMigratorFactory.swift */; };
 		B5DDB0F921DE6A1100A25929 /* MigrateKeychainV1toV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DDB0F821DE6A1100A25929 /* MigrateKeychainV1toV2.swift */; };
-		B5DE7CDB239EEEBA00A6758F /* FeatureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DE7CDA239EEEBA00A6758F /* FeatureManager.swift */; };
 		B5E0931A2342508B000AE5CB /* TransactionDetailInvalidCellProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E093192342508B000AE5CB /* TransactionDetailInvalidCellProtocols.swift */; };
 		B5E5032921B865A4008FBDAB /* PaymentRequestResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E5032821B865A4008FBDAB /* PaymentRequestResolver.swift */; };
 		B5E7A0B52347959F00A50D58 /* TransactionDetailCellActionable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E7A0B42347959F00A50D58 /* TransactionDetailCellActionable.swift */; };
@@ -2230,7 +2229,6 @@
 		B5DDB0F421DE5ED200A25929 /* KeychainMigrationWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMigrationWorker.swift; sourceTree = "<group>"; };
 		B5DDB0F621DE69C100A25929 /* KeychainMigratorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMigratorFactory.swift; sourceTree = "<group>"; };
 		B5DDB0F821DE6A1100A25929 /* MigrateKeychainV1toV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateKeychainV1toV2.swift; sourceTree = "<group>"; };
-		B5DE7CDA239EEEBA00A6758F /* FeatureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureManager.swift; sourceTree = "<group>"; };
 		B5E093192342508B000AE5CB /* TransactionDetailInvalidCellProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailInvalidCellProtocols.swift; sourceTree = "<group>"; };
 		B5E5032821B865A4008FBDAB /* PaymentRequestResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentRequestResolver.swift; sourceTree = "<group>"; };
 		B5E7A0B42347959F00A50D58 /* TransactionDetailCellActionable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailCellActionable.swift; sourceTree = "<group>"; };
@@ -3708,7 +3706,6 @@
 				B552EDE3211E33D000332BB5 /* PermissionManager.swift */,
 				B552EDE5211E33D000332BB5 /* CKAlamofireSessionManager.swift */,
 				B552EDE7211E33D000332BB5 /* AnalyticsManager.swift */,
-				B5DE7CDA239EEEBA00A6758F /* FeatureManager.swift */,
 				B552EDE8211E33D000332BB5 /* CKNotificationCenter.swift */,
 				307DF11C2150394400260369 /* MessagesManager.swift */,
 				30BF4FE621B5BF210018AE87 /* PersistenceCacheDataWorker.swift */,
@@ -5139,7 +5136,6 @@
 				3BBEE0C2208A5DA500A7DF9F /* CKMDerivativePath+CoreDataProperties.swift in Sources */,
 				B559AF092180C9AA001D44F2 /* BadgeDisplayable.swift in Sources */,
 				B5C5EDE721FA490A0032AC94 /* SharedPayloadCodable.swift in Sources */,
-				B5DE7CDB239EEEBA00A6758F /* FeatureManager.swift in Sources */,
 				B505D4EA21050F2000C0C8FC /* CKPredicate.swift in Sources */,
 				A2893BBE20FD4C5A00E96B07 /* BasePageViewController.swift in Sources */,
 				A29CE10220A3517800761B91 /* CompositeValidator.swift in Sources */,
