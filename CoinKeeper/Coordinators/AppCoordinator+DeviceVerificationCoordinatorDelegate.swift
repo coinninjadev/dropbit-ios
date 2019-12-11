@@ -187,10 +187,6 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
                                                       completion: nil, fetchResult: nil)
     childCoordinatorDidComplete(childCoordinator: coordinator)
     continueSetupFlow()
-    let desc = userIdentityType.identityDescription
-    alertManager.showBanner(
-      with: "Your \(desc) has been successfully verified. You can now send DropBits to your \(userIdentityType.displayDescription) contacts.",
-      duration: .custom(5))
 
     if !isInitialSetupFlow {
       DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
