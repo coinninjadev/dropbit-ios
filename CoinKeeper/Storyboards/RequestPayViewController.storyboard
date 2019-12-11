@@ -24,7 +24,6 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="QEt-es-jOl"/>
                                         </constraints>
-                                        <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="addRequestAmountButtonTapped:" destination="X1G-66-cWY" eventType="touchUpInside" id="QB9-92-M9c"/>
                                         </connections>
@@ -95,7 +94,6 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="EAh-xV-En7"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
                                 <connections>
                                     <action selector="sendRequestButtonTapped:" destination="X1G-66-cWY" eventType="touchUpInside" id="Wjp-Ma-8SL"/>
                                 </connections>

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina5_5" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hg9-XS-MlV" userLabel="Faded button background">
-                                <rect key="frame" x="62.666666666666657" y="629" width="289" height="54"/>
+                                <rect key="frame" x="62.666666666666657" y="619" width="289" height="54"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fiv-1b-Y3H">
@@ -27,20 +25,20 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.87334118150684936" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shareTransactionBackground" translatesAutoresizingMaskIntoConstraints="NO" id="blh-ob-qwV">
-                                <rect key="frame" x="50.666666666666657" y="119" width="313" height="506"/>
+                                <rect key="frame" x="50.666666666666657" y="109" width="313" height="506"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="506" id="PcZ-kj-EQL"/>
                                     <constraint firstAttribute="width" constant="313" id="Xcx-2F-8TJ"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Spread awareness by telling your friends you used Bitcoin." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NJ5-mx-kAk">
-                                <rect key="frame" x="70.666666666666686" y="464.33333333333331" width="273" height="40.666666666666686"/>
+                                <rect key="frame" x="70.666666666666686" y="454.33333333333331" width="273" height="40.666666666666686"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nD4-1H-cbb">
-                                <rect key="frame" x="82.666666666666686" y="521" width="249" height="50"/>
+                                <rect key="frame" x="82.666666666666686" y="511" width="249" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="3Ca-xf-gt1"/>
                                 </constraints>
@@ -50,7 +48,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Sd-34-8eO">
-                                <rect key="frame" x="62.666666666666657" y="571" width="289" height="50"/>
+                                <rect key="frame" x="62.666666666666657" y="561" width="289" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="QXh-sX-MvY"/>
                                 </constraints>
@@ -60,7 +58,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BqE-vb-vKA">
-                                <rect key="frame" x="62.666666666666657" y="629" width="289" height="50"/>
+                                <rect key="frame" x="62.666666666666657" y="619" width="289" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="900" constant="50" id="4fJ-2E-AwA"/>
                                 </constraints>
@@ -70,7 +68,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The best way to help increase the price of Bitcoin is to spread awareness and adoption." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="StD-eA-5sJ">
-                                <rect key="frame" x="70.666666666666686" y="139" width="273" height="61"/>
+                                <rect key="frame" x="70.666666666666686" y="129" width="273" height="61"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>

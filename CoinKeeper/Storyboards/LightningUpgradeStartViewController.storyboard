@@ -149,7 +149,6 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="49" id="vBu-hn-rec"/>
                                         </constraints>
-                                        <state key="normal" title="UPGRADE NOW"/>
                                         <connections>
                                             <action selector="upgradeNow:" destination="swR-IZ-QJw" eventType="touchUpInside" id="9Xz-Vn-wb5"/>
                                         </connections>

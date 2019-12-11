@@ -41,14 +41,12 @@
                                     <constraint firstAttribute="width" constant="235" id="hbO-hB-Jsl"/>
                                     <constraint firstAttribute="height" constant="50" id="qQF-DK-btG"/>
                                 </constraints>
-                                <state key="normal" title="Twitter"/>
                                 <connections>
                                     <action selector="performTwitter:" destination="j2L-hF-Aac" eventType="touchUpInside" id="cl8-3v-wNL"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ea-hc-3HD" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
                                 <rect key="frame" x="89.5" y="463" width="235" height="50"/>
-                                <state key="normal" title="SMS"/>
                                 <connections>
                                     <action selector="performSMS:" destination="j2L-hF-Aac" eventType="touchUpInside" id="563-Fn-B4I"/>
                                 </connections>
