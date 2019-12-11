@@ -590,8 +590,13 @@ class TransactionDataWorker: TransactionDataWorkerType {
   }
 
   private func fetchAndSetDayAveragePrice(for transaction: CKMTransaction, in context: NSManagedObjectContext) -> Promise<Void> {
-    return self.networkManager.fetchDayAveragePrice(for: transaction.txid)
-      .recover { error -> Promise<PriceTransactionResponse> in
+    return Promise { seal in
+      context.perform {
+        seal.fulfill(transaction.txid)
+      }
+    }
+    .then { txid in self.networkManager.fetchDayAveragePrice(for: txid) }
+    .recover { error -> Promise<PriceTransactionResponse> in
         if let providerError = error as? CKNetworkError {
           switch providerError {
           case .recordNotFound,
