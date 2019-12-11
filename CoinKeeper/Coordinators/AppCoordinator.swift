@@ -440,7 +440,6 @@ class AppCoordinator: CoordinatorType {
     launchStateManager.unauthenticateUser()
   }
 
-
   private var walletOverviewViewController: WalletOverviewViewController? {
     guard let topViewController = (navigationController.topViewController() as? MMDrawerController) else { return nil }
     return topViewController.centerViewController as? WalletOverviewViewController

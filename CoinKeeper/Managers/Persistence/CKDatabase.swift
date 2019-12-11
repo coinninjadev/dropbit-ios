@@ -363,7 +363,7 @@ class CKDatabase: PersistenceDatabaseType {
     let nonMatchingGlobalPhoneNumbers = nonMatchingPhoneNumbers
       .map { GlobalPhoneNumber(countryCode: Int($0.countryCode), nationalNumber: String($0.number)) }
     let matchingMetadata = nonMatchingGlobalPhoneNumbers
-      .compactMap { contactCacheManager.managedContactComponents(forGlobalPhoneNumber: $0) }
+      .compactMap { contactCacheManager.managedContactComponents(forGlobalPhoneNumber: $0, in: context) }
       .filter { $0.counterpartyInputs.name.isNotEmpty }
     matchingMetadata.forEach { metadata in
       let numberToUpdate = nonMatchingPhoneNumbers
