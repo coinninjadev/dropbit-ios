@@ -24,4 +24,5 @@ struct SyncDependencies {
   let delegate: SerialQueueManagerDelegate
   let twitterAccessManager: TwitterAccessManagerType
   let ratingAndReviewManager: RatingAndReviewManagerType
+  let configManager: FeatureConfigManagerType
 }

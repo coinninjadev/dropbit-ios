@@ -1,5 +1,5 @@
 //
-//  MockNetworkManager+MerchantRequestable.swift
+//  MockNetworkManager+ConfigRequestable.swift
 //  DropBitTests
 //
 //  Created by Mitchell Malleo on 11/20/19.
@@ -10,10 +10,11 @@ import Foundation
 @testable import DropBit
 import PromiseKit
 
-extension MockNetworkManager: MerchantRequestable {
+extension MockNetworkManager: ConfigRequestable {
 
-  func fetchMerchants() -> Promise<MerchantConfigurationResponse> {
-    return Promise { _ in }
+  func fetchConfig() -> Promise<ConfigResponse> {
+    let mockResponse = ConfigResponse(updatedAt: nil, config: ConfigResponseItems(buy: [], referral: nil))
+    return Promise.value(mockResponse)
   }
 
 }

@@ -122,6 +122,7 @@ class WalletSyncOperationFactory {
                            in context: NSManagedObjectContext) -> Promise<Void> {
     return dependencies.databaseMigrationWorker.migrateIfPossible()
       .then { _ in dependencies.keychainMigrationWorker.migrateIfPossible() }
+      .then { self.updateConfig(with: dependencies) }
       .then(in: context) { self.checkAndVerifyUser(with: dependencies, in: context) }
       .then(in: context) { self.checkAndVerifyWallet(with: dependencies, in: context) }
       .then(in: context) { dependencies.txDataWorker.performFetchAndStoreAllOnChainTransactions(in: context, fullSync: fullSync) }
@@ -187,6 +188,18 @@ class WalletSyncOperationFactory {
   func updateLightningAccount(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<LNAccountResponse> {
     return dependencies.networkManager.getOrCreateLightningAccount()
       .get(in: context) { dependencies.persistenceManager.brokers.lightning.persistAccountResponse($0, in: context) }
+  }
+
+  private func updateConfig(with dependencies: SyncDependencies) -> Promise<Void> {
+    return dependencies.networkManager.fetchConfig()
+      .get { response in
+        let hasUpdates = dependencies.configManager.update(with: response)
+        if hasUpdates {
+          DispatchQueue.main.async {
+            CKNotificationCenter.publish(key: .didUpdateFeatureConfig)
+          }
+        }
+    }.asVoid()
   }
 
   private func checkAndVerifyUser(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {
