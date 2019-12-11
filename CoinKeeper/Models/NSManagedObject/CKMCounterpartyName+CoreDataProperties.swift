@@ -23,6 +23,7 @@ extension CKMCounterparty {
 
   @NSManaged public var name: String
   @NSManaged public var phoneNumbers: Set<CKMPhoneNumber>
+  @NSManaged public var walletEntries: Set<CKMWalletEntry>
   @NSManaged public var kind: String?
   @NSManaged public var profileImageData: Data?
 
