@@ -70,9 +70,12 @@ extension AppCoordinator {
       let lightningBalanceIsPositive = lightningBalance > 0
 
       DispatchQueue.main.async {
-        self.analyticsManager.track(property: MixpanelProperty(key: .hasBTCBalance, value: balanceIsPositive))
-        self.analyticsManager.track(property: MixpanelProperty(key: .hasLightningBalance, value: lightningBalanceIsPositive))
-        self.analyticsManager.track(property: MixpanelProperty(key: .relativeWalletRange, value: AnalyticsRelativeWalletRange(satoshis: balance).rawValue))
+        let btcBalanceProperty = MixpanelProperty(key: .hasBTCBalance, value: balanceIsPositive)
+        self.analyticsManager.track(property: btcBalanceProperty)
+        let lightningBalanceProperty = MixpanelProperty(key: .hasLightningBalance, value: lightningBalanceIsPositive)
+        self.analyticsManager.track(property: lightningBalanceProperty)
+        let rangeProperty = MixpanelProperty(key: .relativeWalletRange, value: AnalyticsRelativeWalletRange(satoshis: balance).rawValue)
+        self.analyticsManager.track(property: rangeProperty)
       }
     }
 
