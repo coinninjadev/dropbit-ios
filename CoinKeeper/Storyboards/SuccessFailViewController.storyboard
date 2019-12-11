@@ -59,7 +59,6 @@
                                                     <constraint firstAttribute="width" constant="150" id="d0q-eY-oVb"/>
                                                     <constraint firstAttribute="height" constant="50" id="fSv-Wx-Xr4"/>
                                                 </constraints>
-                                                <state key="normal" title="Button"/>
                                                 <connections>
                                                     <action selector="urlButtonWasTouched:" destination="6uW-kN-tKT" eventType="touchUpInside" id="yQ1-0S-6cs"/>
                                                 </connections>

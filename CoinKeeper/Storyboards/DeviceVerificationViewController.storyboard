@@ -122,7 +122,6 @@
                                                     <constraint firstAttribute="height" constant="50" id="8Rd-bT-KeG"/>
                                                     <constraint firstAttribute="width" constant="312" id="dt2-sn-TrJ"/>
                                                 </constraints>
-                                                <state key="normal" title="Button"/>
                                                 <connections>
                                                     <action selector="submitPhoneNumber:" destination="9zz-dP-ccQ" eventType="touchUpInside" id="sWM-W9-khq"/>
                                                 </connections>
@@ -140,7 +139,6 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="8qW-he-kVf"/>
                                                 </constraints>
-                                                <state key="normal" title="Button"/>
                                                 <connections>
                                                     <action selector="resendTextMessage:" destination="9zz-dP-ccQ" eventType="touchUpInside" id="RMM-Pa-0U6"/>
                                                 </connections>
