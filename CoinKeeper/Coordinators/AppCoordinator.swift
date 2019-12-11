@@ -261,6 +261,7 @@ class AppCoordinator: CoordinatorType {
     let existingValue: String? = persistenceManager.brokers.user.referredBy?.asNilIfEmpty()
     if existingValue == nil { //do not change referrer once set; patching multiple times with the same value is okay
       persistenceManager.brokers.user.referredBy = referrer
+      self.analyticsManager.track(event: .referralLinkDetected, with: AnalyticsEventValue(key: .referrer, value: referrer))
     }
     serialQueueManager.walletSyncOperationFactory?.walletNeedsUpdate = true
 
