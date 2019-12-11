@@ -13,19 +13,17 @@ import PromiseKit
 
 extension AppCoordinator: HolidaySelectorViewDelegate {
 
-  func switchUserToHoliday(_ holiday: HolidayType, success: @escaping CKCompletion) {
-    alertManager.showActivityHUD(withStatus: nil)
+  func switchUserToHoliday(_ holiday: HolidayType, failure: @escaping CKCompletion) {
     let context = persistenceManager.viewContext
 
     networkManager.patchHolidayType(holidayType: holiday)
       .done(on: .main) { _ in
-        self.alertManager.hideActivityHUD(withDelay: nil, completion: nil)
         let user = CKMUser.find(in: context)
         user?.holidayType = holiday
         try? context.saveRecursively()
-        success()
     }.catch { error in
       self.alertManager.showError(message: error.localizedDescription, forDuration: 2.0)
+      failure()
     }
   }
 
