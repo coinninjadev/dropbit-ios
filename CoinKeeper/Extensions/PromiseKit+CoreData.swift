@@ -10,7 +10,7 @@ import Foundation
 import PromiseKit
 import CoreData
 
-public let bgQueue = DispatchQueue.global(qos: .default)
+public let bgQueue = DispatchQueue.global(qos: .userInitiated)
 
 extension Thenable {
 
