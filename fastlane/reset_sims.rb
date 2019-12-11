@@ -8,7 +8,7 @@ compatible_devices = [
 
 available_oss = [
   'iOS 12.2',
-  'iOS 13.2'
+  'iOS 13.3'
 ]
 
 device_types = JSON.parse(`xcrun simctl list -j devicetypes`)['devicetypes'].select { |i| compatible_devices.include?(i['name']) }
