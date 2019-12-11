@@ -25,7 +25,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.87334118150684936" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shareTransactionBackground" translatesAutoresizingMaskIntoConstraints="NO" id="blh-ob-qwV">
-                                <rect key="frame" x="50.666666666666657" y="109" width="313" height="506"/>
+                                <rect key="frame" x="50.666666666666657" y="109" width="313" height="506.00000000000011"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="506" id="PcZ-kj-EQL"/>
                                     <constraint firstAttribute="width" constant="313" id="Xcx-2F-8TJ"/>
@@ -42,7 +42,6 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="3Ca-xf-gt1"/>
                                 </constraints>
-                                <state key="normal" title="Twitter"/>
                                 <connections>
                                     <action selector="performTwitter:" destination="Tcj-17-Wnf" eventType="touchUpInside" id="8VR-tu-8Ir"/>
                                 </connections>
@@ -52,7 +51,6 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="QXh-sX-MvY"/>
                                 </constraints>
-                                <state key="normal" title="I'll share next time"/>
                                 <connections>
                                     <action selector="performNextTime:" destination="Tcj-17-Wnf" eventType="touchUpInside" id="bds-yE-xhX"/>
                                 </connections>
@@ -62,7 +60,6 @@
                                 <constraints>
                                     <constraint firstAttribute="height" priority="900" constant="50" id="4fJ-2E-AwA"/>
                                 </constraints>
-                                <state key="normal" title="Don't ask me again"/>
                                 <connections>
                                     <action selector="performDontAskAgain:" destination="Tcj-17-Wnf" eventType="touchUpInside" id="tXY-YY-Lie"/>
                                 </connections>

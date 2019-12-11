@@ -69,6 +69,7 @@ class VerificationStatusViewController: BaseViewController, StoryboardInitializa
       let formatter = CKPhoneNumberFormatter(format: .national)
       phoneVerificationStatusView.isHidden = false
       changeRemovePhoneButton.isHidden = false
+      changeRemovePhoneButton.setTitle("CHANGE/REMOVE", for: .normal)
       verifyPhoneNumberPrimaryButton.isHidden = true
       do {
         let identity = try formatter.string(from: phoneNumber)
@@ -95,6 +96,7 @@ class VerificationStatusViewController: BaseViewController, StoryboardInitializa
     if let handle = delegate.verifiedTwitterHandle() {
       twitterVerificationStatusView.isHidden = false
       changeRemoveTwitterButton.isHidden = false
+      changeRemoveTwitterButton.setTitle("CHANGE/REMOVE", for: .normal)
       verifyTwitterPrimaryButton.isHidden = true
       let identity = handle
       twitterVerificationStatusView.load(with: .twitter, identityString: identity)

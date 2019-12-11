@@ -30,7 +30,6 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="OwV-sz-yfp"/>
                                         </constraints>
-                                        <state key="normal" title="Sync Blockchain"/>
                                         <connections>
                                             <action selector="resyncBlockchain:" destination="VZY-9Z-ZtP" eventType="touchUpInside" id="m25-qv-vER"/>
                                         </connections>
@@ -40,7 +39,6 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="xKH-c6-ES8"/>
                                         </constraints>
-                                        <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="deleteWallet:" destination="VZY-9Z-ZtP" eventType="touchUpInside" id="mJn-uz-YFi"/>
                                         </connections>
