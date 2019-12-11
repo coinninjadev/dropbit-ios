@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,10 +20,10 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="itT-9s-3IO">
-                                        <rect key="frame" x="64" y="301" width="286" height="294.5"/>
+                                        <rect key="frame" x="64" y="311" width="286" height="274"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="N1E-ZV-mv1">
-                                                <rect key="frame" x="0.0" y="0.0" width="286" height="274.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="286" height="254"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yzM-ku-UKP">
                                                         <rect key="frame" x="0.0" y="0.0" width="286" height="100"/>
@@ -70,8 +68,8 @@
                                                             <constraint firstItem="54m-9j-2X1" firstAttribute="top" secondItem="yzM-ku-UKP" secondAttribute="top" id="mhs-yP-nQg"/>
                                                         </constraints>
                                                     </view>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aNe-AB-ruR">
-                                                        <rect key="frame" x="20.5" y="120" width="245" height="20.5"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aNe-AB-ruR">
+                                                        <rect key="frame" x="20.5" y="120" width="245" height="0.0"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="245" id="dZk-Z7-JOm"/>
                                                         </constraints>
@@ -80,18 +78,17 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SO2-Xz-nOO" customClass="LightBorderedButton" customModule="DropBit" customModuleProvider="target">
-                                                        <rect key="frame" x="10" y="160.5" width="266" height="44"/>
+                                                        <rect key="frame" x="10" y="140" width="266" height="44"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="266" id="3YI-lk-tTt"/>
                                                             <constraint firstAttribute="height" constant="44" id="Kyb-fc-Qmh"/>
                                                         </constraints>
-                                                        <state key="normal" title="Button"/>
                                                         <connections>
                                                             <action selector="copyAddress:" destination="Zol-O7-zkC" eventType="touchUpInside" id="aDC-5y-iJd"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="58L-FD-TJk">
-                                                        <rect key="frame" x="30.5" y="224.5" width="225" height="50"/>
+                                                        <rect key="frame" x="30.5" y="204" width="225" height="50"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="50" id="HbJ-cS-6Ed"/>
                                                             <constraint firstAttribute="width" constant="225" id="Z3f-fh-RbR"/>
