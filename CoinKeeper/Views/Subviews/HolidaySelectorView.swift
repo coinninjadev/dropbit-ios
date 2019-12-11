@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol HolidaySelectorViewDelegate: AnyObject {
-  func switchUserToHoliday(_ holiday: HolidayType, success: @escaping CKCompletion)
+  func switchUserToHoliday(_ holiday: HolidayType, failure: @escaping CKCompletion)
 }
 
 class HolidaySelectorView: UIView {
@@ -25,6 +25,19 @@ class HolidaySelectorView: UIView {
   lazy private var buttons: [UIButton] = [firstButton, secondButton, thirdButton, fourthButton]
 
   weak var delegate: HolidaySelectorViewDelegate?
+
+  override var isHidden: Bool {
+    set {
+      if Date() > Calendar.current.date(from: DateComponents(year: 2020, month: 1, day: 3)) ?? Date() {
+        super.isHidden = true
+      } else {
+        super.isHidden = newValue
+      }
+    }
+    get {
+      return super.isHidden
+    }
+  }
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
@@ -73,24 +86,36 @@ class HolidaySelectorView: UIView {
   }
 
   private func selectButton(_ selectedButton: UIButton) {
-    let success: CKCompletion = { [weak self] in
-      guard let strongSelf = self else { return }
+    guard !selectedButton.isSelected else { return }
 
-      for button in strongSelf.buttons where selectedButton !== button {
+    var oldSelectedButton = selectedButton
+    for button in buttons where selectedButton !== button {
+      if button.isSelected {
+        oldSelectedButton = button
+      }
+
+      button.isSelected = false
+    }
+
+    let failure: CKCompletion = { [weak self] in
+      guard let strongSelf = self else { return }
+      for button in strongSelf.buttons where oldSelectedButton !== button {
         button.isSelected = false
       }
 
-      selectedButton.isSelected = true
+      oldSelectedButton.isSelected = true
     }
 
+    selectedButton.isSelected = true
+
     if selectedButton == firstButton {
-      delegate?.switchUserToHoliday(.bitcoin, success: success)
+      delegate?.switchUserToHoliday(.bitcoin, failure: failure)
     } else if selectedButton == secondButton {
-      delegate?.switchUserToHoliday(.holiday, success: success)
+      delegate?.switchUserToHoliday(.holiday, failure: failure)
     } else if selectedButton == thirdButton {
-      delegate?.switchUserToHoliday(.christmas, success: success)
+      delegate?.switchUserToHoliday(.christmas, failure: failure)
     } else if selectedButton == fourthButton {
-      delegate?.switchUserToHoliday(.hanukkah, success: success)
+      delegate?.switchUserToHoliday(.hanukkah, failure: failure)
     }
   }
 
