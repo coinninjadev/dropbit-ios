@@ -17,7 +17,6 @@ def shared_pods
   pod 'RNCryptor', '~> 5.1.0'
   pod 'DZNEmptyDataSet', '~> 1.8.1'
   pod 'Willow', '~> 5.0'
-  pod 'Hero'
   pod 'Sheeeeeeeeet', '~> 2.0.2'
   pod 'Firebase/Analytics'
   pod 'Firebase/DynamicLinks'

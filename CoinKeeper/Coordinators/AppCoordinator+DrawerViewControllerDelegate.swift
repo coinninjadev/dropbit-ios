@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Hero
 
 extension AppCoordinator: BadgeUpdateDelegate {
   func viewControllerDidRequestBadgeUpdate(_ viewController: UIViewController) {
@@ -32,10 +31,8 @@ extension AppCoordinator: DrawerViewControllerDelegate {
 
       let controller = EarnViewController.newInstance(delegate: self,
                                                       referralLink: url?.absoluteString)
-      controller.hero.isEnabled = true
-      controller.hero.modalAnimationType = .zoom
-      controller.modalPresentationStyle = .custom
-      controller.modalTransitionStyle = UIModalTransitionStyle.coverVertical
+      controller.modalPresentationStyle = .overFullScreen
+      controller.modalTransitionStyle = .crossDissolve
       self.navigationController.present(controller, animated: true)
     })
   }
