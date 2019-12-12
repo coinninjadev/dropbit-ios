@@ -262,8 +262,6 @@ class TransactionDataWorker: TransactionDataWorkerType {
                                                   fullSync: Bool,
                                                   in context: NSManagedObjectContext) -> Promise<Void> {
 
-    let highPriorityBackgroundQueue = DispatchQueue.global(qos: .userInitiated)
-
     return self.persistAddressTransactionSummaries(with: aggregateATSResponses, in: context)
       .get(in: context) { _ in self.persistenceManager.brokers.wallet.updateWalletLastIndexes(in: context) }
       .then { Promise.value(TransactionDataWorkerDTO(atsResponses: $0)) }
@@ -275,7 +273,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
       let txidsToSubtract: Set<String> = (fullSync) ? [] : CKMTransaction.findAllTxidsFullyConfirmed(in: context).asSet()
       let txidsToFetch = dto.atsResponsesTxIds.asSet().subtracting(txidsToSubtract).asArray()
       return self.promisesForFetchingTransactionDetails(withTxids: txidsToFetch, in: context)
-        .then(on: highPriorityBackgroundQueue, in: context) { self.processTransactionResponses($0, in: context) }
+        .then(in: context) { self.processTransactionResponses($0, in: context) }
         .then { Promise.value(TransactionDataWorkerDTO(txResponses: $0).merged(with: dto)) }
         .then { self.fetchAndMergeTransactionNotifications(dto: $0) }
     }

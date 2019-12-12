@@ -64,7 +64,7 @@ class WalletSyncOperationFactory {
           log.logMessage(walletDebugDesc, privateArgs: [], level: .info, location: nil)
           log.info("Sync routine: Starting.")
           strongSelf.performSync(with: dependencies, fullSync: isFullSync, in: bgContext)
-            .catch(in: bgContext) { error in
+            .catch { error in
               log.error(error, message: "Sync routine: caught error.")
               caughtError = error
               strongSelf.handleSyncRoutineError(error, in: bgContext)
