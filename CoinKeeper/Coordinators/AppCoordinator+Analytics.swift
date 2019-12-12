@@ -61,18 +61,24 @@ extension AppCoordinator {
       return
     }
 
-    var balance = 0
-    var lightningBalance = 0
-    bgContext.performAndWait {
-      balance = wmgr.spendableBalance(in: bgContext).onChain
-      lightningBalance = wmgr.spendableBalance(in: bgContext).lightning
+    bgContext.perform {
+      let bal = wmgr.spendableBalance(in: bgContext)
+      let balance = bal.onChain
+      let lightningBalance = bal.lightning
+
+      let balanceIsPositive = balance > 0
+      let lightningBalanceIsPositive = lightningBalance > 0
+
+      DispatchQueue.main.async {
+        let btcBalanceProperty = MixpanelProperty(key: .hasBTCBalance, value: balanceIsPositive)
+        self.analyticsManager.track(property: btcBalanceProperty)
+        let lightningBalanceProperty = MixpanelProperty(key: .hasLightningBalance, value: lightningBalanceIsPositive)
+        self.analyticsManager.track(property: lightningBalanceProperty)
+        let rangeProperty = MixpanelProperty(key: .relativeWalletRange, value: AnalyticsRelativeWalletRange(satoshis: balance).rawValue)
+        self.analyticsManager.track(property: rangeProperty)
+      }
     }
 
-    let balanceIsPositive = balance > 0
-    let lightningBalanceIsPositive = lightningBalance > 0
-    analyticsManager.track(property: MixpanelProperty(key: .hasBTCBalance, value: balanceIsPositive))
-    analyticsManager.track(property: MixpanelProperty(key: .hasLightningBalance, value: lightningBalanceIsPositive))
-    analyticsManager.track(property: MixpanelProperty(key: .relativeWalletRange, value: AnalyticsRelativeWalletRange(satoshis: balance).rawValue))
   }
 
 }

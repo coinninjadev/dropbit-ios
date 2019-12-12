@@ -20,13 +20,13 @@ public class CKMCounterpartyAddress: NSManagedObject {
 
   static func findOrCreate(withAddress address: String, in context: NSManagedObjectContext) -> CKMCounterpartyAddress {
     var ckmCounterpartyAddress: CKMCounterpartyAddress!
-    context.performAndWait {
-      if let foundAddress = find(withAddress: address, in: context) {
-        ckmCounterpartyAddress = foundAddress
-      } else {
-        ckmCounterpartyAddress = CKMCounterpartyAddress(address: address, insertInto: context)
-      }
+
+    if let foundAddress = find(withAddress: address, in: context) {
+      ckmCounterpartyAddress = foundAddress
+    } else {
+      ckmCounterpartyAddress = CKMCounterpartyAddress(address: address, insertInto: context)
     }
+
     return ckmCounterpartyAddress
   }
 
@@ -38,12 +38,10 @@ public class CKMCounterpartyAddress: NSManagedObject {
 
     var theAddress: CKMCounterpartyAddress?
 
-    context.performAndWait {
-      do {
-        theAddress = try context.fetch(fetchRequest).first
-      } catch {
-        theAddress = nil
-      }
+    do {
+      theAddress = try context.fetch(fetchRequest).first
+    } catch {
+      theAddress = nil
     }
 
     return theAddress

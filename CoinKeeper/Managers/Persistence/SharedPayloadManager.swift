@@ -164,7 +164,8 @@ extension PersistablePayload {
                                                          phoneNumberHash: phoneNumberHash,
                                                          in: deps.context)
 
-    let counterpartyInputs = deps.contactCacheManager.managedContactComponents(forGlobalPhoneNumber: phoneNumber)?.counterpartyInputs
+    let components = deps.contactCacheManager.managedContactComponents(forGlobalPhoneNumber: phoneNumber, in: deps.context)
+    let counterpartyInputs = components?.counterpartyInputs
     if let name = counterpartyInputs?.name {
       managedPhoneNumber.counterparty = CKMCounterparty.findOrCreate(with: name, in: deps.context)
     }

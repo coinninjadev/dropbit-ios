@@ -62,10 +62,8 @@ class CKDatabase: PersistenceDatabaseType {
     log.info("Currently batch deleting \(entityName)")
     let results = try fetch.execute()
 
-    context.performThrowingAndWait {
-      for result in results { context.delete(result) }
-      log.info("Successfully batch deleted \(entityName)")
-    }
+    for result in results { context.delete(result) }
+    log.info("Successfully batch deleted \(entityName)")
   }
 
   func deleteAll(in context: NSManagedObjectContext) throws {
@@ -91,8 +89,9 @@ class CKDatabase: PersistenceDatabaseType {
   func unverifyUser(in context: NSManagedObjectContext) {
     var user: CKMUser?
 
-    context.performAndWait {
-      let allServerAddresses = serverPoolAddresses(in: context)
+    context.perform { [weak self] in
+      guard let strongSelf = self else { return }
+      let allServerAddresses = strongSelf.serverPoolAddresses(in: context)
       let serverDerivativePaths = allServerAddresses.compactMap { $0.derivativePath }.filter { $0.address == nil }
       allServerAddresses.forEach { context.delete($0) }
       serverDerivativePaths.forEach { context.delete($0) }
@@ -112,21 +111,15 @@ class CKDatabase: PersistenceDatabaseType {
   }
 
   func removeWalletId(in context: NSManagedObjectContext) {
-    guard let wallet = CKMWallet.find(in: context) else {
-      return
-    }
-
-    wallet.id = nil
+    CKMWallet.find(in: context)?.id = nil
   }
 
   func walletId(in context: NSManagedObjectContext) -> String? {
-    let id = CKMWallet.find(in: context)?.id
-    return id
+    return CKMWallet.find(in: context)?.id
   }
 
   func walletFlags(in context: NSManagedObjectContext) -> Int {
-    guard let wallet = CKMWallet.find(in: context) else { return 0 }
-    return wallet.flags
+    return CKMWallet.find(in: context)?.flags ?? 0
   }
 
   func persistWalletResponse(_ response: WalletResponse, in context: NSManagedObjectContext) throws {
@@ -160,7 +153,7 @@ class CKDatabase: PersistenceDatabaseType {
 
   func persistVerificationStatus(_ status: String, in context: NSManagedObjectContext) -> Promise<UserVerificationStatus> {
     return Promise { seal in
-      context.performAndWait {
+      context.perform {
         guard let user = CKMUser.find(in: context) else {
           seal.reject(CKPersistenceError.noUser)
           return
@@ -183,12 +176,11 @@ class CKDatabase: PersistenceDatabaseType {
       let addressString = metaAddress.address
       let path = DerivativePathResponse(derivativePath: metaAddress.derivationPath)
 
-      context.performAndWait {
+      context.perform {
         let newAddress = CKMServerAddress(address: addressString, createdAt: createdAt, insertInto: context)
         newAddress.derivativePath = CKMDerivativePath.findOrCreate(with: path, in: context)
+        seal.fulfill(()) //no need to return the created object(s), fulfill with Void
       }
-
-      seal.fulfill(()) //no need to return the created object(s), fulfill with Void
     }
   }
 
@@ -322,13 +314,13 @@ class CKDatabase: PersistenceDatabaseType {
   }
 
   func updateLastReceiveAddressIndex(index: Int?, in context: NSManagedObjectContext) {
-    context.performAndWait {
+    context.perform {
       CKMWallet.find(in: context)?.lastReceivedIndex = index ?? CKMWallet.defaultLastIndex
     }
   }
 
   func updateLastChangeAddressIndex(index: Int?, in context: NSManagedObjectContext) {
-    context.performAndWait {
+    context.perform {
       CKMWallet.find(in: context)?.lastChangeIndex = index ?? CKMWallet.defaultLastIndex
     }
   }
@@ -371,7 +363,7 @@ class CKDatabase: PersistenceDatabaseType {
     let nonMatchingGlobalPhoneNumbers = nonMatchingPhoneNumbers
       .map { GlobalPhoneNumber(countryCode: Int($0.countryCode), nationalNumber: String($0.number)) }
     let matchingMetadata = nonMatchingGlobalPhoneNumbers
-      .compactMap { contactCacheManager.managedContactComponents(forGlobalPhoneNumber: $0) }
+      .compactMap { contactCacheManager.managedContactComponents(forGlobalPhoneNumber: $0, in: context) }
       .filter { $0.counterpartyInputs.name.isNotEmpty }
     matchingMetadata.forEach { metadata in
       let numberToUpdate = nonMatchingPhoneNumbers

@@ -10,115 +10,92 @@ import Foundation
 import PromiseKit
 import CoreData
 
-extension Thenable {
-
-  public func then<U>(
-    on: DispatchQueue? = DispatchQueue.global(qos: .default),
-    in context: NSManagedObjectContext,
-    flags: DispatchWorkItemFlags? = nil, _
-    body: @escaping (Self.T) throws -> U
-    ) -> PromiseKit.Promise<U.T> where U: Thenable {
-
-    return self.then(on: on, flags: flags, { (input: Self.T) throws -> U in
-      var u: U!
-      var throwable: Error?
-      context.performAndWait {
-        do {
-          u = try body(input)
-        } catch {
-          throwable = error
-        }
+public func performIn<U>(_ context: NSManagedObjectContext, body: @escaping () throws -> U) -> Promise<U> {
+  return Promise { seal in
+    context.perform {
+      do {
+        let val = try body()
+        seal.fulfill(val)
+      } catch {
+        seal.reject(error)
       }
-      if let throwable = throwable {
-        throw throwable
-      } else {
-        return u
-      }
-    })
-  }
-
-  public func get(
-    on: DispatchQueue? = DispatchQueue.global(qos: .default),
-    in context: NSManagedObjectContext,
-    flags: DispatchWorkItemFlags? = nil,
-    _ body: @escaping (Self.T) throws -> Swift.Void
-    ) -> PromiseKit.Promise<Self.T> {
-
-    return self.get(on: on, flags: flags, { (input: Self.T) in
-      var throwable: Error?
-      context.performAndWait {
-        do {
-          try body(input)
-        } catch {
-          throwable = error
-        }
-      }
-      if let throwable = throwable {
-        throw throwable
-      }
-    })
-  }
-
-  public func done(
-    on: DispatchQueue? = DispatchQueue.global(qos: .default),
-    in context: NSManagedObjectContext,
-    flags: DispatchWorkItemFlags? = nil,
-    _ body: @escaping (Self.T) throws -> Swift.Void
-    ) -> PromiseKit.Promise<Swift.Void> {
-    return self.done(on: on, flags: flags, { (input) in
-      var throwable: Error?
-      context.performAndWait {
-        do {
-          try body(input)
-        } catch {
-          throwable = error
-        }
-      }
-      if let throwable = throwable {
-        throw throwable
-      }
-    })
-  }
-
-  public func compactMap<U>(
-    on: DispatchQueue? = DispatchQueue.global(qos: .default),
-    in context: NSManagedObjectContext,
-    flags: DispatchWorkItemFlags? = nil,
-    _ transform: @escaping (Self.T) throws -> U?
-    ) -> PromiseKit.Promise<U> {
-    return self.compactMap(on: on, flags: flags, { (input) -> U? in
-      var u: U?
-      var throwable: Error?
-      context.performAndWait {
-        do {
-          u = try transform(input)
-        } catch {
-          throwable = error
-        }
-      }
-      if let throwable = throwable {
-        throw throwable
-      } else {
-        return u
-      }
-    })
+    }
   }
 }
 
-extension CatchMixin {
+extension Thenable {
 
-  public func `catch`(
-    on: DispatchQueue? = DispatchQueue.global(qos: .default),
+  public func then<U>(
     in context: NSManagedObjectContext,
-    policy: CatchPolicy = .allErrors,
-    flags: DispatchWorkItemFlags? = nil,
-    body: @escaping (Error) -> Void
-    ) -> PMKFinalizer {
+    _ body: @escaping (Self.T) throws -> U
+    ) -> PromiseKit.Promise<U.T> where U: Thenable {
 
-    return self.catch(on: on, flags: flags, policy: policy, { error in
-      context.performAndWait {
-        body(error)
+    return Promise { seal in
+      pipe { value in
+        switch value {
+        case .fulfilled(let val):
+          context.perform {
+            do {
+              let ret = try body(val)
+              ret.pipe { (result) in
+                seal.resolve(result)
+              }
+            } catch {
+              seal.reject(error)
+            }
+          }
+        case .rejected(let err):
+          seal.reject(err)
+        }
       }
-    })
+    }
+  }
+
+  public func get(
+    in context: NSManagedObjectContext,
+    _ body: @escaping (Self.T) throws -> Swift.Void
+    ) -> PromiseKit.Promise<Self.T> {
+
+    return Promise { seal in
+      pipe { value in
+        switch value {
+        case .fulfilled(let val):
+          context.perform {
+            do {
+              try body(val)
+              seal.fulfill(val)
+            } catch {
+              seal.reject(error)
+            }
+          }
+        case .rejected(let err):
+          seal.reject(err)
+        }
+      }
+    }
+  }
+
+  public func done(
+    in context: NSManagedObjectContext,
+    _ body: @escaping (Self.T) throws -> Swift.Void
+    ) -> PromiseKit.Promise<Swift.Void> {
+
+    return Promise { seal in
+      pipe { value in
+        switch value {
+        case .fulfilled(let val):
+          context.perform {
+            do {
+              try body(val)
+              seal.fulfill(())
+            } catch {
+              seal.reject(error)
+            }
+          }
+        case .rejected(let err):
+          seal.reject(err)
+        }
+      }
+    }
   }
 }

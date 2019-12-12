@@ -404,17 +404,18 @@ class AppCoordinator: CoordinatorType {
 
   private func refreshTwitterAvatar() {
     let bgContext = persistenceManager.createBackgroundContext()
-    bgContext.performAndWait {
-      guard persistenceManager.brokers.user.userIsVerified(using: .twitter, in: bgContext) else {
-        return
-      }
-
-      twitterAccessManager.refreshTwitterAvatar(in: bgContext)
+    bgContext.perform { [weak self] in
+      guard let strongSelf = self else { return }
+      guard strongSelf.persistenceManager.brokers.user.userIsVerified(using: .twitter, in: bgContext) else { return }
+      strongSelf.twitterAccessManager.refreshTwitterAvatar(in: bgContext)
         .done(on: .main) { didChange in
           if didChange {
             CKNotificationCenter.publish(key: .didUpdateAvatar)
           }
-        }.cauterize()
+        }
+        .catch(on: .main) { error in
+          log.error(error, message: "Error refreshing Twitter avatar")
+        }
     }
   }
 

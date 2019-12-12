@@ -9,6 +9,7 @@
 import Foundation
 @testable import DropBit
 import XCTest
+import PromiseKit
 
 class VerificationStatusViewControllerTests: XCTestCase {
   var sut: VerificationStatusViewController!
@@ -120,9 +121,9 @@ class VerificationStatusViewControllerTests: XCTestCase {
     }
 
     var didSelectAddressButton = false
-    func viewControllerDidRequestAddresses() -> [ServerAddressViewModel] {
+    func viewControllerDidRequestAddresses() -> Promise<[ServerAddressViewModel]> {
       didSelectAddressButton = true
-      return []
+      return Promise.value([])
     }
 
     func viewController(_ viewController: UIViewController, didRequestOpenURL url: URL) {}

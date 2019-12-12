@@ -51,7 +51,8 @@ class ContactCacheManagerTests: XCTestCase {
     ccmPhone2.cachedContact = ccmContact2
 
     // when
-    let components = [global1, global2].compactMap { self.sut.managedContactComponents(forGlobalPhoneNumber: $0) }
+    let context = sut.viewContext
+    let components = [global1, global2].compactMap { self.sut.managedContactComponents(forGlobalPhoneNumber: $0, in: context) }
 
     // then
     XCTAssertEqual(components.count, 2)

@@ -78,15 +78,6 @@ extension AppCoordinator: WalletOverviewTopBarDelegate {
 }
 
 extension AppCoordinator {
-
-  fileprivate func deleteAllTransactionsAndRelatedObjects(in context: NSManagedObjectContext) {
-    CKMTransaction.deleteAll(in: context)
-    CKMPhoneNumber.deleteAll(in: context)
-    CKMAddressTransactionSummary.deleteAll(in: context)
-    CKMCounterpartyAddress.deleteAll(in: context)
-    CKMAddress.deleteAll(in: context)
-  }
-
   func selectedCurrency() -> SelectedCurrency {
     return currencyController.selectedCurrency
   }

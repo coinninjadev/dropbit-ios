@@ -19,23 +19,6 @@ public class CKMServerAddress: NSManagedObject {
     self.createdAt = createdAt
   }
 
-  static func find(withAddressId addressId: String, in context: NSManagedObjectContext) -> CKMServerAddress? {
-    let fetchRequest: NSFetchRequest<CKMServerAddress> = CKMServerAddress.fetchRequest()
-    let path = #keyPath(CKMServerAddress.address)
-    fetchRequest.predicate = NSPredicate(format: "\(path) == %@", addressId)
-    fetchRequest.fetchLimit = 1
-
-    var ckmServerAddress: CKMServerAddress?
-    context.performAndWait {
-      do {
-        ckmServerAddress = try context.fetch(fetchRequest).first
-      } catch {
-        ckmServerAddress = nil
-      }
-    }
-    return ckmServerAddress
-  }
-
   static func findAll(in context: NSManagedObjectContext) -> [CKMServerAddress] {
     let fetchRequest: NSFetchRequest<CKMServerAddress> = CKMServerAddress.fetchRequest()
 
@@ -70,12 +53,10 @@ public class CKMServerAddress: NSManagedObject {
     ) -> [CKMServerAddress] {
 
     var result: [CKMServerAddress] = []
-    context.performAndWait {
-      do {
-        result = try context.fetch(fetchRequest)
-      } catch {
-        result = []
-      }
+    do {
+      result = try context.fetch(fetchRequest)
+    } catch {
+      result = []
     }
     return result
   }

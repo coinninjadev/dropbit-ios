@@ -8,11 +8,12 @@
 
 import Foundation
 import UIKit
+import PromiseKit
 
 protocol VerificationStatusViewControllerDelegate: ViewControllerDismissable, AuthenticationSuspendable, ViewControllerURLDelegate {
   func verifiedPhoneNumber() -> GlobalPhoneNumber?
   func verifiedTwitterHandle() -> String?
-  func viewControllerDidRequestAddresses() -> [ServerAddressViewModel]
+  func viewControllerDidRequestAddresses() -> Promise<[ServerAddressViewModel]>
   func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController)
   func viewControllerDidSelectVerifyTwitter(_ viewController: UIViewController)
   func viewControllerDidRequestToUnverifyPhone(_ viewController: UIViewController, successfulCompletion: @escaping CKCompletion)
@@ -68,6 +69,7 @@ class VerificationStatusViewController: BaseViewController, StoryboardInitializa
       let formatter = CKPhoneNumberFormatter(format: .national)
       phoneVerificationStatusView.isHidden = false
       changeRemovePhoneButton.isHidden = false
+      changeRemovePhoneButton.setTitle("CHANGE/REMOVE", for: .normal)
       verifyPhoneNumberPrimaryButton.isHidden = true
       do {
         let identity = try formatter.string(from: phoneNumber)
@@ -94,6 +96,7 @@ class VerificationStatusViewController: BaseViewController, StoryboardInitializa
     if let handle = delegate.verifiedTwitterHandle() {
       twitterVerificationStatusView.isHidden = false
       changeRemoveTwitterButton.isHidden = false
+      changeRemoveTwitterButton.setTitle("CHANGE/REMOVE", for: .normal)
       verifyTwitterPrimaryButton.isHidden = true
       let identity = handle
       twitterVerificationStatusView.load(with: .twitter, identityString: identity)
@@ -129,15 +132,18 @@ class VerificationStatusViewController: BaseViewController, StoryboardInitializa
 
   private func setupAddressUI() {
     // Hide address elements if no addresses exist or words aren't backed up
-    let addresses = delegate.viewControllerDidRequestAddresses()
-    if addresses.isNotEmpty {
-      serverAddressView.addresses = addresses
-      addressButton.isHidden = false
-      serverAddressView.isHidden = false
-    } else {
-      addressButton.isHidden = true
-      serverAddressView.isHidden = true
+    delegate.viewControllerDidRequestAddresses()
+      .done { addresses in
+        if addresses.isNotEmpty {
+          self.serverAddressView.addresses = addresses
+          self.addressButton.isHidden = false
+          self.serverAddressView.isHidden = false
+        } else {
+          self.addressButton.isHidden = true
+          self.serverAddressView.isHidden = true
+        }
     }
+    .cauterize()
   }
 
   @IBAction func closeButtonWasTouched() {

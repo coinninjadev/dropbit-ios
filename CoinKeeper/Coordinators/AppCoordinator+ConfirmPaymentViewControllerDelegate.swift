@@ -75,10 +75,11 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     let bgContext = persistenceManager.createBackgroundContext()
     let successFailVC = SuccessFailViewController.newInstance(viewModel: PaymentSuccessFailViewModel(mode: .pending),
                                                                           delegate: self)
-    bgContext.performAndWait {
+    bgContext.perform { [weak self] in
+      guard let strongSelf = self else { return }
       ///Create and persist an orphan CKMInvitation object, which will be "acknowledged" and linked
       ///once the WAR creation network request succeeds
-      persistenceManager.brokers.invitation.persistUnacknowledgedInvitation(
+      strongSelf.persistenceManager.brokers.invitation.persistUnacknowledgedInvitation(
         withDTO: outgoingInvitationDTO,
         acknowledgmentId: inviteBody.requestId,
         in: bgContext)
@@ -151,27 +152,27 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
   private func handleAddressRequestCreationSuccess(output: CreateAddressRequestOutput,
                                                    successFailVC: SuccessFailViewController,
                                                    in context: NSManagedObjectContext) {
-    context.performAndWait {
-      self.acknowledgeSuccessfulInvite(using: output, in: context)
+    context.perform { [weak self] in
+      guard let strongSelf = self else { return }
+      strongSelf.acknowledgeSuccessfulInvite(using: output, in: context)
       do {
         try context.saveRecursively()
         successFailVC.setMode(.success)
 
         if case let .twitter(twitterContact) = output.invitationDTO.contact.asDropBitReceiver {
           DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            if let topVC = self.navigationController.topViewController() {
+            if let topVC = strongSelf.navigationController.topViewController() {
               let tweetMethodVC = TweetMethodViewController.newInstance(twitterRecipient: twitterContact,
                                                                         addressRequestResponse: output.warResponse,
-                                                                        delegate: self)
+                                                                        delegate: strongSelf)
               topVC.present(tweetMethodVC, animated: true, completion: nil)
             }
           }
         }
-
       } catch {
         log.contextSaveError(error)
         successFailVC.setMode(.failure)
-        self.handleFailureInvite(error: error)
+        strongSelf.handleFailureInvite(error: error)
       }
     }
   }
@@ -245,23 +246,26 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
 
     let response = output.warResponse
     let invitationDTO = output.invitationDTO
-    context.performAndWait {
-      let outgoingTransactionData = OutgoingTransactionData(
-        txid: CKMTransaction.invitationTxidPrefix + response.id,
-        destinationAddress: "",
-        amount: invitationDTO.btcPair.btcAmount.asFractionalUnits(of: .BTC),
-        feeAmount: invitationDTO.fee,
-        sentToSelf: false,
-        requiredFeeRate: nil,
-        sharedPayloadDTO: invitationDTO.sharedPayloadDTO,
-        sender: nil,
-        receiver: OutgoingDropBitReceiver(contact: invitationDTO.contact)
-      )
-      self.persistenceManager.brokers.invitation.acknowledgeInvitation(with: outgoingTransactionData, response: response, in: context)
+    let outgoingTransactionData = OutgoingTransactionData(
+      txid: CKMTransaction.invitationTxidPrefix + response.id,
+      destinationAddress: "",
+      amount: invitationDTO.btcPair.btcAmount.asFractionalUnits(of: .BTC),
+      feeAmount: invitationDTO.fee,
+      sentToSelf: false,
+      requiredFeeRate: nil,
+      sharedPayloadDTO: invitationDTO.sharedPayloadDTO,
+      sender: nil,
+      receiver: OutgoingDropBitReceiver(contact: invitationDTO.contact)
+    )
+    context.perform { [weak self] in
+      guard let strongSelf = self else { return }
+      strongSelf.persistenceManager.brokers.invitation.acknowledgeInvitation(with: outgoingTransactionData,
+                                                                             response: response,
+                                                                             in: context)
       if let preauth = output.preauthResponse {
         //Calling this after acknowledging the invitation will allow the new CKMLNLedgerEntry
         //to attach itself to the same CKMWalletEntry as the acknowledged invitation.
-        self.persistenceManager.brokers.lightning.persistPaymentResponse(preauth, in: context)
+        strongSelf.persistenceManager.brokers.lightning.persistPaymentResponse(preauth, in: context)
       }
     }
   }
