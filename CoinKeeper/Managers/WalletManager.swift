@@ -155,8 +155,11 @@ class WalletManager: WalletManagerType {
   }
 
   public static func createMnemonicWords() -> [String] {
-    let entropy = secureEntropy()
-    let words = CNBHDWallet.createMnemonicWords(withEntropy: entropy)
+    var words: [String] = []
+    while words.count != 12 {
+      let entropy = secureEntropy()
+      words = CNBHDWallet.createMnemonicWords(withEntropy: entropy)
+    }
     return words
   }
 
