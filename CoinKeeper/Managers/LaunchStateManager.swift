@@ -78,11 +78,13 @@ class LaunchStateManager: LaunchStateManagerType {
     }
 
     let context = persistenceManager.viewContext
-    if persistenceManager.brokers.user.userVerificationStatus(in: context) == .verified {
-      options.insert(.deviceVerified)
-    }
-    if persistenceManager.databaseManager.walletId(in: context) != nil {
-      options.insert(.databaseWalletExists)
+    context.performAndWait {
+      if persistenceManager.brokers.user.userVerificationStatus(in: context) == .verified {
+        options.insert(.deviceVerified)
+      }
+      if persistenceManager.databaseManager.walletId(in: context) != nil {
+        options.insert(.databaseWalletExists)
+      }
     }
 
     if let words = persistenceManager.keychainManager.retrieveValue(for: .walletWordsV2) as? [String], words.count == 12 {
