@@ -35,6 +35,8 @@ platform :ios do
 
   desc "Bootstrap Carthage dependencies"
   lane :bootstrap_carthage do
+    sh 'rm -rf ~/Library/Caches/carthage'
+    sh 'rm -rf ~/Library/Caches/org.carthage.CarthageKit'
     carthage(
       command: "bootstrap",
       verbose: false,
