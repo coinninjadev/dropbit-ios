@@ -75,7 +75,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     let bgContext = persistenceManager.createBackgroundContext()
     let successFailVC = SuccessFailViewController.newInstance(viewModel: PaymentSuccessFailViewModel(mode: .pending),
                                                                           delegate: self)
-    bgContext.perform { [weak self] in
+    performIn(bgContext) { [weak self] () -> Void in
       guard let strongSelf = self else { return }
       ///Create and persist an orphan CKMInvitation object, which will be "acknowledged" and linked
       ///once the WAR creation network request succeeds
@@ -87,19 +87,19 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
       ///If a sync is running concurrently at just the right time, it will sometimes delete this invitation
       ///because this invitation hasn't yet been received/acknowledged by the server.
     }
-    successFailVC.action = { [weak self] in
-      guard let strongSelf = self else { return }
-
-      bgContext.perform {
+    .then { () -> Promise<Void> in
+      successFailVC.action = { [weak self] in
+        guard let strongSelf = self else { return }
         strongSelf.createAddressRequest(body: inviteBody, outgoingInvitationDTO: outgoingInvitationDTO, in: bgContext)
-          .done(in: bgContext) { output in
+          .done { output in
             strongSelf.handleAddressRequestCreationSuccess(output: output, successFailVC: successFailVC, in: bgContext)
             // Call this separately from handleAddressRequestCreationSuccess so
             // that it doesn't interrupt Twilio error SMS fallback flow
             strongSelf.showShareTransactionIfAppropriate(dropBitReceiver: output.invitationDTO.contact.asDropBitReceiver,
                                                          walletTxType: output.invitationDTO.walletTxType, delegate: strongSelf)
-
-        }.catch(on: .main) { error in
+          }
+        .catch(on: .main) { error in
+          log.error(error, message: "Failed to handle successful invite verification.")
           strongSelf.handleAddressRequestCreationError(error,
                                                        invitationDTO: outgoingInvitationDTO,
                                                        inviteBody: inviteBody,
@@ -107,10 +107,20 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
                                                        in: bgContext)
         }
       }
+      return Promise.value(())
     }
-
-    self.navigationController.topViewController()?.present(successFailVC, animated: false) {
-      successFailVC.action?()
+    .done(on: .main) {
+      self.navigationController.topViewController()?.present(successFailVC, animated: false, completion: {
+        successFailVC.action?()
+      })
+    }
+    .catch { (error) in
+      log.error(error, message: "Failed to handle successful invite verification.")
+      self.handleAddressRequestCreationError(error,
+                                                   invitationDTO: outgoingInvitationDTO,
+                                                   inviteBody: inviteBody,
+                                                   successFailVC: successFailVC,
+                                                   in: bgContext)
     }
   }
 
@@ -152,29 +162,28 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
   private func handleAddressRequestCreationSuccess(output: CreateAddressRequestOutput,
                                                    successFailVC: SuccessFailViewController,
                                                    in context: NSManagedObjectContext) {
-    context.perform { [weak self] in
-      guard let strongSelf = self else { return }
-      strongSelf.acknowledgeSuccessfulInvite(using: output, in: context)
-      do {
-        try context.saveRecursively()
-        successFailVC.setMode(.success)
+      acknowledgeSuccessfulInvite(using: output, in: context)
+        .then(in: context) { () -> Promise<Void> in
+          try context.saveRecursively()
+          return Promise.value(())
+        }
+        .done(on: .main) { [weak self] () -> Void in
+          guard let strongSelf = self else { return }
+          successFailVC.setMode(.success)
 
-        if case let .twitter(twitterContact) = output.invitationDTO.contact.asDropBitReceiver {
-          DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            if let topVC = strongSelf.navigationController.topViewController() {
-              let tweetMethodVC = TweetMethodViewController.newInstance(twitterRecipient: twitterContact,
-                                                                        addressRequestResponse: output.warResponse,
-                                                                        delegate: strongSelf)
-              topVC.present(tweetMethodVC, animated: true, completion: nil)
-            }
+          if case let .twitter(twitterContact) = output.invitationDTO.contact.asDropBitReceiver,
+            let topVC = strongSelf.navigationController.topViewController() {
+            let tweetMethodVC = TweetMethodViewController.newInstance(twitterRecipient: twitterContact,
+                                                                      addressRequestResponse: output.warResponse,
+                                                                      delegate: strongSelf)
+            topVC.present(tweetMethodVC, animated: true, completion: nil)
           }
         }
-      } catch {
-        log.contextSaveError(error)
-        successFailVC.setMode(.failure)
-        strongSelf.handleFailureInvite(error: error)
-      }
-    }
+        .catch { error in
+          log.contextSaveError(error)
+          successFailVC.setMode(.failure)
+          self.handleFailureInvite(error: error)
+        }
   }
 
   private func createInviteNotificationSMSComposer(for inviteBody: WalletAddressRequestBody) -> MFMessageComposeViewController? {
@@ -241,7 +250,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
   }
 
   private func acknowledgeSuccessfulInvite(using output: CreateAddressRequestOutput,
-                                           in context: NSManagedObjectContext) {
+                                           in context: NSManagedObjectContext) -> Promise<Void> {
     analyticsManager.track(event: .dropbitInitiated, with: nil)
 
     let response = output.warResponse
@@ -257,11 +266,9 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
       sender: nil,
       receiver: OutgoingDropBitReceiver(contact: invitationDTO.contact)
     )
-    context.perform { [weak self] in
+    return performIn(context) { [weak self] () -> Void in
       guard let strongSelf = self else { return }
-      strongSelf.persistenceManager.brokers.invitation.acknowledgeInvitation(with: outgoingTransactionData,
-                                                                             response: response,
-                                                                             in: context)
+      strongSelf.persistenceManager.brokers.invitation.acknowledgeInvitation(with: outgoingTransactionData, response: response, in: context)
       if let preauth = output.preauthResponse {
         //Calling this after acknowledging the invitation will allow the new CKMLNLedgerEntry
         //to attach itself to the same CKMWalletEntry as the acknowledged invitation.
