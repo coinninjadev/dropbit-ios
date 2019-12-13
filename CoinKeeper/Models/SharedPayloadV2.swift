@@ -21,6 +21,22 @@ struct SharedPayloadProfileV2: Codable {
   var displayName: String?
   var dropbitMe: String?
   var avatar: String?
+
+  init(type: SharedPayloadType,
+       identity: String,
+       displayName: String?,
+       dropbitMe: String?,
+       avatar: String?) {
+    self.type = type
+    var identityStr: String = identity
+    if type == .twitter, let handle = displayName {
+      identityStr += ":\(handle)"
+    }
+    self.identity = identityStr
+    self.displayName = displayName
+    self.dropbitMe = dropbitMe
+    self.avatar = avatar
+  }
 }
 
 extension SharedPayloadProfileV2 {
