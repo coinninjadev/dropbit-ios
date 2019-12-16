@@ -9,6 +9,9 @@
 import UIKit
 
 extension AppCoordinator: ScanQRViewControllerDelegate {
+  func viewControllerHadScanFailure(_ viewController: UIViewController, error: AVScanErrorType) {
+    alertManager.showError(message: error.message, forDuration: 2.0)
+  }
 
   func viewControllerDidPressPhotoButton(_ viewController: PhotoViewController) {
     permissionManager.requestPermission(for: .photos) { status in
