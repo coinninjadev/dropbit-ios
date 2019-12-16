@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,13 +11,13 @@
         <!--ScanQR View Controller-->
         <scene sceneID="1wK-F0-x4d">
             <objects>
-                <viewController storyboardIdentifier="ScanQRViewController" id="VFe-XA-STR" customClass="ScanQRViewController" customModule="CoinKeeper" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ScanQRViewController" id="VFe-XA-STR" customClass="ScanQRViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ywo-mZ-dUg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hJA-PU-s7q">
-                                <rect key="frame" x="327" y="44" width="25" height="25"/>
+                                <rect key="frame" x="327" y="24" width="25" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="25" id="tfJ-Sy-Kkl"/>
                                     <constraint firstAttribute="width" constant="25" id="vdg-AD-fYS"/>
@@ -46,14 +44,23 @@
                                     <constraint firstAttribute="width" secondItem="jKL-0C-Mbv" secondAttribute="height" multiplier="1:1" id="6o9-bi-Z7B"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aeA-w3-U1B">
+                                <rect key="frame" x="21" y="600" width="54" height="44"/>
+                                <state key="normal" image="photoIcon"/>
+                                <connections>
+                                    <action selector="photoButtonWasTouched" destination="VFe-XA-STR" eventType="touchUpInside" id="E9c-NF-Njy"/>
+                                </connections>
+                            </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="jKL-0C-Mbv" firstAttribute="centerY" secondItem="ywo-mZ-dUg" secondAttribute="centerY" id="48A-IR-0cc"/>
                             <constraint firstItem="hJA-PU-s7q" firstAttribute="top" secondItem="Bj7-lg-qXM" secondAttribute="top" constant="24" id="A31-Ke-5zC"/>
                             <constraint firstItem="Bj7-lg-qXM" firstAttribute="trailing" secondItem="hJA-PU-s7q" secondAttribute="trailing" constant="23" id="CTv-hF-55Q"/>
+                            <constraint firstItem="Bj7-lg-qXM" firstAttribute="bottom" secondItem="aeA-w3-U1B" secondAttribute="bottom" constant="23" id="D9P-oG-4Vp"/>
                             <constraint firstItem="jKL-0C-Mbv" firstAttribute="centerX" secondItem="ywo-mZ-dUg" secondAttribute="centerX" id="OSw-om-825"/>
                             <constraint firstItem="Bj7-lg-qXM" firstAttribute="trailing" secondItem="jKL-0C-Mbv" secondAttribute="trailing" constant="60" id="V5D-bs-gNK"/>
+                            <constraint firstItem="aeA-w3-U1B" firstAttribute="leading" secondItem="Bj7-lg-qXM" secondAttribute="leading" constant="21" id="gJ6-yb-XcK"/>
                             <constraint firstItem="Bj7-lg-qXM" firstAttribute="trailing" secondItem="NTc-2A-7PG" secondAttribute="trailing" constant="21" id="kuy-M6-82B"/>
                             <constraint firstItem="Bj7-lg-qXM" firstAttribute="bottom" secondItem="NTc-2A-7PG" secondAttribute="bottom" constant="26" id="sc0-Lu-rOa"/>
                         </constraints>
@@ -62,6 +69,7 @@
                     <connections>
                         <outlet property="closeButton" destination="hJA-PU-s7q" id="SmW-oJ-x8x"/>
                         <outlet property="flashButton" destination="NTc-2A-7PG" id="hy7-st-U4V"/>
+                        <outlet property="photosButton" destination="aeA-w3-U1B" id="Jwn-9H-RQB"/>
                         <outlet property="scanBoxImageView" destination="jKL-0C-Mbv" id="BgU-Ws-gTS"/>
                     </connections>
                 </viewController>
@@ -73,6 +81,7 @@
     <resources>
         <image name="close" width="14" height="14"/>
         <image name="flashIcon" width="14" height="19"/>
+        <image name="photoIcon" width="27" height="22"/>
         <image name="scanbox" width="253" height="253"/>
     </resources>
 </document>

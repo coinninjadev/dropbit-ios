@@ -11,13 +11,13 @@ import UIKit
 typealias AlertControllerType = UIViewController & AlertControllerProtocol
 
 struct AlertControllerViewModel {
-  var title: String
+  var title: String?
   var description: String?
   var image: UIImage?
   var style: AlertManager.AlertStyle = .alert
   var actions: [AlertActionConfigurationType] = []
 
-  init(title: String, description: String? = nil,
+  init(title: String?, description: String? = nil,
        image: UIImage? = nil, style: AlertManager.AlertStyle = .alert,
        actions: [AlertActionConfigurationType] = []) {
     self.title = title

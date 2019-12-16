@@ -8,17 +8,40 @@
 
 import Foundation
 
+enum SharedPayloadType: String, Codable {
+  case phone
+  case twitter
+  case coinninja
+  case unknown
+}
+
 struct SharedPayloadProfileV2: Codable {
-  let type: UserIdentityType
+  let type: SharedPayloadType
   let identity: String
   var displayName: String?
   var dropbitMe: String?
   var avatar: String?
+
+  init(type: SharedPayloadType,
+       identity: String,
+       displayName: String?,
+       dropbitMe: String?,
+       avatar: String?) {
+    self.type = type
+    var identityStr: String = identity
+    if type == .twitter, let handle = displayName {
+      identityStr += ":\(handle)"
+    }
+    self.identity = identityStr
+    self.displayName = displayName
+    self.dropbitMe = dropbitMe
+    self.avatar = avatar
+  }
 }
 
 extension SharedPayloadProfileV2 {
   init(globalPhoneNumber: GlobalPhoneNumber) {
-    self.type = UserIdentityType.phone
+    self.type = SharedPayloadType.phone
     self.identity = globalPhoneNumber.asE164()
     self.displayName = nil
     self.dropbitMe = nil
@@ -40,7 +63,7 @@ extension SharedPayloadProfileV2 {
   }
 
   init(twitterContact: TwitterContactType) {
-    self.type = UserIdentityType.twitter
+    self.type = SharedPayloadType.twitter
     self.identity = twitterContact.identityHash + ":" + twitterContact.twitterUser.screenName
     self.displayName = twitterContact.displayName
     self.dropbitMe = nil
@@ -82,7 +105,8 @@ struct SharedPayloadV2: SharedPayloadCodable {
     self.meta = SharedPayloadMetadata(version: 2)
     self.txid = txid
     self.info = SharedPayloadInfoV1(memo: memo ?? "", amountInfo: amountInfo)
-    self.profile = SharedPayloadProfileV2(type: senderIdentity.identityType,
+    let sharedPayloadType = SharedPayloadType(rawValue: senderIdentity.type) ?? .unknown
+    self.profile = SharedPayloadProfileV2(type: sharedPayloadType,
                                           identity: senderIdentity.identity,
                                           displayName: senderIdentity.handle,
                                           dropbitMe: nil,
@@ -154,11 +178,19 @@ extension SharedPayloadV2: PersistablePayload {
     case .phone:
       guard let phoneNumber = profile.globalPhoneNumber() else { return nil }
       return phoneNumberPayloadCounterparties(forGlobalNumber: phoneNumber, with: deps)
-
     case .twitter:
       guard let twitterContact = profile.twitterContact() else { return nil }
       let twitter = CKMTwitterContact.findOrCreate(with: twitterContact, in: deps.context)
-      return PayloadCounterparties(phoneNumber: nil, twitterContact: twitter)
+      return PayloadCounterparties(phoneNumber: nil, twitterContact: twitter, counterparty: nil)
+    case .coinninja:
+      var data: Data?
+      if let avatar = profile.avatar, let scheme = DataURIScheme(string: avatar) { data = Data(base64Encoded: scheme.payload) }
+      let counterparty = CKMCounterparty(name: "Referral Bonus", insertInto: deps.context, profileImageData: data)
+      counterparty.kind = CKMCounterparty.Kind.referral.rawValue
+      return PayloadCounterparties(phoneNumber: nil, twitterContact: nil, counterparty: counterparty)
+    default:
+      let counterparty = CKMCounterparty(name: "Unknown", insertInto: deps.context)
+      return PayloadCounterparties(phoneNumber: nil, twitterContact: nil, counterparty: counterparty)
     }
   }
 

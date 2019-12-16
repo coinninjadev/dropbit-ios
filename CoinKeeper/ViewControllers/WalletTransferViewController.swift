@@ -32,17 +32,9 @@ enum TransferAmount {
 
 protocol WalletTransferViewControllerDelegate: ViewControllerDismissable
 & PaymentBuildingDelegate & PaymentSendingDelegate & URLOpener &
-BalanceDataSource & AnalyticsManagerAccessType {
-
-  func viewControllerNeedsTransactionData(_ viewController: UIViewController,
-                                          btcAmount: NSDecimalNumber,
-                                          exchangeRates: ExchangeRates) -> Promise<PaymentData>
-
-  func viewControllerDidConfirmLoad(_ viewController: UIViewController,
-                                    paymentData: PaymentData)
+BalanceDataSource & AnalyticsManagerAccessType & LightningLoadable {
 
   func viewControllerNeedsFeeEstimates(_ viewController: UIViewController, btcAmount: NSDecimalNumber) -> Promise<LNTransactionResponse>
-
   func viewControllerDidConfirmWithdraw(_ viewController: UIViewController, btcAmount: NSDecimalNumber)
   func viewControllerNetworkError(_ error: Error)
   func handleLightningLoadError(_ error: Error)
@@ -80,7 +72,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
 
   private(set) weak var delegate: WalletTransferViewControllerDelegate!
   var currencyValueManager: CurrencyValueDataSourceType? {
-    return delegate as? CurrencyValueDataSourceType
+    return delegate
   }
 
   var balanceDataSource: BalanceDataSource? {
@@ -97,7 +89,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
       delegate.viewControllerShouldTrackEvent(event: .onChainToLightningPressed)
     }
 
-    confirmView.delegate = self
+    confirmView.confirmButton.configure(with: .original, delegate: self)
     feesView.delegate = self
     editAmountView.delegate = self
     refreshBothAmounts()
@@ -106,6 +98,14 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     registerForRateUpdates()
     updateRatesAndView()
     buildTransactionIfNecessary()
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    if viewModel.btcAmount == .zero {
+      editAmountView.primaryAmountTextField.becomeFirstResponder()
+    }
   }
 
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
@@ -135,7 +135,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     do {
       try LightningWalletAmountValidator(balancesNetPending: walletBalances, walletType: .onChain)
         .validate(value: viewModel.currencyConverter)
-      delegate.viewControllerNeedsTransactionData(self, btcAmount: viewModel.btcAmount, exchangeRates: viewModel.exchangeRates)
+      delegate.lightningPaymentData(forBTCAmount: viewModel.btcAmount)
         .done { paymentData in
           self.viewModel.direction = .toLightning(paymentData)
           self.setupTransactionUI()
@@ -240,8 +240,8 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
 
 }
 
-extension WalletTransferViewController: ConfirmViewDelegate {
-  func viewDidConfirm() {
+extension WalletTransferViewController: LongPressConfirmButtonDelegate {
+  func confirmationButtonDidConfirm(_ button: LongPressConfirmButton) {
     do {
       try CurrencyAmountValidator(balancesNetPending: delegate.balancesNetPending(),
                                   balanceToCheck: viewModel.walletTransactionType,

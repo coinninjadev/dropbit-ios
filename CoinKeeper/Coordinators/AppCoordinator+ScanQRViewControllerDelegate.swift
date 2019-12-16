@@ -10,6 +10,22 @@ import UIKit
 
 extension AppCoordinator: ScanQRViewControllerDelegate {
 
+  func viewControllerDidPressPhotoButton(_ viewController: PhotoViewController) {
+    permissionManager.requestPermission(for: .photos) { status in
+      guard UIImagePickerController.isSourceTypeAvailable(.photoLibrary) else { return }
+
+      switch status {
+      case .authorized:
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = viewController
+        imagePickerController.sourceType = .photoLibrary
+        viewController.present(imagePickerController, animated: true, completion: nil)
+      default:
+        break
+      }
+    }
+  }
+
   private var exchangeRates: ExchangeRates {
     return self.currencyController.exchangeRates
   }

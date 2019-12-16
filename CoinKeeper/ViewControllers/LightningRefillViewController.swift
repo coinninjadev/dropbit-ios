@@ -9,11 +9,11 @@
 import Foundation
 import UIKit
 
-protocol LightningReloadDelegate: class {
+protocol EmptyStateLightningLoadDelegate: class {
   func didRequestLightningLoad(withAmount amount: TransferAmount)
 }
 
-protocol LightningRefillViewControllerDelegate: LightningReloadDelegate {
+protocol LightningRefillViewControllerDelegate: EmptyStateLightningLoadDelegate {
   func dontAskMeAgainButtonWasTouched()
 }
 

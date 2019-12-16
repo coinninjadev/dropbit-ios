@@ -40,10 +40,10 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
 
     alertManager.showActivityHUD(withStatus: nil)
 
-    networkManager.fetchMerchants()
-      .done { merchants in
+    networkManager.fetchConfig()
+      .done { response in
         let controller = GetBitcoinViewController.newInstance(delegate: self,
-                                                              viewModels: merchants.config.buy,
+                                                              viewModels: response.config.buy,
                                                               bitcoinAddress: btcAddress)
         self.navigationController.pushViewController(controller, animated: true)
         self.alertManager.hideActivityHUD(withDelay: nil, completion: nil)

@@ -163,6 +163,8 @@ protocol PersistenceUserDefaultsType: AnyObject {
   /// use the extension functions with CKUserDefaults.Key instead.
   var standardDefaults: UserDefaults { get }
 
+  var configDefaults: UserDefaults { get }
+
   var useRegtest: Bool { get set }
 
   func deleteAll()

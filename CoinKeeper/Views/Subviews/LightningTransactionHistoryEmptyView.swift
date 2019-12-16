@@ -19,7 +19,7 @@ class LightningTransactionHistoryEmptyView: UIView {
   @IBOutlet var maxAmountButton: LightningActionButton!
   @IBOutlet var customAmountButton: UIButton!
 
-  weak var delegate: LightningReloadDelegate?
+  weak var delegate: EmptyStateLightningLoadDelegate?
 
   override func awakeFromNib() {
     super.awakeFromNib()

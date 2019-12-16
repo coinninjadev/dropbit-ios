@@ -12,6 +12,9 @@ import PromiseKit
 @testable import DropBit
 
 class MockUserBroker: CKPersistenceBroker, UserBrokerType {
+
+  var referredBy: String?
+
   func persistUserId(_ userId: String, in context: NSManagedObjectContext) { }
   func persistUserPublicURLInfo(from response: UserResponse, in context: NSManagedObjectContext) { }
 

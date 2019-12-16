@@ -111,7 +111,7 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     }
     let cancelAction = AlertActionConfiguration(title: "Cancel", style: .default, action: nil)
     let configs = [cancelAction, deleteAction]
-    let alert = alertManager.alert(withTitle: "", description: description,
+    let alert = alertManager.alert(withTitle: nil, description: description,
                                    image: nil, style: .alert, actionConfigs: configs)
     settingsViewController?.present(alert, animated: true)
   }

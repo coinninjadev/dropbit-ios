@@ -75,8 +75,10 @@ extension CKMLNLedgerEntry {
     set { walletEntry?.memo = newValue }
   }
 
+  static let preAuthPrefix = "PreAuth"
+
   var cleanedRequest: String? {
-    guard request != "PreAuth" else { return nil }
+    guard request != CKMLNLedgerEntry.preAuthPrefix else { return nil }
     return request
   }
 

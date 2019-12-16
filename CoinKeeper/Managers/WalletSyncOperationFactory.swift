@@ -24,6 +24,7 @@ protocol WalletSyncDelegate: AnyObject {
 class WalletSyncOperationFactory {
 
   weak var delegate: SerialQueueManagerDelegate?
+  var walletNeedsUpdate = false
 
   init(delegate: SerialQueueManagerDelegate) {
     self.delegate = delegate
@@ -63,7 +64,7 @@ class WalletSyncOperationFactory {
           log.logMessage(walletDebugDesc, privateArgs: [], level: .info, location: nil)
           log.info("Sync routine: Starting.")
           strongSelf.performSync(with: dependencies, fullSync: isFullSync, in: bgContext)
-            .catch(in: bgContext) { error in
+            .catch { error in
               log.error(error, message: "Sync routine: caught error.")
               caughtError = error
               strongSelf.handleSyncRoutineError(error, in: bgContext)
@@ -72,7 +73,7 @@ class WalletSyncOperationFactory {
               log.info("Sync routine: Finishing...")
               var contextHasInsertionsOrUpdates = false
               var receivedFunds = false
-              bgContext.performAndWait {
+              bgContext.perform {
                 contextHasInsertionsOrUpdates = (bgContext.insertedObjects.isNotEmpty || bgContext.persistentUpdatedObjects.isNotEmpty)
                 let receivedOnChain = bgContext.insertedObjects.compactMap { $0 as? CKMTransaction }.isNotEmpty
                 let receivedLightning = bgContext.insertedObjects.compactMap { $0 as? CKMLNLedgerEntry }.isNotEmpty
@@ -84,25 +85,27 @@ class WalletSyncOperationFactory {
                 } catch {
                   log.contextSaveError(error)
                 }
+
+                DispatchQueue.main.async {
+                  CKNotificationCenter.publish(key: .didFinishSync, object: nil, userInfo: nil)
+                  CKNotificationCenter.publish(key: .didUpdateBalance, object: nil, userInfo: nil)
+
+                  dependencies.persistenceManager.brokers.activity.lastSuccessfulSync = Date()
+                  dependencies.ratingAndReviewManager.promptForReviewIfNecessary(didReceiveFunds: receivedFunds)
+                  completion?(caughtError) //Only call completion handler once
+
+                  strongSelf.delegate?.syncManagerDidFinishSync()
+
+                  if let fetchResultHandler = fetchResult {
+                    let result: UIBackgroundFetchResult = contextHasInsertionsOrUpdates ? .newData : .noData
+                    fetchResultHandler(result)
+                  }
+
+                  log.info("Sync routine: Finished.")
+                  strongOperation.finish()
+                  UIApplication.shared.endBackgroundTask(backgroundTaskId)
+                }
               }
-
-              CKNotificationCenter.publish(key: .didFinishSync, object: nil, userInfo: nil)
-              CKNotificationCenter.publish(key: .didUpdateBalance, object: nil, userInfo: nil)
-
-              dependencies.persistenceManager.brokers.activity.lastSuccessfulSync = Date()
-              dependencies.ratingAndReviewManager.promptForReviewIfNecessary(didReceiveFunds: receivedFunds)
-              completion?(caughtError) //Only call completion handler once
-
-              strongSelf.delegate?.syncManagerDidFinishSync()
-
-              if let fetchResultHandler = fetchResult {
-                let result: UIBackgroundFetchResult = contextHasInsertionsOrUpdates ? .newData : .noData
-                fetchResultHandler(result)
-              }
-
-              log.info("Sync routine: Finished.")
-              strongOperation.finish()
-              UIApplication.shared.endBackgroundTask(backgroundTaskId)
           }
         }
 
@@ -121,6 +124,7 @@ class WalletSyncOperationFactory {
                            in context: NSManagedObjectContext) -> Promise<Void> {
     return dependencies.databaseMigrationWorker.migrateIfPossible()
       .then { _ in dependencies.keychainMigrationWorker.migrateIfPossible() }
+      .then { self.updateConfig(with: dependencies) }
       .then(in: context) { self.checkAndVerifyUser(with: dependencies, in: context) }
       .then(in: context) { self.checkAndVerifyWallet(with: dependencies, in: context) }
       .then(in: context) { dependencies.txDataWorker.performFetchAndStoreAllOnChainTransactions(in: context, fullSync: fullSync) }
@@ -136,6 +140,7 @@ class WalletSyncOperationFactory {
       .then(in: context) { _ in self.fetchAndFulfillReceivedAddressRequests(with: dependencies, in: context) }
       .then(in: context) { _ in dependencies.delegate.showAlertsForSyncedChanges(in: context) }
       .then(in: context) { _ in dependencies.twitterAccessManager.inflateTwitterUsersIfNeeded(in: context) }
+      .then(in: context) { _ in self.updateWalletIfNeeded(dependencies: dependencies, context: context) }
   }
 
   private func updateLightningAccountStatusAfterSuccessfulResponse(_ dependencies: SyncDependencies, account: LNAccountResponse) {
@@ -185,6 +190,18 @@ class WalletSyncOperationFactory {
   func updateLightningAccount(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<LNAccountResponse> {
     return dependencies.networkManager.getOrCreateLightningAccount()
       .get(in: context) { dependencies.persistenceManager.brokers.lightning.persistAccountResponse($0, in: context) }
+  }
+
+  private func updateConfig(with dependencies: SyncDependencies) -> Promise<Void> {
+    return dependencies.networkManager.fetchConfig()
+      .get { response in
+        let hasUpdates = dependencies.configManager.update(with: response)
+        if hasUpdates {
+          DispatchQueue.main.async {
+            CKNotificationCenter.publish(key: .didUpdateFeatureConfig)
+          }
+        }
+    }.asVoid()
   }
 
   private func checkAndVerifyUser(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {
@@ -260,6 +277,34 @@ class WalletSyncOperationFactory {
 
       default: break
       }
+    }
+  }
+
+  private func updateWalletIfNeeded(dependencies: SyncDependencies, context: NSManagedObjectContext) -> Promise<Void> {
+    guard let wallet = CKMWallet.find(in: context) else { return Promise.value(()) } // wallet should always exist here, so continue promise chain
+    let parser = WalletFlagsParser(flags: wallet.flags)
+    let localIsBackedUp = parser.isWalletBackedUp
+    let localHasBTCBalance = parser.hasBTCBalance
+    let localHasLightningBalance = parser.hasLightningBalance
+
+    let isBackedUp = dependencies.persistenceManager.brokers.wallet.walletWordsBackedUp()
+    let spendableBalance = dependencies.walletManager.spendableBalance(in: context)
+    let hasBTCBalance = spendableBalance.onChain > 0
+    let hasLightningBalance = spendableBalance.lightning > 0
+
+    var hasChanges = false
+    hasChanges = hasChanges || (localIsBackedUp != isBackedUp)
+    hasChanges = hasChanges || (localHasBTCBalance != hasBTCBalance)
+    hasChanges = hasChanges || (localHasLightningBalance != hasLightningBalance)
+
+    if hasChanges || self.walletNeedsUpdate {
+      self.walletNeedsUpdate = false
+      let maybeReferrer = dependencies.persistenceManager.brokers.user.referredBy
+      parser.setBackedUp(isBackedUp).setHasBTCBalance(hasBTCBalance).setHasLightningBalance(hasLightningBalance)
+      return dependencies.networkManager.updateWallet(walletFlags: parser.flags, referrer: maybeReferrer)
+        .done(in: context) { try? dependencies.persistenceManager.brokers.wallet.persistWalletResponse(from: $0, in: context) }
+    } else {
+      return Promise.value(())
     }
   }
 

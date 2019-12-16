@@ -190,37 +190,35 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   private func acknowledgeInvitation(_ invitation: CKMInvitation,
                                      response: WalletAddressRequestResponse,
                                      in context: NSManagedObjectContext) {
-    context.performAndWait {
-      // In this edge case where the initial invitation wasn't immediately acknowledged due to the
-      // server response being interrupted, we pass nil instead of the original shared payload.
+    // In this edge case where the initial invitation wasn't immediately acknowledged due to the
+    // server response being interrupted, we pass nil instead of the original shared payload.
 
-      var contact: ContactType?
+    var contact: ContactType?
 
-      if let managedPhoneNumber = invitation.counterpartyPhoneNumber {
-        let global = managedPhoneNumber.asGlobalPhoneNumber
-        var tempContact = GenericContact(phoneNumber: global, formatted: global.asE164())
-        tempContact.displayName = invitation.counterpartyName ?? ""
-        contact = tempContact
-      } else if let managedContact = invitation.counterpartyTwitterContact {
-        let twitterUser = managedContact.asTwitterUser()
-        contact = TwitterContact(twitterUser: twitterUser)
-      }
-
-      let maybeReceiver = contact.flatMap { OutgoingDropBitReceiver(contact: $0) }
-
-      let outgoingTransactionData = OutgoingTransactionData(
-        txid: CKMTransaction.invitationTxidPrefix + response.id,
-        destinationAddress: "",
-        amount: invitation.btcAmount,
-        feeAmount: invitation.fees,
-        sentToSelf: false,
-        requiredFeeRate: nil,
-        sharedPayloadDTO: nil,
-        sender: nil,
-        receiver: maybeReceiver)
-
-      self.persistenceManager.brokers.invitation.acknowledgeInvitation(with: outgoingTransactionData, response: response, in: context)
+    if let managedPhoneNumber = invitation.counterpartyPhoneNumber {
+      let global = managedPhoneNumber.asGlobalPhoneNumber
+      var tempContact = GenericContact(phoneNumber: global, formatted: global.asE164())
+      tempContact.displayName = invitation.counterpartyName ?? ""
+      contact = tempContact
+    } else if let managedContact = invitation.counterpartyTwitterContact {
+      let twitterUser = managedContact.asTwitterUser()
+      contact = TwitterContact(twitterUser: twitterUser)
     }
+
+    let maybeReceiver = contact.flatMap { OutgoingDropBitReceiver(contact: $0) }
+
+    let outgoingTransactionData = OutgoingTransactionData(
+      txid: CKMTransaction.invitationTxidPrefix + response.id,
+      destinationAddress: "",
+      amount: invitation.btcAmount,
+      feeAmount: invitation.fees,
+      sentToSelf: false,
+      requiredFeeRate: nil,
+      sharedPayloadDTO: nil,
+      sender: nil,
+      receiver: maybeReceiver)
+
+    self.persistenceManager.brokers.invitation.acknowledgeInvitation(with: outgoingTransactionData, response: response, in: context)
   }
 
   /// Check that address requests on server are up to date with local objects and attempt to update server if necessary.

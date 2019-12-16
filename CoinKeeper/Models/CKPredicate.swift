@@ -53,6 +53,11 @@ struct CKPredicate {
       return NSPredicate(format: "\(idPath) BEGINSWITH %@", CKMInvitation.unacknowledgementPrefix)
     }
 
+    static func invitationHasPreauthPrefix() -> NSPredicate {
+      let idPath = #keyPath(CKMInvitation.preauthId)
+      return NSPredicate(format: "%K BEGINSWITH[cd] %@", idPath, CKMLNLedgerEntry.preAuthPrefix)
+    }
+
     static func withStatuses(_ statuses: [InvitationStatus]) -> NSPredicate {
       let statusValues = statuses.map { $0.rawValue }
       let path = #keyPath(CKMInvitation.status)
@@ -94,13 +99,23 @@ struct CKPredicate {
       return NSPredicate(format: "\(statusPath) == \(canceled) OR \(statusPath) == %d", expired)
     }
 
-    static func withTransaction() -> NSPredicate {
+    static func withOnChainTransaction() -> NSPredicate {
       let path = #keyPath(CKMTemporarySentTransaction.transaction)
+      return NSPredicate(format: "\(path) != nil")
+    }
+
+    static func withWalletEntry() -> NSPredicate {
+      let path = #keyPath(CKMTemporarySentTransaction.walletEntry)
       return NSPredicate(format: "\(path) != nil")
     }
 
     static func withInactiveInvitation() -> NSPredicate {
       return NSCompoundPredicate(type: .and, subpredicates: [invitationExists(), inactiveInvitationStatus()])
+    }
+
+    static func withoutInactiveInvitation() -> NSPredicate {
+      let inactiveInvitationPredicate = CKPredicate.TemporarySentTransaction.withInactiveInvitation()
+      return NSCompoundPredicate(notPredicateWithSubpredicate: inactiveInvitationPredicate)
     }
 
     static func broadcastFailed(is value: Bool) -> NSPredicate {
@@ -363,6 +378,15 @@ struct CKPredicate {
       let ledgerEntryPredicate = NSPredicate(format: "\(ledgerEntryPath) == nil")
       let tempTxPredicate = NSPredicate(format: "\(tempTxPath) == nil")
       return NSCompoundPredicate(type: .and, subpredicates: [invitationPredicate, ledgerEntryPredicate, tempTxPredicate])
+    }
+
+    static func allPreAuthsWithoutInvite() -> NSPredicate {
+      let invitationPath = #keyPath(CKMWalletEntry.invitation)
+      let ledgerEntryPath = #keyPath(CKMWalletEntry.ledgerEntry.id)
+
+      let invitationPredicate = NSPredicate(format: "%K == nil", invitationPath)
+      let ledgerEntryPredicate = NSPredicate(format: "%K BEGINSWITH[cd] %@", ledgerEntryPath, CKMLNLedgerEntry.preAuthPrefix)
+      return NSCompoundPredicate(type: .and, subpredicates: [invitationPredicate, ledgerEntryPredicate])
     }
 
     static func tempId(_ id: String) -> NSPredicate {

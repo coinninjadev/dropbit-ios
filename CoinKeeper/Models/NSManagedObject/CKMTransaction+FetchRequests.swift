@@ -132,12 +132,10 @@ extension CKMTransaction {
     with fetchRequest: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest(),
     in context: NSManagedObjectContext) -> [CKMTransaction] {
     var result: [CKMTransaction] = []
-    context.performAndWait {
-      do {
-        result = try context.fetch(fetchRequest)
-      } catch {
-        result = []
-      }
+    do {
+      result = try context.fetch(fetchRequest)
+    } catch {
+      result = []
     }
     return result
   }
@@ -150,12 +148,10 @@ extension CKMTransaction {
     fetchRequest.fetchLimit = 1
 
     var ckmTransaction: CKMTransaction?
-    context.performAndWait {
-      do {
-        ckmTransaction = try context.fetch(fetchRequest).first
-      } catch {
-        ckmTransaction = nil
-      }
+    do {
+      ckmTransaction = try context.fetch(fetchRequest).first
+    } catch {
+      ckmTransaction = nil
     }
     return ckmTransaction
   }
@@ -167,12 +163,10 @@ extension CKMTransaction {
     fullSync: Bool
     ) -> CKMTransaction {
     var transaction: CKMTransaction!
-    context.performAndWait {
-      if let foundTx = CKMTransaction.find(byTxid: txResponse.txid, in: context) {
-        transaction = foundTx
-      } else {
-        transaction = CKMTransaction(insertInto: context)
-      }
+    if let foundTx = CKMTransaction.find(byTxid: txResponse.txid, in: context) {
+      transaction = foundTx
+    } else {
+      transaction = CKMTransaction(insertInto: context)
     }
     transaction.configure(with: txResponse, in: context, relativeToBlockHeight: blockHeight, fullSync: fullSync)
     return transaction

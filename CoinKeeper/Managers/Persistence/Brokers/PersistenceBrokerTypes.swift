@@ -168,6 +168,8 @@ protocol TransactionBrokerType: AnyObject {
 
 protocol UserBrokerType: AnyObject {
 
+  var referredBy: String? { get set }
+
   /// Will only persist a non-empty string to protect when that is returned by the server for some routes
   func persistUserId(_ userId: String, in context: NSManagedObjectContext)
 

@@ -9,7 +9,7 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
-fastlane_version '2.131.0'
+fastlane_version '2.137.0'
 
 default_platform(:ios)
 
@@ -35,6 +35,8 @@ platform :ios do
 
   desc "Bootstrap Carthage dependencies"
   lane :bootstrap_carthage do
+    sh 'rm -rf ~/Library/Caches/carthage'
+    sh 'rm -rf ~/Library/Caches/org.carthage.CarthageKit'
     carthage(
       command: "bootstrap",
       verbose: false,
@@ -73,6 +75,7 @@ platform :ios do
       "deviceEndpointProdApplication=#{ENV['DEVICE_ENDPOINT_PROD_APPLICATION']}",
       "deviceEndpointTestApplication=#{ENV['DEVICE_ENDPOINT_TEST_APPLICATION']}",
       "fakeWords=#{ENV['GENERATED_FAKE_WORDS']}",
+      "firebaseApiKey=#{ENV['FIREBASE_API_KEY']}",
       "recoverOnlyWords=#{ENV['GENERATED_RECOVER_ONLY_WORDS']}",
       "recoverOnlyFirstMainnetAddress=#{ENV['GENERATED_RECOVER_FIRST_MAINNET_ADDRESS']}",
       "recoverOnlyLegacyWords=#{ENV['GENERATED_RECOVER_ONLY_LEGACY_WORDS']}",

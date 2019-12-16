@@ -173,10 +173,11 @@ extension AppCoordinator: PaymentSendingDelegate {
                                        invitation: CKMInvitation?,
                                        inputs: LightningPaymentInputs?) {
     let context = invitation?.managedObjectContext ?? self.persistenceManager.createBackgroundContext()
-    context.performAndWait {
-      self.persistenceManager.brokers.lightning.persistPaymentResponse(response, receiver: receiver,
-                                                                       invitation: invitation,
-                                                                       inputs: inputs, in: context)
+    context.perform { [weak self] in
+      guard let strongSelf = self else { return }
+      strongSelf.persistenceManager.brokers.lightning.persistPaymentResponse(response, receiver: receiver,
+                                                                             invitation: invitation,
+                                                                             inputs: inputs, in: context)
       try? context.saveRecursively()
     }
   }
@@ -216,44 +217,11 @@ extension AppCoordinator: PaymentSendingDelegate {
           return Promise.value(txid)
         }
       }
-      .get { txid in
-        let context = self.persistenceManager.createBackgroundContext()
-
-        context.performAndWait {
-          let vouts = transactionData.unspentTransactionOutputs.map { CKMVout.find(from: $0, in: context) }.compactMap { $0 }
-          let voutDebugDesc = vouts.map { $0.debugDescription }.joined(separator: "\n")
-          log.debug("Broadcast succeeded, vouts: \n\(voutDebugDesc)")
-          let persistedTransaction = self.persistenceManager.brokers.transaction.persistTemporaryTransaction(
-            from: transactionData,
-            with: outgoingTransactionData,
-            txid: txid,
-            invitation: nil,
-            in: context
-          )
-          persistedTransaction.isLightningTransfer = isInternalLightningLoad
-
-          if isInternalLightningLoad { //create temporary lightning transaction
-            self.createTemporaryLightning(from: persistedTransaction, in: context)
-          }
-
-          if let wallet = self.walletManager?.wallet {
-            let transactionBuilder = CNBTransactionBuilder()
-            let metadata = transactionBuilder.generateTxMetadata(with: transactionData, wallet: wallet)
-            do {
-              // If sending max such that there is no change address, an error will be thrown and caught below
-              let tempVout = try CKMVout.findOrCreateTemporaryVout(in: context, with: transactionData, metadata: metadata)
-              tempVout.transaction = persistedTransaction
-            } catch {
-              log.error(error, message: "error creating temp vout")
-            }
-          }
-
-          do {
-            try context.saveRecursively()
-          } catch {
-            log.contextSaveError(error)
-          }
-        }
+      .then { txid in
+        return self.processPostBroadcast(txid: txid,
+                                         transactionData: transactionData,
+                                         outgoingTransactionData: outgoingTransactionData,
+                                         isInternalLightningLoad: isInternalLightningLoad)
       }
       .done(on: .main) { _ in
         success()
@@ -271,21 +239,21 @@ extension AppCoordinator: PaymentSendingDelegate {
         }
         self.trackIfUserHasABalance()
 
+        CKNotificationCenter.publish(key: .didUpdateBalance, object: nil, userInfo: nil)
         self.didBroadcastTransaction()
       }.catch { error in
         let nsError = error as NSError
         let broadcastError = TransactionBroadcastError(errorCode: nsError.code)
-        let context = self.persistenceManager.createBackgroundContext()
-        context.performAndWait {
-          let vouts = transactionData.unspentTransactionOutputs.map { CKMVout.find(from: $0, in: context) }.compactMap { $0 }
-          let voutDebugDesc = vouts.map { $0.debugDescription }.joined(separator: "\n")
-          let encodedTx = nsError.userInfo["encoded_tx"] as? String ?? ""
-          let txid = nsError.userInfo["txid"] as? String ?? ""
-          let analyticsError = "error code: \(broadcastError.rawValue) :: txid: \(txid) :: encoded_tx: \(encodedTx) :: vouts: \(voutDebugDesc)"
-          log.error("broadcast failed, \(analyticsError)")
-          let eventValue = AnalyticsEventValue(key: .broadcastFailed, value: analyticsError)
-          self.analyticsManager.track(event: .paymentSentFailed, with: eventValue)
-        }
+        let context = self.persistenceManager.viewContext
+        let vouts = transactionData.unspentTransactionOutputs.map { CKMVout.find(from: $0, in: context) }
+          .compactMap { $0 }
+        let voutDebugDesc = vouts.map { $0.debugDescription }.joined(separator: "\n")
+        let encodedTx = nsError.userInfo["encoded_tx"] as? String ?? ""
+        let txid = nsError.userInfo["txid"] as? String ?? ""
+        let analyticsError = "error code: \(broadcastError.rawValue) :: txid: \(txid) :: encoded_tx: \(encodedTx) :: vouts: \(voutDebugDesc)"
+        log.error("broadcast failed, \(analyticsError)")
+        let eventValue = AnalyticsEventValue(key: .broadcastFailed, value: analyticsError)
+        self.analyticsManager.track(event: .paymentSentFailed, with: eventValue)
 
         failure(error)
     }
@@ -297,5 +265,51 @@ extension AppCoordinator: PaymentSendingDelegate {
 
     let walletEntry = CKMWalletEntry(wallet: wallet, sortDate: Date(), insertInto: context)
     walletEntry.temporarySentTransaction = tempLightningTx
+  }
+
+  private func processPostBroadcast(txid: String,
+                                    transactionData: CNBTransactionData,
+                                    outgoingTransactionData: OutgoingTransactionData,
+                                    isInternalLightningLoad: Bool) -> Promise<String> {
+    let context = self.persistenceManager.createBackgroundContext()
+    return Promise { seal in
+      context.perform { [weak self] in
+        guard let strongSelf = self else { return }
+        let vouts = transactionData.unspentTransactionOutputs.map { CKMVout.find(from: $0, in: context) }.compactMap { $0 }
+        let voutDebugDesc = vouts.map { $0.debugDescription }.joined(separator: "\n")
+        log.debug("Broadcast succeeded, vouts: \n\(voutDebugDesc)")
+        let persistedTransaction = strongSelf.persistenceManager.brokers.transaction.persistTemporaryTransaction(
+          from: transactionData,
+          with: outgoingTransactionData,
+          txid: txid,
+          invitation: nil,
+          in: context
+        )
+        persistedTransaction.isLightningTransfer = isInternalLightningLoad
+
+        if isInternalLightningLoad { //create temporary lightning transaction
+          strongSelf.createTemporaryLightning(from: persistedTransaction, in: context)
+        }
+
+        if let wallet = strongSelf.walletManager?.wallet {
+          let transactionBuilder = CNBTransactionBuilder()
+          let metadata = transactionBuilder.generateTxMetadata(with: transactionData, wallet: wallet)
+          do {
+            // If sending max such that there is no change address, an error will be thrown and caught below
+            let tempVout = try CKMVout.findOrCreateTemporaryVout(in: context, with: transactionData, metadata: metadata)
+            tempVout.transaction = persistedTransaction
+          } catch {
+            log.error(error, message: "error creating temp vout")
+          }
+        }
+
+        do {
+          try context.saveRecursively()
+        } catch {
+          log.contextSaveError(error)
+        }
+        seal.fulfill(txid)
+      }
+    }
   }
 }

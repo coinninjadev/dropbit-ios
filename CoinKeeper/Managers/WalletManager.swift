@@ -31,7 +31,8 @@ protocol WalletManagerType: AnyObject {
   /// number of confirmations affects isSpendable, returns a min of 0
   func spendableBalance(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int)
 
-  func activeTemporarySentTxTotal(in context: NSManagedObjectContext) -> Int
+  func activeTemporarySentTxTotal(forType walletTxType: WalletTransactionType,
+                                  in context: NSManagedObjectContext) -> Int
 
   func transactionData(forPayment payment: NSDecimalNumber,
                        to address: String,
@@ -154,8 +155,11 @@ class WalletManager: WalletManagerType {
   }
 
   public static func createMnemonicWords() -> [String] {
-    let entropy = secureEntropy()
-    let words = CNBHDWallet.createMnemonicWords(withEntropy: entropy)
+    var words: [String] = []
+    while words.count != 12 {
+      let entropy = secureEntropy()
+      words = CNBHDWallet.createMnemonicWords(withEntropy: entropy)
+    }
     return words
   }
 
@@ -175,8 +179,15 @@ class WalletManager: WalletManagerType {
     return AddressDataSource(wallet: self.wallet, persistenceManager: self.persistenceManager)
   }
 
-  func activeTemporarySentTxTotal(in context: NSManagedObjectContext) -> Int {
-    let tempTransactions = CKMTemporarySentTransaction.findAllActiveOnChain(in: context)
+  func activeTemporarySentTxTotal(forType walletTxType: WalletTransactionType,
+                                  in context: NSManagedObjectContext) -> Int {
+    let tempTransactions: [CKMTemporarySentTransaction]
+    switch walletTxType {
+    case .onChain:    tempTransactions = CKMTemporarySentTransaction.findAllActiveOnChain(in: context)
+    case .lightning:  tempTransactions = CKMTemporarySentTransaction.findAllActiveLightning(in: context)
+    }
+
+    //use totalAmount for both walletTxTypes since we cover fees for lightning load transactions
     let total = tempTransactions.reduce(0) { $0 + $1.totalAmount }
     return total
   }
@@ -184,12 +195,14 @@ class WalletManager: WalletManagerType {
   func balanceNetPending(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int) {
     let wallet = CKMWallet.findOrCreate(in: context)
     let atss = CKMAddressTransactionSummary.findAll(matching: self.coin, in: context)
-    let lightningAccount = persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
     let atsAmount = atss.reduce(0) { $0 + $1.netAmount }
-    let tempSentTxTotal = activeTemporarySentTxTotal(in: context)
-    let netBalance = atsAmount - tempSentTxTotal
-    let netLightningBalance = lightningAccount.balance
-    return (onChain: netBalance, lightning: netLightningBalance)
+    let tempSentTxTotal = activeTemporarySentTxTotal(forType: .onChain, in: context)
+    let netOnChainBalance = atsAmount - tempSentTxTotal
+
+    let lightningAccount = persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
+    let tempSentLightningTotal = activeTemporarySentTxTotal(forType: .lightning, in: context)
+    let netLightningBalance = lightningAccount.balance + lightningAccount.pendingIn + tempSentLightningTotal
+    return (onChain: netOnChainBalance, lightning: netLightningBalance)
   }
 
   func spendableBalance(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int) {
@@ -288,20 +301,24 @@ class WalletManager: WalletManagerType {
         return
       }
       let bgContext = persistenceManager.createBackgroundContext()
-      bgContext.performAndWait {
-        let usableVouts = self.usableVouts(in: bgContext)
-        let allAvailableOutputs = self.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
+      bgContext.perform { [weak self] in
+        guard let strongSelf = self else {
+          seal.reject(CKSystemError.missingValue(key: "wallet manager self"))
+          return
+        }
+        let usableVouts = strongSelf.usableVouts(in: bgContext)
+        let allAvailableOutputs = strongSelf.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
         let paymentAmount = UInt(payment)
         let feeAmount = UInt(flatFee)
-        let blockHeight = UInt(persistenceManager.brokers.checkIn.cachedBlockHeight)
+        let blockHeight = UInt(strongSelf.persistenceManager.brokers.checkIn.cachedBlockHeight)
 
         let txData = CNBTransactionData(
           address: address,
-          coin: coin,
+          coin: strongSelf.coin,
           fromAllAvailableOutputs: allAvailableOutputs,
           paymentAmount: paymentAmount,
           flatFee: feeAmount,
-          change: self.newChangePath(in: bgContext),
+          change: strongSelf.newChangePath(in: bgContext),
           blockHeight: blockHeight
         )
         if let data = txData {
@@ -334,6 +351,7 @@ class WalletManager: WalletManagerType {
       let usableVouts = self.usableVouts(in: bgContext)
       let allAvailableOutputs = self.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
 
+      ///This initializer uses CNBTransactionReplaceabilityOption.MustNotBeRBF
       result = CNBTransactionData(
         allUsableOutputs: allAvailableOutputs,
         coin: coin,

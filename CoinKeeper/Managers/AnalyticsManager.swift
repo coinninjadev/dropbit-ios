@@ -59,6 +59,7 @@ enum AnalyticsManagerEventType: String {
   case supportButtonPressed = "SupportBtn"
   case settingsButtonPressed = "SettingsBtn"
   case backupWordsButtonPressed = "BackupWordsBtn"
+  case earnButtonPressed = "EarnBtn"
   case phoneButtonPressed = "PhoneBtn"
   case spendButtonPressed = "SpendBtn"
   case requestButtonPressed = "RequestBtn"
@@ -134,6 +135,7 @@ enum AnalyticsManagerEventType: String {
   case externalLightningInvoiceInput = "ExternalLightningInvoiceInput"
   case paymentToInvoiceFailed = "PaymentToInvoiceFailed"
   case lightningDropBitInvoicePaid = "LightningDropBitInvoicePaid"
+  case referralLinkDetected = "ReferralLinkDetected"
 
   var id: String {
     return self.rawValue
@@ -154,6 +156,7 @@ enum AnalyticsManagerEventKey: String {
   case blockstreamInfoMessage = "BlockstreamMsg"
 
   case countryCode = "CountryCode"
+  case referrer = "Referrer"
 }
 
 enum AnalyticsRelativeWalletRange: String {

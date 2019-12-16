@@ -18,7 +18,7 @@ class PurchaseMerchantTableViewCellTests: XCTestCase {
     self.sut = PurchaseMerchantTableViewCell.nib().instantiate(withOwner: self, options: nil).first as? PurchaseMerchantTableViewCell
     self.sut.awakeFromNib()
 
-    let cta = MerchantCallToActionResponse(style: "device", link: "")
+    let cta = MerchantCallToActionResponse(style: "device", link: "", title: nil, color: nil)
     let viewModel = MerchantResponse(image: "", tooltip: "https://google.com", attributes: [], cta: cta)
     sut.load(with: viewModel)
   }

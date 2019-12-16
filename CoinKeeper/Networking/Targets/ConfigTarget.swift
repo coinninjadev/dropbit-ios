@@ -1,5 +1,5 @@
 //
-//  MerchantTarget.swift
+//  ConfigTarget.swift
 //  DropBit
 //
 //  Created by Mitchell Malleo on 11/19/19.
@@ -8,13 +8,13 @@
 
 import Moya
 
-public enum MerchantTarget: CoinNinjaTargetType {
-  typealias ResponseType = MerchantConfigurationResponse
+public enum ConfigTarget: CoinNinjaTargetType {
+  typealias ResponseType = ConfigResponse
 
   case fetch
 }
 
-extension MerchantTarget {
+extension ConfigTarget {
 
   var basePath: String {
     return "config"

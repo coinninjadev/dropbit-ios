@@ -222,7 +222,8 @@ extension WalletAddressRequestResponse {
   /// For legacy reasons, this does not require the presence of an addressPubkey for the transaction to be sendable
   var isSatisfiedForSending: Bool {
     guard let statusCase = statusCase, let address = address else { return false }
-    return statusCase == .new && address.isNotEmpty
+    let isNotPreauth = metadata?.preauthId?.asNilIfEmpty() == nil //never pay a WAR that has a preauthId
+    return statusCase == .new && address.isNotEmpty && isNotPreauth
   }
 
   var isUnfulfilled: Bool {

@@ -68,6 +68,24 @@ class LightningBroker: CKPersistenceBroker, LightningBrokerType {
     }
 
     invalidWalletEntries.forEach { context.delete($0) }
+
+    // matching invitation preauth ids
+    let preauthFetchRequest: NSFetchRequest<CKMWalletEntry> = CKMWalletEntry.fetchRequest()
+    let inviteFetchRequest: NSFetchRequest<CKMInvitation> = CKMInvitation.fetchRequest()
+    let preAuthPredicate = CKPredicate.WalletEntry.allPreAuthsWithoutInvite()
+    let invitePredicate = CKPredicate.Invitation.invitationHasPreauthPrefix()
+    preauthFetchRequest.predicate = preAuthPredicate
+    inviteFetchRequest.predicate = invitePredicate
+
+    do {
+      let preAuthObjects = try context.fetch(preauthFetchRequest)
+      let inviteIds = try context.fetch(inviteFetchRequest).map { $0.preauthId }
+
+      let toDelete = preAuthObjects.filter { inviteIds.contains($0.ledgerEntry?.id ?? "no id")}
+      toDelete.forEach { context.delete($0) }
+    } catch {
+      log.error(error, message: "failed to fetch invalid wallet entries")
+    }
   }
 
   func deleteInvalidLedgerEntries(in context: NSManagedObjectContext) {

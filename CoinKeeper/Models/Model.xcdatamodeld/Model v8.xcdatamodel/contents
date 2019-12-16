@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15508" systemVersion="18G103" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="18G1012" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CKMAddress" representedClassName="CKMAddress" versionHashModifier="1" syncable="YES">
         <attribute name="addressId" attributeType="String"/>
         <relationship name="addressTransactionSummaries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CKMAddressTransactionSummary" inverseName="address" inverseEntity="CKMAddressTransactionSummary"/>
@@ -31,8 +31,11 @@
         </uniquenessConstraints>
     </entity>
     <entity name="CKMCounterparty" representedClassName="CKMCounterparty" versionHashModifier="1" syncable="YES">
+        <attribute name="kind" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="profileImageData" optional="YES" attributeType="Binary"/>
         <relationship name="phoneNumbers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CKMPhoneNumber" inverseName="counterparty" inverseEntity="CKMPhoneNumber"/>
+        <relationship name="walletEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CKMWalletEntry" inverseName="counterparty" inverseEntity="CKMWalletEntry"/>
     </entity>
     <entity name="CKMCounterpartyAddress" representedClassName="CKMCounterpartyAddress" versionHashModifier="1" syncable="YES">
         <attribute name="addressId" optional="YES" attributeType="String"/>
@@ -193,6 +196,7 @@
     </entity>
     <entity name="CKMUser" representedClassName="CKMUser" versionHashModifier="1" syncable="YES">
         <attribute name="avatar" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <attribute name="holidayType" attributeType="Integer 16" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="String"/>
         <attribute name="publicURLIsPrivate" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="verificationStatus" optional="YES" attributeType="String"/>
@@ -250,6 +254,7 @@
         <attribute name="memo" optional="YES" attributeType="String"/>
         <attribute name="memoSetByInvoice" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="sortDate" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="counterparty" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMCounterparty" inverseName="walletEntries" inverseEntity="CKMCounterparty"/>
         <relationship name="invitation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMInvitation" inverseName="walletEntry" inverseEntity="CKMInvitation"/>
         <relationship name="ledgerEntry" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMLNLedgerEntry" inverseName="walletEntry" inverseEntity="CKMLNLedgerEntry"/>
         <relationship name="phoneNumber" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMPhoneNumber" inverseName="walletEntries" inverseEntity="CKMPhoneNumber"/>
@@ -261,7 +266,7 @@
     <elements>
         <element name="CKMAddress" positionX="-1170" positionY="315" width="128" height="103"/>
         <element name="CKMAddressTransactionSummary" positionX="-1377" positionY="315" width="128" height="165"/>
-        <element name="CKMCounterparty" positionX="-1964" positionY="-63" width="128" height="73"/>
+        <element name="CKMCounterparty" positionX="-1964" positionY="-63" width="128" height="118"/>
         <element name="CKMCounterpartyAddress" positionX="-1935" positionY="351" width="128" height="73"/>
         <element name="CKMDerivativePath" positionX="-972" positionY="315" width="128" height="163"/>
         <element name="CKMInvitation" positionX="-1674" positionY="-36" width="144" height="298"/>
@@ -274,10 +279,10 @@
         <element name="CKMTransaction" positionX="-1667" positionY="317" width="128" height="388"/>
         <element name="CKMTransactionSharedPayload" positionX="-1858.9765625" positionY="76.22265625" width="128" height="135"/>
         <element name="CKMTwitterContact" positionX="-2073.94921875" positionY="265.5859375" width="128" height="180"/>
-        <element name="CKMUser" positionX="-1523" positionY="144" width="128" height="120"/>
+        <element name="CKMUser" positionX="-1523" positionY="144" width="128" height="133"/>
         <element name="CKMVin" positionX="-1845" positionY="657" width="128" height="133"/>
         <element name="CKMVout" positionX="-1503" positionY="639" width="128" height="165"/>
         <element name="CKMWallet" positionX="-1368" positionY="99" width="128" height="210"/>
-        <element name="CKMWalletEntry" positionX="-1818.1640625" positionY="-44.91796875" width="128" height="208"/>
+        <element name="CKMWalletEntry" positionX="-1776.2578125" positionY="-547.37109375" width="128" height="223"/>
     </elements>
 </model>

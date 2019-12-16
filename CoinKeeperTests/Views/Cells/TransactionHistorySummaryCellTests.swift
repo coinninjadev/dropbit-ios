@@ -22,7 +22,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   // MARK: outlets
   func testOutletsAreConnected() {
     XCTAssertNotNil(self.sut.directionView, "directionView should be connected")
-    XCTAssertNotNil(self.sut.twitterAvatarView, "twitterAvatarView should be connected")
+    XCTAssertNotNil(self.sut.avatarView, "twitterAvatarView should be connected")
     XCTAssertNotNil(self.sut.descriptionLabel, "descriptionLabel should be connected")
     XCTAssertNotNil(self.sut.subtitleLabel, "subtitleLabel should be connected")
     XCTAssertNotNil(self.sut.amountStackView, "amountStackView should be connected")
@@ -143,11 +143,24 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     let expectedImage = twitterConfig.avatar
     let viewModel = MockSummaryCellVM.testSummaryInstance(counterpartyConfig: counterpartyConfig)
     sut.configure(with: viewModel)
-    XCTAssertFalse(sut.twitterAvatarView.isHidden)
-    XCTAssertFalse(sut.twitterAvatarView.avatarImageView.isHidden)
-    XCTAssertFalse(sut.twitterAvatarView.twitterLogoImageView.isHidden)
+    XCTAssertFalse(sut.avatarView.isHidden)
+    XCTAssertFalse(sut.avatarView.avatarImageView.isHidden)
+    XCTAssertFalse(sut.avatarView.twitterLogoImageView.isHidden)
     XCTAssertTrue(sut.directionView.isHidden)
-    XCTAssertEqual(sut.twitterAvatarView.avatarImageView.image, expectedImage)
+    XCTAssertEqual(sut.avatarView.avatarImageView.image, expectedImage)
+  }
+
+  func testReferral_hidesTwitterIconAndShowsAvatar() {
+    let config = TransactionCellAvatarConfig(image: UIImage(named: "giftIcon") ?? UIImage())
+    let counterpartyConfig = TransactionCellCounterpartyConfig(displayName: "Referral Bonus",
+                                                               avatarConfig: config)
+    let viewModel = MockSummaryCellVM.testSummaryInstance(counterpartyConfig: counterpartyConfig)
+    sut.configure(with: viewModel)
+    XCTAssertFalse(sut.avatarView.isHidden)
+    XCTAssertFalse(sut.avatarView.avatarImageView.isHidden)
+    XCTAssertTrue(sut.avatarView.twitterLogoImageView.isHidden)
+    XCTAssertTrue(sut.directionView.isHidden)
+    XCTAssertEqual(sut.avatarView.avatarImageView.image, config.image)
   }
 
   func testTwitterConfig_showsHidesLeadingViews() {
@@ -155,14 +168,14 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     let counterpartyConfig = TransactionCellCounterpartyConfig(twitterConfig: twitterConfig)
     let viewModel = MockSummaryCellVM.testSummaryInstance(counterpartyConfig: counterpartyConfig)
     sut.configure(with: viewModel)
-    XCTAssertFalse(sut.twitterAvatarView.isHidden)
+    XCTAssertFalse(sut.avatarView.isHidden)
     XCTAssertTrue(sut.directionView.isHidden)
   }
 
   func testNilTwitterConfig_showsHidesLeadingViews() {
     let viewModel = MockSummaryCellVM.testSummaryInstance()
     sut.configure(with: viewModel)
-    XCTAssertTrue(sut.twitterAvatarView.isHidden)
+    XCTAssertTrue(sut.avatarView.isHidden)
     XCTAssertFalse(sut.directionView.isHidden)
   }
 

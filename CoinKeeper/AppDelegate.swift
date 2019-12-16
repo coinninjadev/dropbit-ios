@@ -8,40 +8,49 @@
 
 import UIKit
 import OAuthSwift
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
-  var coordinator: AppCoordinator?
+
+  var _coordinator: AppCoordinator?
+  var coordinator: AppCoordinator {
+    if let existing = _coordinator {
+      return existing
+    } else {
+      let new = createCoordinator()
+      _coordinator = new
+      _coordinator?.start()
+      return new
+    }
+  }
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     log.systemEvent()
-    if coordinator == nil {
-      setupCoordinator()
-    }
-
+    _ = coordinator //trigger setup of coordinator
     return true
   }
 
   func applicationWillResignActive(_ application: UIApplication) {
     log.systemEvent(synchronize: true)
-    coordinator?.appWillResignActiveState()
+    coordinator.appWillResignActiveState()
   }
 
   func applicationWillEnterForeground(_ application: UIApplication) {
     log.systemEvent()
-    coordinator?.appEnteredActiveState()
+    coordinator.appEnteredActiveState()
   }
 
   func applicationDidBecomeActive(_ application: UIApplication) {
     log.systemEvent()
-    coordinator?.appBecameActive()
+    coordinator.appBecameActive()
   }
 
   func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
     log.systemEvent()
-    coordinator?.registerForRemoteNotifications(with: deviceToken)
+    coordinator.registerForRemoteNotifications(with: deviceToken)
   }
 
   func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
@@ -61,13 +70,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   private func requestBackgroundSync(completion completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-    if coordinator == nil {
-      setupCoordinator()
-    }
     DispatchQueue.main.async { [weak self] in
       guard UIApplication.shared.applicationState != .active else { completionHandler(.noData); return }
       DispatchQueue.global(qos: .background).async {
-        self?.coordinator?.serialQueueManager.enqueueWalletSyncIfAppropriate(type: .standard,
+        self?.coordinator.serialQueueManager.enqueueWalletSyncIfAppropriate(type: .standard,
                                                                              policy: .always,
                                                                              completion: nil,
                                                                              fetchResult: completionHandler
@@ -78,30 +84,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
     log.systemEvent()
-    if coordinator == nil {
-      setupCoordinator()
-    }
 
     if url.scheme == "dropbit" {
       if let wyreURL = WyreURLParser(url: url) {
-        coordinator?.purchasedBitcoinComponents = wyreURL
+        coordinator.purchasedBitcoinComponents = wyreURL
       } else {
         OAuthSwift.handle(url: url)
       }
       return true
-    }
 
-    guard let bitcoinURL = BitcoinURL(string: url.absoluteString) else {
+    } else if let bitcoinURL = BitcoinURL(string: url.absoluteString) {
+      coordinator.bitcoinURLToOpen = bitcoinURL
+      return true
+
+    } else if DynamicLinks.dynamicLinks().shouldHandleDynamicLink(fromCustomSchemeURL: url) {
+      let dynamicLink = DynamicLinks.dynamicLinks().dynamicLink(fromCustomSchemeURL: url)
+      return coordinator.handleDynamicLink(dynamicLink)
+
+    } else {
       return false
     }
-
-    coordinator?.bitcoinURLToOpen = bitcoinURL
-
-    return true
   }
 
   // MARK: private
-  private func setupCoordinator() {
+  private func createCoordinator() -> AppCoordinator {
     log.event("Will set up coordinator")
     window = UIWindow()
     let viewController = StartViewController.newInstance(delegate: nil)
@@ -112,7 +118,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let uiTestArguments = ProcessInfo.processInfo.arguments.compactMap { UITestArgument(string: $0) }
     let coord = AppCoordinator(navigationController: navigationController, uiTestArguments: uiTestArguments)
     viewController.delegate = coord
-    coordinator = coord
-    coordinator?.start()
+    return coord
   }
 }

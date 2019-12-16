@@ -10,22 +10,19 @@ import AVFoundation
 
 struct OnChainQRCode {
 
-  let rawCode: AVMetadataMachineReadableCodeObject
   let btcAmount: NSDecimalNumber?
   let address: String?
   let paymentRequestURL: URL? // BIP 72
 
-  init?(readableObject: AVMetadataMachineReadableCodeObject) {
-    guard let qrCodeString = readableObject.stringValue,
-      let bitcoinURL = BitcoinURL(string: qrCodeString) else { return nil }
+  init?(string: String) {
+    guard let bitcoinURL = BitcoinURL(string: string) else { return nil }
 
     // If the `url` contains either of these parameters, we ignore any address or amount that may also be present
     if let paymentURL = bitcoinURL.components.paymentRequest {
-      self.init(rawCode: readableObject, paymentURL: paymentURL)
+      self.init(paymentURL: paymentURL)
 
     } else if let address = bitcoinURL.components.address {
       self.init(
-        rawCode: readableObject,
         btcAmount: bitcoinURL.components.amount, // may be nil
         address: address
       )
@@ -35,29 +32,26 @@ struct OnChainQRCode {
     }
   }
 
-  init(rawCode: AVMetadataMachineReadableCodeObject, invoice: String) {
-    self.rawCode = rawCode
+  init(invoice: String) {
     btcAmount = nil
     address = invoice
     paymentRequestURL = nil
   }
 
-  init(rawCode: AVMetadataMachineReadableCodeObject, btcAmount: NSDecimalNumber?, address: String?, paymentURL: URL? = nil) {
-    self.rawCode = rawCode
+  init(btcAmount: NSDecimalNumber?, address: String?, paymentURL: URL? = nil) {
     self.btcAmount = btcAmount
     self.address = address
     self.paymentRequestURL = paymentURL
   }
 
-  init(rawCode: AVMetadataMachineReadableCodeObject, paymentURL: URL) {
-    self.rawCode = rawCode
+  init(paymentURL: URL) {
     self.btcAmount = nil
     self.address = nil
     self.paymentRequestURL = paymentURL
   }
 
   func copy(withBTCAmount amount: NSDecimalNumber) -> OnChainQRCode {
-    return OnChainQRCode(rawCode: self.rawCode, btcAmount: amount, address: self.address, paymentURL: self.paymentRequestURL)
+    return OnChainQRCode(btcAmount: amount, address: self.address, paymentURL: self.paymentRequestURL)
   }
 
 }

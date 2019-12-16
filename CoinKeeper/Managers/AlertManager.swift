@@ -57,7 +57,7 @@ class AlertManager: AlertManagerType {
     sheet.present(in: viewController, from: nil)
   }
 
-  func alert(withTitle title: String,
+  func alert(withTitle title: String?,
              description: String?,
              image: UIImage?,
              style: AlertManager.AlertStyle,
@@ -70,7 +70,7 @@ class AlertManager: AlertManagerType {
                        actionConfigs: actionConfigs)
   }
 
-  func alert(withTitle title: String,
+  func alert(withTitle title: String?,
              description: String?,
              image: UIImage?,
              style: AlertManager.AlertStyle,
@@ -277,7 +277,7 @@ class AlertManager: AlertManagerType {
     showBanner(with: title, duration: nil, alertKind: kind, completion: completion, url: response.link)
   }
 
-  private func createAlert(withTitle title: String,
+  private func createAlert(withTitle title: String?,
                            description: String?,
                            image: UIImage?,
                            style: AlertManager.AlertStyle,
@@ -296,7 +296,7 @@ class AlertManager: AlertManagerType {
     actionConfigs.forEach { actionConfig in
       let action = PMAlertAction(title: actionConfig.title, style: self.pmAlertStyle(from: actionConfig.style), action: actionConfig.action)
       action.titleLabel?.font = .semiBold(13)
-      action.setTitleColor(.primaryActionButton, for: .normal)
+      action.setTitleColor(actionConfig.style.textColor, for: .normal)
       alert.addAction(action)
     }
 
@@ -315,11 +315,11 @@ class AlertManager: AlertManagerType {
     case alert, walkthrough
   }
 
-  private var okAlertActionConfig: AlertActionConfigurationType {
-    return AlertActionConfiguration(title: "OK", style: .cancel, action: nil)
+  func okAlertActionConfig(action: CKCompletion?) -> AlertActionConfigurationType {
+    return AlertActionConfiguration(title: "OK", style: .cancel, action: action)
   }
 
-  func defaultAlert(withTitle title: String, description: String?) -> AlertControllerType {
+  func defaultAlert(withTitle title: String?, description: String?) -> AlertControllerType {
     return alert(withTitle: title,
                  description: description,
                  image: nil,
@@ -450,6 +450,13 @@ enum AlertActionStyle {
     switch pmAlertActionStyle {
     case .cancel: self = .cancel
     case .default: self = .default
+    }
+  }
+
+  var textColor: UIColor {
+    switch self {
+    case .cancel:   return .darkBlueText
+    case .default:  return .primaryActionButton
     }
   }
 }

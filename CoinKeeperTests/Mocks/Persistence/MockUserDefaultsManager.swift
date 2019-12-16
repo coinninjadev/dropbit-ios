@@ -12,6 +12,7 @@ import Foundation
 class MockUserDefaultsManager: PersistenceUserDefaultsType {
 
   let standardDefaults: UserDefaults = UserDefaults(suiteName: "com.coinninja.unittests")!
+  let configDefaults: UserDefaults = UserDefaults(suiteName: "com.coinninja.unittests.config")!
 
   var useRegtest: Bool = false
 

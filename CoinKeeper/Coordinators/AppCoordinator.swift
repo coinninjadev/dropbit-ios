@@ -17,6 +17,7 @@ import CoreLocation
 import PhoneNumberKit
 import MessageUI
 import Contacts
+import Firebase
 
 protocol CoordinatorType: class {
   func start()
@@ -52,6 +53,7 @@ class AppCoordinator: CoordinatorType {
   let persistenceCacheDataWorker: PersistenceCacheDataWorkerType
   let twitterAccessManager: TwitterAccessManagerType
   let ratingAndReviewManager: RatingAndReviewManagerType
+  let featureConfigManager: FeatureConfigManagerType
   let uiTestArguments: [UITestArgument]
 
   // swiftlint:disable:next weak_delegate
@@ -109,6 +111,7 @@ class AppCoordinator: CoordinatorType {
     currencyController: CurrencyController = CurrencyController(fiatCurrency: .USD),
     twitterAccessManager: TwitterAccessManagerType? = nil,
     ratingAndReviewManager: RatingAndReviewManagerType? = nil,
+    featureConfigManager: FeatureConfigManagerType? = nil,
     uiTestArguments: [UITestArgument] = []
     ) {
     currencyController.selectedCurrency = persistenceManager.brokers.preferences.selectedCurrency
@@ -145,6 +148,8 @@ class AppCoordinator: CoordinatorType {
     self.messageManager = MessageManager(alertManager: alertMgr, persistenceManager: persistenceManager)
     self.notificationManager = notificationMgr
     self.ratingAndReviewManager = RatingAndReviewManager(persistenceManager: persistenceManager)
+    let configDefaults = persistenceManager.userDefaultsManager.configDefaults
+    self.featureConfigManager = featureConfigManager ?? FeatureConfigManager(userDefaults: configDefaults)
 
     // now we can use `self` after initializing all properties
     self.notificationManager.delegate = self
@@ -247,12 +252,30 @@ class AppCoordinator: CoordinatorType {
     }
   }
 
+  func handleDynamicLink(_ dynamicLink: DynamicLink?) -> Bool {
+    guard let dynamicLink = dynamicLink,
+      let deepLink = dynamicLink.url,
+      let referrer = deepLink.pathComponents.last
+      else { return false }
+
+    let existingValue: String? = persistenceManager.brokers.user.referredBy?.asNilIfEmpty()
+    if existingValue == nil { //do not change referrer once set; patching multiple times with the same value is okay
+      persistenceManager.brokers.user.referredBy = referrer
+      self.analyticsManager.track(event: .referralLinkDetected, with: AnalyticsEventValue(key: .referrer, value: referrer))
+    }
+    serialQueueManager.walletSyncOperationFactory?.walletNeedsUpdate = true
+
+    return true
+  }
+
   func start() {
     applyUITestArguments(uiTestArguments)
     analyticsManager.start()
     analyticsManager.optIn()
     networkManager.start()
     connectionManager.delegate = self
+
+    setupDynamicLinks()
 
     persistenceManager.brokers.activity.setFirstOpenDateIfNil(date: Date())
 
@@ -354,19 +377,45 @@ class AppCoordinator: CoordinatorType {
     }
   }
 
+  private func setupDynamicLinks() {
+    guard FirebaseApp.app() == nil else { return }
+
+    var plistFilename = "GoogleService-Info"
+    #if DEBUG
+        plistFilename = "GoogleService-Test-Info"
+    #endif
+
+    guard let filePath = Bundle.main.path(forResource: plistFilename, ofType: "plist"),
+      let options = FirebaseOptions(contentsOfFile: filePath)
+      else { return }
+
+    options.apiKey = apiKeys.firebaseKey
+    options.deepLinkURLScheme = Bundle.main.bundleIdentifier
+
+    FirebaseApp.configure(options: options)
+    DynamicLinks.performDiagnostics(completion: { output, hasErrors in
+      if hasErrors {
+        log.error(output)
+      } else {
+        log.debug(output)
+      }
+    })
+  }
+
   private func refreshTwitterAvatar() {
     let bgContext = persistenceManager.createBackgroundContext()
-    bgContext.performAndWait {
-      guard persistenceManager.brokers.user.userIsVerified(using: .twitter, in: bgContext) else {
-        return
-      }
-
-      twitterAccessManager.refreshTwitterAvatar(in: bgContext)
+    bgContext.perform { [weak self] in
+      guard let strongSelf = self else { return }
+      guard strongSelf.persistenceManager.brokers.user.userIsVerified(using: .twitter, in: bgContext) else { return }
+      strongSelf.twitterAccessManager.refreshTwitterAvatar(in: bgContext)
         .done(on: .main) { didChange in
           if didChange {
             CKNotificationCenter.publish(key: .didUpdateAvatar)
           }
-        }.cauterize()
+        }
+        .catch(on: .main) { error in
+          log.error(error, message: "Error refreshing Twitter avatar")
+        }
     }
   }
 
@@ -396,10 +445,17 @@ class AppCoordinator: CoordinatorType {
     launchStateManager.unauthenticateUser()
   }
 
+  private var walletOverviewViewController: WalletOverviewViewController? {
+    guard let topViewController = (navigationController.topViewController() as? MMDrawerController) else { return nil }
+    return topViewController.centerViewController as? WalletOverviewViewController
+  }
+
   func toggleChartAndBalance() {
-    guard let topViewController = (navigationController.topViewController() as? MMDrawerController),
-      let walletViewController = topViewController.centerViewController as? WalletOverviewViewController else { return }
-    walletViewController.topBar.toggleChartAndBalance()
+    walletOverviewViewController?.topBar.toggleChartAndBalance()
+  }
+
+  func selectLightningWallet() {
+    walletOverviewViewController?.walletToggleView.lightningWalletWasTouched()
   }
 
   func showLightningLockAlertIfNecessary() -> Bool {

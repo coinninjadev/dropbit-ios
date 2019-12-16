@@ -16,6 +16,27 @@ extension AppCoordinator: BadgeUpdateDelegate {
 
 extension AppCoordinator: DrawerViewControllerDelegate {
 
+  func currentConfig() -> FeatureConfig {
+    return featureConfigManager.latestConfig
+  }
+
+  func earnButtonWasTouched() {
+    analyticsManager.track(event: .earnButtonPressed, with: nil)
+    drawerController?.toggle(.left, animated: true, completion: { _ in
+      let context = self.persistenceManager.viewContext
+      var url: URL?
+      if let identity = self.persistenceManager.brokers.user.getUserPublicURLInfo(in: context)?.primaryIdentity {
+        url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMeReferral(handle: identity.handle))
+      }
+
+      let controller = EarnViewController.newInstance(delegate: self,
+                                                      referralLink: url?.absoluteString)
+      controller.modalPresentationStyle = .overFullScreen
+      controller.modalTransitionStyle = .crossDissolve
+      self.navigationController.present(controller, animated: true)
+    })
+  }
+
   func backupWordsWasTouched() {
     analyticsManager.track(event: .backupWordsButtonPressed, with: nil)
     drawerController?.toggle(.left, animated: true, completion: nil)

@@ -38,7 +38,7 @@ class MockAlertManager: AlertManagerType {
   }
   func showBannerAlert(for response: MessageResponse, completion: CKCompletion?) {}
 
-  func defaultAlert(withTitle title: String, description: String?) -> AlertControllerType {
+  func defaultAlert(withTitle title: String?, description: String?) -> AlertControllerType {
     let alertManager = AlertManager(notificationManager:
       NotificationManager(permissionManager: PermissionManager(),
                           networkInteractor: NetworkManager(persistenceManager: PersistenceManager(),
@@ -53,7 +53,7 @@ class MockAlertManager: AlertManagerType {
   func showAlert(for update: AddressRequestUpdateDisplayable) { }
   func showActionSheet(in viewController: UIViewController, with items: [ActionSheetItem], actions: @escaping ActionSheet.SelectAction) {}
 
-  func alert(withTitle title: String,
+  func alert(withTitle title: String?,
              description: String?,
              image: UIImage?,
              style: AlertManager.AlertStyle,
@@ -83,7 +83,7 @@ class MockAlertManager: AlertManagerType {
   func didTapClose(_ bannerView: CKBannerView) {}
 
   var wasAskedForAlert = false
-  func alert(withTitle title: String,
+  func alert(withTitle title: String?,
              description: String?,
              image: UIImage?,
              style: AlertManager.AlertStyle,
@@ -95,6 +95,10 @@ class MockAlertManager: AlertManagerType {
                           networkInteractor: NetworkManager(persistenceManager: PersistenceManager(),
                                                             analyticsManager: AnalyticsManager())))
     return alertManager.alert(withTitle: title, description: description, image: image, style: style, actionConfigs: [])
+  }
+
+  func okAlertActionConfig(action: CKCompletion?) -> AlertActionConfigurationType {
+    return AlertActionConfiguration(title: "OK", style: .cancel, action: action)
   }
 
   var notificationManager: NotificationManagerType

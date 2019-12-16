@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -30,7 +30,6 @@
                                             <constraint firstAttribute="height" constant="26" id="6Ry-VO-ZnE"/>
                                             <constraint firstAttribute="width" constant="63" id="gY9-Jg-teF"/>
                                         </constraints>
-                                        <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="didTapTwitterShare:" destination="gTV-IL-0wX" eventType="touchUpInside" id="OmG-5o-tHi"/>
                                         </connections>
@@ -71,7 +70,7 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="YxG-0I-pcu" userLabel="Upper Stack View">
-                                <rect key="frame" x="8" y="68" width="283" height="167.5"/>
+                                <rect key="frame" x="8" y="68" width="283" height="178"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="tWZ-Sw-nHI">
                                         <rect key="frame" x="76.5" y="0.0" width="130" height="29"/>
@@ -84,22 +83,22 @@
                                                     <constraint firstAttribute="height" constant="25" id="0EX-2T-FbN"/>
                                                 </constraints>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6eD-f4-eiO" customClass="TransactionDetailStatusLabel" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="44" y="29" width="42" height="0.0"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6eD-f4-eiO" customClass="TransactionDetailStatusLabel" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="40" y="29" width="50" height="0.0"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <view contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="UtL-ss-iVC" userLabel="middle buffer view">
+                                    <view contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UtL-ss-iVC" userLabel="middle buffer view">
                                         <rect key="frame" x="21.5" y="37" width="240" height="0.0"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="37Q-hB-r71">
-                                        <rect key="frame" x="0.0" y="45" width="283" height="114.5"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="37Q-hB-r71">
+                                        <rect key="frame" x="0.0" y="45" width="283" height="125"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KxV-R5-48X" customClass="TwitterAvatarView" customModule="DropBit" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KxV-R5-48X" customClass="AvatarView" customModule="DropBit" customModuleProvider="target">
                                                 <rect key="frame" x="115.5" y="0.0" width="52" height="72"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
@@ -107,8 +106,8 @@
                                                     <constraint firstAttribute="width" constant="52" id="cjy-Oa-PHF"/>
                                                 </constraints>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" translatesAutoresizingMaskIntoConstraints="NO" id="fzt-L2-dOw" customClass="TransactionDetailCounterpartyLabel" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="120.5" y="76" width="42" height="9.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" translatesAutoresizingMaskIntoConstraints="NO" id="fzt-L2-dOw" customClass="TransactionDetailCounterpartyLabel" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="116.5" y="76" width="50" height="20"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="24" id="JSs-Y8-PBi"/>
                                                 </constraints>
@@ -122,7 +121,7 @@
                                                 </variation>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hLb-Hq-5s7" customClass="TransactionHistoryDetailCellAddressView" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="89.5" width="283" height="25"/>
+                                                <rect key="frame" x="0.0" y="100" width="283" height="25"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="25" id="Bvs-mi-N7s"/>
@@ -130,8 +129,8 @@
                                             </view>
                                         </subviews>
                                     </stackView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WFJ-4S-Rgy" userLabel="bottom buffer view">
-                                        <rect key="frame" x="21.5" y="167.5" width="240" height="0.0"/>
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WFJ-4S-Rgy" userLabel="bottom buffer view">
+                                        <rect key="frame" x="21.5" y="178" width="240" height="0.0"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                 </subviews>
@@ -139,32 +138,32 @@
                                     <constraint firstItem="UtL-ss-iVC" firstAttribute="height" secondItem="WFJ-4S-Rgy" secondAttribute="height" id="owv-Zf-JhB"/>
                                 </constraints>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="GiX-t1-ouu" customClass="TransactionDetailPrimaryAmountLabel" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="128.5" y="243.5" width="42" height="20.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="1000" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="GiX-t1-ouu" customClass="TransactionDetailPrimaryAmountLabel" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="149.5" y="254" width="0.0" height="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="752" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7bI-qJ-R1m" customClass="TransactionDetailSecondaryAmountLabel" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="128.5" y="272" width="42" height="20.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="752" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7bI-qJ-R1m" customClass="TransactionDetailSecondaryAmountLabel" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="149.5" y="262" width="0.0" height="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ca5-B2-QYX">
-                                <rect key="frame" x="128.5" y="300.5" width="42" height="0.0"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ca5-B2-QYX">
+                                <rect key="frame" x="149.5" y="270" width="0.0" height="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="HhA-Mw-oMV" userLabel="Lower Stack View">
-                                <rect key="frame" x="12" y="308.5" width="275" height="255.5"/>
+                                <rect key="frame" x="12" y="278" width="275" height="286"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="hSn-jw-Kbr">
+                                    <view contentMode="scaleToFill" verticalCompressionResistancePriority="749" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hSn-jw-Kbr">
                                         <rect key="frame" x="0.0" y="0.0" width="275" height="0.0"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="G4d-NH-1u9" userLabel="Memo Stack View">
+                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="center" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="G4d-NH-1u9" userLabel="Memo Stack View">
                                         <rect key="frame" x="0.0" y="8" width="275" height="83"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="7cs-Up-bPJ" userLabel="top buffer view">
@@ -175,20 +174,19 @@
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AaP-xk-DBt">
-                                                <rect key="frame" x="114.5" y="13" width="46" height="0.0"/>
-                                                <state key="normal" title="Button"/>
+                                                <rect key="frame" x="122.5" y="13" width="30" height="0.0"/>
                                                 <connections>
                                                     <action selector="didTapAddMemoButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="ffb-Yy-Is9"/>
                                                 </connections>
                                             </button>
-                                            <view contentMode="scaleToFill" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="Dmg-ch-A7F" customClass="ConfirmPaymentMemoView" customModule="DropBit" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" verticalCompressionResistancePriority="751" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dmg-ch-A7F" customClass="ConfirmPaymentMemoView" customModule="DropBit" customModuleProvider="target">
                                                 <rect key="frame" x="17.5" y="26" width="240" height="44"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="AeH-aF-w1e"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="oWX-jX-Isr" userLabel="bottom buffer view">
+                                            <view contentMode="scaleToFill" verticalCompressionResistancePriority="749" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oWX-jX-Isr" userLabel="bottom buffer view">
                                                 <rect key="frame" x="17.5" y="83" width="240" height="0.0"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
@@ -197,7 +195,7 @@
                                             <constraint firstItem="oWX-jX-Isr" firstAttribute="height" secondItem="7cs-Up-bPJ" secondAttribute="height" id="LEA-Pm-Lrj"/>
                                         </constraints>
                                     </stackView>
-                                    <view contentMode="scaleToFill" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="js4-IL-nyY">
+                                    <view contentMode="scaleToFill" verticalCompressionResistancePriority="749" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="js4-IL-nyY">
                                         <rect key="frame" x="0.0" y="99" width="275" height="0.0"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -205,7 +203,7 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="8AX-cC-BVu" userLabel="Bottom Stack View">
-                                        <rect key="frame" x="0.0" y="107" width="275" height="148.5"/>
+                                        <rect key="frame" x="0.0" y="107" width="275" height="179"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="bR9-tN-fDA" userLabel="Message Stack View">
                                                 <rect key="frame" x="0.0" y="0.0" width="275" height="102"/>
@@ -213,7 +211,7 @@
                                                     <view contentMode="scaleToFill" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tqV-1x-bnX" customClass="TransactionDetailsInfoContainer" customModule="DropBit" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="275" height="44"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vJT-iV-gek" customClass="TransactionDetailMessageLabel" customModule="DropBit" customModuleProvider="target">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vJT-iV-gek" customClass="TransactionDetailMessageLabel" customModule="DropBit" customModuleProvider="target">
                                                                 <rect key="frame" x="12.5" y="2" width="250" height="40"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
@@ -260,8 +258,8 @@
                                                     <constraint firstAttribute="height" constant="12" id="jaJ-QN-VPc"/>
                                                 </constraints>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="752" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1bD-K3-Kso" customClass="TransactionDetailDateLabel" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="140" width="275" height="8.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="752" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1bD-K3-Kso" customClass="TransactionDetailDateLabel" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="140" width="275" height="39"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -319,6 +317,7 @@
             <connections>
                 <outlet property="addMemoButton" destination="AaP-xk-DBt" id="CZh-CY-mZz"/>
                 <outlet property="addressView" destination="hLb-Hq-5s7" id="1wK-Bk-dSx"/>
+                <outlet property="avatarView" destination="KxV-R5-48X" id="WDd-JD-2lf"/>
                 <outlet property="bottomBufferView" destination="d8V-VH-nZh" id="Vd3-wg-sez"/>
                 <outlet property="bottomButton" destination="xxv-sM-Z5W" id="8D8-7p-m6F"/>
                 <outlet property="closeButton" destination="NgB-5f-0UF" id="jKq-ld-MT1"/>
@@ -336,11 +335,10 @@
                 <outlet property="questionMarkButton" destination="xcI-7b-2Eg" id="EUu-EV-P0K"/>
                 <outlet property="secondaryAmountLabel" destination="7bI-qJ-R1m" id="29e-yM-3o4"/>
                 <outlet property="statusLabel" destination="6eD-f4-eiO" id="kRS-kv-cRS"/>
-                <outlet property="twitterAvatarView" destination="KxV-R5-48X" id="Nbg-Eg-Gka"/>
                 <outlet property="twitterShareButton" destination="6Q7-sU-DGF" id="c3e-Td-chh"/>
                 <outlet property="underlyingContentView" destination="K2H-9f-uij" id="gU5-pn-T4u"/>
             </connections>
-            <point key="canvasLocation" x="47.826086956521742" y="34.821428571428569"/>
+            <point key="canvasLocation" x="-222" y="36"/>
         </collectionViewCell>
     </objects>
     <resources>

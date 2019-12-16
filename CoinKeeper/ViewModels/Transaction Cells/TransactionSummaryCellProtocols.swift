@@ -27,6 +27,7 @@ extension TransactionSummaryCellDisplayable {
 
   var cellBackgroundColor: UIColor { return .white }
   var shouldHideAvatarView: Bool { return leadingImageConfig.avatarConfig == nil }
+  var shouldHideTwitterLogo: Bool { return leadingImageConfig.twitterConfig == nil }
   var shouldHideDirectionView: Bool { return leadingImageConfig.directionConfig == nil }
   var shouldHideSubtitleLabel: Bool { return (subtitleText ?? "").isEmpty }
 
@@ -49,6 +50,7 @@ protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable 
   var isLightningUpgrade: Bool { get }
   var isLightningTransfer: Bool { get }
   var isPendingTransferToLightning: Bool { get }
+  var isReferralBonus: Bool { get }
 }
 
 extension TransactionSummaryCellViewModelType {
@@ -58,9 +60,16 @@ extension TransactionSummaryCellViewModelType {
   }
 
   var leadingImageConfig: SummaryCellLeadingImageConfig {
-    let directionConfig = TransactionCellDirectionConfig(bgColor: accentColor, image: relevantDirectionImage)
-    return SummaryCellLeadingImageConfig(twitterConfig: counterpartyConfig?.twitterConfig,
-                                         directionConfig: directionConfig)
+    if let avatar = counterpartyConfig?.avatarConfig {
+      var config = TransactionCellAvatarConfig(image: avatar.image)
+      config.bgColor = UIColor.lightningBlue
+      return SummaryCellLeadingImageConfig(avatarConfig: config)
+    } else {
+      let directionConfig = TransactionCellAvatarConfig(image: relevantDirectionImage, bgColor: accentColor)
+      return SummaryCellLeadingImageConfig(twitterConfig: counterpartyConfig?.twitterConfig,
+                                           directionConfig: directionConfig)
+    }
+
   }
 
   /// Transaction type icon, not an avatar
@@ -148,7 +157,7 @@ extension TransactionSummaryCellViewModelType {
   var subtitleText: String? {
     if isPendingTransferToLightning {
       return "PENDING"
-    } else if isLightningTransfer {
+    } else if isLightningTransfer || isReferralBonus {
       return nil
     } else {
       return memo

@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina5_9" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -14,7 +11,7 @@
         <!--Tutorial Screen View Controller-->
         <scene sceneID="ufh-Gn-mbg">
             <objects>
-                <viewController storyboardIdentifier="TutorialScreenViewController" id="nCv-xG-CSD" customClass="TutorialScreenViewController" customModule="CoinKeeper" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TutorialScreenViewController" id="nCv-xG-CSD" customClass="TutorialScreenViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="HYr-tw-Y6e">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -38,20 +35,20 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="c9D-eE-qCS">
                                                 <rect key="frame" x="0.0" y="0.0" width="335" height="142"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="255" text="Title Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lgm-3Q-UJZ">
-                                                        <rect key="frame" x="0.0" y="0.0" width="335" height="47.333333333333336"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="255" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lgm-3Q-UJZ">
+                                                        <rect key="frame" x="0.0" y="0.0" width="335" height="142"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="751" text="Detail Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ucT-Gy-8Ja">
-                                                        <rect key="frame" x="0.0" y="47.333333333333371" width="335" height="47.333333333333343"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="751" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ucT-Gy-8Ja">
+                                                        <rect key="frame" x="0.0" y="142" width="335" height="0.0"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="255" text="Disclaimer Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UO9-RN-UMo">
-                                                        <rect key="frame" x="0.0" y="94.666666666666629" width="335" height="47.333333333333343"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="255" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UO9-RN-UMo">
+                                                        <rect key="frame" x="0.0" y="142" width="335" height="0.0"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -61,22 +58,20 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="cbX-03-sH6">
                                                 <rect key="frame" x="0.0" y="152" width="335" height="82"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TmJ-rM-hPY" customClass="PrimaryActionButton" customModule="CoinKeeper" customModuleProvider="target">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TmJ-rM-hPY" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="335" height="44"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" id="zjQ-JH-lj6"/>
                                                         </constraints>
-                                                        <state key="normal" title="Button"/>
                                                         <connections>
                                                             <action selector="actionButtonWasPressed" destination="nCv-xG-CSD" eventType="touchUpInside" id="Ezv-LV-wgx"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yKZ-47-rmZ" customClass="UnderlinedTextButton" customModule="CoinKeeper" customModuleProvider="target">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yKZ-47-rmZ" customClass="UnderlinedTextButton" customModule="DropBit" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="50" width="335" height="32"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="32" id="fXc-Fu-e8s"/>
                                                         </constraints>
-                                                        <state key="normal" title="Button"/>
                                                         <connections>
                                                             <action selector="linkButtonWasPressed" destination="nCv-xG-CSD" eventType="touchUpInside" id="h3i-OY-5nE"/>
                                                         </connections>
@@ -137,7 +132,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BdM-7e-iQi">
-                            <rect key="frame" x="46" y="76" width="218" height="252"/>
+                            <rect key="frame" x="46" y="110" width="218" height="252"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="BdM-7e-iQi" secondAttribute="height" multiplier="109:126" id="kxt-wo-tiQ"/>
                             </constraints>
@@ -155,7 +150,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="205" height="368"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YLi-nG-4sC">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YLi-nG-4sC">
                             <rect key="frame" x="18" y="15" width="169" height="337"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="YLi-nG-4sC" secondAttribute="height" multiplier="169:337" id="EUx-01-Ty6"/>
