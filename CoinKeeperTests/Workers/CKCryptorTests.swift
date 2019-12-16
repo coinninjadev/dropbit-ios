@@ -10,10 +10,24 @@ import XCTest
 @testable import DropBit
 import CNBitcoinKit
 
+//swiftlint:disable line_length
+
 class CKCryptorTests: XCTestCase {
 
-  var words: [String] { return TestHelpers.fakeWords() }
-  var mockPersistenceManager: MockPersistenceManager { return MockPersistenceManager() }
+  var words: [String] = []
+  var mockPersistenceManager: MockPersistenceManager!
+
+  override func setUp() {
+    super.setUp()
+    words = TestHelpers.fakeWords()
+    mockPersistenceManager = MockPersistenceManager()
+  }
+
+  override func tearDown() {
+    words = []
+    mockPersistenceManager = nil
+    super.tearDown()
+  }
 
   func testDecryptingCipherTextReturnsExpectedText() {
     let stack = InMemoryCoreDataStack()
@@ -36,8 +50,8 @@ class CKCryptorTests: XCTestCase {
     guard let payloadString = try? aliceEncryptor.encryptAsBase64String(message: clearData,
                                                                         withRecipientUncompressedPubkey: bobECUncompressedPubkeyData,
                                                                         isEphemeral: true) else {
-      XCTFail("failed to encrypt alice's message")
-      return
+                                                                          XCTFail("failed to encrypt alice's message")
+                                                                          return
     }
 
     let bobDecryptor = CKCryptor(walletManager: bobWallet)
@@ -129,7 +143,7 @@ class CKCryptorTests: XCTestCase {
   func testEncryptingPayload() {
     let stack = InMemoryCoreDataStack()
     let context = stack.context
-    mockPersistenceManager.fakeCoinToUse = CNBBaseCoin(purpose: .BIP49, coin: .TestNet, account: 0)
+    mockPersistenceManager.fakeCoinToUse = CNBBaseCoin(purpose: .BIP49, coin: .MainNet, account: 0)
 
     // Construct the test data
     let amountInfo = SharedPayloadAmountInfo(fiatCurrency: .USD, fiatAmount: 100)
@@ -164,7 +178,7 @@ class CKCryptorTests: XCTestCase {
     }
 
     context.performAndWait {
-      let dpath = CKMDerivativePath.findOrCreate(with: 49, 1, 0, 0, 0, in: context)
+      let dpath = CKMDerivativePath.findOrCreate(with: 49, 0, 0, 0, 0, in: context)
       let addr = CKMAddress.findOrCreate(withAddress: bobReceiveAddress.address, in: context) // just so it's in the core data context
       addr.derivativePath = dpath
       dpath.address = addr
@@ -181,6 +195,61 @@ class CKCryptorTests: XCTestCase {
       } catch {
         XCTFail("failed to decrypt data. \(error.localizedDescription)")
       }
+    }
+  }
+
+  func testLightningEndToEndSharedPayload() {
+    let memo = "hey dude"
+    let aliceWords = ["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "about"]
+    let bobWords = ["zoo", "zoo", "zoo", "zoo", "zoo", "zoo", "zoo", "zoo", "zoo", "zoo", "zoo", "wrong"]
+    let aliceWalletManager = WalletManager(words: aliceWords, persistenceManager: mockPersistenceManager)
+    let bobWalletManager = WalletManager(words: bobWords, persistenceManager: mockPersistenceManager)
+
+    let aliceCryptor = CKCryptor(walletManager: aliceWalletManager)
+    let bobCryptor = CKCryptor(walletManager: bobWalletManager)
+
+    guard let bobPubKeyHexData = Data(fromHexEncodedString: bobWalletManager.hexEncodedPublicKey) else {
+      XCTFail("bob is bad")
+      return
+    }
+
+    do {
+      let encrypted = try aliceCryptor
+        .encryptAsBase64String(message: memo.data(using: .utf8)!,
+                               withRecipientUncompressedPubkey: bobPubKeyHexData,
+                               isEphemeral: false)
+
+      let decryptedData = try bobCryptor.decryptWithDefaultPrivateKey(payloadAsBase64String: encrypted)
+      let decryptedString = String(data: decryptedData, encoding: .utf8)
+      XCTAssertEqual(decryptedString, memo)
+    } catch {
+      XCTFail("failed to decrypt message: \(error.localizedDescription)")
+    }
+  }
+
+  func testAliceDecryptFromBobUsingDerivationPath() {
+    let stack = InMemoryCoreDataStack()
+    let context = stack.context
+    let expectedMemo = "Hey y'all right back"
+
+    mockPersistenceManager.fakeCoinToUse = CNBBaseCoin(purpose: CoinDerivation.BIP84, coin: CoinType.MainNet, account: 0)
+    let aliceWords = ["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "about"]
+    let aliceWalletManager = WalletManager(words: aliceWords, persistenceManager: mockPersistenceManager)
+    let aliceCryptor = CKCryptor(walletManager: aliceWalletManager)
+    let aliceAddress = "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu"
+    let b64payload = "AwDZH1vechFtjqeGn3yKwgVkDWWieW64UVPVXIwf9/MfXwyuWHH91b6SLIpBP3lB+G0YRtm5pX8Wb61Pd0FgKLQ44VCMVCje7ync6eACHRh5KARFVJ6CP40onzjO9IvFd1ikQ8NpR84GRcZIzQkU3miZ3RaqlFdDjnHjbjrvSwp5fgyxedggZRMQWZguNEP8Kc2j"
+
+    let dpath = CKMDerivativePath.findOrCreate(with: 84, 0, 0, 0, 0, in: context)
+    let addr = CKMAddress.findOrCreate(withAddress: aliceAddress, in: context) // just so it's in the core data context
+    addr.derivativePath = dpath
+    dpath.address = addr
+
+    do {
+      let decryptedBytes = try aliceCryptor.decrypt(payloadAsBase64String: b64payload, withReceiveAddress: aliceAddress, in: context)
+      let decryptedString = String(data: decryptedBytes, encoding: .utf8)
+      XCTAssertEqual(decryptedString, expectedMemo)
+    } catch {
+      XCTFail("failed to decrypt message: \(error.localizedDescription)")
     }
   }
 
