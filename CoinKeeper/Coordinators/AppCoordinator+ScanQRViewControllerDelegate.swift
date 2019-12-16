@@ -71,7 +71,9 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
       let sendPaymentViewController = self.createSendPaymentViewController(forQRCode: qrCode,
                                                                            walletTransactionType: walletTransactionType,
                                                                            fallbackViewModel: fallbackViewModel)
+
       viewController.dismiss(animated: true) { [weak self] in
+        self?.toggleChartAndBalance()
         self?.navigationController.present(sendPaymentViewController, animated: true)
       }
     }
@@ -125,6 +127,7 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
       let sendPaymentViewController = SendPaymentViewController.newInstance(delegate: self, viewModel: viewModel, alertManager: self.alertManager)
 
       viewController.dismiss(animated: true) { [weak self] in
+        self?.toggleChartAndBalance()
         self?.navigationController.present(sendPaymentViewController, animated: true) {
           completion?(sendPaymentViewController)
         }
