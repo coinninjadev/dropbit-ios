@@ -105,15 +105,26 @@ protocol TransactionDetailCellViewModelType: TransactionSummaryCellViewModelType
 extension TransactionDetailCellViewModelType {
 
   var detailCellType: TransactionDetailCellType {
-    if (lightningInvoice != nil) && (status != .completed) && !isInvitation {
+    if isPendingNonInvitationInvoice {
       return .invoice
     } else {
       return isValidTransaction ? .valid : .invalid
     }
   }
 
+  var isPendingNonInvitationInvoice: Bool {
+    return lightningInvoice != nil &&
+      status != .completed &&
+      !isInvitation &&
+      !isPreAuth
+  }
+
   var isIncoming: Bool {
     return direction == .in
+  }
+
+  var isPreAuth: Bool {
+    return lightningInvoice == CKMLNLedgerEntry.preAuthPrefix
   }
 
   var directionConfig: TransactionCellAvatarConfig {

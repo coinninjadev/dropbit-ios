@@ -199,13 +199,10 @@ public class CKMInvitation: NSManagedObject {
     fetchRequest.predicate = CKPredicate.Invitation.withStatuses(statuses)
 
     var result: [CKMInvitation] = []
-    context.performAndWait {
-      do {
-        let results = try context.fetch(fetchRequest)
-        result = results
-      } catch {
-        result = []
-      }
+    do {
+      result = try context.fetch(fetchRequest)
+    } catch {
+      result = []
     }
     return result
   }
@@ -216,13 +213,10 @@ public class CKMInvitation: NSManagedObject {
     fetchRequest.fetchLimit = 1
 
     var ckmInvitation: CKMInvitation?
-    context.performAndWait {
-      do {
-        let invite = try context.fetch(fetchRequest).first
-        ckmInvitation = invite
-      } catch {
-        log.info("failed to find invitation with txid: \(txid)")
-      }
+    do {
+      ckmInvitation = try context.fetch(fetchRequest).first
+    } catch {
+      log.info("failed to find invitation with txid: \(txid)")
     }
     return ckmInvitation
   }
@@ -233,13 +227,10 @@ public class CKMInvitation: NSManagedObject {
     fetchRequest.fetchLimit = 1
 
     var ckmInvitation: CKMInvitation?
-    context.performAndWait {
-      do {
-        let results = try context.fetch(fetchRequest)
-        ckmInvitation = results.first
-      } catch {
-        ckmInvitation = nil
-      }
+    do {
+      ckmInvitation = try context.fetch(fetchRequest).first
+    } catch {
+      ckmInvitation = nil
     }
     return ckmInvitation
   }
@@ -249,30 +240,10 @@ public class CKMInvitation: NSManagedObject {
     fetchRequest.predicate = CKPredicate.Invitation.updatedFulfilledReceivedAddressRequests()
 
     var result: [CKMInvitation] = []
-    context.performAndWait {
-      do {
-        result = try context.fetch(fetchRequest)
-      } catch {
-        result = []
-      }
-    }
-    return result
-  }
-
-  static func findUnacknowledgedInvitation(in context: NSManagedObjectContext, with id: String) -> CKMInvitation? {
-    let fetchRequest: NSFetchRequest<CKMInvitation> = CKMInvitation.fetchRequest()
-    fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: [
-      CKPredicate.Invitation.invitationHasUnacknowledgedPrefix(),
-      CKPredicate.Invitation.withId(CKMInvitation.unacknowledgementPrefix + id)
-      ])
-
-    var result: CKMInvitation?
-    context.performAndWait {
-      do {
-        result = try context.fetch(fetchRequest).first
-      } catch {
-        result = nil
-      }
+    do {
+      result = try context.fetch(fetchRequest)
+    } catch {
+      result = []
     }
     return result
   }
@@ -281,12 +252,10 @@ public class CKMInvitation: NSManagedObject {
     let fetchRequest: NSFetchRequest<CKMInvitation> = CKMInvitation.fetchRequest()
 
     var result: [CKMInvitation] = []
-    context.performAndWait {
-      do {
-        result = try context.fetch(fetchRequest)
-      } catch {
-        result = []
-      }
+    do {
+      result = try context.fetch(fetchRequest)
+    } catch {
+      result = []
     }
 
     return result
@@ -299,12 +268,10 @@ public class CKMInvitation: NSManagedObject {
       ])
 
     var result: [CKMInvitation] = []
-    context.performAndWait {
-      do {
-        result = try context.fetch(fetchRequest)
-      } catch {
-        result = []
-      }
+    do {
+      result = try context.fetch(fetchRequest)
+    } catch {
+      result = []
     }
 
     return result

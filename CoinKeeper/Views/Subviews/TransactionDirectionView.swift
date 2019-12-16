@@ -10,10 +10,10 @@ import UIKit
 
 class TransactionDirectionView: UIView {
 
-  private var iconImageView: UIImageView!
+  private weak var iconImageView: UIImageView?
 
   var image: UIImage? {
-    return iconImageView.image
+    return iconImageView?.image
   }
 
   override init(frame: CGRect) {
@@ -27,11 +27,12 @@ class TransactionDirectionView: UIView {
   }
 
   private func initialize() {
-    iconImageView = UIImageView(image: nil)
-    iconImageView.contentMode = .center
-    iconImageView.translatesAutoresizingMaskIntoConstraints = false
-    self.addSubview(iconImageView)
-    iconImageView.constrain(to: self)
+    let imageView = UIImageView(image: nil)
+    iconImageView = imageView
+    iconImageView?.contentMode = .center
+    iconImageView?.translatesAutoresizingMaskIntoConstraints = false
+    self.addSubview(imageView)
+    imageView.constrain(to: self)
 
     let radius = self.frame.width / 2
     self.applyCornerRadius(radius)
@@ -39,7 +40,7 @@ class TransactionDirectionView: UIView {
 
   /// `logoBackgroundColor` is used for the small circle behind the Twitter bird
   func configure(image: UIImage, bgColor: UIColor) {
-    iconImageView.image = image
+    iconImageView?.image = image
     backgroundColor = bgColor
   }
 

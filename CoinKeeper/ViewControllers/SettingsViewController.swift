@@ -47,7 +47,11 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
       deleteWalletButton.setTitle("DELETE WALLET", for: .normal)
     }
   }
-  @IBOutlet var resyncBlockchainButton: PrimaryActionButton!
+  @IBOutlet var resyncBlockchainButton: PrimaryActionButton! {
+    didSet {
+      resyncBlockchainButton.setTitle("Sync Blockchain", for: .normal)
+    }
+  }
 
   @IBAction func deleteWallet(_ sender: Any) {
     delegate.viewControllerDidRequestDeleteWallet(self, completion: {

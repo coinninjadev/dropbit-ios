@@ -31,7 +31,7 @@ protocol ContactCacheManagerType: AnyObject {
                        in context: NSManagedObjectContext) throws
 
   func validatedMetadata(for globalPhoneNumber: GlobalPhoneNumber, in context: NSManagedObjectContext) -> CCMValidatedMetadata?
-  func managedContactComponents(forGlobalPhoneNumber number: GlobalPhoneNumber) -> ManagedContactComponents?
+  func managedContactComponents(forGlobalPhoneNumber number: GlobalPhoneNumber, in context: NSManagedObjectContext) -> ManagedContactComponents?
 
 }
 
@@ -97,7 +97,7 @@ class ContactCacheManager: ContactCacheManagerType {
     return CCMValidatedMetadata.find(withNumber: globalPhoneNumber, in: context)
   }
 
-  func managedContactComponents(forGlobalPhoneNumber number: GlobalPhoneNumber) -> ManagedContactComponents? {
+  func managedContactComponents(forGlobalPhoneNumber number: GlobalPhoneNumber, in context: NSManagedObjectContext) -> ManagedContactComponents? {
     var components: ManagedContactComponents?
     viewContext.performAndWait {
       if let foundMetadata = validatedMetadata(for: number, in: viewContext),
