@@ -140,12 +140,10 @@ public class CKMDerivativePath: NSManagedObject {
     fetchRequest.sortDescriptors = [indexSortDescriptor]
 
     var maxIndex: Int?
-    context.performAndWait {
-      do {
-        maxIndex = try context.fetch(fetchRequest).first?.index
-      } catch {
-        log.error(error, message: nil)
-      }
+    do {
+      maxIndex = try context.fetch(fetchRequest).first?.index
+    } catch {
+      log.error(error, message: nil)
     }
     return maxIndex
   }

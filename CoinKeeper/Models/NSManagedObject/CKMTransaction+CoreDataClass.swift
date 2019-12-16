@@ -33,45 +33,43 @@ public class CKMTransaction: NSManagedObject {
     relativeToBlockHeight blockHeight: Int,
     fullSync: Bool
     ) {
-    context.performAndWait {
-      // configure the tx here
-      if let tempSentTx = temporarySentTransaction, txResponse.txid == txid {
-        context.delete(tempSentTx)
+    // configure the tx here
+    if let tempSentTx = temporarySentTransaction, txResponse.txid == txid {
+      context.delete(tempSentTx)
+    }
+    txid = txResponse.txid
+    blockHash = txResponse.blockHash
+    confirmations = (txResponse.blockHash ?? "").isEmpty ? 0 : txResponse.blockheight.map { (blockHeight - $0) + 1 } ?? 0
+    date = txResponse.receivedTime ?? txResponse.date
+    sortDate = txResponse.sortDate
+    network = "btc://main"
+
+    // vins
+    if self.vins.isEmpty || fullSync {
+      let vinArray = txResponse.vinResponses.map { (vinResponse: TransactionVinResponse) -> CKMVin in
+        let vin = CKMVin.findOrCreate(with: vinResponse, in: context)
+        vin.transaction = self
+        return vin
       }
-      txid = txResponse.txid
-      blockHash = txResponse.blockHash
-      confirmations = (txResponse.blockHash ?? "").isEmpty ? 0 : txResponse.blockheight.map { (blockHeight - $0) + 1 } ?? 0
-      date = txResponse.receivedTime ?? txResponse.date
-      sortDate = txResponse.sortDate
-      network = "btc://main"
+      self.vins = Set(vinArray)
+    }
 
-      // vins
-      if self.vins.isEmpty || fullSync {
-        let vinArray = txResponse.vinResponses.map { (vinResponse: TransactionVinResponse) -> CKMVin in
-          let vin = CKMVin.findOrCreate(with: vinResponse, in: context)
-          vin.transaction = self
-          return vin
-        }
-        self.vins = Set(vinArray)
-      }
+    // vouts
+    let voutArray = txResponse.voutResponses.compactMap { (voutResponse: TransactionVoutResponse) -> CKMVout? in
+      let vout = CKMVout.findOrCreate(with: voutResponse, in: context, fullSync: fullSync)
+      vout?.transaction = self
+      return vout
+    }
+    self.vouts = Set(voutArray)
 
-      // vouts
-      let voutArray = txResponse.voutResponses.compactMap { (voutResponse: TransactionVoutResponse) -> CKMVout? in
-        let vout = CKMVout.findOrCreate(with: voutResponse, in: context, fullSync: fullSync)
-        vout?.transaction = self
-        return vout
-      }
-      self.vouts = Set(voutArray)
+    isIncoming = calculateIsIncoming(in: context)
 
-      isIncoming = calculateIsIncoming(in: context)
+    let atss = CKMAddressTransactionSummary.find(byTxid: txResponse.txid, in: context)
+    addressTransactionSummaries = atss.asSet()
+    atss.forEach { $0.transaction = self } // just being extra careful to ensure bi-directional integrity
 
-      let atss = CKMAddressTransactionSummary.find(byTxid: txResponse.txid, in: context)
-      addressTransactionSummaries = atss.asSet()
-      atss.forEach { $0.transaction = self } // just being extra careful to ensure bi-directional integrity
-
-      if !isIncoming {
-        self.isSentToSelf = txResponse.isSentToSelf
-      }
+    if !isIncoming {
+      self.isSentToSelf = txResponse.isSentToSelf
     }
   }
 
@@ -115,56 +113,51 @@ public class CKMTransaction: NSManagedObject {
     // self.txid should remain as an empty string so that the outgoingTransactionData.txid UUID
     // doesn't trigger a 4xx error when sending txids to the server
 
-    context.performAndWait {
-      self.sortDate = Date()
-      self.date = self.sortDate
-      self.isSentToSelf = outgoingTransactionData.sentToSelf
-      self.isIncoming = false
-      self.memo = outgoingTransactionData.sharedPayloadDTO?.memo
+    self.sortDate = Date()
+    self.date = self.sortDate
+    self.isSentToSelf = outgoingTransactionData.sentToSelf
+    self.isIncoming = false
+    self.memo = outgoingTransactionData.sharedPayloadDTO?.memo
 
-      if outgoingTransactionData.txid.isNotEmpty {
-        self.txid = outgoingTransactionData.txid
-      }
+    if outgoingTransactionData.txid.isNotEmpty {
+      self.txid = outgoingTransactionData.txid
+    }
 
-      if self.txid.starts(with: CKMTransaction.invitationTxidPrefix) {
-        self.txid = outgoingTransactionData.txid
-      }
+    if self.txid.starts(with: CKMTransaction.invitationTxidPrefix) {
+      self.txid = outgoingTransactionData.txid
+    }
 
-      counterpartyAddress = CKMCounterpartyAddress.findOrCreate(withAddress: outgoingTransactionData.destinationAddress, in: context)
+    counterpartyAddress = CKMCounterpartyAddress.findOrCreate(withAddress: outgoingTransactionData.destinationAddress, in: context)
 
-      let tempTx = temporarySentTransaction ?? CKMTemporarySentTransaction(insertInto: context)
-      tempTx.amount = outgoingTransactionData.amount
-      tempTx.feeAmount = outgoingTransactionData.feeAmount
-      tempTx.isSentToSelf = outgoingTransactionData.sentToSelf
-      tempTx.txid = outgoingTransactionData.txid
-      tempTx.transaction = self
+    let tempTx = temporarySentTransaction ?? CKMTemporarySentTransaction(insertInto: context)
+    tempTx.amount = outgoingTransactionData.amount
+    tempTx.feeAmount = outgoingTransactionData.feeAmount
+    tempTx.isSentToSelf = outgoingTransactionData.sentToSelf
+    tempTx.txid = outgoingTransactionData.txid
+    tempTx.transaction = self
 
-      guard let receiver = outgoingTransactionData.receiver else { return }
-      if let number = phoneNumber {
-        number.configure(withReceiver: receiver, in: context)
-        self.phoneNumber = number
-      } else {
-        self.configure(withReceiver: receiver, in: context)
-      }
+    guard let receiver = outgoingTransactionData.receiver else { return }
+    if let number = phoneNumber {
+      number.configure(withReceiver: receiver, in: context)
+      self.phoneNumber = number
+    } else {
+      self.configure(withReceiver: receiver, in: context)
     }
   }
 
   func configure(with lightningResponse: LNTransactionResponse, in context: NSManagedObjectContext) {
+    self.sortDate = Date()
+    self.date = self.sortDate
+    self.isSentToSelf = false
+    self.isIncoming = true
+    self.txid = lightningResponse.result.id
 
-    context.performAndWait {
-      self.sortDate = Date()
-      self.date = self.sortDate
-      self.isSentToSelf = false
-      self.isIncoming = true
-      self.txid = lightningResponse.result.id
-
-      let tempTx = temporarySentTransaction ?? CKMTemporarySentTransaction(insertInto: context)
-      tempTx.amount = -lightningResponse.result.value - lightningResponse.result.networkFee
-      tempTx.feeAmount = lightningResponse.result.networkFee
-      tempTx.isSentToSelf = false
-      tempTx.txid = lightningResponse.result.id
-      tempTx.transaction = self
-    }
+    let tempTx = temporarySentTransaction ?? CKMTemporarySentTransaction(insertInto: context)
+    tempTx.amount = -lightningResponse.result.value - lightningResponse.result.networkFee
+    tempTx.feeAmount = lightningResponse.result.networkFee
+    tempTx.isSentToSelf = false
+    tempTx.txid = lightningResponse.result.id
+    tempTx.transaction = self
   }
 
   /// Returns early if this transaction already has a CKMTransactionSharedPayload attached

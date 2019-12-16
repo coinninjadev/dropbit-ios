@@ -50,15 +50,15 @@ extension BalanceDataSource {
   func handleWillSaveContext(_ context: NSManagedObjectContext) {
     // Observe the willSave notification so that we can still access the managed objects in case of deletion.
     var relevantInserts = 0, relevantUpdates = 0, relevantDeletions = 0
-    context.performAndWait {
+    context.perform {
       relevantInserts = context.insertedObjects.filter { self.objectIsBalanceRelevant($0) }.count
       relevantUpdates = context.persistentUpdatedObjects.filter { self.objectIsBalanceRelevant($0) }.count
       relevantDeletions = context.deletedObjects.filter { self.objectIsBalanceRelevant($0) }.count
-    }
 
-    // Set flag on balanceUpdateManager so that the notification is posted when didSaveNotification is observed
-    let totalChanges = relevantInserts + relevantUpdates + relevantDeletions
-    self.balanceUpdateManager.balanceChangesObserved = (totalChanges > 0)
+      // Set flag on balanceUpdateManager so that the notification is posted when didSaveNotification is observed
+      let totalChanges = relevantInserts + relevantUpdates + relevantDeletions
+      self.balanceUpdateManager.balanceChangesObserved = (totalChanges > 0)
+    }
   }
 
   func handleDidSaveContext(_ context: NSManagedObjectContext) {

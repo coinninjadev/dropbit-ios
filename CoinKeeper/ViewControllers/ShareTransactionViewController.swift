@@ -65,11 +65,13 @@ class ShareTransactionViewController: UIViewController, StoryboardInitializable 
 
     nextTimeButton.titleLabel?.font = .primaryButtonTitle
     nextTimeButton.setTitleColor(.darkBlueText, for: .normal)
+    nextTimeButton.setTitle("I'll share next time", for: .normal)
 
     // semi-opaque view sits between the button and the separate backing view
     // so that title and background have correct color
     dontAskAgainButton.titleLabel?.font = .primaryButtonTitle
     dontAskAgainButton.setTitleColor(.darkGrayText, for: .normal)
+    dontAskAgainButton.setTitle("Don't ask me again", for: .normal)
     dontAskAgainFadedBackground.backgroundColor = .primaryActionButton
     dontAskAgainFadedBackground.applyCornerRadius(4)
   }

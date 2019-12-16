@@ -3,7 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -40,28 +40,27 @@
                                                     <action selector="performClose:" destination="Jxj-Re-BGN" eventType="touchUpInside" id="oZS-fL-BbB"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XOe-ee-3jI">
-                                                <rect key="frame" x="180" y="92" width="42" height="20.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XOe-ee-3jI">
+                                                <rect key="frame" x="201" y="92" width="0.0" height="0.0"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="g8g-ys-u3f">
-                                                <rect key="frame" x="56" y="132.5" width="290" height="74"/>
+                                                <rect key="frame" x="56" y="112" width="290" height="74"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="74" id="odD-WJ-VRi"/>
                                                     <constraint firstAttribute="width" constant="290" id="ykm-BM-oHo"/>
                                                 </constraints>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="WCA-zU-uA6">
-                                                <rect key="frame" x="56" y="236.5" width="290" height="74"/>
+                                                <rect key="frame" x="56" y="216" width="290" height="74"/>
                                             </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aay-zN-0Ku">
-                                                <rect key="frame" x="151" y="318.5" width="100" height="73.5"/>
+                                                <rect key="frame" x="151" y="298" width="100" height="94"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="100" id="NWO-op-NtE"/>
                                                 </constraints>
-                                                <state key="normal" title="Button"/>
                                                 <connections>
                                                     <action selector="performCustomAmount:" destination="Jxj-Re-BGN" eventType="touchUpInside" id="fnb-XP-tec"/>
                                                 </connections>

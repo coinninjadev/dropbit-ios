@@ -36,13 +36,10 @@ public class CKMWallet: NSManagedObject {
     fetchRequest.fetchLimit = 1
 
     var wallet: CKMWallet?
-    context.performAndWait {
-      do {
-        let results = try context.fetch(fetchRequest)
-        wallet = results.first
-      } catch {
-        wallet = nil
-      }
+    do {
+      wallet = try context.fetch(fetchRequest).first
+    } catch {
+      wallet = nil
     }
     return wallet
   }

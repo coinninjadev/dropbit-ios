@@ -120,6 +120,7 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
     detailLabel.font = .regular(14)
 
     upgradeButton.style = .lightningUpgrade(enabled: false)
+    upgradeButton.setTitle("UPGRADE NOW", for: .normal)
 
     let templateImage = UIImage(imageLiteralResourceName: "checkboxCheck").withRenderingMode(.alwaysTemplate)
 

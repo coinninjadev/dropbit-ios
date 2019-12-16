@@ -12,7 +12,8 @@ import UIKit
 extension AppCoordinator: EarnViewControllerDelegate {
 
   func viewControllerDidPressShareButton(_ viewController: UIViewController, referralLink: String) {
-    let shareSheet = UIActivityViewController(activityItems: [referralLink], applicationActivities: nil)
+    let fullMessage = "Use my referral link to get DropBit and we can each earn $1 in Bitcoin. \(referralLink)"
+    let shareSheet = UIActivityViewController(activityItems: [fullMessage], applicationActivities: nil)
     shareSheet.excludedActivityTypes = UIActivity.standardExcludedTypes
 
     self.navigationController.topViewController()?.present(shareSheet, animated: true, completion: nil)

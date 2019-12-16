@@ -70,7 +70,6 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="Bit-Hg-a3b"/>
                                                 </constraints>
-                                                <state key="normal" title="CHANGE/REMOVE"/>
                                                 <connections>
                                                     <action selector="changeRemovePhone" destination="wct-uq-10C" eventType="touchUpInside" id="Mmn-fc-IdW"/>
                                                 </connections>
@@ -80,7 +79,6 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="51" id="CF4-f3-gQ5"/>
                                                 </constraints>
-                                                <state key="normal" title="VERIFY PHONE NUMBER"/>
                                                 <connections>
                                                     <action selector="verifyPhoneNumber" destination="wct-uq-10C" eventType="touchUpInside" id="7FE-k2-fXC"/>
                                                 </connections>
@@ -103,7 +101,6 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="Qyg-7f-awf"/>
                                                 </constraints>
-                                                <state key="normal" title="CHANGE/REMOVE"/>
                                                 <connections>
                                                     <action selector="changeRemoveTwitter" destination="wct-uq-10C" eventType="touchUpInside" id="jBW-5v-32W"/>
                                                 </connections>
@@ -113,7 +110,6 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="51" id="yVD-Ba-eaB"/>
                                                 </constraints>
-                                                <state key="normal" title="VERIFY TWITTER ACCOUNT"/>
                                                 <connections>
                                                     <action selector="verifyTwitter" destination="wct-uq-10C" eventType="touchUpInside" id="dr9-Lh-kGB"/>
                                                 </connections>
@@ -140,7 +136,6 @@
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ntT-5K-f52">
                                 <rect key="frame" x="32" y="617" width="311" height="10"/>
-                                <state key="normal" title="View DropBit addresses"/>
                                 <connections>
                                     <action selector="addressButtonWasTouched" destination="wct-uq-10C" eventType="touchUpInside" id="fxM-Y9-ij0"/>
                                 </connections>

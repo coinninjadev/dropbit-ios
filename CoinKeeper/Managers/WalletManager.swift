@@ -155,8 +155,11 @@ class WalletManager: WalletManagerType {
   }
 
   public static func createMnemonicWords() -> [String] {
-    let entropy = secureEntropy()
-    let words = CNBHDWallet.createMnemonicWords(withEntropy: entropy)
+    var words: [String] = []
+    while words.count != 12 {
+      let entropy = secureEntropy()
+      words = CNBHDWallet.createMnemonicWords(withEntropy: entropy)
+    }
     return words
   }
 
@@ -298,20 +301,24 @@ class WalletManager: WalletManagerType {
         return
       }
       let bgContext = persistenceManager.createBackgroundContext()
-      bgContext.performAndWait {
-        let usableVouts = self.usableVouts(in: bgContext)
-        let allAvailableOutputs = self.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
+      bgContext.perform { [weak self] in
+        guard let strongSelf = self else {
+          seal.reject(CKSystemError.missingValue(key: "wallet manager self"))
+          return
+        }
+        let usableVouts = strongSelf.usableVouts(in: bgContext)
+        let allAvailableOutputs = strongSelf.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
         let paymentAmount = UInt(payment)
         let feeAmount = UInt(flatFee)
-        let blockHeight = UInt(persistenceManager.brokers.checkIn.cachedBlockHeight)
+        let blockHeight = UInt(strongSelf.persistenceManager.brokers.checkIn.cachedBlockHeight)
 
         let txData = CNBTransactionData(
           address: address,
-          coin: coin,
+          coin: strongSelf.coin,
           fromAllAvailableOutputs: allAvailableOutputs,
           paymentAmount: paymentAmount,
           flatFee: feeAmount,
-          change: self.newChangePath(in: bgContext),
+          change: strongSelf.newChangePath(in: bgContext),
           blockHeight: blockHeight
         )
         if let data = txData {

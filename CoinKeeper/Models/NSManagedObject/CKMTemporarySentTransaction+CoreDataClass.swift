@@ -49,12 +49,10 @@ public class CKMTemporarySentTransaction: NSManagedObject {
     fetchRequest.predicate = predicate
 
     var result: [CKMTemporarySentTransaction] = []
-    context.performAndWait {
-      do {
-        result = try context.fetch(fetchRequest)
-      } catch {
-        result = []
-      }
+    do {
+      result = try context.fetch(fetchRequest)
+    } catch {
+      result = []
     }
     return result
   }

@@ -8,11 +8,11 @@
 
 import Foundation
 import UIKit
+import WebKit
 
 class TextViewController: BaseViewController, StoryboardInitializable {
 
-  @IBOutlet var webView: UIWebView!
-  @IBOutlet var closeButton: UIButton!
+  @IBOutlet var webView: WKWebView!
 
   var htmlString: String?
 
@@ -35,7 +35,6 @@ class TextViewController: BaseViewController, StoryboardInitializable {
   func setupUI() {
     guard let htmlString = htmlString else { return }
     webView.scrollView.showsVerticalScrollIndicator = false
-    webView.loadHTMLString("<font face='Montserrat-Regular' size='2  '>" + htmlString, baseURL: nil)
-    view.addSubview(webView)
+    webView.loadHTMLString("<font face='Montserrat-Regular' size='3  '>" + htmlString, baseURL: nil)
   }
 }

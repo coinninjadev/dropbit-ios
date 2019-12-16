@@ -76,13 +76,11 @@ public class CKMPhoneNumber: NSManagedObject {
     request.predicate = combinedPredicate
 
     var ckmPhoneNumber: CKMPhoneNumber?
-    context.performAndWait {
-      do {
-        let results = try context.fetch(request)
-        ckmPhoneNumber = results.first
-      } catch {
-        ckmPhoneNumber = nil
-      }
+    do {
+      let results = try context.fetch(request)
+      ckmPhoneNumber = results.first
+    } catch {
+      ckmPhoneNumber = nil
     }
     return ckmPhoneNumber
   }

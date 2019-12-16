@@ -35,17 +35,21 @@ extension AppCoordinator: ShareTransactionViewControllerDelegate {
       switch walletTxType {
       case .onChain:
         let bgContext = self.persistenceManager.createBackgroundContext()
-        bgContext.performAndWait {
-          let latestTx = self.persistenceManager.databaseManager.latestTransaction(in: bgContext)
-          defaultTweetText = self.tweetText(withMemo: latestTx?.memo)
+        bgContext.perform { [weak self] in
+          guard let strongSelf = self else { return }
+          let latestTx = strongSelf.persistenceManager.databaseManager.latestTransaction(in: bgContext)
+          defaultTweetText = strongSelf.tweetText(withMemo: latestTx?.memo)
+          DispatchQueue.main.async {
+            strongSelf.openTwitterURL(withMessage: defaultTweetText)
+          }
         }
       case .lightning:
         //skip fetching latest lightning wallet entry for now
         defaultTweetText = self.tweetText(withMemo: nil)
+        self.openTwitterURL(withMessage: defaultTweetText)
       }
     }
 
-    self.openTwitterURL(withMessage: defaultTweetText)
   }
 
   func viewControllerRequestedShareNextTime(_ viewController: UIViewController) {

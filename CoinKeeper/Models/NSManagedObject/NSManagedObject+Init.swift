@@ -23,28 +23,3 @@ extension NSManagedObject {
   }
 
 }
-
-extension NSManagedObject {
-
-  /// This doesn't use batch delete so that the change can be observed through NSManagedObjectContextWillSave notification
-  static func deleteAll(in context: NSManagedObjectContext) {
-    guard let entityName = entityDescription(in: context).name else { return }
-    let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-
-    context.performAndWait {
-      do {
-        guard let results = try context.fetch(request) as? [NSManagedObject] else {
-          return
-        }
-        results.forEach({ context.delete($0) })
-
-      } catch {
-        let userInfo = (error as NSError).userInfo
-        let message = "Failed to perform pseudo-batch delete of \(entityName). User info: \(userInfo)"
-        log.error(error, message: message)
-        assertionFailure(message)
-      }
-    }
-  }
-
-}

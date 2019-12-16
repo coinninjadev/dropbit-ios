@@ -64,7 +64,7 @@ class WalletSyncOperationFactory {
           log.logMessage(walletDebugDesc, privateArgs: [], level: .info, location: nil)
           log.info("Sync routine: Starting.")
           strongSelf.performSync(with: dependencies, fullSync: isFullSync, in: bgContext)
-            .catch(in: bgContext) { error in
+            .catch { error in
               log.error(error, message: "Sync routine: caught error.")
               caughtError = error
               strongSelf.handleSyncRoutineError(error, in: bgContext)
@@ -73,7 +73,7 @@ class WalletSyncOperationFactory {
               log.info("Sync routine: Finishing...")
               var contextHasInsertionsOrUpdates = false
               var receivedFunds = false
-              bgContext.performAndWait {
+              bgContext.perform {
                 contextHasInsertionsOrUpdates = (bgContext.insertedObjects.isNotEmpty || bgContext.persistentUpdatedObjects.isNotEmpty)
                 let receivedOnChain = bgContext.insertedObjects.compactMap { $0 as? CKMTransaction }.isNotEmpty
                 let receivedLightning = bgContext.insertedObjects.compactMap { $0 as? CKMLNLedgerEntry }.isNotEmpty
@@ -85,25 +85,27 @@ class WalletSyncOperationFactory {
                 } catch {
                   log.contextSaveError(error)
                 }
+
+                DispatchQueue.main.async {
+                  CKNotificationCenter.publish(key: .didFinishSync, object: nil, userInfo: nil)
+                  CKNotificationCenter.publish(key: .didUpdateBalance, object: nil, userInfo: nil)
+
+                  dependencies.persistenceManager.brokers.activity.lastSuccessfulSync = Date()
+                  dependencies.ratingAndReviewManager.promptForReviewIfNecessary(didReceiveFunds: receivedFunds)
+                  completion?(caughtError) //Only call completion handler once
+
+                  strongSelf.delegate?.syncManagerDidFinishSync()
+
+                  if let fetchResultHandler = fetchResult {
+                    let result: UIBackgroundFetchResult = contextHasInsertionsOrUpdates ? .newData : .noData
+                    fetchResultHandler(result)
+                  }
+
+                  log.info("Sync routine: Finished.")
+                  strongOperation.finish()
+                  UIApplication.shared.endBackgroundTask(backgroundTaskId)
+                }
               }
-
-              CKNotificationCenter.publish(key: .didFinishSync, object: nil, userInfo: nil)
-              CKNotificationCenter.publish(key: .didUpdateBalance, object: nil, userInfo: nil)
-
-              dependencies.persistenceManager.brokers.activity.lastSuccessfulSync = Date()
-              dependencies.ratingAndReviewManager.promptForReviewIfNecessary(didReceiveFunds: receivedFunds)
-              completion?(caughtError) //Only call completion handler once
-
-              strongSelf.delegate?.syncManagerDidFinishSync()
-
-              if let fetchResultHandler = fetchResult {
-                let result: UIBackgroundFetchResult = contextHasInsertionsOrUpdates ? .newData : .noData
-                fetchResultHandler(result)
-              }
-
-              log.info("Sync routine: Finished.")
-              strongOperation.finish()
-              UIApplication.shared.endBackgroundTask(backgroundTaskId)
           }
         }
 

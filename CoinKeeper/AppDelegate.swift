@@ -8,7 +8,6 @@
 
 import UIKit
 import OAuthSwift
-import Hero
 import Firebase
 
 @UIApplicationMain
@@ -113,7 +112,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     window = UIWindow()
     let viewController = StartViewController.newInstance(delegate: nil)
     let navigationController = CNNavigationController(rootViewController: viewController)
-    navigationController.hero.isEnabled = true
     window?.rootViewController = navigationController
     window?.makeKeyAndVisible()
 
