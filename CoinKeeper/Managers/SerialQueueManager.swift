@@ -184,13 +184,11 @@ class SerialQueueManager: SerialQueueManagerType {
     }
 
     guard self.shouldEnqueueOperation(ofType: .syncWallet(type), policy: policy) else {
-      completion?(nil)
       fetchResult?(.noData)
       return
     }
 
     guard !queueDelegate.launchStateManager.upgradeInProgress else {
-      completion?(nil)
       fetchResult?(.noData)
       return
     }
