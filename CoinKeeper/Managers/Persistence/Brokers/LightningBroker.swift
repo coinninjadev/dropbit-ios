@@ -67,6 +67,9 @@ class LightningBroker: CKPersistenceBroker, LightningBrokerType {
       log.error(error, message: "failed to fetch invalid wallet entries")
     }
 
+    if invalidWalletEntries.isNotEmpty {
+      log.warn("Deleting \(invalidWalletEntries.count) invalid wallet entries")
+    }
     invalidWalletEntries.forEach { context.delete($0) }
 
     // matching invitation preauth ids
@@ -82,6 +85,9 @@ class LightningBroker: CKPersistenceBroker, LightningBrokerType {
       let inviteIds = try context.fetch(inviteFetchRequest).map { $0.preauthId }
 
       let toDelete = preAuthObjects.filter { inviteIds.contains($0.ledgerEntry?.id ?? "no id")}
+      if toDelete.isNotEmpty {
+        log.warn("Deleting \(toDelete.count) pre-auth wallet entries without invitations")
+      }
       toDelete.forEach { context.delete($0) }
     } catch {
       log.error(error, message: "failed to fetch invalid wallet entries")
@@ -97,6 +103,10 @@ class LightningBroker: CKPersistenceBroker, LightningBrokerType {
       invalidLedgerEntries = try context.fetch(fetchRequest)
     } catch {
       log.error(error, message: "failed to fetch invalid wallet entries")
+    }
+
+    if invalidLedgerEntries.isNotEmpty {
+      log.warn("Deleting \(invalidLedgerEntries.count) invalid ledger entries")
     }
 
     invalidLedgerEntries.forEach { context.delete($0) }
