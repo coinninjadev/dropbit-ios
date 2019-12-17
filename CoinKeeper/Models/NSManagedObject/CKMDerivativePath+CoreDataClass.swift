@@ -9,7 +9,7 @@
 
 import Foundation
 import CoreData
-import CNBitcoinKit
+import Cnlib
 
 @objc(CKMDerivativePath)
 public class CKMDerivativePath: NSManagedObject {
@@ -38,10 +38,8 @@ public class CKMDerivativePath: NSManagedObject {
     return "M/\(purpose)'/\(coin)'/\(account)'/\(change)/\(index)"
   }
 
-  func asCNBDerivationPath() -> CNBDerivationPath {
-    let purpose = CoinDerivation(rawValue: UInt(self.purpose)) ?? CoinDerivation.BIP84
-    let coinType = CoinType(rawValue: UInt(self.coin)) ?? CoinType.MainNet
-    return CNBDerivationPath(purpose: purpose, coinType: coinType, account: UInt(self.account), change: UInt(self.change), index: UInt(self.index))
+  func asCNBDerivationPath() -> CNBCnlibDerivationPath {
+    return CNBCnlibDerivationPath(purpose, coin: coin, account: account, change: change, index: index)!
   }
 
   static func findOrCreate(with dpResponse: DerivativePathResponse, in context: NSManagedObjectContext) -> CKMDerivativePath {
@@ -102,7 +100,7 @@ public class CKMDerivativePath: NSManagedObject {
   }
 
   static func findAllReceivePathsWithAddressTransactionSummaries(
-    forCoin coin: CNBBaseCoin,
+    forCoin coin: CNBCnlibBasecoin,
     in context: NSManagedObjectContext) -> [CKMDerivativePath] {
     let fetchRequest: NSFetchRequest<CKMDerivativePath> = CKMDerivativePath.fetchRequest()
     fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
@@ -118,15 +116,15 @@ public class CKMDerivativePath: NSManagedObject {
     }
   }
 
-  static func maxUsedReceiveIndex(forCoin coin: CNBBaseCoin, in context: NSManagedObjectContext) -> Int? {
+  static func maxUsedReceiveIndex(forCoin coin: CNBCnlibBasecoin, in context: NSManagedObjectContext) -> Int? {
     return maxUsedIndex(forCoin: coin, changeIndex: changeIsReceiveValue, in: context)
   }
 
-  static func maxUsedChangeIndex(forCoin coin: CNBBaseCoin, in context: NSManagedObjectContext) -> Int? {
+  static func maxUsedChangeIndex(forCoin coin: CNBCnlibBasecoin, in context: NSManagedObjectContext) -> Int? {
     return maxUsedIndex(forCoin: coin, changeIndex: changeIsChangeValue, in: context)
   }
 
-  private static func maxUsedIndex(forCoin coin: CNBBaseCoin, changeIndex: Int, in context: NSManagedObjectContext) -> Int? {
+  private static func maxUsedIndex(forCoin coin: CNBCnlibBasecoin, changeIndex: Int, in context: NSManagedObjectContext) -> Int? {
     let fetchRequest: NSFetchRequest<CKMDerivativePath> = CKMDerivativePath.fetchRequest()
     let changePredicate = CKPredicate.DerivativePath.allPaths(for: coin, changeIndex: changeIndex)
     let nonServerPredicate = CKPredicate.DerivativePath.withoutServerAddress()

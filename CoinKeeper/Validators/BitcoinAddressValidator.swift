@@ -33,6 +33,12 @@ enum BitcoinAddressValidatorError: ValidatorTypeError {
 
 class BitcoinAddressValidator: ValidatorType<String> {
 
+  private unowned let walletManager: WalletManagerType
+
+  init(walletManager: WalletManagerType) {
+    self.walletManager = walletManager
+  }
+
   override func validate(value: String) throws {
     guard value.isNotEmpty else { throw BitcoinAddressValidatorError.isInvalidBitcoinAddress }
     guard value != "1111111111111111111114oLvT2" else { throw BitcoinAddressValidatorError.isInvalidBitcoinAddress }
@@ -42,11 +48,11 @@ class BitcoinAddressValidator: ValidatorType<String> {
     let addressStartsWithHRP = possibleHRPs.contains(where: { address.starts(with: $0) })
 
     if addressStartsWithHRP {
-      if !WalletManager.validateBech32Encoding(for: address) {
+      if !walletManager.validateBech32Encoding(for: address) {
         error = .notBech32Valid
       }
     } else {
-      if !WalletManager.validateBase58Check(for: value) {
+      if !walletManager.validateBase58Check(for: value) {
         error = .notBase58CheckValid
       } else if sanitizedAddress(in: value) == nil {
         error = .isInvalidBitcoinAddress

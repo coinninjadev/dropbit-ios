@@ -9,7 +9,7 @@
 
 import Foundation
 import CoreData
-import CNBitcoinKit
+import Cnlib
 
 @objc(CKMAddressTransactionSummary)
 public class CKMAddressTransactionSummary: NSManagedObject {
@@ -87,7 +87,7 @@ public class CKMAddressTransactionSummary: NSManagedObject {
     return findAll(in: context).map { $0.txid }
   }
 
-  static func findAll(matching coin: CNBBaseCoin, in context: NSManagedObjectContext) -> [CKMAddressTransactionSummary] {
+  static func findAll(matching coin: CNBCnlibBasecoin, in context: NSManagedObjectContext) -> [CKMAddressTransactionSummary] {
     let fetchRequest: NSFetchRequest<CKMAddressTransactionSummary> = CKMAddressTransactionSummary.fetchRequest()
     fetchRequest.predicate = CKPredicate.AddressTransactionSummary.matching(coin: coin)
     do {

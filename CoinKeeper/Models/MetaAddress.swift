@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CNBitcoinKit
+import Cnlib
 
 public struct MetaAddress {
   let address: String
@@ -18,9 +18,8 @@ public struct MetaAddress {
     self.addressPubKey = addressPubKey
   }
 
-  init?(cnbMetaAddress: CNBMetaAddress) {
-    guard let pubKey = cnbMetaAddress.uncompressedPublicKey else { return nil }
-    self.init(address: cnbMetaAddress.address, addressPubKey: pubKey)
+  init?(cnbMetaAddress: CNBCnlibMetaAddress) {
+    self.init(address: cnbMetaAddress.address, addressPubKey: cnbMetaAddress.uncompressedPublicKey)
   }
 
 }

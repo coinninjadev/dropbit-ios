@@ -7,7 +7,7 @@
 //
 
 import CoreData
-import CNBitcoinKit
+import Cnlib
 import PromiseKit
 
 class WalletBroker: CKPersistenceBroker, WalletBrokerType {
@@ -69,7 +69,7 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
   /// The responses should correspond 1-to-1 with the metaAddresses, order is irrelevant.
   func persistAddedWalletAddresses(
     from responses: [WalletAddressResponse],
-    metaAddresses: [CNBMetaAddress],
+    metaAddresses: [CNBCnlibMetaAddress],
     in context: NSManagedObjectContext) -> Promise<Void> {
     return Promise { seal in
 
@@ -124,16 +124,16 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
     }
   }
 
-  var usableCoin: CNBBaseCoin {
-    var coinType: CoinType = .MainNet
+  var usableCoin: CNBCnlibBasecoin {
+    var coinType = 0
     #if DEBUG
-    coinType = CKUserDefaults().useRegtest ? .TestNet : .MainNet
+    coinType = CKUserDefaults().useRegtest ? 1 : 0
     #endif
     let possibleSegwitWords = keychainManager.retrieveValue(for: .walletWordsV2) as? [String]
     if let words = possibleSegwitWords, words.count == 12 {
-      return CNBBaseCoin(purpose: .BIP84, coin: coinType, account: 0)
+      return CNBCnlibNewBaseCoin(84, coinType, 0)!
     } else {
-      return CNBBaseCoin(purpose: .BIP49, coin: coinType, account: 0)
+      return CNBCnlibNewBaseCoin(49, coinType, 0)!
     }
   }
 
