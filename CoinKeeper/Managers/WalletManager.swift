@@ -9,6 +9,7 @@
 import CNBitcoinKit
 import CoreData
 import PromiseKit
+import Cnlib
 
 protocol WalletManagerType: AnyObject {
   static func createMnemonicWords() -> [String]
@@ -158,7 +159,8 @@ class WalletManager: WalletManagerType {
     var words: [String] = []
     while words.count != 12 {
       let entropy = secureEntropy()
-      words = CNBHDWallet.createMnemonicWords(withEntropy: entropy)
+      let err = NSErrorPointer(nilLiteral: ())
+      words = CNBCnlibNewWordListFromEntropy(entropy, err).split(separator: " ").map(String.init)
     }
     return words
   }

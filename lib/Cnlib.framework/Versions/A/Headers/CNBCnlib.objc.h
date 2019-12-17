@@ -416,15 +416,15 @@ Once created, add all available utxos one at a time using `addUTXO` function, as
 /**
  * Following constants are used for RBFOption.
  */
-FOUNDATION_EXPORT const int64_t CNBCnlibAllowedToBeRBF;
+FOUNDATION_EXPORT const long CNBCnlibAllowedToBeRBF;
 /**
  * Following constants are used for RBFOption.
  */
-FOUNDATION_EXPORT const int64_t CNBCnlibMustBeRBF;
+FOUNDATION_EXPORT const long CNBCnlibMustBeRBF;
 /**
  * Following constants are used for RBFOption.
  */
-FOUNDATION_EXPORT const int64_t CNBCnlibMustNotBeRBF;
+FOUNDATION_EXPORT const long CNBCnlibMustNotBeRBF;
 
 /**
  * GetFullBIP39WordListString returns all 2,048 BIP39 mnemonic words as a space-separated string.
