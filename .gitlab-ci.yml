@@ -1,6 +1,5 @@
 stages:
   - unit_tests
-  - ui_tests
   - test_flight
   - archive
 
@@ -19,12 +18,6 @@ before_script:
 run_tests:
   stage: unit_tests
   script: bundle exec fastlane test
-  tags:
-    - ios
-
-run_ui_tests:
-  stage: ui_tests
-  script: bundle exec fastlane ui_tests
   tags:
     - ios
 
