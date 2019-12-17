@@ -9,7 +9,7 @@
 import Foundation
 import PromiseKit
 import CoreData
-import CNBitcoinKit
+import Cnlib
 
 protocol TransactionDataWorkerType: AnyObject {
 
@@ -62,14 +62,14 @@ class TransactionDataWorker: TransactionDataWorkerType {
     return self.performFetchAndStoreAllOnChainTransactions(in: context, fullSync: false)
   }
 
-  typealias AddressFetcher = (Int) -> CNBMetaAddress
+  typealias AddressFetcher = (Int) throws -> CNBCnlibMetaAddress
 
   func performFetchAndStoreAllOnChainTransactions(in context: NSManagedObjectContext, fullSync: Bool) -> Promise<Void> {
     CKNotificationCenter.publish(key: .didStartSync, object: nil, userInfo: nil)
 
     let addressDataSource = self.walletManager.createAddressDataSource()
-    let receiveAddressFetcher: AddressFetcher = { addressDataSource.receiveAddress(at: $0) }
-    let changeAddressFetcher: AddressFetcher = { addressDataSource.changeAddress(at: $0) }
+    let receiveAddressFetcher: AddressFetcher = { try addressDataSource.receiveAddress(at: $0) }
+    let changeAddressFetcher: AddressFetcher = { try addressDataSource.changeAddress(at: $0) }
 
     // Check latest CKMAddressTransactionSummary because it always represents an actual transaction
     // Run full sync if latestTransactionDate is nil
