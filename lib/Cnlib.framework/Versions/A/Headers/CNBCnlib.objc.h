@@ -41,14 +41,6 @@
 - (nullable instancetype)init:(CNBCnlibBasecoin* _Nullable)basecoin;
 @property (nonatomic) CNBCnlibBasecoin* _Nullable basecoin;
 /**
- * AddressIsBase58CheckEncoded decodes the address, returns true if address is base58check encoded.
- */
-- (BOOL)addressIsBase58CheckEncoded:(NSString* _Nullable)addr;
-/**
- * AddressIsValidSegwitAddress decodes the address, returns true if is a witness type.
- */
-- (BOOL)addressIsValidSegwitAddress:(NSString* _Nullable)addr;
-/**
  * HRPFromAddress decodes the given address, and if a SegWit address, returns the HRP.
  */
 - (NSString* _Nonnull)hrpFromAddress:(NSString* _Nullable)addr error:(NSError* _Nullable* _Nullable)error;
@@ -425,6 +417,16 @@ FOUNDATION_EXPORT const long CNBCnlibMustBeRBF;
  * Following constants are used for RBFOption.
  */
 FOUNDATION_EXPORT const long CNBCnlibMustNotBeRBF;
+
+/**
+ * AddressIsBase58CheckEncoded decodes the address, returns true if address is base58check encoded.
+ */
+FOUNDATION_EXPORT BOOL CNBCnlibAddressIsBase58CheckEncoded(NSString* _Nullable addr, BOOL* _Nullable ret0_, NSError* _Nullable* _Nullable error);
+
+/**
+ * AddressIsValidSegwitAddress decodes the address, returns true if is a witness type.
+ */
+FOUNDATION_EXPORT BOOL CNBCnlibAddressIsValidSegwitAddress(NSString* _Nullable addr, BOOL* _Nullable ret0_, NSError* _Nullable* _Nullable error);
 
 /**
  * GetFullBIP39WordListString returns all 2,048 BIP39 mnemonic words as a space-separated string.
