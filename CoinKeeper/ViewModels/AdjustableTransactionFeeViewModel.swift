@@ -14,15 +14,18 @@ struct AdjustableTransactionFeeViewModel {
   let lowFeeTxData: CNBTransactionData //must not be nil
   let mediumFeeTxData: CNBTransactionData?
   let highFeeTxData: CNBTransactionData?
+  let isAdjustable: Bool
 
   init(preferredFeeType: TransactionFeeType,
        lowFeeTxData: CNBTransactionData,
        mediumFeeTxData: CNBTransactionData?,
-       highFeeTxData: CNBTransactionData?) {
+       highFeeTxData: CNBTransactionData?,
+       isAdjustable: Bool) {
     self.selectedFeeType = preferredFeeType
     self.lowFeeTxData = lowFeeTxData
     self.mediumFeeTxData = mediumFeeTxData
     self.highFeeTxData = highFeeTxData
+    self.isAdjustable = isAdjustable
 
     if transactionData(for: preferredFeeType) == nil {
       selectedFeeType = .cheap
@@ -33,7 +36,8 @@ struct AdjustableTransactionFeeViewModel {
     return AdjustableTransactionFeeViewModel(preferredFeeType: selectedType,
                                              lowFeeTxData: self.lowFeeTxData,
                                              mediumFeeTxData: self.mediumFeeTxData,
-                                             highFeeTxData: self.highFeeTxData)
+                                             highFeeTxData: self.highFeeTxData,
+                                             isAdjustable: self.isAdjustable)
   }
 
   private let sortedFeeTypes: [TransactionFeeType] = [.fast, .slow, .cheap]
