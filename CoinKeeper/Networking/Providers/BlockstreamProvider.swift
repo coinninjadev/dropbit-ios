@@ -8,7 +8,7 @@
 
 import Moya
 import PromiseKit
-import CNBitcoinKit
+import Cnlib
 
 class BlockstreamProvider {
 
@@ -16,7 +16,7 @@ class BlockstreamProvider {
     return MoyaProvider<BlockstreamTarget>()
   }
 
-  func broadcastTransaction(with metadata: CNBTransactionMetadata) -> Promise<BroadcastInfo> {
+  func broadcastTransaction(with metadata: CNBCnlibTransactionMetadata) -> Promise<BroadcastInfo> {
     return Promise { seal in
       provider.request(.sendRawTransaction(metadata.encodedTx)) { (result) in
         switch result {

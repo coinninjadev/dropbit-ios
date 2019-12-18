@@ -226,11 +226,13 @@ class WalletSyncOperationFactory {
             var flagsParser = WalletFlagsParser(flags: 0).setVersion(.v0).setPurpose(.BIP49)
             if let words = dependencies.persistenceManager.keychainManager.retrieveValue(for: .walletWords) as? [String] {
               let newWalletManager = WalletManager(words: words, persistenceManager: dependencies.persistenceManager)
-              return dependencies.networkManager.createWallet(withPublicKey: newWalletManager.hexEncodedPublicKey, walletFlags: flagsParser.flags)
+              return newWalletManager.hexEncodedPublicKeyPromise()
+                .then { return dependencies.networkManager.createWallet(withPublicKey: $0, walletFlags: flagsParser.flags) }
             } else if let words = dependencies.persistenceManager.keychainManager.retrieveValue(for: .walletWordsV2) as? [String] {
               flagsParser = flagsParser.setVersion(.v2).setPurpose(.BIP84)
               let newWalletManager = WalletManager(words: words, persistenceManager: dependencies.persistenceManager)
-              return dependencies.networkManager.createWallet(withPublicKey: newWalletManager.hexEncodedPublicKey, walletFlags: flagsParser.flags)
+              return newWalletManager.hexEncodedPublicKeyPromise()
+                .then { return dependencies.networkManager.createWallet(withPublicKey: $0, walletFlags: flagsParser.flags) }
             } else {
               return Promise(error: CKPersistenceError.noWalletWords)
             }

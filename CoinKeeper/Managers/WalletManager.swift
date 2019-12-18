@@ -17,6 +17,7 @@ protocol WalletManagerType: AnyObject {
   var coin: CNBCnlibBasecoin { get }
   var wallet: CNBCnlibHDWallet { get }
   func hexEncodedPublicKey() throws -> String
+  func hexEncodedPublicKeyPromise() -> Promise<String>
   func signatureSigning(data: Data) throws -> String
   func usableFeeRate(from feeRate: Double) -> Int
   func mnemonicWords() -> [String]
@@ -148,13 +149,13 @@ class WalletManager: WalletManagerType {
   }
 
   func validateBase58Check(for address: String) -> Bool {
-    let helper = CNBCnlibNewAddressHelper(coin)
-    return helper?.addressIsBase58CheckEncoded(address) ?? false
+    let errorPtr = NSErrorPointer(nilLiteral: ())
+    return CNBCnlibAddressIsBase58CheckEncoded(address, nil, errorPtr)
   }
 
   func validateBech32Encoding(for address: String) -> Bool {
-    let helper = CNBCnlibNewAddressHelper(coin)
-    return helper?.addressIsValidSegwitAddress(address) ?? false
+    let errorPtr = NSErrorPointer(nilLiteral: ())
+    return CNBCnlibAddressIsValidSegwitAddress(address, nil, errorPtr)
   }
 
   var minimumFeeRate: Int {
@@ -209,6 +210,17 @@ class WalletManager: WalletManagerType {
       throw error
     }
     return key
+  }
+
+  func hexEncodedPublicKeyPromise() -> Promise<String> {
+    return Promise<String> { seal in
+      do {
+        let pubkey = try self.hexEncodedPublicKey()
+        seal.fulfill(pubkey)
+      } catch {
+        seal.reject(error)
+      }
+    }
   }
 
   func resetWallet(with words: [String]) {
@@ -296,19 +308,20 @@ class WalletManager: WalletManagerType {
         data?.add(utxo)
       }
 
-      let boolPtr: UnsafeMutablePointer<ObjCBool>?
       do {
+        var boolPtr: UnsafeMutablePointer<ObjCBool>?
         try data?.generate(boolPtr)
+
+        if let bool = boolPtr?.pointee, bool.boolValue == false {
+          log.error("Failed to generate transaction data: insufficient funds.")
+        }
+
+        result = data?.transactionData
       } catch {
         log.error(error, message: "Failed to generate standard transaction data.")
         return
       }
 
-      if let bool = boolPtr?.pointee, bool.boolValue == false {
-        log.error("Failed to generate transaction data: insufficient funds.")
-      }
-
-      result = data?.transactionData
     }
     return result
   }

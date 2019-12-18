@@ -324,7 +324,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     var foreignAddressResponses: [WalletAddressResponse] = []
 
     for response in responses {
-      let addressIsForeign = addressDataSource.checkAddressExists(for: response.address, in: context) == nil
+      let addressIsForeign = (try? addressDataSource.checkAddressExists(for: response.address, in: context)) == nil
 
       // Check validity in decreasing order of severity
       if addressIsForeign {
@@ -356,13 +356,19 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
       log.debug("Lightning invoice generation already enabled")
       return Promise.value(standardBitcoinAddressResponses)
     } else {
-      let generateInvoicesAddressBody = AddWalletAddressBody(address: generateValue,
-                                                             pubkey: self.walletManager.hexEncodedPublicKey,
-                                                             type: .lightning,
-                                                             walletAddressRequestId: nil)
-      return networkManager.addWalletAddress(body: generateInvoicesAddressBody)
-        .map { _ in return standardBitcoinAddressResponses }
-        .tap { _ in log.event("Did enable lightning invoice generation") }
+      do {
+        let pubkey = try walletManager.hexEncodedPublicKey()
+        let generateInvoicesAddressBody = AddWalletAddressBody(address: generateValue,
+                                                               pubkey: pubkey,
+                                                               type: .lightning,
+                                                               walletAddressRequestId: nil)
+        return networkManager.addWalletAddress(body: generateInvoicesAddressBody)
+          .map { _ in return standardBitcoinAddressResponses }
+          .tap { _ in log.event("Did enable lightning invoice generation") }
+      } catch {
+        log.error(error, message: "Failed to get hex encoded public key.")
+        return Promise(error: error)
+      }
     }
   }
 

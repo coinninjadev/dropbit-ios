@@ -8,7 +8,7 @@
 
 import Foundation
 import Contacts
-import CNBitcoinKit
+import Cnlib
 
 class BaseConfirmPaymentViewModel: DualAmountDisplayable {
 
@@ -63,7 +63,7 @@ class BaseConfirmPaymentViewModel: DualAmountDisplayable {
     return false
   }
 
-  func update(with transactionData: CNBTransactionData?) {
+  func update(with transactionData: CNBCnlibTransactionData?) {
     guard let txData = transactionData else { return }
     self.btcAmount = NSDecimalNumber(integerAmount: Int(txData.amount), currency: .BTC)
   }
@@ -207,12 +207,12 @@ struct TransactionFeeConfig {
 }
 
 enum ConfirmTransactionFeeModel {
-  case standard(CNBTransactionData)
-  case required(CNBTransactionData)
+  case standard(CNBCnlibTransactionData)
+  case required(CNBCnlibTransactionData)
   case adjustable(AdjustableTransactionFeeViewModel)
   case lightning
 
-  var transactionData: CNBTransactionData? {
+  var transactionData: CNBCnlibTransactionData? {
     switch self {
     case .standard(let txData), .required(let txData):
       return txData

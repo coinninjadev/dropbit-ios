@@ -6,7 +6,7 @@
 //  Copyright © 2019 Coin Ninja, LLC. All rights reserved.
 //
 
-import CNBitcoinKit
+import Cnlib
 import Foundation
 import PromiseKit
 import Permission
@@ -16,7 +16,7 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
 
   func viewController(
     _ viewController: UIViewController,
-    sendingMax txData: CNBTransactionData,
+    sendingMax txData: CNBCnlibTransactionData,
     to address: String,
     inputs: SendingDelegateInputs) {
 
@@ -25,8 +25,8 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
     txData.paymentAddress = address
 
     var outgoingTxData = OutgoingTransactionData.emptyInstance()
-    outgoingTxData.feeAmount = Int(txData.feeAmount)
-    outgoingTxData.amount = Int(txData.amount)
+    outgoingTxData.feeAmount = txData.feeAmount
+    outgoingTxData.amount = txData.amount
     outgoingTxData = configureOutgoingTransactionData(with: outgoingTxData, address: address, inputs: inputs)
 
     let btcAmount = NSDecimalNumber(integerAmount: outgoingTxData.amount, currency: .BTC)
@@ -129,21 +129,27 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
       .then { (rates: FeeRates) -> Promise<ConfirmTransactionFeeModel> in
         // Take rates, get fee config, and return a fee mode
         let config = TransactionFeeConfig(prefs: self.persistenceManager.brokers.preferences)
+        let rbfOption = CNBCnlibRBFOption(CNBCnlibAllowedToBeRBF)!
 
         if let requiredFeeRate = inputs.outgoingTxData.requiredFeeRate {
-          return inputs.wmgr.transactionData(forPayment: inputs.btcAmount, to: inputs.address,
+          return inputs.wmgr.transactionData(forPayment: inputs.btcAmount,
+                                             to: inputs.address,
                                              withFeeRate: requiredFeeRate,
-                                             rbfOption: .Allowed).map { .required($0) }
+                                             rbfOption: rbfOption)
+            .map { .required($0) }
 
         } else if config.adjustableFeesEnabled {
           return self.adjustableFeeViewModel(config: config, rates: rates, wmgr: inputs.wmgr, btcAmount: inputs.btcAmount,
-                                             address: inputs.address).map { .adjustable($0) }
+                                             address: inputs.address)
+            .map { .adjustable($0) }
 
         } else {
           let defaultFeeRate = rates.rate(forType: config.defaultFeeType)
-          return inputs.wmgr.transactionData(forPayment: inputs.btcAmount, to: inputs.address,
+          return inputs.wmgr.transactionData(forPayment: inputs.btcAmount,
+                                             to: inputs.address,
                                              withFeeRate: defaultFeeRate,
-                                             rbfOption: .Allowed).map { .standard($0) }
+                                             rbfOption: rbfOption)
+            .map { .standard($0) }
         }
       }
       .done { (feeModel: ConfirmTransactionFeeModel) in
@@ -265,14 +271,15 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
                                       btcAmount: NSDecimalNumber,
                                       address: String) -> Promise<AdjustableTransactionFeeViewModel> {
     let usableRates = UsableFeeRates(rates: rates, walletManager: wmgr)
+    let allowed = CNBCnlibRBFOption(CNBCnlibAllowedToBeRBF)!
 
-    return wmgr.transactionData(forPayment: btcAmount, to: address, withFeeRate: usableRates.lowRate, rbfOption: .Allowed)
+    return wmgr.transactionData(forPayment: btcAmount, to: address, withFeeRate: usableRates.lowRate, rbfOption: allowed)
       .map { lowTxData -> AdjustableTransactionFeeViewModel in
         let maybeMediumTxData = wmgr.failableTransactionData(
-          forPayment: btcAmount, to: address, withFeeRate: usableRates.mediumRate, rbfOption: .Allowed
+          forPayment: btcAmount, to: address, withFeeRate: usableRates.mediumRate, rbfOption: allowed
         )
         let maybeHighTxData = wmgr.failableTransactionData(
-          forPayment: btcAmount, to: address, withFeeRate: usableRates.highRate, rbfOption: .Allowed
+          forPayment: btcAmount, to: address, withFeeRate: usableRates.highRate, rbfOption: allowed
         )
         return AdjustableTransactionFeeViewModel(preferredFeeType: config.defaultFeeType,
                                                  lowFeeTxData: lowTxData,

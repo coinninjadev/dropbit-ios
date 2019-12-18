@@ -61,10 +61,6 @@ public class CKMDerivativePath: NSManagedObject {
     }
   }
 
-  static func findOrCreate(withCoin coin: CNBBaseCoin, receiveIndex: Int, in context: NSManagedObjectContext) -> CKMDerivativePath {
-    return findOrCreate(with: Int(coin.purpose.rawValue), Int(coin.coin.rawValue), 0, 0, receiveIndex, in: context)
-  }
-
   static func findOrCreate(
     with purpose: Int,
     _ coin: Int,

@@ -13,7 +13,7 @@ enum WalletAddressError: Error, LocalizedError {
 
   var errorDescription: String? {
     switch self {
-    case .unexpectedAddress:  return "Address received in response does not match one of the CNBMetaAddresses provided"
+    case .unexpectedAddress:  return "Address received in response does not match one of the CNBCnlibMetaAddresses provided"
     }
   }
 }

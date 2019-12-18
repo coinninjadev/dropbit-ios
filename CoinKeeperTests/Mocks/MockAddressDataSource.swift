@@ -37,9 +37,9 @@ class MockAddressDataSource: AddressDataSourceType {
   var validAddresses: [String] = []
   func checkAddressExists(for address: String, in context: NSManagedObjectContext) throws -> CNBCnlibMetaAddress {
     if validAddresses.contains(address) {
-      return CNBCnlibMetaAddress(address, path: nil, uncompressedPublicKey: nil)
+      return CNBCnlibMetaAddress(address, path: nil, uncompressedPublicKey: nil)!
     } else {
-      return nil
+      throw WalletAddressError.unexpectedAddress
     }
   }
 

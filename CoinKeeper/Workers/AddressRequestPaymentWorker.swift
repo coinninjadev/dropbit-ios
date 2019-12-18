@@ -6,7 +6,7 @@
 //  Copyright © 2019 Coin Ninja, LLC. All rights reserved.
 //
 
-import CNBitcoinKit
+import Cnlib
 import CoreData
 import Moya
 import PromiseKit
@@ -32,7 +32,7 @@ class AddressRequestPaymentWorker {
   func completeWalletAddressRequestFulfillmentLocally(outgoingTransactionData: OutgoingTransactionData,
                                                       invitationId: String,
                                                       pendingInvitation: CKMInvitation,
-                                                      txData: CNBTransactionData?,
+                                                      txData: CNBCnlibTransactionData?,
                                                       in context: NSManagedObjectContext,
                                                       transactionType: WalletTransactionType) -> Promise<Void> {
     guard let postableObject = PayloadPostableOutgoingTransactionData(data: outgoingTransactionData) else {

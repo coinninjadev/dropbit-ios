@@ -6,20 +6,20 @@
 //  Copyright © 2019 Coin Ninja, LLC. All rights reserved.
 //
 
-import CNBitcoinKit
+import Cnlib
 
 struct AdjustableTransactionFeeViewModel {
 
   var selectedFeeType: TransactionFeeType
-  let lowFeeTxData: CNBTransactionData //must not be nil
-  let mediumFeeTxData: CNBTransactionData?
-  let highFeeTxData: CNBTransactionData?
+  let lowFeeTxData: CNBCnlibTransactionData //must not be nil
+  let mediumFeeTxData: CNBCnlibTransactionData?
+  let highFeeTxData: CNBCnlibTransactionData?
   let isAdjustable: Bool
 
   init(preferredFeeType: TransactionFeeType,
-       lowFeeTxData: CNBTransactionData,
-       mediumFeeTxData: CNBTransactionData?,
-       highFeeTxData: CNBTransactionData?,
+       lowFeeTxData: CNBCnlibTransactionData,
+       mediumFeeTxData: CNBCnlibTransactionData?,
+       highFeeTxData: CNBCnlibTransactionData?,
        isAdjustable: Bool) {
     self.selectedFeeType = preferredFeeType
     self.lowFeeTxData = lowFeeTxData
@@ -55,11 +55,11 @@ struct AdjustableTransactionFeeViewModel {
     }
   }
 
-  var applicableTransactionData: CNBTransactionData {
+  var applicableTransactionData: CNBCnlibTransactionData {
     return transactionData(for: selectedFeeType) ?? lowFeeTxData
   }
 
-  private func transactionData(for mode: TransactionFeeType) -> CNBTransactionData? {
+  private func transactionData(for mode: TransactionFeeType) -> CNBCnlibTransactionData? {
     switch mode {
     case .fast:   return highFeeTxData
     case .slow:   return mediumFeeTxData
