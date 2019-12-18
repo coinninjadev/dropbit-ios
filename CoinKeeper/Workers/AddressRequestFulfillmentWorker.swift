@@ -74,11 +74,17 @@ class AddressRequestFulfillmentWorker {
   private func fulfillAndPersistLightningAddressRequests(for unfulfilledResponses: [WalletAddressRequestResponse],
                                                          in context: NSManagedObjectContext) -> Promise<Void> {
 
-    let lightningPubKey = self.walletManager.hexEncodedPublicKey
-    let promises = unfulfilledResponses.map { self.fulfillLightningAddressRequest(forResponse: $0, withPubKey: lightningPubKey, in: context)}
-    return when(fulfilled: promises)
-      .get(in: context) { self.persistenceManager.persistReceivedAddressRequests($0, in: context) }
-      .asVoid()
+    return walletManager.hexEncodedPublicKeyPromise()
+      .then { (key: String) -> Promise<[Promise<WalletAddressRequestResponse>]> in
+        let promises = unfulfilledResponses
+          .map { response in self.fulfillLightningAddressRequest(forResponse: response, withPubKey: key, in: context)}
+        return Promise.value(promises)
+      }
+      .then { (promises: [Promise<WalletAddressRequestResponse>]) -> Promise<Void> in
+        return when(fulfilled: promises)
+          .get(in: context) { self.persistenceManager.persistReceivedAddressRequests($0, in: context) }
+          .asVoid()
+      }
   }
 
   private func fulfillLightningAddressRequest(forResponse unfulfilledResponse: WalletAddressRequestResponse,

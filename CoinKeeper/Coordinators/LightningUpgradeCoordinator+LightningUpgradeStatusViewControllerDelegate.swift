@@ -8,11 +8,11 @@
 
 import Foundation
 import PromiseKit
-import CNBitcoinKit
+import Cnlib
 import CoreData
 
 extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDelegate {
-  func viewControllerDidRequestUpgradedWallet(_ viewController: LightningUpgradeStatusViewController) -> CNBHDWallet? {
+  func viewControllerDidRequestUpgradedWallet(_ viewController: LightningUpgradeStatusViewController) -> CNBCnlibHDWallet? {
     return newWallet
   }
 
@@ -47,7 +47,7 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
       .asVoid()
   }
 
-  func viewController(_ viewController: LightningUpgradeStatusViewController, broadcast metadata: CNBTransactionMetadata) -> Promise<String> {
+  func viewController(_ viewController: LightningUpgradeStatusViewController, broadcast metadata: CNBCnlibTransactionMetadata) -> Promise<String> {
     return parent.networkManager.broadcastTx(metadata: metadata)
       .get { _ in self.parent.analyticsManager.track(property: MixpanelProperty(key: .lightningUpgradedFunds, value: true)) }
   }

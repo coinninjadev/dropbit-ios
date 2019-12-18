@@ -7,21 +7,21 @@
 //
 
 import UIKit
-import CNBitcoinKit
+import Cnlib
 
 final class LightningUpgradePageViewController: UIPageViewController, StoryboardInitializable {
 
   weak var generalCoordinationDelegate: AnyObject?
   weak var activeViewController: UIViewController?
 
-  var transactionData: CNBTransactionData? {
+  var transactionData: CNBCnlibTransactionData? {
     didSet {
       self.activeViewController
         .flatMap { $0 as? LightningUpgradeStartViewController }?
         .updateUI(withTransactionData: transactionData)
     }
   }
-  var transactionMetadata: CNBTransactionMetadata?
+  var transactionMetadata: CNBCnlibTransactionMetadata?
 
   private func performUpgradeNowAction() {
     activeViewController = lnViewControllers()[1]
@@ -86,7 +86,7 @@ final class LightningUpgradePageViewController: UIPageViewController, Storyboard
     activeViewController.map { self.setViewControllers([$0], direction: .forward, animated: true, completion: nil) }
   }
 
-  func updateUI(with data: CNBTransactionData?, txMetadata: CNBTransactionMetadata?) {
+  func updateUI(with data: CNBCnlibTransactionData?, txMetadata: CNBCnlibTransactionMetadata?) {
     self.transactionData = data
     self.transactionMetadata = txMetadata
   }

@@ -9,6 +9,7 @@
 import Foundation
 import Contacts
 import Cnlib
+import UIKit
 
 class BaseConfirmPaymentViewModel: DualAmountDisplayable {
 

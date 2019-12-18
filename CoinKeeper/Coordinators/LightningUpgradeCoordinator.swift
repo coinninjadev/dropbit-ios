@@ -7,7 +7,8 @@
 //
 
 import Foundation
-import CNBitcoinKit
+import Cnlib
+import UIKit
 
 protocol LightningUpgradeCoordinatorDelegate: DebugDelegate {
   func coordinatorWillCompleteUpgrade(_ coordinator: LightningUpgradeCoordinator)
@@ -19,9 +20,9 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
   weak var childCoordinatorDelegate: ChildCoordinatorDelegate!
   weak var parent: AppCoordinator!
   var newWords: [String] = []
-  var newWallet: CNBHDWallet?
+  var newWallet: CNBCnlibHDWallet?
 
-  var transactionData: CNBTransactionData?
+  var transactionData: CNBCnlibTransactionData?
 
   init(parent: AppCoordinator) {
     self.childCoordinatorDelegate = parent
@@ -77,13 +78,13 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
     properties.forEach { self.parent.analyticsManager.track(property: $0) }
   }
 
-  private func presentDebugInfoAlert(withController controller: UIViewController) {
+  private func presentDebugInfoAlert(withController controller: UIViewController, error: Error = SyncRoutineError.missingWalletManager) {
     log.info("~*~*~*~*~ Has wallet words v1: \(parent.persistenceManager.keychainManager.retrieveValue(for: .walletWords) != nil)")
     log.info("~*~*~*~*~ Has wallet words v2: \(parent.persistenceManager.keychainManager.retrieveValue(for: .walletWordsV2) != nil)")
     log.info("~*~*~*~*~ Has pin: \(parent.persistenceManager.keychainManager.retrieveValue(for: .userPin) != nil)")
     log.info("~*~*~*~*~ Is iCloud restore: \(parent.launchStateManager.isFirstTimeAfteriCloudRestore())")
 
-    let alert = parent.alertManager.debugAlert(with: SyncRoutineError.missingWalletManager) {
+    let alert = parent.alertManager.debugAlert(with: error) {
       self.coordinationDelegate?.viewControllerSendDebuggingInfo(controller)
     }
 
@@ -100,23 +101,32 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
     }
 
     let feeRate = parent.persistenceManager.brokers.checkIn.cachedBetterFee
-    var coinType: CoinType = .MainNet
+    var net = 0
     #if DEBUG
-    coinType = CKUserDefaults().useRegtest ? .TestNet : .MainNet
+    net = CKUserDefaults().useRegtest ? 1 : 0
     #endif
-    let upgradedCoin = CNBBaseCoin(purpose: .BIP84, coin: coinType, account: 0)
+    let upgradedCoin = CNBCnlibNewBaseCoin(84, net, 0)
     let tempWords = WalletManager.createMnemonicWords()
     self.newWords = tempWords
-    let newWallet = CNBHDWallet(mnemonic: tempWords, coin: upgradedCoin)
+    let newWallet = CNBCnlibNewHDWalletFromWords(tempWords.joined(separator: " "), upgradedCoin)!
     self.newWallet = newWallet
     let dataSource = AddressDataSource(wallet: newWallet, persistenceManager: parent.persistenceManager)
-    let destinationAddress = dataSource.changeAddress(at: 0).address
+    var destinationAddress = ""
+    do {
+      destinationAddress = try dataSource.changeAddress(at: 0).address
+    } catch {
+      log.error(error, message: "Failed to get change address for new wallet at index 0.")
+      presentDebugInfoAlert(withController: controller, error: error)
+    }
     log.info("Creating send-max transaction to upgraded wallet.")
     parent.walletManager?.transactionDataSendingAll(to: destinationAddress, withFeeRate: feeRate)
-      .done { (data: CNBTransactionData) in
-        let builder = CNBTransactionBuilder()
-        let metadata = builder.generateTxMetadata(with: data, wallet: wallet)
-        controller.updateUI(with: data, txMetadata: metadata)
+      .done { (data: CNBCnlibTransactionData) in
+        do {
+          let metadata = try wallet.buildTransactionMetadata(data)
+          controller.updateUI(with: data, txMetadata: metadata)
+        } catch {
+          throw error
+        }
       }
       .catch { (error: Error) in
         log.error(error, message: "Failed to create send max transaction.")

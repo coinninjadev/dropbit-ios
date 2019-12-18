@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 import PromiseKit
-import CNBitcoinKit
+import Cnlib
 
 class CKDatabase: PersistenceDatabaseType {
 
@@ -168,13 +168,17 @@ class CKDatabase: PersistenceDatabaseType {
   }
 
   func persistServerAddress(
-    for metaAddress: CNBMetaAddress,
+    for metaAddress: CNBCnlibMetaAddress,
     createdAt: Date,
     wallet: CKMWallet,
     in context: NSManagedObjectContext) -> Promise<Void> {
     return Promise { seal in
+      guard let metaPath = metaAddress.derivationPath else {
+        seal.reject(CKPersistenceError.missingValue(key: "metaAddress.derivationPath"))
+        return
+      }
       let addressString = metaAddress.address
-      let path = DerivativePathResponse(derivativePath: metaAddress.derivationPath)
+      let path = DerivativePathResponse(derivativePath: metaPath)
 
       context.perform {
         let newAddress = CKMServerAddress(address: addressString, createdAt: createdAt, insertInto: context)
@@ -212,7 +216,7 @@ class CKDatabase: PersistenceDatabaseType {
   }
 
   func persistTemporaryTransaction(
-    from transactionData: CNBTransactionData,
+    from transactionData: CNBCnlibTransactionData,
     with outgoingTransactionData: OutgoingTransactionData,
     txid: String,
     invitation: CKMInvitation?,
@@ -259,7 +263,10 @@ class CKDatabase: PersistenceDatabaseType {
     // Currently, this function is only called after broadcastTx()
     relevantTransaction.broadcastedAt = Date()
 
-    let vouts = transactionData.unspentTransactionOutputs.compactMap { CKMVout.find(from: $0, in: context) }
+    let len = transactionData.utxoCount()
+    let vouts = (0..<len)
+      .compactMap { (try? transactionData.requiredUTXO(at: $0)) } // no need for do/catch, failure is only bounds checking
+      .compactMap { CKMVout.find(from: $0, in: context) }
 
     // Link the vout to the relevant tempTx in case we need to mark the tx as failed and free up these vouts
     relevantTransaction.temporarySentTransaction?.reservedVouts = Set(vouts)
