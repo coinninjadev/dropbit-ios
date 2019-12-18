@@ -126,21 +126,21 @@
  */
 - (NSString* _Nonnull)coinNinjaVerificationKeyHexString:(NSError* _Nullable* _Nullable)error;
 /**
- * DecryptWithDefaultKey decrypts a payload using signing key (m/42) and included sender public key (expected to be last 65 bytes of payload).
+ * DecryptMessage decrypts a payload using signing key (m/42) and included sender public key (expected to be last 65 bytes of payload).
  */
-- (NSData* _Nullable)decryptWithDefaultKey:(NSData* _Nullable)body error:(NSError* _Nullable* _Nullable)error;
+- (NSData* _Nullable)decryptMessage:(NSData* _Nullable)body error:(NSError* _Nullable* _Nullable)error;
 /**
  * DecryptWithKeyFromDerivationPath decrypts a given payload with the key derived from given derivation path.
  */
-- (NSData* _Nullable)decryptWithKeyFromDerivationPath:(NSData* _Nullable)body path:(CNBCnlibDerivationPath* _Nullable)path error:(NSError* _Nullable* _Nullable)error;
+- (NSData* _Nullable)decryptWithKeyFromDerivationPath:(CNBCnlibDerivationPath* _Nullable)path body:(NSData* _Nullable)body error:(NSError* _Nullable* _Nullable)error;
 /**
- * EncryptWithDefaultKey encrypts a payload using signing key (m/42) and recipient's public key.
+ * EncryptMessage encrypts a payload using signing key (m/42) and recipient's public key.
  */
-- (NSData* _Nullable)encryptWithDefaultKey:(NSData* _Nullable)body recipientUncompressedPubkey:(NSString* _Nullable)recipientUncompressedPubkey error:(NSError* _Nullable* _Nullable)error;
+- (NSData* _Nullable)encryptMessage:(NSData* _Nullable)body recipientUncompressedPubkey:(NSString* _Nullable)recipientUncompressedPubkey error:(NSError* _Nullable* _Nullable)error;
 /**
  * EncryptWithEphemeralKey encrypts a given body (byte slice) using ECDH symmetric key encryption by creating an ephemeral keypair from entropy and given uncompressed public key.
  */
-- (NSData* _Nullable)encryptWithEphemeralKey:(NSData* _Nullable)body entropy:(NSData* _Nullable)entropy recipientUncompressedPubkey:(NSString* _Nullable)recipientUncompressedPubkey error:(NSError* _Nullable* _Nullable)error;
+- (NSData* _Nullable)encryptWithEphemeralKey:(NSData* _Nullable)entropy body:(NSData* _Nullable)body recipientUncompressedPubkey:(NSString* _Nullable)recipientUncompressedPubkey error:(NSError* _Nullable* _Nullable)error;
 /**
  * ImportPrivateKey accepts an encoded private key from a paper wallet/QR code, decodes it, and returns a ref to an ImportedPrivateKey struct, or error if failed.
  */

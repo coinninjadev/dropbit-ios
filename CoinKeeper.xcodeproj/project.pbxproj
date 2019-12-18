@@ -353,7 +353,7 @@
 		3BAB1447204EE6BB001D41A2 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB1446204EE6BB001D41A2 /* BaseViewController.swift */; };
 		3BAB1449204EE7FD001D41A2 /* VerifyRecoveryWordsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB1448204EE7FD001D41A2 /* VerifyRecoveryWordsViewControllerTests.swift */; };
 		3BAB144B204F3CD0001D41A2 /* OnboardingTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB144A204F3CD0001D41A2 /* OnboardingTitleLabel.swift */; };
-		3BAB4BC323AAC4C000AADBF7 /* Cnlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BAB4BC223AAC4C000AADBF7 /* Cnlib.framework */; };
+		3BAB4BC523AAD98900AADBF7 /* Cnlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BAB4BC423AAD98800AADBF7 /* Cnlib.framework */; };
 		3BACDB992190B7DB0006F2D4 /* AppCoordinator+RecoveryWordsIntroViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BACDB982190B7DB0006F2D4 /* AppCoordinator+RecoveryWordsIntroViewControllerDelegate.swift */; };
 		3BB01BC1220A4233006B4D25 /* NoConnectionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB01BC0220A4233006B4D25 /* NoConnectionViewControllerTests.swift */; };
 		3BB01BC3220A56F6006B4D25 /* AppCoordinator+NoConnectionViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB01BC2220A56F6006B4D25 /* AppCoordinator+NoConnectionViewControllerDelegate.swift */; };
@@ -1496,7 +1496,7 @@
 		3BAB1446204EE6BB001D41A2 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		3BAB1448204EE7FD001D41A2 /* VerifyRecoveryWordsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyRecoveryWordsViewControllerTests.swift; sourceTree = "<group>"; };
 		3BAB144A204F3CD0001D41A2 /* OnboardingTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTitleLabel.swift; sourceTree = "<group>"; };
-		3BAB4BC223AAC4C000AADBF7 /* Cnlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Cnlib.framework; sourceTree = "<group>"; };
+		3BAB4BC423AAD98800AADBF7 /* Cnlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Cnlib.framework; sourceTree = "<group>"; };
 		3BACDB982190B7DB0006F2D4 /* AppCoordinator+RecoveryWordsIntroViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+RecoveryWordsIntroViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		3BB01BC0220A4233006B4D25 /* NoConnectionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoConnectionViewControllerTests.swift; sourceTree = "<group>"; };
 		3BB01BC2220A56F6006B4D25 /* AppCoordinator+NoConnectionViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+NoConnectionViewControllerDelegate.swift"; sourceTree = "<group>"; };
@@ -2296,7 +2296,7 @@
 				A24525352100EBC80024D5F8 /* Gifu.framework in Frameworks */,
 				3B9EE8782058359400C0CC8C /* PMAlertController.framework in Frameworks */,
 				3B8269172032407C009B11EC /* Strongbox.framework in Frameworks */,
-				3BAB4BC323AAC4C000AADBF7 /* Cnlib.framework in Frameworks */,
+				3BAB4BC523AAD98900AADBF7 /* Cnlib.framework in Frameworks */,
 				B54D205E20F908C30057A694 /* SwiftMessages.framework in Frameworks */,
 				3BB854E020220D6100190874 /* CNBitcoinKit.framework in Frameworks */,
 				A2FDC54122D37BFA004B0EDD /* Charts.framework in Frameworks */,
@@ -2934,7 +2934,7 @@
 		3BAB4BB723A7C71000AADBF7 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				3BAB4BC223AAC4C000AADBF7 /* Cnlib.framework */,
+				3BAB4BC423AAD98800AADBF7 /* Cnlib.framework */,
 			);
 			path = lib;
 			sourceTree = "<group>";
