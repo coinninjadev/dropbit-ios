@@ -23,10 +23,12 @@ enum AsyncOperationType: CustomStringConvertible {
   case syncWallet(WalletSyncType)
   case deleteWallet
   case cacheContacts(force: Bool)
+  case sendInvitation
 
   var description: String {
     switch self {
     case .deleteWallet:             return "deleteWallet"
+    case .sendInvitation:           return "sendInvitation"
     case .syncWallet(let syncType): return "syncWallet.\(syncType.rawValue)"
     case .cacheContacts(let force): return "cacheContacts.\(force)"
     }
@@ -34,6 +36,8 @@ enum AsyncOperationType: CustomStringConvertible {
 
   func isEqual(to operationType: AsyncOperationType, ignoringAssociatedValues: Bool) -> Bool {
     switch self {
+    case .sendInvitation:
+      return true
     case .syncWallet(let selfSyncType):
       switch operationType {
       case .syncWallet(let operationSyncType):
