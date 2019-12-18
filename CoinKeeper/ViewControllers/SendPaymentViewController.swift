@@ -600,7 +600,10 @@ extension SendPaymentViewController: UITextFieldDelegate {
     }
 
     let currentNumber = phoneNumberEntryView.textField.currentGlobalNumber()
-    guard currentNumber.nationalNumber.isNotEmpty else { return } //don't attempt parsing if only dismissing keypad or changing country
+    guard currentNumber.nationalNumber.isNotEmpty else {
+      viewModel.paymentRecipient = nil
+      return
+    } //don't attempt parsing if only dismissing keypad or changing country
 
     do {
       let recipient = try viewModel.recipientParser.findSingleRecipient(inText: text, ofTypes: [.phoneNumber])
