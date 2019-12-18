@@ -277,7 +277,8 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
         return AdjustableTransactionFeeViewModel(preferredFeeType: config.defaultFeeType,
                                                  lowFeeTxData: lowTxData,
                                                  mediumFeeTxData: maybeMediumTxData,
-                                                 highFeeTxData: maybeHighTxData)
+                                                 highFeeTxData: maybeHighTxData,
+                                                 isAdjustable: config.adjustableFeesEnabled)
     }
   }
 
@@ -294,7 +295,8 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
         return AdjustableTransactionFeeViewModel(preferredFeeType: config.defaultFeeType,
                                                  lowFeeTxData: lowTxData,
                                                  mediumFeeTxData: maybeMediumTxData,
-                                                 highFeeTxData: maybeHighTxData)
+                                                 highFeeTxData: maybeHighTxData,
+                                                 isAdjustable: config.adjustableFeesEnabled)
     }
   }
 

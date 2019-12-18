@@ -243,14 +243,13 @@ extension ConfirmPaymentViewController {
 
     switch feeModel {
     case .adjustable(let vm):
-      adjustableFeesContainer.isHidden = false
+      adjustableFeesContainer.isHidden = !vm.isAdjustable
       adjustableFeesControl.selectedSegmentIndex = vm.selectedTypeIndex
       for (i, model) in vm.segmentModels.enumerated() {
         adjustableFeesControl.setTitle(model.title, forSegmentAt: i)
       }
 
       adjustableFeesLabel.attributedText = vm.attributedWaitTimeDescription
-
     case .required, .standard, .lightning:
       adjustableFeesContainer.isHidden = true
     }
