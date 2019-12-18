@@ -115,19 +115,19 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
         return Promise.value(())
       }
       .done(on: .main) {
-        strongOperation.finish()
         strongSelf.navigationController.topViewController()?.present(successFailVC, animated: false, completion: {
           successFailVC.action?()
         })
       }
       .catch { (error) in
-        strongOperation.finish()  
         log.error(error, message: "Failed to handle successful invite verification.")
         strongSelf.handleAddressRequestCreationError(error,
                                                      invitationDTO: outgoingInvitationDTO,
                                                      inviteBody: inviteBody,
                                                      successFailVC: successFailVC,
                                                      in: bgContext)
+      }.finally {
+        strongOperation.finish()
       }
     }
 
