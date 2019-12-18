@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Cnlib
 
 enum BitcoinAddressValidatorError: ValidatorTypeError {
   case isInvalidBitcoinAddress
@@ -33,29 +34,26 @@ enum BitcoinAddressValidatorError: ValidatorTypeError {
 
 class BitcoinAddressValidator: ValidatorType<String> {
 
-  private unowned let walletManager: WalletManagerType
-
-  init(walletManager: WalletManagerType) {
-    self.walletManager = walletManager
-  }
-
   override func validate(value: String) throws {
     guard value.isNotEmpty else { throw BitcoinAddressValidatorError.isInvalidBitcoinAddress }
     guard value != "1111111111111111111114oLvT2" else { throw BitcoinAddressValidatorError.isInvalidBitcoinAddress }
     let address = value.lowercased()
     var error: BitcoinAddressValidatorError?
-    let possibleHRPs = ["bc", "tb"]
+    let mainNet = "bc"
+    let regTest = "bcrt"
+    let possibleHRPs = [mainNet, regTest]
     let addressStartsWithHRP = possibleHRPs.contains(where: { address.starts(with: $0) })
 
+    let errorPtr = NSErrorPointer(nilLiteral: ())
     if addressStartsWithHRP {
-      if !walletManager.validateBech32Encoding(for: address) {
+      if !CNBCnlibAddressIsValidSegwitAddress(address, nil, errorPtr), let err = errorPtr?.pointee {
+        log.error(err, message: "\(address) is not a valid segwit address")
         error = .notBech32Valid
       }
     } else {
-      if !walletManager.validateBase58Check(for: value) {
+      if !CNBCnlibAddressIsBase58CheckEncoded(address, nil, errorPtr), let err = errorPtr?.pointee {
+        log.error(err, message: "\(address) is not a valid base58check encoded address")
         error = .notBase58CheckValid
-      } else if sanitizedAddress(in: value) == nil {
-        error = .isInvalidBitcoinAddress
       }
     }
 
@@ -63,37 +61,4 @@ class BitcoinAddressValidator: ValidatorType<String> {
       throw existingError
     }
   }
-
-  /// Applies a regex to identify a Bitcoin address within the string.
-  /// Passing in a string that contains extraneous text will return just the raw address.
-  func sanitizedAddress(in string: String) -> String? {
-    return match(forRegex: validAddressRegex, in: string)
-  }
-
-  /// matches Android regex, with escaped backslashes
-  private var validAddressRegex: String {
-    return "((?:bc1|tb1|[123])[a-zA-HJ-NP-Z0-9]{25,39}(?![a-zA-HJ-NP-Z0-9]))((?:\\?.*&?)(?:amount=)((?:[0-9]+)(?:\\.[0-9]{1,8})?))?"
-  }
-
-  private func match(forRegex regex: String, in text: String) -> String? {
-    do {
-      let regex = try NSRegularExpression(pattern: regex)
-      let results: [NSTextCheckingResult] = regex.matches(in: text, range: NSRange(text.startIndex..., in: text))
-      let nestedResults: [[String]] = results.map { result in
-        (0..<result.numberOfRanges).map {
-          guard result.range(at: $0).location != NSNotFound else { return "" }
-          return NSString(string: text).substring(with: result.range(at: $0))
-        }
-      }
-
-      let flattenedResults = nestedResults.flatMap({$0})
-      guard flattenedResults.count >= 2 else { return nil }
-      return flattenedResults[1] //desired string should be at index 1 of the group
-
-    } catch {
-      log.error(error, message: "Invalid regex")
-      return nil
-    }
-  }
-
 }
