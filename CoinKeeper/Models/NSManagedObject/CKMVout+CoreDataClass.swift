@@ -135,6 +135,13 @@ public class CKMVout: NSManagedObject {
     return result
   }
 
+  static func findUTXOs(from transactionData: CNBCnlibTransactionData, in context: NSManagedObjectContext) -> [CKMVout] {
+    let len = transactionData.utxoCount()
+    return (0..<len)
+      .compactMap { try? transactionData.requiredUTXO(at: $0) } // no need to try/catch, errors are bounds checking only
+      .compactMap { CKMVout.find(from: $0, in: context) }
+  }
+
   static func findAllSpendable(minAmount: Int, in context: NSManagedObjectContext) -> [CKMVout] {
     let fetchRequest: NSFetchRequest<CKMVout> = CKMVout.fetchRequest()
     fetchRequest.predicate = CKPredicate.Vout.isSpendable(minAmount: minAmount)

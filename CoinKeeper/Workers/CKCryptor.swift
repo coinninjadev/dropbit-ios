@@ -36,10 +36,17 @@ class CKCryptor {
   /// - Throws: CKCryptorError
   func encryptAsBase64String(message: Data, withRecipientUncompressedPubkey pubkey: Data, isEphemeral: Bool) throws -> String {
     guard let wmgr = walletManager else { throw CKCryptorError.missingWalletManager }
-    let keys = wmgr.encryptionCipherKeys(forUncompressedPublicKey: pubkey, withEntropy: isEphemeral)
-    let encryptor = RNCryptor.EncryptorV3(encryptionKey: keys.encryptionKey, hmacKey: keys.hmacKey)
-    let encryptedData = encryptor.encrypt(data: message)
-    return (encryptedData + keys.associatedPublicKey).base64EncodedString()
+    let wallet = wmgr.wallet
+    let pubkeyString = pubkey.hexString
+    if isEphemeral {
+      let entropy = WalletManager.secureEntropy()
+      let pubkeyString = pubkey.hexString
+      let enc = try wallet.encrypt(withEphemeralKey: entropy, body: message, recipientUncompressedPubkey: pubkeyString)
+      return enc.base64EncodedString()
+    } else {
+      let enc = try wallet.encryptMessage(message, recipientUncompressedPubkey: pubkeyString)
+      return enc.base64EncodedString()
+    }
   }
 
   /// Decrypt a message from CoinNinja API in Base64-encoded format.

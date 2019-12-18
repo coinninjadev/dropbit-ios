@@ -12,6 +12,7 @@ import Cnlib
 
 protocol WalletManagerType: AnyObject {
   static func createMnemonicWords() -> [String]
+  static func secureEntropy() -> Data
   func validateBase58Check(for address: String) -> Bool
   func validateBech32Encoding(for address: String) -> Bool
   var coin: CNBCnlibBasecoin { get }
@@ -19,6 +20,7 @@ protocol WalletManagerType: AnyObject {
   func hexEncodedPublicKey() throws -> String
   func hexEncodedPublicKeyPromise() -> Promise<String>
   func signatureSigning(data: Data) throws -> String
+  func signatureSigningPromise(data: Data) -> Promise<String>
   func usableFeeRate(from feeRate: Double) -> Int
   func mnemonicWords() -> [String]
   func resetWallet(with words: [String])
@@ -127,7 +129,7 @@ class WalletManager: WalletManagerType {
     }
   }
 
-  private static func secureEntropy() -> Data {
+  static func secureEntropy() -> Data {
     let len = 16; // 16 bytes
     var data = Data(count: len)
 
@@ -241,6 +243,17 @@ class WalletManager: WalletManagerType {
     }
 
     return data
+  }
+
+  func signatureSigningPromise(data: Data) -> Promise<String> {
+    return Promise { seal in
+      do {
+        let signature = try signatureSigning(data: data)
+        seal.fulfill(signature)
+      } catch {
+        seal.reject(error)
+      }
+    }
   }
 
   func usableFeeRate(from feeRate: Double) -> Int {

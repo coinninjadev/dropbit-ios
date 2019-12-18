@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import CNBitcoinKit
+import Cnlib
 import PromiseKit
 
 protocol PaymentSendingDelegate: class {
@@ -21,7 +21,7 @@ protocol PaymentSendingDelegate: class {
 protocol OnChainPaymentSendingDelegate: PaymentSendingDelegate {
   func viewControllerDidConfirmOnChainPayment(
     _ viewController: UIViewController,
-    transactionData: CNBTransactionData,
+    transactionData: CNBCnlibTransactionData,
     rates: ExchangeRates,
     outgoingTransactionData: OutgoingTransactionData
   )

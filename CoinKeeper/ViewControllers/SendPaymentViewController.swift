@@ -10,7 +10,7 @@ import UIKit
 import Contacts
 import enum Result.Result
 import PhoneNumberKit
-import CNBitcoinKit
+import Cnlib
 import PromiseKit
 import SVProgressHUD
 
@@ -882,7 +882,7 @@ extension SendPaymentViewController {
     }
   }
 
-  private func sendTransactionForConfirmation(with data: CNBTransactionData?,
+  private func sendTransactionForConfirmation(with data: CNBCnlibTransactionData?,
                                               paymentTarget: String,
                                               contact: ContactType?,
                                               sharedPayload: SharedPayloadDTO) {

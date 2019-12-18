@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CNBitcoinKit
+import Cnlib
 
 enum WalletTransactionType: String {
   case onChain
@@ -72,9 +72,9 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   var requiredFeeRate: Double?
   var sharedMemoDesired = true
   var sharedMemoAllowed = true
-  var sendMaxTransactionData: CNBTransactionData?
+  var sendMaxTransactionData: CNBCnlibTransactionData?
 
-  func sendMax(with data: CNBTransactionData) {
+  func sendMax(with data: CNBCnlibTransactionData) {
     self.sendMaxTransactionData = data
     let btcAmount = NSDecimalNumber(integerAmount: Int(data.amount), currency: .BTC)
     setBTCAmountAsPrimary(btcAmount)

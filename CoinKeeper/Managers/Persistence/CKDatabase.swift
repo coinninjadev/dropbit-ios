@@ -263,10 +263,7 @@ class CKDatabase: PersistenceDatabaseType {
     // Currently, this function is only called after broadcastTx()
     relevantTransaction.broadcastedAt = Date()
 
-    let len = transactionData.utxoCount()
-    let vouts = (0..<len)
-      .compactMap { (try? transactionData.requiredUTXO(at: $0)) } // no need for do/catch, failure is only bounds checking
-      .compactMap { CKMVout.find(from: $0, in: context) }
+    let vouts = CKMVout.findUTXOs(from: transactionData, in: context)
 
     // Link the vout to the relevant tempTx in case we need to mark the tx as failed and free up these vouts
     relevantTransaction.temporarySentTransaction?.reservedVouts = Set(vouts)
