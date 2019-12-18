@@ -110,6 +110,10 @@
 @property (nonatomic) CNBCnlibBasecoin* _Nullable basecoin;
 @property (nonatomic) NSString* _Nonnull walletWords;
 /**
+ * BuildTransactionMetadata will generate the tx metadata needed for client to consume.
+ */
+- (CNBCnlibTransactionMetadata* _Nullable)buildTransactionMetadata:(CNBCnlibTransactionData* _Nullable)data error:(NSError* _Nullable* _Nullable)error;
+/**
  * ChangeAddressForIndex returns a change MetaAddress derived from the current wallet, Basecoin, and index.
  */
 - (CNBCnlibMetaAddress* _Nullable)changeAddressForIndex:(long)index error:(NSError* _Nullable* _Nullable)error;
