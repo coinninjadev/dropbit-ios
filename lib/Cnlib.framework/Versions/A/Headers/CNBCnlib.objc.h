@@ -257,9 +257,9 @@ Will retain references to all pointers, no need to carry on externally.
  */
 - (void)addUTXO:(CNBCnlibUTXO* _Nullable)utxo;
 /**
- * UTXOAtIndex returns a utxo at index of private array. This is to compensate for gomobile's inability to support arrays of custom types.
+ * RequiredUTXOAtIndex returns a utxo that has been selected to be included in the outgoing transaction, or error if out of bounds.
  */
-- (CNBCnlibUTXO* _Nullable)utxoAtIndex:(long)index error:(NSError* _Nullable* _Nullable)error;
+- (CNBCnlibUTXO* _Nullable)requiredUTXOAtIndex:(long)index error:(NSError* _Nullable* _Nullable)error;
 /**
  * UtxoCount returns count of UTXOs required to satisfy the transaction, not all UTXOs passed in before calling `Generate`.
  */
