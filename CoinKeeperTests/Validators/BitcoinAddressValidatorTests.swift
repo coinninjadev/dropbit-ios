@@ -50,42 +50,6 @@ class BitcoinAddressValidatorTests: XCTestCase {
                      "valid BTC address should not throw")
   }
 
-  func testAddressWithEmptyStringReturnsNil() {
-    let sanitizedResult = self.sut.sanitizedAddress(in: "")
-    XCTAssertNil(sanitizedResult, "sanitized address should be nil")
-  }
-
-  func testAddressWithWhiteSpaceReturnsNil() {
-    let sanitizedResult = self.sut.sanitizedAddress(in: "     ")
-    XCTAssertNil(sanitizedResult, "sanitized address should be nil")
-  }
-
-  func testInvalidAddressReturnsNil() {
-    let invalidAddress = TestHelpers.mockInvalidBitcoinAddress()
-    let sanitizedResult = self.sut.sanitizedAddress(in: invalidAddress)
-    XCTAssertNil(sanitizedResult, "result should be nil")
-  }
-
-  func testValidAddressReturnsValidAddress() {
-    let validAddress = TestHelpers.mockValidBitcoinAddress()
-    let sanitizedResult = self.sut.sanitizedAddress(in: validAddress)
-    XCTAssertEqual(sanitizedResult, validAddress, "valid address should be returned")
-  }
-
-  func testDirtyValidAddressReturnsValidAddress() {
-    let validAddress = TestHelpers.mockValidBitcoinAddress()
-    let dirtyValidAddress = "Hello, here is my Bitcoin address: \(validAddress)."
-    let sanitizedResult = self.sut.sanitizedAddress(in: dirtyValidAddress)
-    XCTAssertEqual(sanitizedResult, validAddress, "result should equal valid address")
-  }
-
-  func testFullAddressURLReturnsValidAddress() {
-    let validAddress = TestHelpers.mockValidBitcoinAddress()
-    let validBitcoinURL = "bitcoin:\(validAddress)?amount=1.2"
-    let sanitizedResult = self.sut.sanitizedAddress(in: validBitcoinURL)
-    XCTAssertEqual(sanitizedResult, validAddress, "result should equal valid address")
-  }
-
   func testValidBech32AddressReturnsValid() {
     let validBech32Address = "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4"
     XCTAssertNoThrow(try self.sut.validate(value: validBech32Address))

@@ -10,7 +10,6 @@ import PromiseKit
 
 class PersistenceManager: PersistenceManagerType {
 
-
   let keychainManager: PersistenceKeychainType
   let databaseManager: PersistenceDatabaseType
   let userDefaultsManager: PersistenceUserDefaultsType

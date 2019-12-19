@@ -42,10 +42,9 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
   }
 
   func testTappingQuestionMarkButtonTellsDelegate() {
-    //TODO
-//    let url = CoinNinjaUrlFactory.buildUrl(for: .detailsTooltip)!
-//    sut.didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell(), with: url)
-//    XCTAssertTrue(mockCoordinator.wasAskedToOpenURL)
+    let toolTip = DetailCellTooltip(rawValue: 1)!
+    sut.didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell(), tooltip: toolTip)
+    XCTAssertTrue(mockCoordinator.wasAskedToOpenURL)
   }
 
   // MARK: private class

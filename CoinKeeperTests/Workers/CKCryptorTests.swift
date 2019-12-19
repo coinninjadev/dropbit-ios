@@ -8,7 +8,7 @@
 
 import XCTest
 @testable import DropBit
-import CNBitcoinKit
+import Cnlib
 
 //swiftlint:disable line_length
 
@@ -32,13 +32,20 @@ class CKCryptorTests: XCTestCase {
   func testDecryptingCipherTextReturnsExpectedText() {
     let stack = InMemoryCoreDataStack()
     let context = stack.context
-    mockPersistenceManager.fakeCoinToUse = CNBBaseCoin(purpose: .BIP49, coin: .TestNet, account: 0)
+    mockPersistenceManager.fakeCoinToUse = CNBCnlibNewBaseCoin(49, 1, 0)!
 
     let aliceWallet = WalletManager(words: words.reversed(), persistenceManager: mockPersistenceManager)!
 
     let bobWallet = WalletManager(words: words, persistenceManager: mockPersistenceManager)!
-    let bobReceiveAddress = bobWallet.createAddressDataSource().receiveAddress(at: 0)
-    let bobECUncompressedPubkeyString = bobReceiveAddress.uncompressedPublicKey ?? ""
+
+    var bobReceiveAddress: CNBCnlibMetaAddress!
+    do {
+      bobReceiveAddress = try bobWallet.createAddressDataSource().receiveAddress(at: 0)
+    } catch {
+      XCTFail("Failed to get a receive address for bob")
+      return
+    }
+    let bobECUncompressedPubkeyString = bobReceiveAddress.uncompressedPublicKey
     guard let bobECUncompressedPubkeyData = Data(fromHexEncodedString: bobECUncompressedPubkeyString) else {
       XCTFail("failed to convert bob's pubkey string to data")
       return
@@ -86,7 +93,7 @@ class CKCryptorTests: XCTestCase {
       "真曰分友"
     ]
 
-    mockPersistenceManager.fakeCoinToUse = CNBBaseCoin(purpose: .BIP49, coin: .TestNet, account: 0)
+    mockPersistenceManager.fakeCoinToUse = CNBCnlibNewBaseCoin(49, 1, 0)!
 
     let aliceWallet = WalletManager(words: words.reversed(), persistenceManager: mockPersistenceManager)!
 
@@ -98,10 +105,16 @@ class CKCryptorTests: XCTestCase {
   private func assertTextEncryption(clearText: String, aliceWallet: WalletManager, bobWallet: WalletManager) {
     let stack = InMemoryCoreDataStack()
     let context = stack.context
-    mockPersistenceManager.fakeCoinToUse = CNBBaseCoin(purpose: .BIP49, coin: .TestNet, account: 0)
+    mockPersistenceManager.fakeCoinToUse = CNBCnlibNewBaseCoin(49, 1, 0)!
 
-    let bobReceiveAddress = bobWallet.createAddressDataSource().receiveAddress(at: 0)
-    let bobECUncompressedPubkeyString = bobReceiveAddress.uncompressedPublicKey ?? ""
+    var bobReceiveAddress: CNBCnlibMetaAddress!
+    do {
+      bobReceiveAddress = try bobWallet.createAddressDataSource().receiveAddress(at: 0)
+    } catch {
+      XCTFail("Failed to get receive address for bob")
+      return
+    }
+    let bobECUncompressedPubkeyString = bobReceiveAddress.uncompressedPublicKey
     guard let bobECUncompressedPubkeyData = Data(fromHexEncodedString: bobECUncompressedPubkeyString) else {
       XCTFail("failed to convert bob's pubkey string to data")
       return
@@ -143,7 +156,7 @@ class CKCryptorTests: XCTestCase {
   func testEncryptingPayload() {
     let stack = InMemoryCoreDataStack()
     let context = stack.context
-    mockPersistenceManager.fakeCoinToUse = CNBBaseCoin(purpose: .BIP49, coin: .MainNet, account: 0)
+    mockPersistenceManager.fakeCoinToUse = CNBCnlibNewBaseCoin(49, 0, 0)!
 
     // Construct the test data
     let amountInfo = SharedPayloadAmountInfo(fiatCurrency: .USD, fiatAmount: 100)
@@ -161,8 +174,16 @@ class CKCryptorTests: XCTestCase {
 
     let bobWallet = WalletManager(words: words, persistenceManager: mockPersistenceManager)!
     let bobDecryptor = CKCryptor(walletManager: bobWallet)
-    let bobReceiveAddress = bobWallet.createAddressDataSource().receiveAddress(at: 0)
-    let bobECUncompressedPubkeyString = bobReceiveAddress.uncompressedPublicKey ?? ""
+    var bobReceiveAddress: CNBCnlibMetaAddress!
+
+    do {
+      bobReceiveAddress = try bobWallet.createAddressDataSource().receiveAddress(at: 0)
+    } catch {
+      XCTFail("Failed to get receive address for bob")
+      return
+    }
+
+    let bobECUncompressedPubkeyString = bobReceiveAddress.uncompressedPublicKey
     guard let bobECUncompressedPubkeyData = Data(fromHexEncodedString: bobECUncompressedPubkeyString) else {
       XCTFail("failed to convert bob's pubkey string to data")
       return
@@ -208,7 +229,11 @@ class CKCryptorTests: XCTestCase {
     let aliceCryptor = CKCryptor(walletManager: aliceWalletManager)
     let bobCryptor = CKCryptor(walletManager: bobWalletManager)
 
-    guard let bobPubKeyHexData = Data(fromHexEncodedString: bobWalletManager.hexEncodedPublicKey) else {
+    guard let key = (try? bobWalletManager.hexEncodedPublicKey()) else {
+      XCTFail("failed to get bob's public key")
+      return
+    }
+    guard let bobPubKeyHexData = Data(fromHexEncodedString: key) else {
       XCTFail("bob is bad")
       return
     }
@@ -232,7 +257,7 @@ class CKCryptorTests: XCTestCase {
     let context = stack.context
     let expectedMemo = "Hey y'all right back"
 
-    mockPersistenceManager.fakeCoinToUse = CNBBaseCoin(purpose: CoinDerivation.BIP84, coin: CoinType.MainNet, account: 0)
+    mockPersistenceManager.fakeCoinToUse = CNBCnlibNewBaseCoin(84, 0, 0)!
     let aliceWords = ["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "about"]
     let aliceWalletManager = WalletManager(words: aliceWords, persistenceManager: mockPersistenceManager)!
     let aliceCryptor = CKCryptor(walletManager: aliceWalletManager)

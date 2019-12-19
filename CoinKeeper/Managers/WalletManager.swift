@@ -323,6 +323,7 @@ class WalletManager: WalletManagerType {
 
       do {
         var boolPtr: UnsafeMutablePointer<ObjCBool>?
+        boolPtr = nil // to silence compiler warning of boolPtr never mutating
         try data?.generate(boolPtr)
 
         if let bool = boolPtr?.pointee, bool.boolValue == false {
@@ -497,5 +498,4 @@ class WalletManager: WalletManagerType {
     let defaultPath = CNBCnlibDerivationPath(coin.purpose, coin: coin.coin, account: coin.account, change: 1, index: 0)!
     return try self.createAddressDataSource().nextChangeAddress(in: context).derivationPath ?? defaultPath
   }
-
 }

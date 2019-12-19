@@ -9,7 +9,7 @@
 import XCTest
 @testable import DropBit
 import CoreData
-import CNBitcoinKit
+import Cnlib
 
 class AddressCoreDataTests: XCTestCase {
 
@@ -47,14 +47,14 @@ class AddressCoreDataTests: XCTestCase {
   // MARK: test derivative path creation and linking
   func testCreateAddressAndDerivativePath() {
     let addressString = fakeAddresses()[0]
-    let path = CNBDerivationPath(purpose: .BIP49, coinType: .MainNet, account: 0, change: 0, index: 0)
+    let path = CNBCnlibNewDerivationPath(49, 0, 0, 0, 0)!
     let address = CKMAddress.findOrCreate(withAddress: addressString, derivativePath: path, in: context)
 
-    XCTAssertEqual(address.derivativePath?.purpose, Int(path.purposeValue()))
-    XCTAssertEqual(address.derivativePath?.coin, Int(path.coinValue()))
-    XCTAssertEqual(address.derivativePath?.account, Int(path.account))
-    XCTAssertEqual(address.derivativePath?.change, Int(path.change))
-    XCTAssertEqual(address.derivativePath?.index, Int(path.index))
+    XCTAssertEqual(address.derivativePath?.purpose, path.purpose)
+    XCTAssertEqual(address.derivativePath?.coin, path.coin)
+    XCTAssertEqual(address.derivativePath?.account, path.account)
+    XCTAssertEqual(address.derivativePath?.change, path.change)
+    XCTAssertEqual(address.derivativePath?.index, path.index)
   }
 
   // MARK: private methods

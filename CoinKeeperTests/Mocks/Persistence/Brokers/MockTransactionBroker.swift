@@ -6,7 +6,7 @@
 //  Copyright © 2019 Coin Ninja, LLC. All rights reserved.
 //
 
-import CNBitcoinKit
+import Cnlib
 import CoreData
 import Foundation
 import PromiseKit
@@ -26,7 +26,7 @@ class MockTransactionBroker: CKPersistenceBroker, TransactionBrokerType {
     return Promise { _ in }
   }
 
-  func persistTemporaryTransaction(from transactionData: CNBTransactionData,
+  func persistTemporaryTransaction(from transactionData: CNBCnlibTransactionData,
                                    with outgoingTransactionData: OutgoingTransactionData,
                                    txid: String,
                                    invitation: CKMInvitation?,

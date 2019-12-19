@@ -8,7 +8,7 @@
 
 import XCTest
 @testable import DropBit
-import CNBitcoinKit
+import Cnlib
 
 class SendPaymentViewModelTests: XCTestCase {
 
@@ -67,8 +67,8 @@ class SendPaymentViewModelTests: XCTestCase {
   // MARK: ignored validation options
   func testWhenSendingMaxMinimumIsIgnored() {
     // given
-    let dummyData = CNBTransactionData()
-    sut.sendMaxTransactionData = dummyData
+    let dummyData = CNBCnlibNewTransactionDataSendingMax(nil, nil, 0, 0)
+    sut.sendMaxTransactionData = dummyData?.transactionData
 
     let expectedOptions: CurrencyAmountValidationOptions = [.invitationMaximum]
 

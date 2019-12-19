@@ -3,7 +3,7 @@
 // Copyright (c) 2018 Coin Ninja, LLC. All rights reserved.
 //
 
-import CNBitcoinKit
+import Cnlib
 import CoreData
 import PromiseKit
 @testable import DropBit
@@ -17,8 +17,8 @@ class MockPersistenceManager: PersistenceManagerType {
   var hashingManager: HashingManager = HashingManager()
   let brokers: PersistenceBrokersType
 
-  var fakeCoinToUse: CNBBaseCoin = CNBBaseCoin(purpose: .BIP49, coin: .TestNet, account: 0)
-  var usableCoin: CNBBaseCoin { return fakeCoinToUse }
+  var fakeCoinToUse = CNBCnlibNewBaseCoin(49, 1, 0)!
+  var usableCoin: CNBCnlibBasecoin { return fakeCoinToUse }
 
   init(keychainManager: PersistenceKeychainType = MockPersistenceKeychainManager(store: MockKeychainAccessorType()),
        databaseManager: PersistenceDatabaseType = MockPersistenceDatabaseManager(),

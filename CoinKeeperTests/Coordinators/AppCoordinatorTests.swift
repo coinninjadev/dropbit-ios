@@ -167,7 +167,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
       configurePersistenceMocksForTestingSyncRoutine()
 
       let mockNetworkManager = MockNetworkManager(persistenceManager: mockPersistenceManager)
-      let mockWalletManager = MockWalletManager(words: TestHelpers.fakeWords(), persistenceManager: mockPersistenceManager)
+      let mockWalletManager = MockWalletManager(words: TestHelpers.fakeWords(), persistenceManager: mockPersistenceManager)!
       return (mockNetworkManager, mockWalletManager)
   }
 

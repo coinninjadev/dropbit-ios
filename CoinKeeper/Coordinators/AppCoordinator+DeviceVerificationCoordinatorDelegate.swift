@@ -51,7 +51,7 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
           return Promise.value(parser)
         }
       }
-      .get { (parser: WalletFlagsParser) -> Void in
+      .get { (_) -> Void in
         do {
           try context.saveRecursively()
         } catch {

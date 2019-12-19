@@ -9,7 +9,7 @@
 import XCTest
 @testable import DropBit
 import CoreData
-import CNBitcoinKit
+import Cnlib
 
 class TransactionCoreDataTests: XCTestCase {
 
@@ -296,15 +296,15 @@ class TransactionCoreDataTests: XCTestCase {
   }
 
   private func receiveAddress(at index: Int) -> String {
-    let wallet = CNBHDWallet(mnemonic: fakeWords(), coin: BTCMainnetCoin(purpose: .BIP84))
-    let address = wallet.receiveAddress(for: UInt(index))
-    return address.address
+    let wallet = CNBCnlibNewHDWalletFromWords(fakeWords().joined(separator: " "), BTCMainnetCoin(purpose: 84))!
+    let address = try? wallet.receiveAddress(for: index)
+    return address?.address ?? ""
   }
 
   private func changeAddress(at index: Int) -> String {
-    let wallet = CNBHDWallet(mnemonic: fakeWords(), coin: BTCMainnetCoin(purpose: .BIP84))
-    let address = wallet.changeAddress(for: UInt(index))
-    return address.address
+    let wallet = CNBCnlibNewHDWalletFromWords(fakeWords().joined(separator: " "), BTCMainnetCoin(purpose: 84))!
+    let address = try? wallet.changeAddress(for: index)
+    return address?.address ?? ""
   }
 
   private func externalAddress() -> String {

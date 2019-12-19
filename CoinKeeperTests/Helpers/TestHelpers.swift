@@ -14,6 +14,10 @@ class TestHelpers {
     return GeneratedTestWords.fakeWords
   }
 
+  static func abandonAbandon() -> [String] {
+    return ["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "about"]
+  }
+
   static func mockValidBitcoinAddress() -> String {
     #if DEBUG
     return "2N9yokkV146gEoHT6sgUNtisEd7GH93PQ8Q"
