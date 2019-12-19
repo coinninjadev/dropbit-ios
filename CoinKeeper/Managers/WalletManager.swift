@@ -98,13 +98,13 @@ class WalletManager: WalletManagerType {
 
   let coin: CNBCnlibBasecoin
 
-  init(words: [String], persistenceManager: PersistenceManagerType = PersistenceManager()) {
+  init?(words: [String], persistenceManager: PersistenceManagerType = PersistenceManager()) {
     let relevantCoin = persistenceManager.usableCoin
     let joinedWords = words.joined(separator: " ")
     if let wallet = CNBCnlibNewHDWalletFromWords(joinedWords, relevantCoin) {
       self.wallet = wallet
     } else {
-      // fail out somehow to alert the user about invalid mnemonic
+      return nil
     }
     self.coin = relevantCoin
     self.persistenceManager = persistenceManager

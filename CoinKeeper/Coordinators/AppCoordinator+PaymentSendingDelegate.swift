@@ -290,9 +290,9 @@ extension AppCoordinator: PaymentSendingDelegate {
         }
 
         if let wallet = strongSelf.walletManager?.wallet {
-//          let transactionBuilder = CNBCnlibTransactionBuilder()
-          let metadata = transactionBuilder.generateTxMetadata(with: transactionData, wallet: wallet)
           do {
+            let metadata = try wallet.buildTransactionMetadata(transactionData)
+
             // If sending max such that there is no change address, an error will be thrown and caught below
             let tempVout = try CKMVout.findOrCreateTemporaryVout(in: context, with: transactionData, metadata: metadata)
             tempVout.transaction = persistedTransaction

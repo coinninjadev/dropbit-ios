@@ -34,7 +34,9 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
         return self.parent.persistenceManager.keychainManager.upgrade(recoveryWords: self.newWords)
       }
       .then(in: context) { _ -> Promise<Void> in
-        let newWalletManager = WalletManager(words: self.newWords, persistenceManager: self.parent.persistenceManager)
+        guard let newWalletManager = WalletManager(words: self.newWords, persistenceManager: self.parent.persistenceManager) else {
+          return Promise(error: SyncRoutineError.missingWalletManager)
+        }
 
         let userIsVerified = self.parent.persistenceManager.brokers.user.userIsVerified(in: context)
 
@@ -44,7 +46,6 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
           return self.proceedCreatingWallet(walletManager: newWalletManager, flagsParser: newFlags, in: context)
         }
       }
-      .asVoid()
   }
 
   func viewController(_ viewController: LightningUpgradeStatusViewController, broadcast metadata: CNBCnlibTransactionMetadata) -> Promise<String> {

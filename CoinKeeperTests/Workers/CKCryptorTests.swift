@@ -34,9 +34,9 @@ class CKCryptorTests: XCTestCase {
     let context = stack.context
     mockPersistenceManager.fakeCoinToUse = CNBBaseCoin(purpose: .BIP49, coin: .TestNet, account: 0)
 
-    let aliceWallet = WalletManager(words: words.reversed(), persistenceManager: mockPersistenceManager)
+    let aliceWallet = WalletManager(words: words.reversed(), persistenceManager: mockPersistenceManager)!
 
-    let bobWallet = WalletManager(words: words, persistenceManager: mockPersistenceManager)
+    let bobWallet = WalletManager(words: words, persistenceManager: mockPersistenceManager)!
     let bobReceiveAddress = bobWallet.createAddressDataSource().receiveAddress(at: 0)
     let bobECUncompressedPubkeyString = bobReceiveAddress.uncompressedPublicKey ?? ""
     guard let bobECUncompressedPubkeyData = Data(fromHexEncodedString: bobECUncompressedPubkeyString) else {
@@ -88,9 +88,9 @@ class CKCryptorTests: XCTestCase {
 
     mockPersistenceManager.fakeCoinToUse = CNBBaseCoin(purpose: .BIP49, coin: .TestNet, account: 0)
 
-    let aliceWallet = WalletManager(words: words.reversed(), persistenceManager: mockPersistenceManager)
+    let aliceWallet = WalletManager(words: words.reversed(), persistenceManager: mockPersistenceManager)!
 
-    let bobWallet = WalletManager(words: words, persistenceManager: mockPersistenceManager)
+    let bobWallet = WalletManager(words: words, persistenceManager: mockPersistenceManager)!
 
     possibleMemos.forEach { self.assertTextEncryption(clearText: $0, aliceWallet: aliceWallet, bobWallet: bobWallet)}
   }
@@ -156,10 +156,10 @@ class CKCryptorTests: XCTestCase {
         return
     }
 
-    let aliceWallet = WalletManager(words: words.reversed(), persistenceManager: mockPersistenceManager)
+    let aliceWallet = WalletManager(words: words.reversed(), persistenceManager: mockPersistenceManager)!
     let aliceEncryptor = CKCryptor(walletManager: aliceWallet)
 
-    let bobWallet = WalletManager(words: words, persistenceManager: mockPersistenceManager)
+    let bobWallet = WalletManager(words: words, persistenceManager: mockPersistenceManager)!
     let bobDecryptor = CKCryptor(walletManager: bobWallet)
     let bobReceiveAddress = bobWallet.createAddressDataSource().receiveAddress(at: 0)
     let bobECUncompressedPubkeyString = bobReceiveAddress.uncompressedPublicKey ?? ""
@@ -202,8 +202,8 @@ class CKCryptorTests: XCTestCase {
     let memo = "hey dude"
     let aliceWords = ["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "about"]
     let bobWords = ["zoo", "zoo", "zoo", "zoo", "zoo", "zoo", "zoo", "zoo", "zoo", "zoo", "zoo", "wrong"]
-    let aliceWalletManager = WalletManager(words: aliceWords, persistenceManager: mockPersistenceManager)
-    let bobWalletManager = WalletManager(words: bobWords, persistenceManager: mockPersistenceManager)
+    let aliceWalletManager = WalletManager(words: aliceWords, persistenceManager: mockPersistenceManager)!
+    let bobWalletManager = WalletManager(words: bobWords, persistenceManager: mockPersistenceManager)!
 
     let aliceCryptor = CKCryptor(walletManager: aliceWalletManager)
     let bobCryptor = CKCryptor(walletManager: bobWalletManager)
@@ -234,7 +234,7 @@ class CKCryptorTests: XCTestCase {
 
     mockPersistenceManager.fakeCoinToUse = CNBBaseCoin(purpose: CoinDerivation.BIP84, coin: CoinType.MainNet, account: 0)
     let aliceWords = ["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "about"]
-    let aliceWalletManager = WalletManager(words: aliceWords, persistenceManager: mockPersistenceManager)
+    let aliceWalletManager = WalletManager(words: aliceWords, persistenceManager: mockPersistenceManager)!
     let aliceCryptor = CKCryptor(walletManager: aliceWalletManager)
     let aliceAddress = "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu"
     let b64payload = "AwDZH1vechFtjqeGn3yKwgVkDWWieW64UVPVXIwf9/MfXwyuWHH91b6SLIpBP3lB+G0YRtm5pX8Wb61Pd0FgKLQ44VCMVCje7ync6eACHRh5KARFVJ6CP40onzjO9IvFd1ikQ8NpR84GRcZIzQkU3miZ3RaqlFdDjnHjbjrvSwp5fgyxedggZRMQWZguNEP8Kc2j"

@@ -132,7 +132,10 @@ protocol PersistenceDatabaseType: AnyObject {
   func persistWalletResponse(_ response: WalletResponse, in context: NSManagedObjectContext) throws
   func persistUserId(_ id: String, in context: NSManagedObjectContext)
   func persistVerificationStatus(_ status: String, in context: NSManagedObjectContext) -> Promise<UserVerificationStatus>
-  func persistServerAddress(for metaAddress: CNBCnlibMetaAddress, createdAt: Date, wallet: CKMWallet, in context: NSManagedObjectContext) -> Promise<Void>
+  func persistServerAddress(for metaAddress: CNBCnlibMetaAddress,
+                            createdAt: Date,
+                            wallet: CKMWallet,
+                            in context: NSManagedObjectContext) -> Promise<Void>
   func containsRegularTransaction(in context: NSManagedObjectContext) -> IncomingOutgoingTuple
   func containsDropbitTransaction(in context: NSManagedObjectContext) -> IncomingOutgoingTuple
   func getAllInvitations(in context: NSManagedObjectContext) -> [CKMInvitation]

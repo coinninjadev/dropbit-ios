@@ -224,13 +224,13 @@ class WalletSyncOperationFactory {
         .recover { (error: Error) -> Promise<WalletResponse> in
           if case CKNetworkError.unauthorized = error {
             var flagsParser = WalletFlagsParser(flags: 0).setVersion(.v0).setPurpose(.BIP49)
-            if let words = dependencies.persistenceManager.keychainManager.retrieveValue(for: .walletWords) as? [String] {
-              let newWalletManager = WalletManager(words: words, persistenceManager: dependencies.persistenceManager)
+            if let words = dependencies.persistenceManager.keychainManager.retrieveValue(for: .walletWords) as? [String],
+              let newWalletManager = WalletManager(words: words, persistenceManager: dependencies.persistenceManager) {
               return newWalletManager.hexEncodedPublicKeyPromise()
                 .then { return dependencies.networkManager.createWallet(withPublicKey: $0, walletFlags: flagsParser.flags) }
-            } else if let words = dependencies.persistenceManager.keychainManager.retrieveValue(for: .walletWordsV2) as? [String] {
+            } else if let words = dependencies.persistenceManager.keychainManager.retrieveValue(for: .walletWordsV2) as? [String],
+              let newWalletManager = WalletManager(words: words, persistenceManager: dependencies.persistenceManager) {
               flagsParser = flagsParser.setVersion(.v2).setPurpose(.BIP84)
-              let newWalletManager = WalletManager(words: words, persistenceManager: dependencies.persistenceManager)
               return newWalletManager.hexEncodedPublicKeyPromise()
                 .then { return dependencies.networkManager.createWallet(withPublicKey: $0, walletFlags: flagsParser.flags) }
             } else {
@@ -243,12 +243,12 @@ class WalletSyncOperationFactory {
         .get(in: context) { try dependencies.persistenceManager.brokers.wallet.persistWalletResponse(from: $0, in: context) }
         .asVoid()
     } else { // walletId is nil
-      guard let keychainWords = dependencies.persistenceManager.brokers.wallet.walletWords() else {
+      guard let keychainWords = dependencies.persistenceManager.brokers.wallet.walletWords(),
+        let walletManager = WalletManager(words: keychainWords, persistenceManager: dependencies.persistenceManager) else {
         return Promise { $0.reject(CKPersistenceError.noWalletWords) }
       }
 
       // Make sure we are registering a wallet with the words stored in the keychain
-      let walletManager = WalletManager(words: keychainWords, persistenceManager: dependencies.persistenceManager)
       return dependencies.delegate.syncManagerDidSetWalletManager(walletManager: walletManager, in: context)
     }
   }
