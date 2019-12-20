@@ -298,7 +298,7 @@ Default RBFOption is MustBeRBF.
 /**
  * Generate is called after all available utxo's have been added, to configure the transaction data. Builds a standard transaction with a flat fee.
  */
-- (BOOL)generate:(BOOL* _Nullable)ret0_ error:(NSError* _Nullable* _Nullable)error;
+- (BOOL)generate:(NSError* _Nullable* _Nullable)error;
 @end
 
 /**
@@ -318,7 +318,7 @@ Default RBFOption is MustBeRBF.
 /**
  * Generate is called after all available utxo's have been added, to configure the transaction data. Builds a transaction sending max with a fee rate.
  */
-- (BOOL)generate:(BOOL* _Nullable)ret0_ error:(NSError* _Nullable* _Nullable)error;
+- (BOOL)generate:(NSError* _Nullable* _Nullable)error;
 @end
 
 /**
@@ -352,7 +352,7 @@ Once created, add all available utxos one at a time using `addUTXO` function, as
 /**
  * Generate is called after all available utxo's have been added, to configure the transaction data. Builds a standard transaction with a fee rate.
  */
-- (BOOL)generate:(BOOL* _Nullable)ret0_ error:(NSError* _Nullable* _Nullable)error;
+- (BOOL)generate:(NSError* _Nullable* _Nullable)error;
 @end
 
 /**
@@ -429,12 +429,12 @@ FOUNDATION_EXPORT const long CNBCnlibMustNotBeRBF;
 /**
  * AddressIsBase58CheckEncoded decodes the address, returns true if address is base58check encoded.
  */
-FOUNDATION_EXPORT BOOL CNBCnlibAddressIsBase58CheckEncoded(NSString* _Nullable addr, BOOL* _Nullable ret0_, NSError* _Nullable* _Nullable error);
+FOUNDATION_EXPORT BOOL CNBCnlibAddressIsBase58CheckEncoded(NSString* _Nullable addr, NSError* _Nullable* _Nullable error);
 
 /**
  * AddressIsValidSegwitAddress decodes the address, returns true if is a witness type.
  */
-FOUNDATION_EXPORT BOOL CNBCnlibAddressIsValidSegwitAddress(NSString* _Nullable addr, BOOL* _Nullable ret0_, NSError* _Nullable* _Nullable error);
+FOUNDATION_EXPORT BOOL CNBCnlibAddressIsValidSegwitAddress(NSString* _Nullable addr, NSError* _Nullable* _Nullable error);
 
 /**
  * GetFullBIP39WordListString returns all 2,048 BIP39 mnemonic words as a space-separated string.

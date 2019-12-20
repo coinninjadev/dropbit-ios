@@ -144,20 +144,23 @@ class WalletManager: WalletManagerType {
     var words: [String] = []
     while words.count != 12 {
       let entropy = secureEntropy()
-      let err = NSErrorPointer(nilLiteral: ())
-      words = CNBCnlibNewWordListFromEntropy(entropy, err).split(separator: " ").map(String.init)
+      var err: NSError?
+      words = CNBCnlibNewWordListFromEntropy(entropy, &err).split(separator: " ").map(String.init)
+      if let err = err {
+        log.error(err, message: "Failed to generate words from entropy.")
+      }
     }
     return words
   }
 
   func validateBase58Check(for address: String) -> Bool {
-    let errorPtr = NSErrorPointer(nilLiteral: ())
-    return CNBCnlibAddressIsBase58CheckEncoded(address, nil, errorPtr)
+    var errorPtr: NSError?
+    return CNBCnlibAddressIsBase58CheckEncoded(address, &errorPtr)
   }
 
   func validateBech32Encoding(for address: String) -> Bool {
-    let errorPtr = NSErrorPointer(nilLiteral: ())
-    return CNBCnlibAddressIsValidSegwitAddress(address, nil, errorPtr)
+    var errorPtr: NSError?
+    return CNBCnlibAddressIsValidSegwitAddress(address, &errorPtr)
   }
 
   var minimumFeeRate: Int {
@@ -205,7 +208,7 @@ class WalletManager: WalletManagerType {
   }
 
   func hexEncodedPublicKey() throws -> String {
-    let err = NSErrorPointer(nilLiteral: ())
+    var err: NSErrorPointer = nil
     let key = wallet.coinNinjaVerificationKeyHexString(err)
     if let error = err?.pointee {
       log.error(error, message: "Failed to get hex encoded public key for wallet.")
@@ -234,7 +237,7 @@ class WalletManager: WalletManagerType {
   }
 
   func signatureSigning(data: Data) throws -> String {
-    let errorPointer = NSErrorPointer(nilLiteral: ())
+    var errorPointer: NSErrorPointer = nil
     let data = wallet.signatureSigning(data, error: errorPointer)
 
     if let error = errorPointer?.pointee {
@@ -322,14 +325,7 @@ class WalletManager: WalletManagerType {
       }
 
       do {
-        var boolPtr: UnsafeMutablePointer<ObjCBool>?
-        boolPtr = nil // to silence compiler warning of boolPtr never mutating
-        try data?.generate(boolPtr)
-
-        if let bool = boolPtr?.pointee, bool.boolValue == false {
-          log.error("Failed to generate transaction data: insufficient funds.")
-        }
-
+        try data?.generate()
         result = data?.transactionData
       } catch {
         log.error(error, message: "Failed to generate standard transaction data.")
@@ -380,7 +376,7 @@ class WalletManager: WalletManagerType {
         }
 
         do {
-          try txData?.generate(nil)
+          try txData?.generate()
           if let data = txData?.transactionData {
             seal.fulfill(data)
           } else {
@@ -421,7 +417,7 @@ class WalletManager: WalletManagerType {
       }
 
       do {
-        try data?.generate(nil)
+        try data?.generate()
         result = data?.transactionData
       } catch {
         log.error(error, message: "Failed to generate send max transaction")
@@ -462,7 +458,7 @@ class WalletManager: WalletManagerType {
         for utxo in utxos {
           data?.add(utxo)
         }
-        try data?.generate(nil)
+        try data?.generate()
         result = data?.transactionData
       } catch {
         log.error(error, message: "Failed to generate send all transaction")

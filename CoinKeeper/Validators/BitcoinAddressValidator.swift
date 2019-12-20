@@ -37,22 +37,22 @@ class BitcoinAddressValidator: ValidatorType<String> {
   override func validate(value: String) throws {
     guard value.isNotEmpty else { throw BitcoinAddressValidatorError.isInvalidBitcoinAddress }
     guard value != "1111111111111111111114oLvT2" else { throw BitcoinAddressValidatorError.isInvalidBitcoinAddress }
-    let address = value.lowercased()
     var error: BitcoinAddressValidatorError?
     let mainNet = "bc"
     let regTest = "bcrt"
     let possibleHRPs = [mainNet, regTest]
-    let addressStartsWithHRP = possibleHRPs.contains(where: { address.starts(with: $0) })
+    let addressStartsWithHRP = possibleHRPs.contains(where: { value.lowercased().starts(with: $0) })
 
-    let errorPtr = NSErrorPointer(nilLiteral: ())
+    var errorPtr: NSError?
     if addressStartsWithHRP {
-      if !CNBCnlibAddressIsValidSegwitAddress(address, nil, errorPtr), let err = errorPtr?.pointee {
-        log.error(err, message: "\(address) is not a valid segwit address")
+      let address = value.lowercased()
+      if !CNBCnlibAddressIsValidSegwitAddress(address, &errorPtr) {
         error = .notBech32Valid
       }
     } else {
-      if !CNBCnlibAddressIsBase58CheckEncoded(address, nil, errorPtr), let err = errorPtr?.pointee {
-        log.error(err, message: "\(address) is not a valid base58check encoded address")
+      let valid = CNBCnlibAddressIsBase58CheckEncoded(value, &errorPtr)
+      if !valid, let err = errorPtr {
+        log.error(err, message: "Address \(value) failed base58check decoding.")
         error = .notBase58CheckValid
       }
     }

@@ -353,12 +353,10 @@
 		3BAB1447204EE6BB001D41A2 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB1446204EE6BB001D41A2 /* BaseViewController.swift */; };
 		3BAB1449204EE7FD001D41A2 /* VerifyRecoveryWordsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB1448204EE7FD001D41A2 /* VerifyRecoveryWordsViewControllerTests.swift */; };
 		3BAB144B204F3CD0001D41A2 /* OnboardingTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB144A204F3CD0001D41A2 /* OnboardingTitleLabel.swift */; };
-		3BAB4BC523AAD98900AADBF7 /* Cnlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BAB4BC423AAD98800AADBF7 /* Cnlib.framework */; };
 		3BACDB992190B7DB0006F2D4 /* AppCoordinator+RecoveryWordsIntroViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BACDB982190B7DB0006F2D4 /* AppCoordinator+RecoveryWordsIntroViewControllerDelegate.swift */; };
 		3BB01BC1220A4233006B4D25 /* NoConnectionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB01BC0220A4233006B4D25 /* NoConnectionViewControllerTests.swift */; };
 		3BB01BC3220A56F6006B4D25 /* AppCoordinator+NoConnectionViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB01BC2220A56F6006B4D25 /* AppCoordinator+NoConnectionViewControllerDelegate.swift */; };
 		3BB05AC1209CF407000297E1 /* Typealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB05AC0209CF407000297E1 /* Typealiases.swift */; };
-		3BB854E020220D6100190874 /* CNBitcoinKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BB854DF20220D6100190874 /* CNBitcoinKit.framework */; };
 		3BBB3CF72298658C00C417EA /* TwitterAccessManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBB3CF62298658C00C417EA /* TwitterAccessManager.swift */; };
 		3BBDF7E022E7372100E35EA0 /* TransactionHistoryDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBDF7DF22E7372100E35EA0 /* TransactionHistoryDetailsViewController.swift */; };
 		3BBDF7E222E757C400E35EA0 /* TransactionHistoryDetailsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BBDF7E122E757C400E35EA0 /* TransactionHistoryDetailsViewController.storyboard */; };
@@ -396,6 +394,7 @@
 		3BDFADFE2267B1FB0077DEF2 /* BlockstreamProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDFADFD2267B1FB0077DEF2 /* BlockstreamProvider.swift */; };
 		3BE1C52D232D2BC100583A83 /* LightningUpgradeStartPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE1C52C232D2BC100583A83 /* LightningUpgradeStartPage.swift */; };
 		3BE1C52F232D390700583A83 /* UITestRecoverWordBackupAutomatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE1C52E232D390700583A83 /* UITestRecoverWordBackupAutomatable.swift */; };
+		3BE49D6523AC07CC00716474 /* Cnlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BE49D6423AC07CC00716474 /* Cnlib.framework */; };
 		3BE8AA1621F10D4200A3F0C4 /* CKCryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8AA1521F10D4200A3F0C4 /* CKCryptor.swift */; };
 		3BE8AA1821F1149100A3F0C4 /* CKCryptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8AA1721F1149100A3F0C4 /* CKCryptorTests.swift */; };
 		3BE8D85E20D16FAE00E99D24 /* DerivativePathResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8D85D20D16FAE00E99D24 /* DerivativePathResponse.swift */; };
@@ -1496,12 +1495,10 @@
 		3BAB1446204EE6BB001D41A2 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		3BAB1448204EE7FD001D41A2 /* VerifyRecoveryWordsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyRecoveryWordsViewControllerTests.swift; sourceTree = "<group>"; };
 		3BAB144A204F3CD0001D41A2 /* OnboardingTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTitleLabel.swift; sourceTree = "<group>"; };
-		3BAB4BC423AAD98800AADBF7 /* Cnlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Cnlib.framework; sourceTree = "<group>"; };
 		3BACDB982190B7DB0006F2D4 /* AppCoordinator+RecoveryWordsIntroViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+RecoveryWordsIntroViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		3BB01BC0220A4233006B4D25 /* NoConnectionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoConnectionViewControllerTests.swift; sourceTree = "<group>"; };
 		3BB01BC2220A56F6006B4D25 /* AppCoordinator+NoConnectionViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+NoConnectionViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		3BB05AC0209CF407000297E1 /* Typealiases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typealiases.swift; sourceTree = "<group>"; };
-		3BB854DF20220D6100190874 /* CNBitcoinKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CNBitcoinKit.framework; path = Carthage/Build/iOS/CNBitcoinKit.framework; sourceTree = "<group>"; };
 		3BBB3CF62298658C00C417EA /* TwitterAccessManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterAccessManager.swift; sourceTree = "<group>"; };
 		3BBDF7DF22E7372100E35EA0 /* TransactionHistoryDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailsViewController.swift; sourceTree = "<group>"; };
 		3BBDF7E122E757C400E35EA0 /* TransactionHistoryDetailsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TransactionHistoryDetailsViewController.storyboard; sourceTree = "<group>"; };
@@ -1540,6 +1537,7 @@
 		3BDFADFD2267B1FB0077DEF2 /* BlockstreamProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockstreamProvider.swift; sourceTree = "<group>"; };
 		3BE1C52C232D2BC100583A83 /* LightningUpgradeStartPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeStartPage.swift; sourceTree = "<group>"; };
 		3BE1C52E232D390700583A83 /* UITestRecoverWordBackupAutomatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestRecoverWordBackupAutomatable.swift; sourceTree = "<group>"; };
+		3BE49D6423AC07CC00716474 /* Cnlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Cnlib.framework; sourceTree = "<group>"; };
 		3BE8AA1521F10D4200A3F0C4 /* CKCryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKCryptor.swift; sourceTree = "<group>"; };
 		3BE8AA1721F1149100A3F0C4 /* CKCryptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKCryptorTests.swift; sourceTree = "<group>"; };
 		3BE8D85D20D16FAE00E99D24 /* DerivativePathResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivativePathResponse.swift; sourceTree = "<group>"; };
@@ -2296,11 +2294,10 @@
 				A24525352100EBC80024D5F8 /* Gifu.framework in Frameworks */,
 				3B9EE8782058359400C0CC8C /* PMAlertController.framework in Frameworks */,
 				3B8269172032407C009B11EC /* Strongbox.framework in Frameworks */,
-				3BAB4BC523AAD98900AADBF7 /* Cnlib.framework in Frameworks */,
 				B54D205E20F908C30057A694 /* SwiftMessages.framework in Frameworks */,
-				3BB854E020220D6100190874 /* CNBitcoinKit.framework in Frameworks */,
 				A2FDC54122D37BFA004B0EDD /* Charts.framework in Frameworks */,
 				D3050CCBBA9D3A897790120B /* Pods_DropBit.framework in Frameworks */,
+				3BE49D6523AC07CC00716474 /* Cnlib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2426,7 +2423,6 @@
 				B54D205D20F908C30057A694 /* SwiftMessages.framework */,
 				3B9EE8772058359400C0CC8C /* PMAlertController.framework */,
 				3B8269162032407C009B11EC /* Strongbox.framework */,
-				3BB854DF20220D6100190874 /* CNBitcoinKit.framework */,
 				1737718592249CB505AF79DB /* Pods_DropBit.framework */,
 				E20946923A0E7F2A5AB722BB /* Pods_DropBitTests.framework */,
 				C84B0D140F3ED5CBE884E39D /* libPods-DropBitUITests.a */,
@@ -2934,7 +2930,7 @@
 		3BAB4BB723A7C71000AADBF7 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				3BAB4BC423AAD98800AADBF7 /* Cnlib.framework */,
+				3BE49D6423AC07CC00716474 /* Cnlib.framework */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -4606,7 +4602,6 @@
 			files = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/CNBitcoinKit.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Strongbox.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/PMAlertController.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/PromiseKit.framework",
@@ -4617,7 +4612,6 @@
 			);
 			name = "Carthage Copy-Frameworks Run Script";
 			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/CNBitcoinKit.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Strongbox.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/PMAlertController.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/PromiseKit.framework",
