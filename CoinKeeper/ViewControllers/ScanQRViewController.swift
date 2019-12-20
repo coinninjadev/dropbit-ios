@@ -173,9 +173,7 @@ extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
     if didCaptureQRCode { return }
     didCaptureQRCode = true
 
-    SVProgressHUD.show()
     delegate.viewControllerDidScan(self, lightningInvoice: lightningUrl.invoice, completion: { [weak self] in
-      SVProgressHUD.dismiss()
       self?.didCaptureQRCode = false
     })
   }
