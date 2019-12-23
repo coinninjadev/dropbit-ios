@@ -40,6 +40,7 @@ public enum CNHeaderParameter: String {
   case appVersion = "CN-App-Version"
   case buildEnvironment = "CN-Build-Environment"
   case pubKeyString = "CN-Auth-PubKeyString"
+  case udid = "CN-Auth-Device-UDID"
 
   var fieldName: String {
     return self.rawValue

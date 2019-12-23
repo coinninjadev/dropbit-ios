@@ -27,6 +27,7 @@ class CKKeychain: PersistenceKeychainType {
     case twitterOAuthTokenSecret
     case twitterUserId
     case twitterScreenName
+    case identifier
   }
 
   private var tempWordStorage: [String]?
@@ -122,6 +123,17 @@ class CKKeychain: PersistenceKeychainType {
   }
 
   @discardableResult
+  func findOrCreateUDID() -> String {
+    guard let udid = retrieveValue(for: .identifier) as? String else {
+      let udid = UUID()
+      store(anyValue: udid.uuidString, key: .identifier)
+      return udid.uuidString
+    }
+
+    return udid
+  }
+
+  @discardableResult
   func store(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void> {
     if let pin = tempPinHashStorage { // store pin and wallet together
       return storeOnSerialBackgroundQueue(value: pin, key: CKKeychain.Key.userPin.rawValue)
@@ -172,7 +184,11 @@ class CKKeychain: PersistenceKeychainType {
   }
 
   func deleteAll() {
-    Key.allCases.forEach { self.storeSynchronously(anyValue: nil, key: $0) }
+    Key.allCases.forEach {
+      if $0 != .identifier {
+        storeSynchronously(anyValue: nil, key: $0)
+      }
+    }
   }
 
   func unverifyUser(for identity: UserIdentityType) {
@@ -181,10 +197,10 @@ class CKKeychain: PersistenceKeychainType {
     case .phone: keys = [.countryCode, .phoneNumber]
     case .twitter: keys = [.twitterUserId, .twitterScreenName, .twitterOAuthToken, .twitterOAuthTokenSecret]
     }
-    keys.forEach { self.storeSynchronously(anyValue: nil, key: $0) }
+    keys.forEach { storeSynchronously(anyValue: nil, key: $0) }
 
     // Prevent reprompting user to verify on next launch
-    self.storeSynchronously(anyValue: true, key: .skippedVerification)
+    storeSynchronously(anyValue: true, key: .skippedVerification)
   }
 
 }
