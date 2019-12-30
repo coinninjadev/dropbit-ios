@@ -635,6 +635,7 @@
 		A2BCCFC22321919300EB9C30 /* AppCoordinator+PaymentBuildingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BCCFC12321919300EB9C30 /* AppCoordinator+PaymentBuildingDelegate.swift */; };
 		A2BFA54D22E7531500396D33 /* WalletToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BFA54C22E7531500396D33 /* WalletToggleView.swift */; };
 		A2BFA54F22E7536A00396D33 /* WalletToggleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2BFA54E22E7536A00396D33 /* WalletToggleView.xib */; };
+		A2C5D7F523AC0EC8000B15B9 /* UserIdentifiableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C5D7F423AC0EC8000B15B9 /* UserIdentifiableManager.swift */; };
 		A2D1AD03232D368A00EF1001 /* LockedLightningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D1AD02232D368A00EF1001 /* LockedLightningView.swift */; };
 		A2D1AD07232D436D00EF1001 /* LockedLightningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2D1AD06232D436D00EF1001 /* LockedLightningView.xib */; };
 		A2DBC50222D78DAF008C532B /* CurrencySwappableEditAmountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DBC50122D78DAF008C532B /* CurrencySwappableEditAmountView.swift */; };
@@ -1778,6 +1779,7 @@
 		A2BCCFC12321919300EB9C30 /* AppCoordinator+PaymentBuildingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+PaymentBuildingDelegate.swift"; sourceTree = "<group>"; };
 		A2BFA54C22E7531500396D33 /* WalletToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletToggleView.swift; sourceTree = "<group>"; };
 		A2BFA54E22E7536A00396D33 /* WalletToggleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletToggleView.xib; sourceTree = "<group>"; };
+		A2C5D7F423AC0EC8000B15B9 /* UserIdentifiableManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserIdentifiableManager.swift; sourceTree = "<group>"; };
 		A2D1AD02232D368A00EF1001 /* LockedLightningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedLightningView.swift; sourceTree = "<group>"; };
 		A2D1AD06232D436D00EF1001 /* LockedLightningView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LockedLightningView.xib; sourceTree = "<group>"; };
 		A2DBC50122D78DAF008C532B /* CurrencySwappableEditAmountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySwappableEditAmountView.swift; sourceTree = "<group>"; };
@@ -3017,6 +3019,7 @@
 				B50C869820D80AE000B4FA6B /* Responses */,
 				B5A3BA4E21516DF7005EE657 /* Targets */,
 				3B73B2762281F77000F4C551 /* Twitter */,
+				A2C5D7F323AC0EB0000B15B9 /* User */,
 				3B4741682180AC64004DA223 /* DeviceEndpointIds.swift */,
 			);
 			path = Networking;
@@ -3303,6 +3306,14 @@
 				A29CE11420A389B400761B91 /* CompositeValidatorTests.swift */,
 			);
 			path = Validators;
+			sourceTree = "<group>";
+		};
+		A2C5D7F323AC0EB0000B15B9 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				A2C5D7F423AC0EC8000B15B9 /* UserIdentifiableManager.swift */,
+			);
+			path = User;
 			sourceTree = "<group>";
 		};
 		A2E52D8920BE3A6B00424E6A /* Protocols and Extensions */ = {
@@ -4720,6 +4731,7 @@
 				B54A4215207FF310005B40A9 /* TransactionDetailSecondaryAmountLabel.swift in Sources */,
 				A2372873237B0C2900086FEC /* FetchImageType.swift in Sources */,
 				A2AB08CD230585220029AA04 /* CKMLNAccount+CoreDataClass.swift in Sources */,
+				A2C5D7F523AC0EC8000B15B9 /* UserIdentifiableManager.swift in Sources */,
 				B5401C5F228C8DB1004C77BC /* AppCoordinator+RemoteNotifications.swift in Sources */,
 				3B8B19332289C1EF003BA4D7 /* UserIdentityResponse.swift in Sources */,
 				B5C5EDE321FA41FF0032AC94 /* SharedPayloadV1.swift in Sources */,
