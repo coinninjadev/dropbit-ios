@@ -10,6 +10,17 @@ import UIKit
 import AVFoundation
 import SVProgressHUD
 
+enum AVScanErrorType {
+  case noBitcoinQRCodes
+
+  var message: String {
+    switch self {
+    case .noBitcoinQRCodes:
+      return "Scan did not have any bitcoin QR codes"
+    }
+  }
+}
+
 typealias PhotoViewController = UIViewController & UIImagePickerControllerDelegate & UINavigationControllerDelegate
 
 //swiftlint:disable class_delegate_protocol
@@ -22,6 +33,7 @@ protocol ScanQRViewControllerDelegate: PaymentRequestResolver, LightningInvoiceR
 
   func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: Error?)
   func viewControllerDidPressPhotoButton(_ viewController: PhotoViewController)
+  func viewControllerHadScanFailure(_ viewController: UIViewController, error: AVScanErrorType)
 
 }
 
@@ -132,7 +144,11 @@ extension ScanQRViewController: UINavigationControllerDelegate {}
 extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
 
   func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-    guard metadataObjects.isNotEmpty else { return }
+    guard metadataObjects.isNotEmpty else {
+      delegate?.viewControllerHadScanFailure(self, error: .noBitcoinQRCodes)
+      return
+    }
+
     let rawCodes = metadataObjects.compactMap { $0 as? AVMetadataMachineReadableCodeObject }
     let destinations = rawCodes.compactMap { $0.stringValue }
     handle(possibleDestinations: destinations)
@@ -140,12 +156,16 @@ extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
 
   private func handle(possibleDestinations: [String]) {
     let lightningQRCodes = possibleDestinations.compactMap { LightningURL(string: $0) }
+    let bitcoinQRCodes = possibleDestinations.compactMap { OnChainQRCode(string: $0) }
+    guard lightningQRCodes.isNotEmpty || bitcoinQRCodes.isNotEmpty else {
+      delegate.viewControllerHadScanFailure(self, error: .noBitcoinQRCodes)
+      return
+    }
+
     if let lightningQRCode = lightningQRCodes.first, currentLockStatus != .locked {
       handle(lightningQRInvoice: lightningQRCode)
-    } else {
-      let bitcoinQRCodes = possibleDestinations.compactMap { OnChainQRCode(string: $0) }
-      guard let qrCode = bitcoinQRCodes.first else { return }
-      handle(bitcoinQRCode: qrCode)
+    } else if let bitcoinQRCode = bitcoinQRCodes.first {
+      handle(bitcoinQRCode: bitcoinQRCode)
     }
   }
 
@@ -187,7 +207,10 @@ extension ScanQRViewController: UIImagePickerControllerDelegate {
                                   context: nil,
                                   options: [CIDetectorAccuracy: CIDetectorAccuracyHigh]),
         let ciImage = CIImage(image: pickedImage),
-        let features = detector.features(in: ciImage) as? [CIQRCodeFeature] else { return }
+        let features = detector.features(in: ciImage) as? [CIQRCodeFeature] else {
+          delegate.viewControllerHadScanFailure(self, error: .noBitcoinQRCodes)
+          return
+    }
 
     let qrCode = features.reduce("") { "\($0)\($1.messageString ?? "")" }
     picker.dismiss(animated: true) { [weak self] in

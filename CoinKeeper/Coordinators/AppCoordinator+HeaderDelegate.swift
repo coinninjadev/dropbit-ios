@@ -23,7 +23,8 @@ extension AppCoordinator: HeaderDelegate {
 
     let sig = dataToSign.flatMap { self.walletManager?.signatureSigning(data: $0) }
 
-    let deviceId = self.persistenceManager.brokers.device.findOrCreateDeviceId()
+    let deviceId = persistenceManager.brokers.device.findOrCreateDeviceId()
+    let udid = persistenceManager.keychainManager.findOrCreateUDID()
     let buildEnvironment = ApplicationBuildEnvironment.current()
     var headers = DefaultHeaders(timeStamp: timeStamp,
                                  devicePlatform: platform,
@@ -33,6 +34,7 @@ extension AppCoordinator: HeaderDelegate {
                                  userId: nil,
                                  deviceId: deviceId,
                                  pubKeyString: self.walletManager?.hexEncodedPublicKey,
+                                 udid: udid,
                                  buildEnvironment: buildEnvironment)
 
     let context = persistenceManager.viewContext

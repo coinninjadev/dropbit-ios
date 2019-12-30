@@ -9,6 +9,9 @@
 import UIKit
 
 extension AppCoordinator: ScanQRViewControllerDelegate {
+  func viewControllerHadScanFailure(_ viewController: UIViewController, error: AVScanErrorType) {
+    alertManager.showError(message: error.message, forDuration: 2.0)
+  }
 
   func viewControllerDidPressPhotoButton(_ viewController: PhotoViewController) {
     permissionManager.requestPermission(for: .photos) { status in
@@ -68,7 +71,9 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
       let sendPaymentViewController = self.createSendPaymentViewController(forQRCode: qrCode,
                                                                            walletTransactionType: walletTransactionType,
                                                                            fallbackViewModel: fallbackViewModel)
+
       viewController.dismiss(animated: true) { [weak self] in
+        self?.toggleChartAndBalance()
         self?.navigationController.present(sendPaymentViewController, animated: true)
       }
     }
@@ -122,6 +127,7 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
       let sendPaymentViewController = SendPaymentViewController.newInstance(delegate: self, viewModel: viewModel, alertManager: self.alertManager)
 
       viewController.dismiss(animated: true) { [weak self] in
+        self?.toggleChartAndBalance()
         self?.navigationController.present(sendPaymentViewController, animated: true) {
           completion?(sendPaymentViewController)
         }

@@ -52,7 +52,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
                                                 sender: senderBody,
                                                 requestId: UUID().uuidString.lowercased(),
                                                 addressType: walletTxType.addressType)
-      self.handleSuccessfulInviteVerification(with: inviteBody, outgoingInvitationDTO: outgoingInvitationDTO)
+      self.enqueueSuccessfulInviteVerification(with: inviteBody, outgoingInvitationDTO: outgoingInvitationDTO)
     }
 
     let pinEntryVC = PinEntryViewController.newInstance(delegate: self,
@@ -61,67 +61,77 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     presentPinEntryViewController(pinEntryVC)
   }
 
-  private func handleSuccessfulInviteVerification(with inviteBody: WalletAddressRequestBody, outgoingInvitationDTO: OutgoingInvitationDTO) {
+  private func enqueueSuccessfulInviteVerification(with inviteBody: WalletAddressRequestBody, outgoingInvitationDTO: OutgoingInvitationDTO) {
 
-    // guard against fee at 0 again, to really ensure that it is not zero before creating the network request
-    if outgoingInvitationDTO.walletTxType == .onChain {
-      guard outgoingInvitationDTO.fee > 0 else {
-        log.error("DropBit invitation fee is zero")
-        handleFailure(error: TransactionDataError.insufficientFee)
-        return
-      }
-    }
+    let operation = AsynchronousOperation(operationType: .sendInvitation)
 
     let bgContext = persistenceManager.createBackgroundContext()
     let successFailVC = SuccessFailViewController.newInstance(viewModel: PaymentSuccessFailViewModel(mode: .pending),
-                                                                          delegate: self)
-    performIn(bgContext) { [weak self] () -> Void in
-      guard let strongSelf = self else { return }
-      ///Create and persist an orphan CKMInvitation object, which will be "acknowledged" and linked
-      ///once the WAR creation network request succeeds
-      strongSelf.persistenceManager.brokers.invitation.persistUnacknowledgedInvitation(
-        withDTO: outgoingInvitationDTO,
-        acknowledgmentId: inviteBody.requestId,
-        in: bgContext)
-      ///Do not save the context here, keep it only in this context until the WAR has been created successfully.
-      ///If a sync is running concurrently at just the right time, it will sometimes delete this invitation
-      ///because this invitation hasn't yet been received/acknowledged by the server.
-    }
-    .then { () -> Promise<Void> in
-      successFailVC.action = { [weak self] in
-        guard let strongSelf = self else { return }
-        strongSelf.createAddressRequest(body: inviteBody, outgoingInvitationDTO: outgoingInvitationDTO, in: bgContext)
-          .done { output in
-            strongSelf.handleAddressRequestCreationSuccess(output: output, successFailVC: successFailVC, in: bgContext)
-            // Call this separately from handleAddressRequestCreationSuccess so
-            // that it doesn't interrupt Twilio error SMS fallback flow
-            strongSelf.showShareTransactionIfAppropriate(dropBitReceiver: output.invitationDTO.contact.asDropBitReceiver,
-                                                         walletTxType: output.invitationDTO.walletTxType, delegate: strongSelf)
-          }
-        .catch(on: .main) { error in
-          log.error(error, message: "Failed to handle successful invite verification.")
-          strongSelf.handleAddressRequestCreationError(error,
-                                                       invitationDTO: outgoingInvitationDTO,
-                                                       inviteBody: inviteBody,
-                                                       successFailVC: successFailVC,
-                                                       in: bgContext)
+                                                              delegate: self)
+
+    operation.task = { [weak self, weak innerOp = operation] in
+      guard let strongSelf = self, let strongOperation = innerOp else { return }
+      // guard against fee at 0 again, to really ensure that it is not zero before creating the network request
+      if outgoingInvitationDTO.walletTxType == .onChain {
+        guard outgoingInvitationDTO.fee > 0 else {
+          log.error("DropBit invitation fee is zero")
+          strongSelf.handleFailure(error: TransactionDataError.insufficientFee)
+          return
         }
       }
-      return Promise.value(())
+
+      performIn(bgContext) { [weak self] () -> Void in
+        guard let strongSelf = self else { return }
+        ///Create and persist an orphan CKMInvitation object, which will be "acknowledged" and linked
+        ///once the WAR creation network request succeeds
+        strongSelf.persistenceManager.brokers.invitation.persistUnacknowledgedInvitation(
+          withDTO: outgoingInvitationDTO,
+          acknowledgmentId: inviteBody.requestId,
+          in: bgContext)
+        ///Do not save the context here, keep it only in this context until the WAR has been created successfully.
+        ///If a sync is running concurrently at just the right time, it will sometimes delete this invitation
+        ///because this invitation hasn't yet been received/acknowledged by the server.
+      }
+      .then { () -> Promise<Void> in
+        successFailVC.action = { [weak self] in
+          guard let strongSelf = self else { return }
+          strongSelf.createAddressRequest(body: inviteBody, outgoingInvitationDTO: outgoingInvitationDTO, in: bgContext)
+            .done { output in
+              strongSelf.handleAddressRequestCreationSuccess(output: output, successFailVC: successFailVC, in: bgContext)
+              // Call this separately from handleAddressRequestCreationSuccess so
+              // that it doesn't interrupt Twilio error SMS fallback flow
+              strongSelf.showShareTransactionIfAppropriate(dropBitReceiver: output.invitationDTO.contact.asDropBitReceiver,
+                                                           walletTxType: output.invitationDTO.walletTxType, delegate: strongSelf)
+            }
+          .catch(on: .main) { error in
+            log.error(error, message: "Failed to handle successful invite verification.")
+            strongSelf.handleAddressRequestCreationError(error,
+                                                         invitationDTO: outgoingInvitationDTO,
+                                                         inviteBody: inviteBody,
+                                                         successFailVC: successFailVC,
+                                                         in: bgContext)
+          }
+        }
+        return Promise.value(())
+      }
+      .done(on: .main) {
+        strongSelf.navigationController.topViewController()?.present(successFailVC, animated: false, completion: {
+          successFailVC.action?()
+        })
+      }
+      .catch { (error) in
+        log.error(error, message: "Failed to handle successful invite verification.")
+        strongSelf.handleAddressRequestCreationError(error,
+                                                     invitationDTO: outgoingInvitationDTO,
+                                                     inviteBody: inviteBody,
+                                                     successFailVC: successFailVC,
+                                                     in: bgContext)
+      }.finally {
+        strongOperation.finish()
+      }
     }
-    .done(on: .main) {
-      self.navigationController.topViewController()?.present(successFailVC, animated: false, completion: {
-        successFailVC.action?()
-      })
-    }
-    .catch { (error) in
-      log.error(error, message: "Failed to handle successful invite verification.")
-      self.handleAddressRequestCreationError(error,
-                                                   invitationDTO: outgoingInvitationDTO,
-                                                   inviteBody: inviteBody,
-                                                   successFailVC: successFailVC,
-                                                   in: bgContext)
-    }
+
+    serialQueueManager.enqueueOperationIfAppropriate(operation, policy: .always)
   }
 
   private struct CreateAddressRequestOutput {

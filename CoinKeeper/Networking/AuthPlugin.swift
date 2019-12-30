@@ -43,6 +43,7 @@ struct AuthPlugin: PluginType {
     request.addValue(headers.devicePlatform, forCNHeaderField: .devicePlatform)
     request.addValue(headers.timeStamp, forCNHeaderField: .authTimestamp)
     request.addValue(headers.buildEnvironment, forCNHeaderField: .buildEnvironment)
+    request.addValue(headers.udid, forCNHeaderField: .udid)
 
     if let pubKeyString = headers.pubKeyString {
       request.addValue(pubKeyString, forCNHeaderField: .pubKeyString)
