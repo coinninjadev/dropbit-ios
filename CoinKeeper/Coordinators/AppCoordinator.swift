@@ -54,6 +54,7 @@ class AppCoordinator: CoordinatorType {
   let twitterAccessManager: TwitterAccessManagerType
   let ratingAndReviewManager: RatingAndReviewManagerType
   let featureConfigManager: FeatureConfigManagerType
+  var userIdentifiableManager: UserIdentifiableManagerType
   let uiTestArguments: [UITestArgument]
 
   // swiftlint:disable:next weak_delegate
@@ -112,6 +113,7 @@ class AppCoordinator: CoordinatorType {
     twitterAccessManager: TwitterAccessManagerType? = nil,
     ratingAndReviewManager: RatingAndReviewManagerType? = nil,
     featureConfigManager: FeatureConfigManagerType? = nil,
+    userIdentifiableManager: UserIdentifiableManagerType? = nil,
     uiTestArguments: [UITestArgument] = []
     ) {
     currencyController.selectedCurrency = persistenceManager.brokers.preferences.selectedCurrency
@@ -138,8 +140,13 @@ class AppCoordinator: CoordinatorType {
     self.uiTestArguments = uiTestArguments
 
     self.persistenceCacheDataWorker = PersistenceCacheDataWorker(persistenceManager: persistenceManager, analyticsManager: analyticsManager)
+    let theUserIdentifierManager = UserIdentifiableManager(networkManager: theNetworkManager, persistenceManager: persistenceManager)
+    self.userIdentifiableManager = theUserIdentifierManager
 
-    let twitterMgr = twitterAccessManager ?? TwitterAccessManager(networkManager: theNetworkManager, persistenceManager: persistenceManager)
+    let twitterMgr = twitterAccessManager ?? TwitterAccessManager(networkManager: theNetworkManager,
+                                                                  persistenceManager: persistenceManager,
+                                                                  userIdentifiableManager: theUserIdentifierManager,
+                                                                  serialQueueManager: serialQueueManager)
     self.twitterAccessManager = twitterMgr
 
     let notificationMgr = notificationManager ?? NotificationManager(permissionManager: permissionManager, networkInteractor: theNetworkManager)
@@ -159,6 +166,7 @@ class AppCoordinator: CoordinatorType {
     self.networkManager.walletDelegate = self
     self.alertManager.urlOpener = self
     self.serialQueueManager.delegate = self
+    self.userIdentifiableManager.delegate = self
   }
 
   var drawerController: MMDrawerController? {
