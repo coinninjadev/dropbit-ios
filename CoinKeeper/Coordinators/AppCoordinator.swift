@@ -286,6 +286,7 @@ class AppCoordinator: CoordinatorType {
     setupDynamicLinks()
 
     persistenceManager.brokers.activity.setFirstOpenDateIfNil(date: Date())
+    persistenceManager.keychainManager.findOrCreateUDID()
 
     // fetch transaction information for receive and change addresses, update server addresses
     UIApplication.shared.setMinimumBackgroundFetchInterval(.oneHour)
@@ -295,7 +296,6 @@ class AppCoordinator: CoordinatorType {
     setInitialRootViewController()
     registerForBalanceSaveNotifications()
     trackAnalytics()
-
   }
 
   private func applyUITestArguments(_ arguments: [UITestArgument]) {

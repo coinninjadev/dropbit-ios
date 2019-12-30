@@ -12,6 +12,8 @@ import enum Result.Result
 @testable import DropBit
 
 class MockPersistenceKeychainManager: PersistenceKeychainType {
+  func findOrCreateUDID() -> String { return "" }
+
   func prepareForStateDetermination() { }
 
   func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void> {

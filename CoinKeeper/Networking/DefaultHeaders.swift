@@ -17,5 +17,6 @@ struct DefaultHeaders {
   var userId: String?
   var deviceId: UUID?
   var pubKeyString: String?
+  var udid: String
   var buildEnvironment: ApplicationBuildEnvironment
 }
