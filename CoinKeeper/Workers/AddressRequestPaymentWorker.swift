@@ -33,7 +33,8 @@ class AddressRequestPaymentWorker {
                                                       invitationId: String,
                                                       pendingInvitation: CKMInvitation,
                                                       txData: CNBTransactionData?,
-                                                      in context: NSManagedObjectContext) -> Promise<Void> {
+                                                      in context: NSManagedObjectContext,
+                                                      transactionType: WalletTransactionType) -> Promise<Void> {
     guard let postableObject = PayloadPostableOutgoingTransactionData(data: outgoingTransactionData) else {
       return Promise(error: CKPersistenceError.missingValue(key: "postableOutgoingTransactionData"))
     }
@@ -61,10 +62,15 @@ class AddressRequestPaymentWorker {
         }
 
         if pendingInvitation.status == .completed {
-          self.analyticsManager.track(event: .dropbitCompleted, with: nil)
-          if let receiver = outgoingTransactionData.receiver, case .twitter = receiver {
-            self.analyticsManager.track(event: .twitterSendComplete, with: nil)
+          var satsLightningType: SatsTransferredLightningTypeValue?
+
+          if transactionType == .lightning {
+            satsLightningType = outgoingTransactionData.receiver == nil ? .external : .internal
           }
+
+          let satsValues = SatsTransferredValues(transactionType: transactionType == .lightning ? .lightning : .onChain,
+                                                 isInvite: true, lightningType: satsLightningType)
+          self.analyticsManager.track(event: .satsTransferred, with: satsValues.values)
         }
 
       }
@@ -161,7 +167,8 @@ class LightningAddressRequestPaymentWorker: AddressRequestPaymentWorker {
         var outgoingCopy = outgoingTxData
         outgoingCopy.txid = response.result.cleanedId
         return self.completeWalletAddressRequestFulfillmentLocally(outgoingTransactionData: outgoingCopy, invitationId: responseId,
-      pendingInvitation: pendingInvitation, txData: nil, in: context) }
+                                                                   pendingInvitation: pendingInvitation, txData: nil, in: context,
+                                                                   transactionType: .lightning) }
     }
 }
 
@@ -189,7 +196,8 @@ class OnChainAddressRequestPaymentWorker: AddressRequestPaymentWorker {
         if let found = maybeFound {
           let foundOutgoingTxData = outgoingTxData.copy(withTxid: found.txid)
           return self.completeWalletAddressRequestFulfillmentLocally(outgoingTransactionData: foundOutgoingTxData, invitationId: responseId,
-                                                                     pendingInvitation: pendingInvitation, txData: nil, in: context)
+                                                                     pendingInvitation: pendingInvitation, txData: nil, in: context,
+                                                                     transactionType: .onChain)
         } else {
 
           // guard against insufficient funds
@@ -205,7 +213,8 @@ class OnChainAddressRequestPaymentWorker: AddressRequestPaymentWorker {
                 .then(in: context) { txid -> Promise<Void> in
                   let dataCopyWithTxid = outgoingTxData.copy(withTxid: txid)
                   return self.completeWalletAddressRequestFulfillmentLocally(outgoingTransactionData: dataCopyWithTxid, invitationId: responseId,
-                                                                             pendingInvitation: pendingInvitation, txData: txData, in: context)
+                                                                             pendingInvitation: pendingInvitation, txData: txData, in: context,
+                                                                             transactionType: .onChain)
               }
             }
             .recover { self.mapTransactionBroadcastError($0, forResponseId: responseId) }

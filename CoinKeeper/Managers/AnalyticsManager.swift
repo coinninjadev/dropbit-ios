@@ -15,7 +15,6 @@ enum AnalyticsManagerPropertiesType: String {
   case twitterVerified = "Twitter Verified"
   case wordsBackedUp = "Backed Up"
   case hasBTCBalance = "Has BTC Balance"
-  case hasSent = "Has Sent"
   case hasReceived = "Has Received"
   case hasSentDropBit = "Has Sent DropBit"
   case hasReceivedDropBit = "Has Received DropBit"
@@ -27,16 +26,15 @@ enum AnalyticsManagerPropertiesType: String {
   case lightningUpgradeCompleted = "Lightning Upgrade Completed"
   case lightningUpgradedFromRestore = "Lightning Upgrade From Restore"
   case lightningUpgradedFunds = "Lightning Upgraded Funds"
-  case hasLightningBalance = "Does User Have Lightning Balance"
+  case hasLightningBalance = "Has Lightning Balance"
   case lightningLockedStatus = "Lightning Wallet Locked Status"
 }
 
 enum AnalyticsManagerEventType: String {
-  case userDidOpenTutorial = "UserDidOpenTutorial"
+  case learnBitcoin = "LearnBitcoin"
   case foreignWalletAddressDetected = "ForeignWalletAddressDetected"
   case invalidServerResponse = "InvalidServerResponse"
   case preBroadcast = "BroadcastStart"
-  case successBroadcastTransaction = "BroadcastSuccess"
   case failedToBroadcastTransaction = "TxVerificationFailure"
   case paymentSentFailed = "BroadcastFailure"
   case retryFailedPayment = "RetryFailedPayment"
@@ -75,8 +73,6 @@ enum AnalyticsManagerEventType: String {
   case dropbitInitiated = "DropBitInitiated"
   case dropbitInitiationFailed = "DropBitInitiationFailed"
   case dropbitAddressProvided = "DropBitAddressProvided"
-  case dropbitCompleted = "DropBitCompleted"
-  case twitterSendComplete = "TwitterSendComplete"
   case dropbitInviteSMSFailed = "DropBitInviteSendSMSFailure"
   case verifyUserSMSFailed = "VerifyUserSendSMSFailure"
   case coinKeeperContactPressed = "ContactPressed"
@@ -93,7 +89,6 @@ enum AnalyticsManagerEventType: String {
   case confirmScreenLoaded = "ConfirmScreenLoaded"
   case sharedPayloadSent = "SharedPayloadSent"
   case getBitcoinButtonPressed = "GetBitcoin"
-  case learnBitcoinButtonPressed = "LearnBitcoin"
   case spendBitcoinButtonPressed = "SpendBitcoin"
   case buyBitcoinWithCreditCard = "BuyBitcoinWithCreditCard"
   case buyWithQuickPay = "BuyBitcoinQuickPay"
@@ -120,7 +115,6 @@ enum AnalyticsManagerEventType: String {
   case onChainToLightningPressed = "OnChainToLightningPressed"
   case lightningToOnChainPressed = "LightningToOnChainPressed"
   case walletToggleTooltipPressed = "WalletToggleTooltipPressed"
-  case legacyWordsPressed = "LegacyWordsPressed"
   case quickReloadFive = "QuickReloadFive"
   case quickReloadTwenty = "QuickReloadTwenty"
   case quickReloadFifty = "QuickReloadFifty"
@@ -134,8 +128,8 @@ enum AnalyticsManagerEventType: String {
   case onChainToLightningSuccessful = "OnChainToLightningSuccessful"
   case externalLightningInvoiceInput = "ExternalLightningInvoiceInput"
   case paymentToInvoiceFailed = "PaymentToInvoiceFailed"
-  case lightningDropBitInvoicePaid = "LightningDropBitInvoicePaid"
   case referralLinkDetected = "ReferralLinkDetected"
+  case satsTransferred = "SatsTransferred"
 
   var id: String {
     return self.rawValue
@@ -155,8 +149,40 @@ enum AnalyticsManagerEventKey: String {
   case blockstreamInfoCode = "BlockstreamCode"
   case blockstreamInfoMessage = "BlockstreamMsg"
 
+  case transactionType = "TransactionType"
+  case isDropBitInvite = "IsDropBitInvite"
+  case lightningType = "LightningType"
+
   case countryCode = "CountryCode"
   case referrer = "Referrer"
+}
+
+struct SatsTransferredValues {
+  var values: [AnalyticsEventValue]
+
+  init(transactionType: SatsTransferredTransactionTypeValue,
+       isInvite: Bool, lightningType: SatsTransferredLightningTypeValue?) {
+    let transactionTypeValue = AnalyticsEventValue(key: .transactionType, value: transactionType.rawValue)
+    let isInviteValue = AnalyticsEventValue(key: .isDropBitInvite, value: isInvite.description)
+
+    values = [transactionTypeValue, isInviteValue]
+
+    if let lightningType = lightningType {
+      let lightning = AnalyticsEventValue(key: .lightningType, value: lightningType.rawValue)
+      values.append(lightning)
+    }
+
+  }
+}
+
+enum SatsTransferredTransactionTypeValue: String {
+  case onChain = "OnChain"
+  case lightning = "Lightning"
+}
+
+enum SatsTransferredLightningTypeValue: String {
+  case `internal` = "Internal"
+  case external = "External"
 }
 
 enum AnalyticsRelativeWalletRange: String {
