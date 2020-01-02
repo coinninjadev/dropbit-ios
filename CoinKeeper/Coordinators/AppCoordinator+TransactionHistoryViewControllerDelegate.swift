@@ -24,7 +24,7 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
   }
 
   func viewControllerDidRequestTutorial(_ viewController: UIViewController) {
-    analyticsManager.track(event: .userDidOpenTutorial, with: nil)
+    analyticsManager.track(event: .learnBitcoin, with: nil)
     let viewController = TutorialViewController.newInstance(delegate: self, urlOpener: self)
     viewController.modalPresentationStyle = .formSheet
     navigationController.present(viewController, animated: true, completion: nil)
