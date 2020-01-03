@@ -236,8 +236,6 @@ extension AppCoordinator: PaymentSendingDelegate {
           self.analyticsManager.track(event: .onChainToLightningSuccessful, with: nil)
         }
 
-        let satsValues = SatsTransferredValues(transactionType: .onChain, isInvite: false, lightningType: nil)
-        self.analyticsManager.track(event: .satsTransferred, with: satsValues.values)
         self.trackIfUserHasABalance()
 
         CKNotificationCenter.publish(key: .didUpdateBalance, object: nil, userInfo: nil)
