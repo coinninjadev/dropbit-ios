@@ -346,6 +346,7 @@
 		3BA9F60F208F6EBF0047C213 /* AppCoordinator+RequestPayViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA9F60E208F6EBF0047C213 /* AppCoordinator+RequestPayViewControllerDelegate.swift */; };
 		3BA9F611208F6EDB0047C213 /* AppCoordinator+BalanceContainerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA9F610208F6EDB0047C213 /* AppCoordinator+BalanceContainerDelegate.swift */; };
 		3BA9FA8420FE852C0011C6C4 /* AppCoordinator+NotificationManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA9FA8320FE852C0011C6C4 /* AppCoordinator+NotificationManagerDelegate.swift */; };
+		3BA9FAD223BF809E0072AA59 /* Cnlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BA9FAD123BF809E0072AA59 /* Cnlib.framework */; };
 		3BAB143E204DDFCB001D41A2 /* MockWalletManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB143D204DDFCB001D41A2 /* MockWalletManager.swift */; };
 		3BAB1441204EBE0B001D41A2 /* BackupRecoveryWordsCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB1440204EBE0B001D41A2 /* BackupRecoveryWordsCellTests.swift */; };
 		3BAB1443204EE5A7001D41A2 /* VerifyRecoveryWordsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BAB1442204EE5A7001D41A2 /* VerifyRecoveryWordsViewController.storyboard */; };
@@ -394,7 +395,6 @@
 		3BDFADFE2267B1FB0077DEF2 /* BlockstreamProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDFADFD2267B1FB0077DEF2 /* BlockstreamProvider.swift */; };
 		3BE1C52D232D2BC100583A83 /* LightningUpgradeStartPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE1C52C232D2BC100583A83 /* LightningUpgradeStartPage.swift */; };
 		3BE1C52F232D390700583A83 /* UITestRecoverWordBackupAutomatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE1C52E232D390700583A83 /* UITestRecoverWordBackupAutomatable.swift */; };
-		3BE49D6523AC07CC00716474 /* Cnlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BE49D6423AC07CC00716474 /* Cnlib.framework */; };
 		3BE8AA1621F10D4200A3F0C4 /* CKCryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8AA1521F10D4200A3F0C4 /* CKCryptor.swift */; };
 		3BE8AA1821F1149100A3F0C4 /* CKCryptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8AA1721F1149100A3F0C4 /* CKCryptorTests.swift */; };
 		3BE8D85E20D16FAE00E99D24 /* DerivativePathResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8D85D20D16FAE00E99D24 /* DerivativePathResponse.swift */; };
@@ -1488,6 +1488,7 @@
 		3BA9F60E208F6EBF0047C213 /* AppCoordinator+RequestPayViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+RequestPayViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		3BA9F610208F6EDB0047C213 /* AppCoordinator+BalanceContainerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+BalanceContainerDelegate.swift"; sourceTree = "<group>"; };
 		3BA9FA8320FE852C0011C6C4 /* AppCoordinator+NotificationManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+NotificationManagerDelegate.swift"; sourceTree = "<group>"; };
+		3BA9FAD123BF809E0072AA59 /* Cnlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Cnlib.framework; sourceTree = "<group>"; };
 		3BAB143D204DDFCB001D41A2 /* MockWalletManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWalletManager.swift; sourceTree = "<group>"; };
 		3BAB1440204EBE0B001D41A2 /* BackupRecoveryWordsCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRecoveryWordsCellTests.swift; sourceTree = "<group>"; };
 		3BAB1442204EE5A7001D41A2 /* VerifyRecoveryWordsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = VerifyRecoveryWordsViewController.storyboard; sourceTree = "<group>"; };
@@ -1537,7 +1538,6 @@
 		3BDFADFD2267B1FB0077DEF2 /* BlockstreamProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockstreamProvider.swift; sourceTree = "<group>"; };
 		3BE1C52C232D2BC100583A83 /* LightningUpgradeStartPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeStartPage.swift; sourceTree = "<group>"; };
 		3BE1C52E232D390700583A83 /* UITestRecoverWordBackupAutomatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestRecoverWordBackupAutomatable.swift; sourceTree = "<group>"; };
-		3BE49D6423AC07CC00716474 /* Cnlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Cnlib.framework; sourceTree = "<group>"; };
 		3BE8AA1521F10D4200A3F0C4 /* CKCryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKCryptor.swift; sourceTree = "<group>"; };
 		3BE8AA1721F1149100A3F0C4 /* CKCryptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKCryptorTests.swift; sourceTree = "<group>"; };
 		3BE8D85D20D16FAE00E99D24 /* DerivativePathResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivativePathResponse.swift; sourceTree = "<group>"; };
@@ -2297,7 +2297,7 @@
 				B54D205E20F908C30057A694 /* SwiftMessages.framework in Frameworks */,
 				A2FDC54122D37BFA004B0EDD /* Charts.framework in Frameworks */,
 				D3050CCBBA9D3A897790120B /* Pods_DropBit.framework in Frameworks */,
-				3BE49D6523AC07CC00716474 /* Cnlib.framework in Frameworks */,
+				3BA9FAD223BF809E0072AA59 /* Cnlib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2930,7 +2930,7 @@
 		3BAB4BB723A7C71000AADBF7 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				3BE49D6423AC07CC00716474 /* Cnlib.framework */,
+				3BA9FAD123BF809E0072AA59 /* Cnlib.framework */,
 			);
 			path = lib;
 			sourceTree = "<group>";
