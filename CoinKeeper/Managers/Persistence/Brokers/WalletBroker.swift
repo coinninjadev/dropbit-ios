@@ -124,7 +124,7 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
     }
   }
 
-  var usableCoin: CNBCnlibBasecoin {
+  var usableCoin: CNBCnlibBaseCoin {
     var coinType = 0
     #if DEBUG
     coinType = CKUserDefaults().useRegtest ? 1 : 0

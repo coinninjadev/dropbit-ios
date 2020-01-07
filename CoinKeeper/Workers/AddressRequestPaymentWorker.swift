@@ -236,18 +236,7 @@ class OnChainAddressRequestPaymentWorker: AddressRequestPaymentWorker {
       }
     }
 
-    let nsError = error as NSError
-    let errorCode = TransactionBroadcastError(errorCode: nsError.code)
-    switch errorCode {
-    case .broadcastTimedOut:
-      return Promise(error: TransactionBroadcastError.broadcastTimedOut)
-    case .networkUnreachable:
-      return Promise(error: TransactionBroadcastError.networkUnreachable)
-    case .unknown:
-      return Promise(error: TransactionBroadcastError.unknown)
-    case .insufficientFee:
-      return Promise(error: PendingInvitationError.insufficientFeeForInvitationWithID(responseId))
-    }
+    return Promise(error: error)
   }
 
 }

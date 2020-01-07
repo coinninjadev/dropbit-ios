@@ -22,16 +22,8 @@ struct LNHopHint: Decodable {
 
 struct LNDecodePaymentRequestResponse: LNResponseDecodable {
 
-  let destination: String
-  let paymentHash: String
   let numSatoshis: Int?
-  let timestamp: Date
-  let expiry: Int
   var description: String?
-  var descriptionHash: String?
-  var fallbackAddr: String?
-  let cltvExpiry: Int
-  let routeHints: [LNRouteHint]?
 
   static var sampleJSON: String {
     return """
@@ -51,11 +43,11 @@ struct LNDecodePaymentRequestResponse: LNResponseDecodable {
   }
 
   static var requiredStringKeys: [KeyPath<LNDecodePaymentRequestResponse, String>] {
-    return [\.destination, \.paymentHash]
+    return []
   }
 
   static var optionalStringKeys: [WritableKeyPath<LNDecodePaymentRequestResponse, String?>] {
-    return [\.description, \.descriptionHash, \.fallbackAddr]
+    return [\.description]
   }
 
 }

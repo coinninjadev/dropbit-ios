@@ -47,12 +47,13 @@ class AddressCoreDataTests: XCTestCase {
   // MARK: test derivative path creation and linking
   func testCreateAddressAndDerivativePath() {
     let addressString = fakeAddresses()[0]
-    let path = CNBCnlibNewDerivationPath(49, 0, 0, 0, 0)!
+    let baseCoin = CNBCnlibNewBaseCoin(49, 0, 0)!
+    let path = CNBCnlibNewDerivationPath(baseCoin, 0, 0)!
     let address = CKMAddress.findOrCreate(withAddress: addressString, derivativePath: path, in: context)
 
-    XCTAssertEqual(address.derivativePath?.purpose, path.purpose)
-    XCTAssertEqual(address.derivativePath?.coin, path.coin)
-    XCTAssertEqual(address.derivativePath?.account, path.account)
+    XCTAssertEqual(address.derivativePath?.purpose, baseCoin.purpose)
+    XCTAssertEqual(address.derivativePath?.coin, baseCoin.coin)
+    XCTAssertEqual(address.derivativePath?.account, baseCoin.account)
     XCTAssertEqual(address.derivativePath?.change, path.change)
     XCTAssertEqual(address.derivativePath?.index, path.index)
   }

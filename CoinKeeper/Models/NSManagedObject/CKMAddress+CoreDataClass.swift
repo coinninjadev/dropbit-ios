@@ -34,7 +34,7 @@ public class CKMAddress: NSManagedObject {
     in context: NSManagedObjectContext) -> CKMAddress {
     let address = CKMAddress.findOrCreate(withAddress: address, in: context)
     if address.derivativePath == nil {
-      let newPath = CKMDerivativePath.findOrCreate(with: path.purpose, path.coin, path.account, path.change, path.index, in: context)
+      let newPath = CKMDerivativePath.findOrCreate(with: path, in: context)
 
       // set relationship both ways, as save operation may not happen before query is executed on addresses
       address.derivativePath = newPath

@@ -73,7 +73,7 @@ class MockWalletBroker: CKPersistenceBroker, WalletBrokerType {
     }
   }
 
-  var usableCoin: CNBCnlibBasecoin {
+  var usableCoin: CNBCnlibBaseCoin {
     return CNBCnlibNewBaseCoin(84, 0, 0)!
   }
 

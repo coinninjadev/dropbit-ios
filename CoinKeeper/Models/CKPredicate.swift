@@ -144,7 +144,7 @@ struct CKPredicate {
       return NSPredicate(format: "\(addressPath) != nil")
     }
 
-    static func allPaths(for coin: CNBCnlibBasecoin, changeIndex: Int) -> NSPredicate {
+    static func allPaths(for coin: CNBCnlibBaseCoin, changeIndex: Int) -> NSPredicate {
       let purposePredicate = NSPredicate(format: "%K = %d", purposeKeyPath, coin.purpose)
       let coinPredicate = NSPredicate(format: "%K = %d", coinKeyPath, coin.coin)
       let accountPredicate = NSPredicate(format: "%K = %d", accountKeyPath, coin.account)
@@ -342,7 +342,7 @@ struct CKPredicate {
       return txidPredicate
     }
 
-    static func matching(coin: CNBCnlibBasecoin) -> NSPredicate {
+    static func matching(coin: CNBCnlibBaseCoin) -> NSPredicate {
       let purposeKeyPath = #keyPath(CKMAddressTransactionSummary.address.derivativePath.purpose)
       let purposePredicate = NSPredicate(format: "%K = %d", purposeKeyPath, coin.purpose)
       let coinKeyPath = #keyPath(CKMAddressTransactionSummary.address.derivativePath.coin)

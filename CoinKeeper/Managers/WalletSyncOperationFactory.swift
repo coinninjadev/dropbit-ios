@@ -115,7 +115,7 @@ class WalletSyncOperationFactory {
 
   private func walletDebugDescription(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> String {
     let walletId = dependencies.persistenceManager.brokers.wallet.walletId(in: context) ?? "-"
-    let pubkey = dependencies.walletManager.hexEncodedPublicKey
+    let pubkey = (try? dependencies.walletManager.hexEncodedPublicKey()) ?? ""
     return "Wallet ID: \(walletId) -- Public Key: \(pubkey)"
   }
 

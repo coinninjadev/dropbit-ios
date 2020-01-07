@@ -15,7 +15,7 @@ protocol WalletManagerType: AnyObject {
   static func secureEntropy() -> Data
   func validateBase58Check(for address: String) -> Bool
   func validateBech32Encoding(for address: String) -> Bool
-  var coin: CNBCnlibBasecoin { get }
+  var coin: CNBCnlibBaseCoin { get }
   var wallet: CNBCnlibHDWallet { get }
   func hexEncodedPublicKey() throws -> String
   func hexEncodedPublicKeyPromise() -> Promise<String>
@@ -96,7 +96,7 @@ class WalletManager: WalletManagerType {
   private(set) var wallet: CNBCnlibHDWallet
   private let persistenceManager: PersistenceManagerType
 
-  let coin: CNBCnlibBasecoin
+  let coin: CNBCnlibBaseCoin
 
   init?(words: [String], persistenceManager: PersistenceManagerType = PersistenceManager()) {
     let relevantCoin = persistenceManager.usableCoin
@@ -208,9 +208,10 @@ class WalletManager: WalletManagerType {
   }
 
   func hexEncodedPublicKey() throws -> String {
-    var err: NSErrorPointer = nil
-    let key = wallet.coinNinjaVerificationKeyHexString(err)
-    if let error = err?.pointee {
+    var err: NSError?
+    err = nil
+    let key = wallet.coinNinjaVerificationKeyHexString(&err)
+    if let error = err {
       log.error(error, message: "Failed to get hex encoded public key for wallet.")
       throw error
     }
@@ -237,10 +238,11 @@ class WalletManager: WalletManagerType {
   }
 
   func signatureSigning(data: Data) throws -> String {
-    var errorPointer: NSErrorPointer = nil
-    let data = wallet.signatureSigning(data, error: errorPointer)
+    var err: NSError?
+    err = nil
+    let data = wallet.signatureSigning(data, error: &err)
 
-    if let error = errorPointer?.pointee {
+    if let error = err {
       log.error(error, message: "Failed to sign data with signature.")
       throw error
     }
@@ -491,7 +493,7 @@ class WalletManager: WalletManagerType {
   }
 
   private func newChangePath(in context: NSManagedObjectContext) throws -> CNBCnlibDerivationPath {
-    let defaultPath = CNBCnlibDerivationPath(coin.purpose, coin: coin.coin, account: coin.account, change: 1, index: 0)!
+    let defaultPath = CNBCnlibNewDerivationPath(coin, 1, 0)!
     return try self.createAddressDataSource().nextChangeAddress(in: context).derivationPath ?? defaultPath
   }
 }

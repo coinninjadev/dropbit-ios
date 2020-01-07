@@ -64,7 +64,8 @@ class CKCryptorTests: XCTestCase {
     let bobDecryptor = CKCryptor(walletManager: bobWallet)
 
     context.performAndWait {
-      let dpath = CKMDerivativePath.findOrCreate(with: 49, 1, 0, 0, 0, in: context)
+      let baseCoin = CNBCnlibNewBaseCoin(49, 1, 0)!
+      let dpath = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
       let addr = CKMAddress.findOrCreate(withAddress: bobReceiveAddress.address, in: context) // just so it's in the core data context
       addr.derivativePath = dpath
       dpath.address = addr
@@ -134,7 +135,8 @@ class CKCryptorTests: XCTestCase {
     let bobDecryptor = CKCryptor(walletManager: bobWallet)
 
     context.performAndWait {
-      let dpath = CKMDerivativePath.findOrCreate(with: 49, 1, 0, 0, 0, in: context)
+      let baseCoin = CNBCnlibNewBaseCoin(49, 1, 0)!
+      let dpath = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
       let addr = CKMAddress.findOrCreate(withAddress: bobReceiveAddress.address, in: context) // just so it's in the core data context
       addr.derivativePath = dpath
       dpath.address = addr
@@ -199,7 +201,8 @@ class CKCryptorTests: XCTestCase {
     }
 
     context.performAndWait {
-      let dpath = CKMDerivativePath.findOrCreate(with: 49, 0, 0, 0, 0, in: context)
+      let baseCoin = CNBCnlibNewBaseCoin(49, 0, 0)!
+      let dpath = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
       let addr = CKMAddress.findOrCreate(withAddress: bobReceiveAddress.address, in: context) // just so it's in the core data context
       addr.derivativePath = dpath
       dpath.address = addr
@@ -264,7 +267,8 @@ class CKCryptorTests: XCTestCase {
     let aliceAddress = "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu"
     let b64payload = "AwDZH1vechFtjqeGn3yKwgVkDWWieW64UVPVXIwf9/MfXwyuWHH91b6SLIpBP3lB+G0YRtm5pX8Wb61Pd0FgKLQ44VCMVCje7ync6eACHRh5KARFVJ6CP40onzjO9IvFd1ikQ8NpR84GRcZIzQkU3miZ3RaqlFdDjnHjbjrvSwp5fgyxedggZRMQWZguNEP8Kc2j"
 
-    let dpath = CKMDerivativePath.findOrCreate(with: 84, 0, 0, 0, 0, in: context)
+    let baseCoin = CNBCnlibNewBaseCoin(84, 0, 0)!
+    let dpath = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
     let addr = CKMAddress.findOrCreate(withAddress: aliceAddress, in: context) // just so it's in the core data context
     addr.derivativePath = dpath
     dpath.address = addr

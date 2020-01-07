@@ -68,7 +68,7 @@ class LightningUpgradeStartViewControllerTests: XCTestCase {
     let coin = CNBCnlibNewBaseCoin(84, 0, 0)!
     let rbfOption = CNBCnlibRBFOption(CNBCnlibAllowedToBeRBF)!
     let data = CNBCnlibNewTransactionDataStandard("", coin, 0, 0, nil, 0, rbfOption)
-    try? data?.generate(nil)
+    try? data?.generate()
     data.map { self.sut.updateUI(withTransactionData: $0.transactionData) }
 
     XCTAssertLessThan(sut.activityIndicatorBottomConstraint.constant, 0)
@@ -80,12 +80,12 @@ class LightningUpgradeStartViewControllerTests: XCTestCase {
 
     CKUserDefaults().standardDefaults.set(10000, forKey: CKUserDefaults.Key.exchangeRateBTCUSD.defaultsString)
     let coin = CNBCnlibNewBaseCoin(49, 0, 0)!
-    let path = CNBCnlibNewDerivationPath(49, 0, 0, 0, 0)!
+    let path = CNBCnlibNewDerivationPath(coin, 0, 0)!
     let utxo = CNBCnlibNewUTXO("abc123", 0, 100_000, path, nil, true)!
     let address = "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4"
     let data = CNBCnlibNewTransactionDataSendingMax(address, coin, 5, 500000)
     data?.add(utxo)
-    try? data?.generate(nil)
+    try? data?.generate()
     data.map { self.sut.updateUI(withTransactionData: $0.transactionData) }
 
     let expectedString = "I understand that DropBit will be transferring my funds of $9.93 with a transaction fee of $0.07 to my upgraded wallet."

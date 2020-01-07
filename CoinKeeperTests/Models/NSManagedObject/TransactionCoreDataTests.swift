@@ -165,9 +165,10 @@ class TransactionCoreDataTests: XCTestCase {
     let voutAddress2 = changeAddress(at: 0)
     var transaction: CKMTransaction!
     context.performAndWait {
-      let receiveDP0 = CKMDerivativePath.findOrCreate(with: 49, 0, 0, 0, 0, in: context)
-      let receiveDP1 = CKMDerivativePath.findOrCreate(with: 49, 0, 0, 0, 1, in: context)
-      let changeDP0 = CKMDerivativePath.findOrCreate(with: 49, 0, 0, 1, 0, in: context)
+      let baseCoin = CNBCnlibNewBaseCoin(49, 0, 0)!
+      let receiveDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
+      let receiveDP1 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 1, in: context)
+      let changeDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 1, index: 0, in: context)
       let vinManagedAddress = CKMAddress.findOrCreate(withAddress: vinAddress, in: context)
       vinManagedAddress.derivativePath = receiveDP0
       let vout1ManagedAddress = CKMAddress.findOrCreate(withAddress: voutAddress1, in: context)
@@ -193,7 +194,8 @@ class TransactionCoreDataTests: XCTestCase {
     let voutAddress2 = externalAddress()
     var transaction: CKMTransaction!
     context.performAndWait {
-      let receiveDP0 = CKMDerivativePath.findOrCreate(with: 49, 0, 0, 0, 0, in: context)
+      let baseCoin = CNBCnlibNewBaseCoin(49, 0, 0)!
+      let receiveDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
       let voutManagedAddress1 = CKMAddress.findOrCreate(withAddress: voutAddress1, in: context)
       voutManagedAddress1.derivativePath = receiveDP0
       let vinResponse = TransactionVinResponse(currentTxid: "currentTxid", txid: "txid", vout: 0, value: 500_000, addresses: [vinAddress])
@@ -229,7 +231,8 @@ class TransactionCoreDataTests: XCTestCase {
 
     var transaction: CKMTransaction!
     context.performAndWait {
-      let receiveDP0 = CKMDerivativePath.findOrCreate(with: 49, 0, 0, 0, 0, in: context)
+      let baseCoin = CNBCnlibNewBaseCoin(49, 0, 0)!
+      let receiveDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
       let voutManagedAddress1 = CKMAddress.findOrCreate(withAddress: voutAddress1, in: context)
       voutManagedAddress1.derivativePath = receiveDP0
       let vinResponse = TransactionVinResponse(currentTxid: "currentTxid", txid: "txid", vout: 0, value: 500_000, addresses: [vinAddress])
@@ -254,9 +257,10 @@ class TransactionCoreDataTests: XCTestCase {
     let voutAddress2 = changeAddress(at: 0)
     var transaction: CKMTransaction!
     context.performAndWait {
-      let receiveDP0 = CKMDerivativePath.findOrCreate(with: 49, 0, 0, 0, 0, in: context)
-      let receiveDP1 = CKMDerivativePath.findOrCreate(with: 49, 0, 0, 0, 1, in: context)
-      let changeDP0 = CKMDerivativePath.findOrCreate(with: 49, 0, 0, 1, 0, in: context)
+      let baseCoin = CNBCnlibNewBaseCoin(49, 0, 0)!
+      let receiveDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
+      let receiveDP1 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 1, in: context)
+      let changeDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 1, index: 0, in: context)
       let vinManagedAddress = CKMAddress.findOrCreate(withAddress: vinAddress, in: context)
       vinManagedAddress.derivativePath = receiveDP0
       let vout1ManagedAddress = CKMAddress.findOrCreate(withAddress: voutAddress1, in: context)

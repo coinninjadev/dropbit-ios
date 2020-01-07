@@ -18,7 +18,7 @@ class MockPersistenceManager: PersistenceManagerType {
   let brokers: PersistenceBrokersType
 
   var fakeCoinToUse = CNBCnlibNewBaseCoin(49, 1, 0)!
-  var usableCoin: CNBCnlibBasecoin { return fakeCoinToUse }
+  var usableCoin: CNBCnlibBaseCoin { return fakeCoinToUse }
 
   init(keychainManager: PersistenceKeychainType = MockPersistenceKeychainManager(store: MockKeychainAccessorType()),
        databaseManager: PersistenceDatabaseType = MockPersistenceDatabaseManager(),

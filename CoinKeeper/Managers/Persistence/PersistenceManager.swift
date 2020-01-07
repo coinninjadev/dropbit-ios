@@ -16,7 +16,7 @@ class PersistenceManager: PersistenceManagerType {
   let contactCacheManager: ContactCacheManagerType
   let brokers: PersistenceBrokersType
 
-  var usableCoin: CNBCnlibBasecoin {
+  var usableCoin: CNBCnlibBaseCoin {
     return brokers.wallet.usableCoin
   }
 

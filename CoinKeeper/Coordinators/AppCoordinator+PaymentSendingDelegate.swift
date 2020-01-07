@@ -241,19 +241,23 @@ extension AppCoordinator: PaymentSendingDelegate {
         CKNotificationCenter.publish(key: .didUpdateBalance, object: nil, userInfo: nil)
         self.didBroadcastTransaction()
       }.catch { error in
-        let nsError = error as NSError
-        let broadcastError = TransactionBroadcastError(errorCode: nsError.code)
+        let broadcastError = error.localizedDescription
         let context = self.persistenceManager.viewContext
         let vouts = CKMVout.findUTXOs(from: transactionData, in: context)
         let voutDebugDesc = vouts.map { $0.debugDescription }.joined(separator: "\n")
-        let encodedTx = nsError.userInfo["encoded_tx"] as? String ?? ""
-        let txid = nsError.userInfo["txid"] as? String ?? ""
-        let analyticsError = "error code: \(broadcastError.rawValue) :: txid: \(txid) :: encoded_tx: \(encodedTx) :: vouts: \(voutDebugDesc)"
-        log.error("broadcast failed, \(analyticsError)")
-        let eventValue = AnalyticsEventValue(key: .broadcastFailed, value: analyticsError)
-        self.analyticsManager.track(event: .paymentSentFailed, with: eventValue)
+        if let wmgr = self.walletManager {
+          let metadata = try? wmgr.wallet.buildTransactionMetadata(transactionData)
+          let encodedTx = metadata?.encodedTx ?? ""
+          let txid = metadata?.txid ?? ""
+          let analyticsError = "error code: \(broadcastError) :: txid: \(txid) :: encoded_tx: \(encodedTx) :: vouts: \(voutDebugDesc)"
+          log.error("broadcast failed, \(analyticsError)")
+          let eventValue = AnalyticsEventValue(key: .broadcastFailed, value: analyticsError)
+          self.analyticsManager.track(event: .paymentSentFailed, with: eventValue)
 
-        failure(error)
+          failure(error)
+        } else {
+          failure(SyncRoutineError.missingWalletManager)
+        }
     }
   }
 

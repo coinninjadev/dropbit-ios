@@ -50,10 +50,11 @@ extension DerivativePathResponse {
 
 extension DerivativePathResponse {
   init(derivativePath: CNBCnlibDerivationPath) {
-    self.purpose = Int(derivativePath.purpose)
-    self.coin = Int(derivativePath.coin)
-    self.account = Int(derivativePath.account)
-    self.change = Int(derivativePath.change)
-    self.index = Int(derivativePath.index)
+    let basecoin = derivativePath.baseCoin ?? CNBCnlibNewBaseCoin(84, 0, 0)!
+    self.purpose = basecoin.purpose
+    self.coin = basecoin.coin
+    self.account = basecoin.account
+    self.change = derivativePath.change
+    self.index = derivativePath.index
   }
 }

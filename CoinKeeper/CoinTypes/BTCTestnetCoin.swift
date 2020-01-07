@@ -8,7 +8,7 @@
 
 import Cnlib
 
-class BTCTestnetCoin: CNBCnlibBasecoin {
+class BTCTestnetCoin: CNBCnlibBaseCoin {
   init(purpose: Int) {
     super.init()
     self.purpose = purpose

@@ -19,7 +19,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   var contactCacheManager: ContactCacheManagerType { get }
   var hashingManager: HashingManager { get }
   var brokers: PersistenceBrokersType { get }
-  var usableCoin: CNBCnlibBasecoin { get }
+  var usableCoin: CNBCnlibBaseCoin { get }
 
   var viewContext: NSManagedObjectContext { get }
   func createBackgroundContext() -> NSManagedObjectContext
