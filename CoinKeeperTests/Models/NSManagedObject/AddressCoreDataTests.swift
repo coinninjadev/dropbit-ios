@@ -47,7 +47,7 @@ class AddressCoreDataTests: XCTestCase {
   // MARK: test derivative path creation and linking
   func testCreateAddressAndDerivativePath() {
     let addressString = fakeAddresses()[0]
-    let baseCoin = CNBCnlibNewBaseCoin(49, 0, 0)!
+    let baseCoin = BTCMainnetCoin(purpose: 49)
     let path = CNBCnlibNewDerivationPath(baseCoin, 0, 0)!
     let address = CKMAddress.findOrCreate(withAddress: addressString, derivativePath: path, in: context)
 

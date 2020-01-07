@@ -10,9 +10,6 @@ import Cnlib
 
 class BTCTestnetCoin: CNBCnlibBaseCoin {
   init(purpose: Int) {
-    super.init()
-    self.purpose = purpose
-    self.coin = 1
-    self.account = 0
+    super.init(purpose, coin: 1, account: 0)!
   }
 }

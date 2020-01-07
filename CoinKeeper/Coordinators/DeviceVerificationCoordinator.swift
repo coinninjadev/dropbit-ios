@@ -324,7 +324,6 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     }
   }
 
-
   func viewControllerDidSkipPhoneVerification(_ viewController: DeviceVerificationViewController) {
     guard let delegate = self.delegate else { return }
 

@@ -63,7 +63,7 @@ public class CKMDerivativePath: NSManagedObject {
   }
 
   static func findOrCreate(with path: CNBCnlibDerivationPath, in context: NSManagedObjectContext) -> CKMDerivativePath {
-    let baseCoin = path.baseCoin ?? CNBCnlibNewBaseCoin(84, 0, 0)!
+    let baseCoin = path.baseCoin ?? BTCMainnetCoin(purpose: 84)
     return findOrCreate(with: baseCoin, change: path.change, index: path.index, in: context)
   }
 

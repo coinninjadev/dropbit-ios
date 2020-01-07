@@ -32,7 +32,7 @@ class CKCryptorTests: XCTestCase {
   func testDecryptingCipherTextReturnsExpectedText() {
     let stack = InMemoryCoreDataStack()
     let context = stack.context
-    mockPersistenceManager.fakeCoinToUse = CNBCnlibNewBaseCoin(49, 1, 0)!
+    mockPersistenceManager.fakeCoinToUse = BTCTestnetCoin(purpose: 49)
 
     let aliceWallet = WalletManager(words: words.reversed(), persistenceManager: mockPersistenceManager)!
 
@@ -64,7 +64,7 @@ class CKCryptorTests: XCTestCase {
     let bobDecryptor = CKCryptor(walletManager: bobWallet)
 
     context.performAndWait {
-      let baseCoin = CNBCnlibNewBaseCoin(49, 1, 0)!
+      let baseCoin = BTCTestnetCoin(purpose: 49)
       let dpath = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
       let addr = CKMAddress.findOrCreate(withAddress: bobReceiveAddress.address, in: context) // just so it's in the core data context
       addr.derivativePath = dpath
@@ -94,7 +94,7 @@ class CKCryptorTests: XCTestCase {
       "真曰分友"
     ]
 
-    mockPersistenceManager.fakeCoinToUse = CNBCnlibNewBaseCoin(49, 1, 0)!
+    mockPersistenceManager.fakeCoinToUse = BTCTestnetCoin(purpose: 49)
 
     let aliceWallet = WalletManager(words: words.reversed(), persistenceManager: mockPersistenceManager)!
 
@@ -106,7 +106,7 @@ class CKCryptorTests: XCTestCase {
   private func assertTextEncryption(clearText: String, aliceWallet: WalletManager, bobWallet: WalletManager) {
     let stack = InMemoryCoreDataStack()
     let context = stack.context
-    mockPersistenceManager.fakeCoinToUse = CNBCnlibNewBaseCoin(49, 1, 0)!
+    mockPersistenceManager.fakeCoinToUse = BTCTestnetCoin(purpose: 49)
 
     var bobReceiveAddress: CNBCnlibMetaAddress!
     do {
@@ -135,7 +135,7 @@ class CKCryptorTests: XCTestCase {
     let bobDecryptor = CKCryptor(walletManager: bobWallet)
 
     context.performAndWait {
-      let baseCoin = CNBCnlibNewBaseCoin(49, 1, 0)!
+      let baseCoin = BTCTestnetCoin(purpose: 49)
       let dpath = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
       let addr = CKMAddress.findOrCreate(withAddress: bobReceiveAddress.address, in: context) // just so it's in the core data context
       addr.derivativePath = dpath
@@ -158,7 +158,7 @@ class CKCryptorTests: XCTestCase {
   func testEncryptingPayload() {
     let stack = InMemoryCoreDataStack()
     let context = stack.context
-    mockPersistenceManager.fakeCoinToUse = CNBCnlibNewBaseCoin(49, 0, 0)!
+    mockPersistenceManager.fakeCoinToUse = BTCMainnetCoin(purpose: 49)
 
     // Construct the test data
     let amountInfo = SharedPayloadAmountInfo(fiatCurrency: .USD, fiatAmount: 100)
@@ -201,7 +201,7 @@ class CKCryptorTests: XCTestCase {
     }
 
     context.performAndWait {
-      let baseCoin = CNBCnlibNewBaseCoin(49, 0, 0)!
+      let baseCoin = BTCMainnetCoin(purpose: 49)
       let dpath = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
       let addr = CKMAddress.findOrCreate(withAddress: bobReceiveAddress.address, in: context) // just so it's in the core data context
       addr.derivativePath = dpath
@@ -260,14 +260,14 @@ class CKCryptorTests: XCTestCase {
     let context = stack.context
     let expectedMemo = "Hey y'all right back"
 
-    mockPersistenceManager.fakeCoinToUse = CNBCnlibNewBaseCoin(84, 0, 0)!
+    mockPersistenceManager.fakeCoinToUse = BTCMainnetCoin(purpose: 84)
     let aliceWords = ["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "about"]
     let aliceWalletManager = WalletManager(words: aliceWords, persistenceManager: mockPersistenceManager)!
     let aliceCryptor = CKCryptor(walletManager: aliceWalletManager)
     let aliceAddress = "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu"
     let b64payload = "AwDZH1vechFtjqeGn3yKwgVkDWWieW64UVPVXIwf9/MfXwyuWHH91b6SLIpBP3lB+G0YRtm5pX8Wb61Pd0FgKLQ44VCMVCje7ync6eACHRh5KARFVJ6CP40onzjO9IvFd1ikQ8NpR84GRcZIzQkU3miZ3RaqlFdDjnHjbjrvSwp5fgyxedggZRMQWZguNEP8Kc2j"
 
-    let baseCoin = CNBCnlibNewBaseCoin(84, 0, 0)!
+    let baseCoin = BTCMainnetCoin(purpose: 84)
     let dpath = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
     let addr = CKMAddress.findOrCreate(withAddress: aliceAddress, in: context) // just so it's in the core data context
     addr.derivativePath = dpath

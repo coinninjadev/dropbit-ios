@@ -164,26 +164,24 @@ class TransactionCoreDataTests: XCTestCase {
     let voutAddress1 = receiveAddress(at: 1)
     let voutAddress2 = changeAddress(at: 0)
     var transaction: CKMTransaction!
-    context.performAndWait {
-      let baseCoin = CNBCnlibNewBaseCoin(49, 0, 0)!
-      let receiveDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
-      let receiveDP1 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 1, in: context)
-      let changeDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 1, index: 0, in: context)
-      let vinManagedAddress = CKMAddress.findOrCreate(withAddress: vinAddress, in: context)
-      vinManagedAddress.derivativePath = receiveDP0
-      let vout1ManagedAddress = CKMAddress.findOrCreate(withAddress: voutAddress1, in: context)
-      vout1ManagedAddress.derivativePath = receiveDP1
-      let vout2ManagedAddress = CKMAddress.findOrCreate(withAddress: vinAddress, in: context)
-      vout2ManagedAddress.derivativePath = changeDP0
-      let vinResponse = TransactionVinResponse(currentTxid: "currentTxid", txid: "txid", vout: 0, value: 500_000, addresses: [vinAddress])
-      let voutResponse1 = TransactionVoutResponse(txid: "txid", n: 0, value: 400_000, addresses: [voutAddress1])
-      let voutResponse2 = TransactionVoutResponse(txid: "txid", n: 1, value: 100_000, addresses: [voutAddress2])
+    let baseCoin = BTCMainnetCoin(purpose: 49)
+    let receiveDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
+    let receiveDP1 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 1, in: context)
+    let changeDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 1, index: 0, in: context)
+    let vinManagedAddress = CKMAddress.findOrCreate(withAddress: vinAddress, in: context)
+    vinManagedAddress.derivativePath = receiveDP0
+    let vout1ManagedAddress = CKMAddress.findOrCreate(withAddress: voutAddress1, in: context)
+    vout1ManagedAddress.derivativePath = receiveDP1
+    let vout2ManagedAddress = CKMAddress.findOrCreate(withAddress: vinAddress, in: context)
+    vout2ManagedAddress.derivativePath = changeDP0
+    let vinResponse = TransactionVinResponse(currentTxid: "currentTxid", txid: "txid", vout: 0, value: 500_000, addresses: [vinAddress])
+    let voutResponse1 = TransactionVoutResponse(txid: "txid", n: 0, value: 400_000, addresses: [voutAddress1])
+    let voutResponse2 = TransactionVoutResponse(txid: "txid", n: 1, value: 100_000, addresses: [voutAddress2])
 
-      let txResponse = TransactionResponse(txid: "txid1", vinResponses: [vinResponse], voutResponses: [voutResponse1, voutResponse2])
+    let txResponse = TransactionResponse(txid: "txid1", vinResponses: [vinResponse], voutResponses: [voutResponse1, voutResponse2])
 
-      transaction = CKMTransaction(insertInto: context)
-      transaction.configure(with: txResponse, in: context, relativeToBlockHeight: 500_000, fullSync: false)
-    }
+    transaction = CKMTransaction(insertInto: context)
+    transaction.configure(with: txResponse, in: context, relativeToBlockHeight: 500_000, fullSync: false)
 
     XCTAssertFalse(transaction.isIncoming)
   }
@@ -193,33 +191,29 @@ class TransactionCoreDataTests: XCTestCase {
     let voutAddress1 = receiveAddress(at: 0)
     let voutAddress2 = externalAddress()
     var transaction: CKMTransaction!
-    context.performAndWait {
-      let baseCoin = CNBCnlibNewBaseCoin(49, 0, 0)!
-      let receiveDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
-      let voutManagedAddress1 = CKMAddress.findOrCreate(withAddress: voutAddress1, in: context)
-      voutManagedAddress1.derivativePath = receiveDP0
-      let vinResponse = TransactionVinResponse(currentTxid: "currentTxid", txid: "txid", vout: 0, value: 500_000, addresses: [vinAddress])
-      let voutResponse1 = TransactionVoutResponse(txid: "txid", n: 0, value: 400_000, addresses: [voutAddress1])
-      let voutResponse2 = TransactionVoutResponse(txid: "txid", n: 1, value: 100_000, addresses: [voutAddress2])
+    let baseCoin = BTCMainnetCoin(purpose: 49)
+    let receiveDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
+    let voutManagedAddress1 = CKMAddress.findOrCreate(withAddress: voutAddress1, in: context)
+    voutManagedAddress1.derivativePath = receiveDP0
+    let vinResponse = TransactionVinResponse(currentTxid: "currentTxid", txid: "txid", vout: 0, value: 500_000, addresses: [vinAddress])
+    let voutResponse1 = TransactionVoutResponse(txid: "txid", n: 0, value: 400_000, addresses: [voutAddress1])
+    let voutResponse2 = TransactionVoutResponse(txid: "txid", n: 1, value: 100_000, addresses: [voutAddress2])
 
-      let txResponse = TransactionResponse(txid: "txid1", vinResponses: [vinResponse], voutResponses: [voutResponse1, voutResponse2])
+    let txResponse = TransactionResponse(txid: "txid1", vinResponses: [vinResponse], voutResponses: [voutResponse1, voutResponse2])
 
-      transaction = CKMTransaction(insertInto: context)
-      transaction.configure(with: txResponse, in: context, relativeToBlockHeight: 500_000, fullSync: false)
-    }
+    transaction = CKMTransaction(insertInto: context)
+    transaction.configure(with: txResponse, in: context, relativeToBlockHeight: 500_000, fullSync: false)
 
     XCTAssertTrue(transaction.isIncoming)
   }
 
   func testCalculateIsSentToSelfWithInvitation() {
     var transaction: CKMTransaction!
-    context.performAndWait {
-      let invitation = CKMInvitation(insertInto: context)
-      transaction = CKMTransaction(insertInto: context)
-      transaction.invitation = invitation
-      transaction.isSentToSelf = true // just to set the opposite value to avoid a false-positive
-      transaction.isSentToSelf = transaction.calculateIsSentToSelf(in: context)
-    }
+    let invitation = CKMInvitation(insertInto: context)
+    transaction = CKMTransaction(insertInto: context)
+    transaction.invitation = invitation
+    transaction.isSentToSelf = true // just to set the opposite value to avoid a false-positive
+    transaction.isSentToSelf = transaction.calculateIsSentToSelf(in: context)
 
     XCTAssertFalse(transaction.isSentToSelf)
   }
@@ -230,23 +224,21 @@ class TransactionCoreDataTests: XCTestCase {
     let voutAddress2 = externalAddress()
 
     var transaction: CKMTransaction!
-    context.performAndWait {
-      let baseCoin = CNBCnlibNewBaseCoin(49, 0, 0)!
-      let receiveDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
-      let voutManagedAddress1 = CKMAddress.findOrCreate(withAddress: voutAddress1, in: context)
-      voutManagedAddress1.derivativePath = receiveDP0
-      let vinResponse = TransactionVinResponse(currentTxid: "currentTxid", txid: "txid", vout: 0, value: 500_000, addresses: [vinAddress])
-      let voutResponse1 = TransactionVoutResponse(txid: "txid", n: 0, value: 400_000, addresses: [voutAddress1])
-      let voutResponse2 = TransactionVoutResponse(txid: "txid", n: 1, value: 100_000, addresses: [voutAddress2])
+    let baseCoin = BTCMainnetCoin(purpose: 49)
+    let receiveDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
+    let voutManagedAddress1 = CKMAddress.findOrCreate(withAddress: voutAddress1, in: context)
+    voutManagedAddress1.derivativePath = receiveDP0
+    let vinResponse = TransactionVinResponse(currentTxid: "currentTxid", txid: "txid", vout: 0, value: 500_000, addresses: [vinAddress])
+    let voutResponse1 = TransactionVoutResponse(txid: "txid", n: 0, value: 400_000, addresses: [voutAddress1])
+    let voutResponse2 = TransactionVoutResponse(txid: "txid", n: 1, value: 100_000, addresses: [voutAddress2])
 
-      var txResponse = TransactionResponse(txid: "txid1", vinResponses: [vinResponse], voutResponses: [voutResponse1, voutResponse2])
-      txResponse.isSentToSelf = false
+    var txResponse = TransactionResponse(txid: "txid1", vinResponses: [vinResponse], voutResponses: [voutResponse1, voutResponse2])
+    txResponse.isSentToSelf = false
 
-      transaction = CKMTransaction(insertInto: context)
-      transaction.isSentToSelf = true // just to set the opposite value to avoid a false-positive
-      transaction.configure(with: txResponse, in: context, relativeToBlockHeight: 500_000, fullSync: false)
-      transaction.isSentToSelf = transaction.calculateIsSentToSelf(in: context)
-    }
+    transaction = CKMTransaction(insertInto: context)
+    transaction.isSentToSelf = true // just to set the opposite value to avoid a false-positive
+    transaction.configure(with: txResponse, in: context, relativeToBlockHeight: 500_000, fullSync: false)
+    transaction.isSentToSelf = transaction.calculateIsSentToSelf(in: context)
 
     XCTAssertFalse(transaction.isSentToSelf)
   }
@@ -256,28 +248,26 @@ class TransactionCoreDataTests: XCTestCase {
     let voutAddress1 = receiveAddress(at: 1)
     let voutAddress2 = changeAddress(at: 0)
     var transaction: CKMTransaction!
-    context.performAndWait {
-      let baseCoin = CNBCnlibNewBaseCoin(49, 0, 0)!
-      let receiveDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
-      let receiveDP1 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 1, in: context)
-      let changeDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 1, index: 0, in: context)
-      let vinManagedAddress = CKMAddress.findOrCreate(withAddress: vinAddress, in: context)
-      vinManagedAddress.derivativePath = receiveDP0
-      let vout1ManagedAddress = CKMAddress.findOrCreate(withAddress: voutAddress1, in: context)
-      vout1ManagedAddress.derivativePath = receiveDP1
-      let vout2ManagedAddress = CKMAddress.findOrCreate(withAddress: voutAddress2, in: context)
-      vout2ManagedAddress.derivativePath = changeDP0
-      let vinResponse = TransactionVinResponse(currentTxid: "currentTxid", txid: "txid", vout: 0, value: 500_000, addresses: [vinAddress])
-      let voutResponse1 = TransactionVoutResponse(txid: "txid", n: 0, value: 400_000, addresses: [voutAddress1])
-      let voutResponse2 = TransactionVoutResponse(txid: "txid", n: 1, value: 100_000, addresses: [voutAddress2])
+    let baseCoin = BTCMainnetCoin(purpose: 49)
+    let receiveDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
+    let receiveDP1 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 1, in: context)
+    let changeDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 1, index: 0, in: context)
+    let vinManagedAddress = CKMAddress.findOrCreate(withAddress: vinAddress, in: context)
+    vinManagedAddress.derivativePath = receiveDP0
+    let vout1ManagedAddress = CKMAddress.findOrCreate(withAddress: voutAddress1, in: context)
+    vout1ManagedAddress.derivativePath = receiveDP1
+    let vout2ManagedAddress = CKMAddress.findOrCreate(withAddress: voutAddress2, in: context)
+    vout2ManagedAddress.derivativePath = changeDP0
+    let vinResponse = TransactionVinResponse(currentTxid: "currentTxid", txid: "txid", vout: 0, value: 500_000, addresses: [vinAddress])
+    let voutResponse1 = TransactionVoutResponse(txid: "txid", n: 0, value: 400_000, addresses: [voutAddress1])
+    let voutResponse2 = TransactionVoutResponse(txid: "txid", n: 1, value: 100_000, addresses: [voutAddress2])
 
-      let txResponse = TransactionResponse(txid: "txid1", vinResponses: [vinResponse], voutResponses: [voutResponse1, voutResponse2])
+    let txResponse = TransactionResponse(txid: "txid1", vinResponses: [vinResponse], voutResponses: [voutResponse1, voutResponse2])
 
-      transaction = CKMTransaction(insertInto: context)
-      transaction.isSentToSelf = false
-      transaction.configure(with: txResponse, in: context, relativeToBlockHeight: 500_000, fullSync: false)
-      transaction.isSentToSelf = transaction.calculateIsSentToSelf(in: context)
-    }
+    transaction = CKMTransaction(insertInto: context)
+    transaction.isSentToSelf = false
+    transaction.configure(with: txResponse, in: context, relativeToBlockHeight: 500_000, fullSync: false)
+    transaction.isSentToSelf = transaction.calculateIsSentToSelf(in: context)
 
     XCTAssertTrue(transaction.isSentToSelf)
   }

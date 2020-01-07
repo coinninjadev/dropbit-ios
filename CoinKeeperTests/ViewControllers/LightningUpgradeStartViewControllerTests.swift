@@ -65,7 +65,7 @@ class LightningUpgradeStartViewControllerTests: XCTestCase {
   func testUpdatingBalanceUpdatesUI() {
     XCTAssertEqual(sut.activityIndicatorBottomConstraint.constant, 50)
 
-    let coin = CNBCnlibNewBaseCoin(84, 0, 0)!
+    let coin = BTCMainnetCoin(purpose: 84)
     let rbfOption = CNBCnlibRBFOption(CNBCnlibAllowedToBeRBF)!
     let data = CNBCnlibNewTransactionDataStandard("", coin, 0, 0, nil, 0, rbfOption)
     try? data?.generate()
@@ -79,7 +79,7 @@ class LightningUpgradeStartViewControllerTests: XCTestCase {
     XCTAssertNil(sut.confirmTransferFundsLabel.attributedText)
 
     CKUserDefaults().standardDefaults.set(10000, forKey: CKUserDefaults.Key.exchangeRateBTCUSD.defaultsString)
-    let coin = CNBCnlibNewBaseCoin(49, 0, 0)!
+    let coin = BTCMainnetCoin(purpose: 49)
     let path = CNBCnlibNewDerivationPath(coin, 0, 0)!
     let utxo = CNBCnlibNewUTXO("abc123", 0, 100_000, path, nil, true)!
     let address = "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4"
