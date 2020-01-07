@@ -91,7 +91,6 @@
 		3B2871F822FB245B00CAB027 /* com.coinninja.CoinKeeper.beta 2019-08-07 11:12.53.832.xcappdata in Resources */ = {isa = PBXBuildFile; fileRef = 3B2871F722FB245B00CAB027 /* com.coinninja.CoinKeeper.beta 2019-08-07 11:12.53.832.xcappdata */; };
 		3B287CB42100FB1A00A43E57 /* AppCoordinator+ConnectionManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B287CB32100FB1A00A43E57 /* AppCoordinator+ConnectionManagerDelegate.swift */; };
 		3B287CB62100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B287CB52100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift */; };
-		3B287CB82101128400A43E57 /* TransactionBroadcastError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B287CB72101128400A43E57 /* TransactionBroadcastError.swift */; };
 		3B287CBB21020CC700A43E57 /* WalletAddressRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B287CBA21020CC700A43E57 /* WalletAddressRequest.swift */; };
 		3B29ABA42346792700E08A1A /* LightningUnavailableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B29ABA32346792700E08A1A /* LightningUnavailableView.xib */; };
 		3B2E3ED021C92FE600AE55DE /* SyncDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2E3ECF21C92FE600AE55DE /* SyncDependencies.swift */; };
@@ -186,6 +185,7 @@
 		3B4B929C22F354850018285C /* SendPaymentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1BE86321B5819500CCFE29 /* SendPaymentPage.swift */; };
 		3B4B929D22F354850018285C /* TransactionHistoryPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304BAED121FA1F9700065D6D /* TransactionHistoryPage.swift */; };
 		3B4B929E22F354850018285C /* WalletOverviewPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27DFDF122DCDCD200C2824C /* WalletOverviewPage.swift */; };
+		3B4E7DF723C4CE05001CAA40 /* Cnlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B4E7DF623C4CE05001CAA40 /* Cnlib.framework */; };
 		3B5052B12045FAD7000C739F /* BackupRecoveryWordsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B5052B02045FAD7000C739F /* BackupRecoveryWordsViewController.storyboard */; };
 		3B5052B32045FAFA000C739F /* BackupRecoveryWordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5052B22045FAFA000C739F /* BackupRecoveryWordsViewController.swift */; };
 		3B5052B52045FB5C000C739F /* BackupRecoveryWordsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5052B42045FB5C000C739F /* BackupRecoveryWordsViewControllerTests.swift */; };
@@ -346,7 +346,6 @@
 		3BA9F60F208F6EBF0047C213 /* AppCoordinator+RequestPayViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA9F60E208F6EBF0047C213 /* AppCoordinator+RequestPayViewControllerDelegate.swift */; };
 		3BA9F611208F6EDB0047C213 /* AppCoordinator+BalanceContainerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA9F610208F6EDB0047C213 /* AppCoordinator+BalanceContainerDelegate.swift */; };
 		3BA9FA8420FE852C0011C6C4 /* AppCoordinator+NotificationManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA9FA8320FE852C0011C6C4 /* AppCoordinator+NotificationManagerDelegate.swift */; };
-		3BA9FAD223BF809E0072AA59 /* Cnlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BA9FAD123BF809E0072AA59 /* Cnlib.framework */; };
 		3BAB143E204DDFCB001D41A2 /* MockWalletManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB143D204DDFCB001D41A2 /* MockWalletManager.swift */; };
 		3BAB1441204EBE0B001D41A2 /* BackupRecoveryWordsCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB1440204EBE0B001D41A2 /* BackupRecoveryWordsCellTests.swift */; };
 		3BAB1443204EE5A7001D41A2 /* VerifyRecoveryWordsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BAB1442204EE5A7001D41A2 /* VerifyRecoveryWordsViewController.storyboard */; };
@@ -1257,7 +1256,6 @@
 		3B2871F722FB245B00CAB027 /* com.coinninja.CoinKeeper.beta 2019-08-07 11:12.53.832.xcappdata */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = "com.coinninja.CoinKeeper.beta 2019-08-07 11:12.53.832.xcappdata"; sourceTree = "<group>"; };
 		3B287CB32100FB1A00A43E57 /* AppCoordinator+ConnectionManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+ConnectionManagerDelegate.swift"; sourceTree = "<group>"; };
 		3B287CB52100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+ChildCoordinatorDelegate.swift"; sourceTree = "<group>"; };
-		3B287CB72101128400A43E57 /* TransactionBroadcastError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionBroadcastError.swift; sourceTree = "<group>"; };
 		3B287CBA21020CC700A43E57 /* WalletAddressRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressRequest.swift; sourceTree = "<group>"; };
 		3B29ABA32346792700E08A1A /* LightningUnavailableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LightningUnavailableView.xib; sourceTree = "<group>"; };
 		3B2E3ECF21C92FE600AE55DE /* SyncDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncDependencies.swift; sourceTree = "<group>"; };
@@ -1326,6 +1324,7 @@
 		3B4A9F2E21BEF55F0009CDF6 /* DatabaseMigratorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMigratorFactory.swift; sourceTree = "<group>"; };
 		3B4B39EF203773C5007B7CC8 /* PlaceholderViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PlaceholderViewController.storyboard; sourceTree = "<group>"; };
 		3B4B39F1203773E1007B7CC8 /* PlaceholderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderViewController.swift; sourceTree = "<group>"; };
+		3B4E7DF623C4CE05001CAA40 /* Cnlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Cnlib.framework; sourceTree = "<group>"; };
 		3B5052B02045FAD7000C739F /* BackupRecoveryWordsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = BackupRecoveryWordsViewController.storyboard; sourceTree = "<group>"; };
 		3B5052B22045FAFA000C739F /* BackupRecoveryWordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRecoveryWordsViewController.swift; sourceTree = "<group>"; };
 		3B5052B42045FB5C000C739F /* BackupRecoveryWordsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRecoveryWordsViewControllerTests.swift; sourceTree = "<group>"; };
@@ -1488,7 +1487,6 @@
 		3BA9F60E208F6EBF0047C213 /* AppCoordinator+RequestPayViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+RequestPayViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		3BA9F610208F6EDB0047C213 /* AppCoordinator+BalanceContainerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+BalanceContainerDelegate.swift"; sourceTree = "<group>"; };
 		3BA9FA8320FE852C0011C6C4 /* AppCoordinator+NotificationManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+NotificationManagerDelegate.swift"; sourceTree = "<group>"; };
-		3BA9FAD123BF809E0072AA59 /* Cnlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Cnlib.framework; sourceTree = "<group>"; };
 		3BAB143D204DDFCB001D41A2 /* MockWalletManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWalletManager.swift; sourceTree = "<group>"; };
 		3BAB1440204EBE0B001D41A2 /* BackupRecoveryWordsCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRecoveryWordsCellTests.swift; sourceTree = "<group>"; };
 		3BAB1442204EE5A7001D41A2 /* VerifyRecoveryWordsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = VerifyRecoveryWordsViewController.storyboard; sourceTree = "<group>"; };
@@ -2297,7 +2295,7 @@
 				B54D205E20F908C30057A694 /* SwiftMessages.framework in Frameworks */,
 				A2FDC54122D37BFA004B0EDD /* Charts.framework in Frameworks */,
 				D3050CCBBA9D3A897790120B /* Pods_DropBit.framework in Frameworks */,
-				3BA9FAD223BF809E0072AA59 /* Cnlib.framework in Frameworks */,
+				3B4E7DF723C4CE05001CAA40 /* Cnlib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2930,7 +2928,7 @@
 		3BAB4BB723A7C71000AADBF7 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				3BA9FAD123BF809E0072AA59 /* Cnlib.framework */,
+				3B4E7DF623C4CE05001CAA40 /* Cnlib.framework */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -2981,7 +2979,6 @@
 				3BDA2080203E17A700CBA6B1 /* BiometricError.swift */,
 				3BDA364220B4D50E001E24FB /* SpendableBalanceError.swift */,
 				3BC23EF120BDCA5100877BB6 /* TransactionDataError.swift */,
-				3B287CB72101128400A43E57 /* TransactionBroadcastError.swift */,
 				B50384C520B304780091AB37 /* CKNetworkError.swift */,
 				B5F6EC2422554CF20045633B /* TwilioErrorDelegate.swift */,
 				3B0FF8C320C333DC00AADC9E /* CKPersistenceError.swift */,
@@ -5009,7 +5006,6 @@
 				A2E52D6220BD937E00424E6A /* StringDictResponse.swift in Sources */,
 				3B489D80216FC5750078D3F0 /* SubscriptionResponse.swift in Sources */,
 				3BE8AA1621F10D4200A3F0C4 /* CKCryptor.swift in Sources */,
-				3B287CB82101128400A43E57 /* TransactionBroadcastError.swift in Sources */,
 				B50E7B7F230C6A0400927C8B /* TransactionSummaryCellViewModel.swift in Sources */,
 				3BEF22992260D42E001F6D25 /* SpendBitcoinViewController.swift in Sources */,
 				B56E15912167D955003B69D4 /* NetworkManager+WalletAddressRequestable.swift in Sources */,

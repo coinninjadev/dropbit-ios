@@ -11,11 +11,11 @@
 #include "Universe.objc.h"
 
 
-@class CNBCnlibAddressHelper;
-@class CNBCnlibBasecoin;
+@class CNBCnlibBaseCoin;
 @class CNBCnlibDerivationPath;
 @class CNBCnlibHDWallet;
 @class CNBCnlibImportedPrivateKey;
+@class CNBCnlibLightningInvoice;
 @class CNBCnlibMetaAddress;
 @class CNBCnlibRBFOption;
 @class CNBCnlibTransactionChangeMetadata;
@@ -25,36 +25,19 @@
 @class CNBCnlibTransactionDataStandard;
 @class CNBCnlibTransactionMetadata;
 @class CNBCnlibUTXO;
-@class CNBCnlibUsableAddress;
 
 /**
- * AddressHelper is a struct with helper functions to provide info about addresses.
+ * BaseCoin is used to provide information about the current user's wallet.
  */
-@interface CNBCnlibAddressHelper : NSObject <goSeqRefInterface> {
+@interface CNBCnlibBaseCoin : NSObject <goSeqRefInterface> {
 }
 @property(strong, readonly) _Nonnull id _ref;
 
 - (nonnull instancetype)initWithRef:(_Nonnull id)ref;
 /**
- * NewAddressHelper returns a ref to a new AddressHelper object, given a *Basecoin.
+ * NewBaseCoin instantiates a new object and sets values
  */
-- (nullable instancetype)init:(CNBCnlibBasecoin* _Nullable)basecoin;
-@property (nonatomic) CNBCnlibBasecoin* _Nullable basecoin;
-/**
- * HRPFromAddress decodes the given address, and if a SegWit address, returns the HRP.
- */
-- (NSString* _Nonnull)hrpFromAddress:(NSString* _Nullable)addr error:(NSError* _Nullable* _Nullable)error;
-@end
-
-/**
- * Basecoin is used to provide information about the current user's wallet.
- */
-@interface CNBCnlibBasecoin : NSObject <goSeqRefInterface> {
-}
-@property(strong, readonly) _Nonnull id _ref;
-
-- (nonnull instancetype)initWithRef:(_Nonnull id)ref;
-- (nonnull instancetype)init;
+- (nullable instancetype)init:(long)purpose coin:(long)coin account:(long)account;
 @property (nonatomic) long purpose;
 @property (nonatomic) long coin;
 @property (nonatomic) long account;
@@ -63,7 +46,11 @@
  */
 - (NSString* _Nonnull)getBech32HRP:(NSError* _Nullable* _Nullable)error;
 /**
- * UpdateAccount updates the account value on the BaseCoin receiver.
+ * HRPFromAddress decodes the given address, and if a SegWit address, returns the HRP.
+ */
+- (NSString* _Nonnull)hrpFromAddress:(NSString* _Nullable)addr error:(NSError* _Nullable* _Nullable)error;
+/**
+ * UpdateAccount updates the coin account on the BaseCoin receiver.
  */
 - (void)updateAccount:(long)account;
 /**
@@ -87,12 +74,15 @@
 /**
  * NewDerivationPath instantiates a new object and sets values.
  */
-- (nullable instancetype)init:(long)purpose coin:(long)coin account:(long)account change:(long)change index:(long)index;
-@property (nonatomic) long purpose;
-@property (nonatomic) long coin;
-@property (nonatomic) long account;
+- (nullable instancetype)init:(CNBCnlibBaseCoin* _Nullable)bc change:(long)change index:(long)index;
+@property (nonatomic) CNBCnlibBaseCoin* _Nullable baseCoin;
 @property (nonatomic) long change;
 @property (nonatomic) long index;
+- (NSString* _Nonnull)getBech32HRP:(NSError* _Nullable* _Nullable)error;
+- (NSString* _Nonnull)hrpFromAddress:(NSString* _Nullable)addr error:(NSError* _Nullable* _Nullable)error;
+- (void)updateAccount:(long)account;
+- (void)updateCoin:(long)coin;
+- (void)updatePurpose:(long)purpose;
 @end
 
 /**
@@ -104,17 +94,17 @@
 
 - (nonnull instancetype)initWithRef:(_Nonnull id)ref;
 /**
- * NewHDWalletFromWords returns a pointer to an HDWallet, containing the Basecoin, words, and unexported master private key.
+ * NewHDWalletFromWords returns a pointer to an HDWallet, containing the BaseCoin, words, and unexported master private key.
  */
-- (nullable instancetype)initFromWords:(NSString* _Nullable)wordString basecoin:(CNBCnlibBasecoin* _Nullable)basecoin;
-@property (nonatomic) CNBCnlibBasecoin* _Nullable basecoin;
+- (nullable instancetype)initFromWords:(NSString* _Nullable)wordString basecoin:(CNBCnlibBaseCoin* _Nullable)basecoin;
+@property (nonatomic) CNBCnlibBaseCoin* _Nullable baseCoin;
 @property (nonatomic) NSString* _Nonnull walletWords;
 /**
  * BuildTransactionMetadata will generate the tx metadata needed for client to consume.
  */
 - (CNBCnlibTransactionMetadata* _Nullable)buildTransactionMetadata:(CNBCnlibTransactionData* _Nullable)data error:(NSError* _Nullable* _Nullable)error;
 /**
- * ChangeAddressForIndex returns a change MetaAddress derived from the current wallet, Basecoin, and index.
+ * ChangeAddressForIndex returns a change MetaAddress derived from the current wallet, BaseCoin, and index.
  */
 - (CNBCnlibMetaAddress* _Nullable)changeAddressForIndex:(long)index error:(NSError* _Nullable* _Nullable)error;
 /**
@@ -125,6 +115,10 @@
  * CoinNinjaVerificationKeyHexString returns the hex-encoded string of the signing pubkey byte slice.
  */
 - (NSString* _Nonnull)coinNinjaVerificationKeyHexString:(NSError* _Nullable* _Nullable)error;
+/**
+ * DecodeLightningInvoice returns a reference to an invoice.Invoice object if valid, or error if invalid.
+ */
+- (CNBCnlibLightningInvoice* _Nullable)decodeLightningInvoice:(NSString* _Nullable)invoice error:(NSError* _Nullable* _Nullable)error;
 /**
  * DecryptMessage decrypts a payload using signing key (m/42) and included sender public key (expected to be last 65 bytes of payload).
  */
@@ -146,7 +140,7 @@
  */
 - (CNBCnlibImportedPrivateKey* _Nullable)importPrivateKey:(NSString* _Nullable)encodedKey error:(NSError* _Nullable* _Nullable)error;
 /**
- * ReceiveAddressForIndex returns a receive MetaAddress derived from the current wallet, Basecoin, and index.
+ * ReceiveAddressForIndex returns a receive MetaAddress derived from the current wallet, BaseCoin, and index.
  */
 - (CNBCnlibMetaAddress* _Nullable)receiveAddressForIndex:(long)index error:(NSError* _Nullable* _Nullable)error;
 /**
@@ -166,9 +160,9 @@
  */
 - (NSData* _Nullable)signingPublicKey:(NSError* _Nullable* _Nullable)error;
 /**
- * UpdateCoin updates the pointer stored to a new instance of Basecoin. Fetched MetaAddresses will reflect updated coin.
+ * UpdateCoin updates the pointer stored to a new instance of BaseCoin. Fetched MetaAddresses will reflect updated coin.
  */
-- (void)updateCoin:(CNBCnlibBasecoin* _Nullable)c;
+- (void)updateCoin:(CNBCnlibBaseCoin* _Nullable)c;
 @end
 
 /**
@@ -183,6 +177,19 @@
 @property (nonatomic) NSString* _Nonnull possibleAddresses;
 @property (nonatomic) NSString* _Nonnull privateKeyAsWIF;
 @property (nonatomic) NSString* _Nonnull selectedAddress;
+@end
+
+/**
+ * LightningInvoice is a wrapper type for returning a decoded LN invoice
+ */
+@interface CNBCnlibLightningInvoice : NSObject <goSeqRefInterface> {
+}
+@property(strong, readonly) _Nonnull id _ref;
+
+- (nonnull instancetype)initWithRef:(_Nonnull id)ref;
+- (nonnull instancetype)init;
+@property (nonatomic) long numSatoshis;
+@property (nonatomic) NSString* _Nonnull description;
 @end
 
 /**
@@ -289,7 +296,7 @@ Default RBFOption is MustBeRBF.
 @param blockHeight The current block height, used to calculate the locktime (blockHeight + 1).
 @return Returns an instantiated object if fully able to satisfy amount+fee with UTXOs, or nil if insufficient funds.
  */
-- (nullable instancetype)init:(NSString* _Nullable)paymentAddress basecoin:(CNBCnlibBasecoin* _Nullable)basecoin amount:(long)amount flatFee:(long)flatFee changePath:(CNBCnlibDerivationPath* _Nullable)changePath blockHeight:(long)blockHeight;
+- (nullable instancetype)init:(NSString* _Nullable)paymentAddress basecoin:(CNBCnlibBaseCoin* _Nullable)basecoin amount:(long)amount flatFee:(long)flatFee changePath:(CNBCnlibDerivationPath* _Nullable)changePath blockHeight:(long)blockHeight;
 @property (nonatomic) CNBCnlibTransactionData* _Nullable transactionData;
 /**
  * AddUTXO Adds a utxo to the private array.
@@ -343,7 +350,7 @@ Once created, add all available utxos one at a time using `addUTXO` function, as
 @param rbfOption A ref to a RBFOption object passed to the transaction builder to determind replaceability. Retains reference.
 @return Returns an instantiated object if fully able to satisfy amount+fee with UTXOs, or nil if insufficient funds.
  */
-- (nullable instancetype)init:(NSString* _Nullable)paymentAddress basecoin:(CNBCnlibBasecoin* _Nullable)basecoin amount:(long)amount feeRate:(long)feeRate changePath:(CNBCnlibDerivationPath* _Nullable)changePath blockHeight:(long)blockHeight rbfOption:(CNBCnlibRBFOption* _Nullable)rbfOption;
+- (nullable instancetype)init:(NSString* _Nullable)paymentAddress basecoin:(CNBCnlibBaseCoin* _Nullable)basecoin amount:(long)amount feeRate:(long)feeRate changePath:(CNBCnlibDerivationPath* _Nullable)changePath blockHeight:(long)blockHeight rbfOption:(CNBCnlibRBFOption* _Nullable)rbfOption;
 @property (nonatomic) CNBCnlibTransactionData* _Nullable transactionData;
 /**
  * AddUTXO Adds a utxo to the private array.
@@ -390,30 +397,6 @@ Once created, add all available utxos one at a time using `addUTXO` function, as
 @end
 
 /**
- * UsableAddress is a wrapper struct that can provide a usable output address.
- */
-@interface CNBCnlibUsableAddress : NSObject <goSeqRefInterface> {
-}
-@property(strong, readonly) _Nonnull id _ref;
-
-- (nonnull instancetype)initWithRef:(_Nonnull id)ref;
-/**
- * NewUsableAddressWithDerivationPath accepts a wallet and derivation path, and returns a pointer to a UsableAddress.
- */
-- (nullable instancetype)initWithDerivationPath:(CNBCnlibHDWallet* _Nullable)wallet derivationPath:(CNBCnlibDerivationPath* _Nullable)derivationPath;
-/**
- * NewUsableAddressWithImportedPrivateKey accepts a wallet and imported private key, and returns a pointer to a UsableAddress.
- */
-- (nullable instancetype)initWithImportedPrivateKey:(CNBCnlibHDWallet* _Nullable)wallet importedPrivateKey:(CNBCnlibImportedPrivateKey* _Nullable)importedPrivateKey;
-@property (nonatomic) CNBCnlibHDWallet* _Nullable wallet;
-@property (nonatomic) CNBCnlibDerivationPath* _Nullable derivationPath;
-/**
- * MetaAddress returns a meta address with a given path based on wallet's Basecoin, and uncompressed pubkey if a receive address. UsableAddress's DerivationPath must not be nil.
- */
-- (CNBCnlibMetaAddress* _Nullable)metaAddress:(NSError* _Nullable* _Nullable)error;
-@end
-
-/**
  * Following constants are used for RBFOption.
  */
 FOUNDATION_EXPORT const long CNBCnlibAllowedToBeRBF;
@@ -425,6 +408,21 @@ FOUNDATION_EXPORT const long CNBCnlibMustBeRBF;
  * Following constants are used for RBFOption.
  */
 FOUNDATION_EXPORT const long CNBCnlibMustNotBeRBF;
+
+@interface CNBCnlib : NSObject
++ (CNBCnlibBaseCoin* _Nullable) baseCoinBip49MainNet;
++ (void) setBaseCoinBip49MainNet:(CNBCnlibBaseCoin* _Nullable)v;
+
++ (CNBCnlibBaseCoin* _Nullable) baseCoinBip49TestNet;
++ (void) setBaseCoinBip49TestNet:(CNBCnlibBaseCoin* _Nullable)v;
+
++ (CNBCnlibBaseCoin* _Nullable) baseCoinBip84MainNet;
++ (void) setBaseCoinBip84MainNet:(CNBCnlibBaseCoin* _Nullable)v;
+
++ (CNBCnlibBaseCoin* _Nullable) baseCoinBip84TestNet;
++ (void) setBaseCoinBip84TestNet:(CNBCnlibBaseCoin* _Nullable)v;
+
+@end
 
 /**
  * AddressIsBase58CheckEncoded decodes the address, returns true if address is base58check encoded.
@@ -447,24 +445,19 @@ FOUNDATION_EXPORT NSString* _Nonnull CNBCnlibGetFullBIP39WordListString(void);
 FOUNDATION_EXPORT long CNBCnlibMax(long a, long b);
 
 /**
- * NewAddressHelper returns a ref to a new AddressHelper object, given a *Basecoin.
- */
-FOUNDATION_EXPORT CNBCnlibAddressHelper* _Nullable CNBCnlibNewAddressHelper(CNBCnlibBasecoin* _Nullable basecoin);
-
-/**
  * NewBaseCoin instantiates a new object and sets values
  */
-FOUNDATION_EXPORT CNBCnlibBasecoin* _Nullable CNBCnlibNewBaseCoin(long purpose, long coin, long account);
+FOUNDATION_EXPORT CNBCnlibBaseCoin* _Nullable CNBCnlibNewBaseCoin(long purpose, long coin, long account);
 
 /**
  * NewDerivationPath instantiates a new object and sets values.
  */
-FOUNDATION_EXPORT CNBCnlibDerivationPath* _Nullable CNBCnlibNewDerivationPath(long purpose, long coin, long account, long change, long index);
+FOUNDATION_EXPORT CNBCnlibDerivationPath* _Nullable CNBCnlibNewDerivationPath(CNBCnlibBaseCoin* _Nullable bc, long change, long index);
 
 /**
- * NewHDWalletFromWords returns a pointer to an HDWallet, containing the Basecoin, words, and unexported master private key.
+ * NewHDWalletFromWords returns a pointer to an HDWallet, containing the BaseCoin, words, and unexported master private key.
  */
-FOUNDATION_EXPORT CNBCnlibHDWallet* _Nullable CNBCnlibNewHDWalletFromWords(NSString* _Nullable wordString, CNBCnlibBasecoin* _Nullable basecoin);
+FOUNDATION_EXPORT CNBCnlibHDWallet* _Nullable CNBCnlibNewHDWalletFromWords(NSString* _Nullable wordString, CNBCnlibBaseCoin* _Nullable basecoin);
 
 /**
  * NewMetaAddress creates and returns a pointer to a MetaAddress object.
@@ -491,7 +484,7 @@ Default RBFOption is MustBeRBF.
 @param blockHeight The current block height, used to calculate the locktime (blockHeight + 1).
 @return Returns an instantiated object if fully able to satisfy amount+fee with UTXOs, or nil if insufficient funds.
  */
-FOUNDATION_EXPORT CNBCnlibTransactionDataFlatFee* _Nullable CNBCnlibNewTransactionDataFlatFee(NSString* _Nullable paymentAddress, CNBCnlibBasecoin* _Nullable basecoin, long amount, long flatFee, CNBCnlibDerivationPath* _Nullable changePath, long blockHeight);
+FOUNDATION_EXPORT CNBCnlibTransactionDataFlatFee* _Nullable CNBCnlibNewTransactionDataFlatFee(NSString* _Nullable paymentAddress, CNBCnlibBaseCoin* _Nullable basecoin, long amount, long flatFee, CNBCnlibDerivationPath* _Nullable changePath, long blockHeight);
 
 /**
  * NewTransactionDataSendingMax Send max amount to a given address, minus the calculated fee based on size of transaction times feeRate.
@@ -507,7 +500,7 @@ Default RBFOption is MustNotBeRBF.
 @return Returns an instantiated object if fully able to satisfy amount+fee with UTXOs, or nil if insufficient funds. This would only be
 nil if the funding amount is less than the fee.
  */
-FOUNDATION_EXPORT CNBCnlibTransactionDataSendMax* _Nullable CNBCnlibNewTransactionDataSendingMax(NSString* _Nullable paymentAddress, CNBCnlibBasecoin* _Nullable basecoin, long feeRate, long blockHeight);
+FOUNDATION_EXPORT CNBCnlibTransactionDataSendMax* _Nullable CNBCnlibNewTransactionDataSendingMax(NSString* _Nullable paymentAddress, CNBCnlibBaseCoin* _Nullable basecoin, long feeRate, long blockHeight);
 
 /**
  * NewTransactionDataStandard Create transaction data object using a fee rate, calculating fee via number of inputs and outputs.
@@ -523,22 +516,12 @@ Once created, add all available utxos one at a time using `addUTXO` function, as
 @param rbfOption A ref to a RBFOption object passed to the transaction builder to determind replaceability. Retains reference.
 @return Returns an instantiated object if fully able to satisfy amount+fee with UTXOs, or nil if insufficient funds.
  */
-FOUNDATION_EXPORT CNBCnlibTransactionDataStandard* _Nullable CNBCnlibNewTransactionDataStandard(NSString* _Nullable paymentAddress, CNBCnlibBasecoin* _Nullable basecoin, long amount, long feeRate, CNBCnlibDerivationPath* _Nullable changePath, long blockHeight, CNBCnlibRBFOption* _Nullable rbfOption);
+FOUNDATION_EXPORT CNBCnlibTransactionDataStandard* _Nullable CNBCnlibNewTransactionDataStandard(NSString* _Nullable paymentAddress, CNBCnlibBaseCoin* _Nullable basecoin, long amount, long feeRate, CNBCnlibDerivationPath* _Nullable changePath, long blockHeight, CNBCnlibRBFOption* _Nullable rbfOption);
 
 /**
  * NewUTXO instantiates a new UTXO object and returns a ref to it.
  */
 FOUNDATION_EXPORT CNBCnlibUTXO* _Nullable CNBCnlibNewUTXO(NSString* _Nullable txid, long index, long amount, CNBCnlibDerivationPath* _Nullable path, CNBCnlibImportedPrivateKey* _Nullable importedPrivateKey, BOOL isConfirmed);
-
-/**
- * NewUsableAddressWithDerivationPath accepts a wallet and derivation path, and returns a pointer to a UsableAddress.
- */
-FOUNDATION_EXPORT CNBCnlibUsableAddress* _Nullable CNBCnlibNewUsableAddressWithDerivationPath(CNBCnlibHDWallet* _Nullable wallet, CNBCnlibDerivationPath* _Nullable derivationPath, NSError* _Nullable* _Nullable error);
-
-/**
- * NewUsableAddressWithImportedPrivateKey accepts a wallet and imported private key, and returns a pointer to a UsableAddress.
- */
-FOUNDATION_EXPORT CNBCnlibUsableAddress* _Nullable CNBCnlibNewUsableAddressWithImportedPrivateKey(CNBCnlibHDWallet* _Nullable wallet, CNBCnlibImportedPrivateKey* _Nullable importedPrivateKey);
 
 /**
  * NewWordListFromEntropy returns a space-separated list of mnemonic words from entropy.
