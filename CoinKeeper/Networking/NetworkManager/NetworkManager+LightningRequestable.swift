@@ -12,7 +12,6 @@ import PromiseKit
 protocol LightningRequestable: AnyObject {
   func getOrCreateLightningAccount() -> Promise<LNAccountResponse>
   func createLightningPaymentRequest(sats: Int, expires: Int?, memo: String?) -> Promise<LNCreatePaymentRequestResponse>
-  func decodeLightningPaymentRequest(_ request: String) -> Promise<LNDecodePaymentRequestResponse>
   func getLightningLedger(parameters: LNLedgerUrlParameters) -> Promise<LNLedgerResponse>
   func payLightningPaymentRequest(_ request: String, sats: Int) -> Promise<LNTransactionResponse>
   func preauthorizeLightningPayment(sats: Int, encodedPayload: String) -> Promise<LNTransactionResponse>
@@ -31,11 +30,6 @@ extension NetworkManager: LightningRequestable {
   func createLightningPaymentRequest(sats: Int, expires: Int?, memo: String?) -> Promise<LNCreatePaymentRequestResponse> {
     let body = LNCreatePaymentRequestBody(value: sats, expires: expires, memo: memo)
     return cnProvider.request(LNCreatePaymentRequestTarget.create(body))
-  }
-
-  func decodeLightningPaymentRequest(_ request: String) -> Promise<LNDecodePaymentRequestResponse> {
-    let body = LNDecodePaymentRequestBody(request: request)
-    return cnProvider.request(LNDecodePaymentRequestTarget.decode(body))
   }
 
   func getLightningLedger(parameters: LNLedgerUrlParameters) -> Promise<LNLedgerResponse> {

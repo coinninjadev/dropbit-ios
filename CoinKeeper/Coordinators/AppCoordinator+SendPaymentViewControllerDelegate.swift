@@ -16,7 +16,17 @@ import MMDrawerController
 extension AppCoordinator: SendPaymentViewControllerDelegate {
 
   func viewControllerDidReceiveLightningURLToDecode(_ lightningUrl: LightningURL) -> Promise<LNDecodePaymentRequestResponse> {
-    return networkManager.decodeLightningPaymentRequest(lightningUrl.invoice)
+    guard let wmgr = walletManager else { return Promise(error: SyncRoutineError.missingWalletManager) }
+    do {
+      let decoded = try wmgr.wallet.decodeLightningInvoice(lightningUrl.invoice)
+      let response = LNDecodePaymentRequestResponse(
+        numSatoshis: decoded.numSatoshis,
+        description: decoded.description.asNilIfEmpty()
+      )
+      return .value(response)
+    } catch {
+      return Promise(error: error)
+    }
   }
 
   func sendPaymentViewControllerWillDismiss(_ viewController: UIViewController) {

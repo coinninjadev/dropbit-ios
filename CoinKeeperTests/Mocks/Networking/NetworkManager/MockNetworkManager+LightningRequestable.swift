@@ -31,10 +31,6 @@ extension MockNetworkManager: LightningRequestable {
     return Promise { _ in }
   }
 
-  func decodeLightningPaymentRequest(_ request: String) -> Promise<LNDecodePaymentRequestResponse> {
-    return Promise { _ in }
-  }
-
   func payLightningPaymentRequest(_ request: String, sats: Int) -> Promise<LNTransactionResponse> {
     return Promise { _ in }
   }

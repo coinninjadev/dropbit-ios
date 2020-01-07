@@ -252,6 +252,7 @@
 		3B731D382253D97A0044B4F8 /* UIView+Fade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B731D372253D97A0044B4F8 /* UIView+Fade.swift */; };
 		3B73B2752281E33900F4C551 /* TwitterOAuth.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B73B2742281E33900F4C551 /* TwitterOAuth.generated.swift */; };
 		3B73B2782281F78700F4C551 /* NetworkManager+Twitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B73B2772281F78700F4C551 /* NetworkManager+Twitter.swift */; };
+		3B73E8AA23C4EB8600BEBD39 /* AppCoordinator+SendPaymentViewControllerDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B73E8A923C4EB8600BEBD39 /* AppCoordinator+SendPaymentViewControllerDelegateTests.swift */; };
 		3B7A5D7C22F35A42003FFF5C /* Int+Times.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B825633F1FE7A9EA9E7A2AD /* Int+Times.swift */; };
 		3B7A5D7D22F35A62003FFF5C /* GeneratedTestWords.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B00C26A220E07C0001FC46B /* GeneratedTestWords.generated.swift */; };
 		3B7AC2B6235EA77100BD981A /* WyreURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AC2B5235EA77100BD981A /* WyreURLParser.swift */; };
@@ -997,7 +998,6 @@
 		B59E2CA322E8F4C000A75AFE /* LNDecodePaymentRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2CA222E8F4C000A75AFE /* LNDecodePaymentRequestResponse.swift */; };
 		B59E2CA722E9EA8400A75AFE /* LNCreatePaymentRequestTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2CA622E9EA8400A75AFE /* LNCreatePaymentRequestTarget.swift */; };
 		B59E2CA922E9ED2A00A75AFE /* LNAccountResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2CA822E9ED2A00A75AFE /* LNAccountResponse.swift */; };
-		B59E2CAB22E9ED7900A75AFE /* LNDecodePaymentRequestTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2CAA22E9ED7900A75AFE /* LNDecodePaymentRequestTarget.swift */; };
 		B59E2CAD22E9ED8300A75AFE /* LNTransactionTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2CAC22E9ED8300A75AFE /* LNTransactionTarget.swift */; };
 		B5A3BA4D21516BF2005EE657 /* WalletTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3BA4C21516BF2005EE657 /* WalletTarget.swift */; };
 		B5A3BA5021516E98005EE657 /* PricingTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3BA4F21516E98005EE657 /* PricingTarget.swift */; };
@@ -1393,6 +1393,7 @@
 		3B731D372253D97A0044B4F8 /* UIView+Fade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Fade.swift"; sourceTree = "<group>"; };
 		3B73B2742281E33900F4C551 /* TwitterOAuth.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterOAuth.generated.swift; sourceTree = "<group>"; };
 		3B73B2772281F78700F4C551 /* NetworkManager+Twitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+Twitter.swift"; sourceTree = "<group>"; };
+		3B73E8A923C4EB8600BEBD39 /* AppCoordinator+SendPaymentViewControllerDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+SendPaymentViewControllerDelegateTests.swift"; sourceTree = "<group>"; };
 		3B7AC2B5235EA77100BD981A /* WyreURLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WyreURLParser.swift; sourceTree = "<group>"; };
 		3B7AC2B7235F320800BD981A /* WyreURLParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WyreURLParserTests.swift; sourceTree = "<group>"; };
 		3B7B54422201E54100CB89FE /* KeyDerivation.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyDerivation.generated.swift; sourceTree = "<group>"; };
@@ -2128,7 +2129,6 @@
 		B59E2CA222E8F4C000A75AFE /* LNDecodePaymentRequestResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LNDecodePaymentRequestResponse.swift; sourceTree = "<group>"; };
 		B59E2CA622E9EA8400A75AFE /* LNCreatePaymentRequestTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LNCreatePaymentRequestTarget.swift; sourceTree = "<group>"; };
 		B59E2CA822E9ED2A00A75AFE /* LNAccountResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LNAccountResponse.swift; sourceTree = "<group>"; };
-		B59E2CAA22E9ED7900A75AFE /* LNDecodePaymentRequestTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LNDecodePaymentRequestTarget.swift; sourceTree = "<group>"; };
 		B59E2CAC22E9ED8300A75AFE /* LNTransactionTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LNTransactionTarget.swift; sourceTree = "<group>"; };
 		B5A3BA4C21516BF2005EE657 /* WalletTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTarget.swift; sourceTree = "<group>"; };
 		B5A3BA4F21516E98005EE657 /* PricingTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricingTarget.swift; sourceTree = "<group>"; };
@@ -2880,6 +2880,7 @@
 				3B43C11D20D01FE80001378D /* AppCoordinator+StartVCDelegateTests.swift */,
 				3B695C2321CAC872007D0741 /* AppCoordinator+SettingsViewControllerDelegateTests.swift */,
 				3B43B4FD220B19EC008966CA /* AppCoordinator+NoConnectionViewControllerTests.swift */,
+				3B73E8A923C4EB8600BEBD39 /* AppCoordinator+SendPaymentViewControllerDelegateTests.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -3936,7 +3937,6 @@
 			children = (
 				B59E2C9B22E8CFBA00A75AFE /* LNAccountTarget.swift */,
 				B59E2CA622E9EA8400A75AFE /* LNCreatePaymentRequestTarget.swift */,
-				B59E2CAA22E9ED7900A75AFE /* LNDecodePaymentRequestTarget.swift */,
 				B575B61522E9F68700CECFB7 /* LNLedgerTarget.swift */,
 				B59E2CAC22E9ED8300A75AFE /* LNTransactionTarget.swift */,
 			);
@@ -5358,7 +5358,6 @@
 				A257CEBC230325580063670B /* WalletTransferViewModel.swift in Sources */,
 				B59D0F2A2345701600E828BF /* TransactionDetailInvoiceCellViewModel.swift in Sources */,
 				B56788B1227A430300A39534 /* UIView+CornerRadius.swift in Sources */,
-				B59E2CAB22E9ED7900A75AFE /* LNDecodePaymentRequestTarget.swift in Sources */,
 				B530DFBD2108CF8400A0B1A8 /* TransactionDetailWarningLabel.swift in Sources */,
 				A2A530CE20977A8A00B6F4DE /* ConfirmOnChainPaymentViewModel.swift in Sources */,
 				B54913A922BC21A500ACC7D7 /* AdjustableFeesViewController.swift in Sources */,
@@ -5503,6 +5502,7 @@
 				B586099F21B9EA23004C5AB7 /* MockMoyaError.swift in Sources */,
 				B5779F76216D4C3000E52B27 /* MockNetworkManager+DeviceEndpointRequestable.swift in Sources */,
 				3B231D4F2044807E003BB50B /* LaunchStateManagerTests.swift in Sources */,
+				3B73E8AA23C4EB8600BEBD39 /* AppCoordinator+SendPaymentViewControllerDelegateTests.swift in Sources */,
 				B5697273208A8E0A00835F01 /* WalletOverviewTopBarTests.swift in Sources */,
 				B5C5FEF422BAC24300287FF7 /* MockTransactionBroker.swift in Sources */,
 				3BCBFCC0229EBA6800F633BA /* SupportViewControllerTests.swift in Sources */,
