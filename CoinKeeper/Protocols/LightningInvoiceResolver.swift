@@ -23,15 +23,8 @@ extension LightningInvoiceResolver {
       return
     }
 
-    do {
-      let decoded = try wmgr.wallet.decodeLightningInvoice(invoice)
-      let response = LNDecodePaymentRequestResponse(
-        numSatoshis: decoded.numSatoshis,
-        description: decoded.description.asNilIfEmpty()
-      )
-      completion(.success(response))
-    } catch {
-      completion(.failure(error))
-    }
+    wmgr.decodeLightningInvoice(invoice)
+      .done { completion(.success($0)) }
+      .catch { completion(.failure($0)) }
   }
 }

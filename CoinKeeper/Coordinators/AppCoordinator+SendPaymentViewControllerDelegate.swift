@@ -17,16 +17,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
 
   func viewControllerDidReceiveLightningURLToDecode(_ lightningUrl: LightningURL) -> Promise<LNDecodePaymentRequestResponse> {
     guard let wmgr = walletManager else { return Promise(error: SyncRoutineError.missingWalletManager) }
-    do {
-      let decoded = try wmgr.wallet.decodeLightningInvoice(lightningUrl.invoice)
-      let response = LNDecodePaymentRequestResponse(
-        numSatoshis: decoded.numSatoshis,
-        description: decoded.description.asNilIfEmpty()
-      )
-      return .value(response)
-    } catch {
-      return Promise(error: error)
-    }
+    return wmgr.decodeLightningInvoice(lightningUrl.invoice)
   }
 
   func sendPaymentViewControllerWillDismiss(_ viewController: UIViewController) {

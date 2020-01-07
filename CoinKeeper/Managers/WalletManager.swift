@@ -81,7 +81,8 @@ protocol WalletManagerType: AnyObject {
   func transactionDataSendingAll(to address: String, withFeeRate feeRate: Double) -> Promise<CNBCnlibTransactionData>
 
   func encryptPayload<T>(_ payload: T, addressPubKey: String, keyIsEphemeral: Bool) -> Promise<String> where T: SharedPayloadCodable
-//  func decryptPayload<T>(_ payload: String, path: CNBCnlibDerivationPath) -> Promise<T> where T: SharedPayloadCodable
+
+  func decodeLightningInvoice(_ invoiceString: String) -> Promise<LNDecodePaymentRequestResponse>
 }
 
 /**
@@ -467,6 +468,19 @@ class WalletManager: WalletManagerType {
       }
     }
     return result
+  }
+
+  func decodeLightningInvoice(_ invoice: String) -> Promise<LNDecodePaymentRequestResponse> {
+    do {
+      let decoded = try wallet.decodeLightningInvoice(invoice)
+      let response = LNDecodePaymentRequestResponse(
+        numSatoshis: decoded.numSatoshis,
+        description: decoded.description.asNilIfEmpty()
+      )
+      return .value(response)
+    } catch {
+      return Promise(error: error)
+    }
   }
 
   /// - parameter limitByPending: true to remove the smallest vouts, to not exceed spendableBalanceNetPending()
