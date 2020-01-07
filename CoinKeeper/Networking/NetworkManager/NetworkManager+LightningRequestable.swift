@@ -19,6 +19,7 @@ protocol LightningRequestable: AnyObject {
   func cancelPreauthorizedLightningPayment(withId id: String) -> Promise<LNTransactionResponse>
   func withdrawLightningFunds(to address: String, sats: Int) -> Promise<LNTransactionResponse>
   func estimateLightningWithdrawalFees(to address: String, sats: Int) -> Promise<LNTransactionResponse>
+  func withdrawMaxLightningAmountEstimate(to address: String) -> Promise<LNTransactionResponse>
 }
 
 extension NetworkManager: LightningRequestable {
@@ -65,6 +66,10 @@ extension NetworkManager: LightningRequestable {
 
   func estimateLightningWithdrawalFees(to address: String, sats: Int) -> Promise<LNTransactionResponse> {
     return withdrawLightningFunds(with: LNWithdrawBody(address: address, value: sats, blocks: 1, estimate: true))
+  }
+
+  func withdrawMaxLightningAmountEstimate(to address: String) -> Promise<LNTransactionResponse> {
+    return withdrawLightningFunds(with: LNWithdrawBody(address: address, value: -1, blocks: 1, estimate: true))
   }
 
   private func withdrawLightningFunds(with body: LNWithdrawBody) -> Promise<LNTransactionResponse> {

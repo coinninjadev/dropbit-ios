@@ -23,6 +23,8 @@ public struct LNWithdrawBody: Encodable {
 public enum LNTransactionTarget: CoinNinjaTargetType {
   typealias ResponseType = LNTransactionResponse
 
+  static let withdrawMaxInBTC: NSDecimalNumber = -0.00000001
+
   case pay(LNPayBody)
   case withdraw(LNWithdrawBody)
   case preauth(LNCreatePaymentRequestBody)
