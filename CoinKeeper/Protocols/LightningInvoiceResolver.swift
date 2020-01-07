@@ -8,20 +8,30 @@
 
 import Foundation
 import Result
+import Cnlib
 
 protocol LightningInvoiceResolver: AnyObject {
-  var networkManager: NetworkManagerType { get }
+  var walletManager: WalletManagerType? { get }
 }
 
 extension LightningInvoiceResolver {
 
   func resolveLightningInvoice(invoice: String,
                                completion: @escaping (Result<LNDecodePaymentRequestResponse, Error>) -> Void) {
-    self.networkManager.decodeLightningPaymentRequest(invoice)
-      .get { response in
-        completion(.success(response))
-      }.catch { error in
-        completion(.failure(error))
+    guard let wmgr = walletManager else {
+      completion(.failure(SyncRoutineError.missingWalletManager))
+      return
+    }
+
+    do {
+      let decoded = try wmgr.wallet.decodeLightningInvoice(invoice)
+      let response = LNDecodePaymentRequestResponse(
+        numSatoshis: decoded.numSatoshis,
+        description: decoded.description.asNilIfEmpty()
+      )
+      completion(.success(response))
+    } catch {
+      completion(.failure(error))
     }
   }
 }
