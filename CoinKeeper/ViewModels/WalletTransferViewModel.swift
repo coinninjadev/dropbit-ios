@@ -12,6 +12,7 @@ class WalletTransferViewModel: CurrencySwappableEditAmountViewModel {
 
   var direction: TransferDirection
   var amount: TransferAmount
+  var isSendingMax: Bool = false
 
   init(direction: TransferDirection,
        amount: TransferAmount,

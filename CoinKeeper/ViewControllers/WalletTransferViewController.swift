@@ -36,6 +36,8 @@ BalanceDataSource & AnalyticsManagerAccessType & LightningLoadable {
 
   func viewControllerNeedsFeeEstimates(_ viewController: UIViewController, btcAmount: NSDecimalNumber) -> Promise<LNTransactionResponse>
   func viewControllerDidConfirmWithdraw(_ viewController: UIViewController, btcAmount: NSDecimalNumber)
+  func viewControllerDidConfirmWithdrawMax(_ viewController: UIViewController)
+  func viewControllerDidRequestWithdrawMax(_ viewController: UIViewController) -> Promise<LNTransactionResponse>
   func viewControllerNetworkError(_ error: Error)
   func handleLightningLoadError(_ error: Error)
 }
@@ -55,13 +57,18 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
   @IBOutlet var editAmountView: CurrencySwappableEditAmountView!
   @IBOutlet var confirmView: ConfirmView!
   @IBOutlet var feesView: FeesView!
+  @IBOutlet var withdrawMaxButton: LightBorderedButton!
 
   private(set) var viewModel: WalletTransferViewModel!
+  private var alertManager: AlertManagerType?
 
-  static func newInstance(delegate: WalletTransferViewControllerDelegate, viewModel: WalletTransferViewModel) -> WalletTransferViewController {
+  static func newInstance(delegate: WalletTransferViewControllerDelegate,
+                          viewModel: WalletTransferViewModel,
+                          alertManager: AlertManagerType) -> WalletTransferViewController {
     let viewController = WalletTransferViewController.makeFromStoryboard()
     viewController.viewModel = viewModel
     viewController.delegate = delegate
+    viewController.alertManager = alertManager
     viewModel.delegate = viewController
     return viewController
   }
@@ -85,8 +92,10 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     switch viewModel.direction {
     case .toOnChain:
       delegate.viewControllerShouldTrackEvent(event: .lightningToOnChainPressed)
+      withdrawMaxButton.isHidden = false
     case .toLightning:
       delegate.viewControllerShouldTrackEvent(event: .onChainToLightningPressed)
+      withdrawMaxButton.isHidden = true
     }
 
     confirmView.confirmButton.configure(with: .original, delegate: self)
@@ -110,6 +119,25 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
 
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
     updateEditAmountView(withRates: exchangeRateManager.exchangeRates)
+  }
+
+  @IBAction func withdrawMaxWasTouched() {
+    alertManager?.showActivityHUD(withStatus: nil)
+    editAmountView.primaryAmountTextField.resignFirstResponder()
+    delegate.viewControllerDidRequestWithdrawMax(self)
+    .done { response in
+      self.withdrawMaxButton.isHidden = true
+      self.alertManager?.hideActivityHUD(withDelay: nil, completion: nil)
+      let amount = NSDecimalNumber(integerAmount: response.result.value, currency: .BTC)
+      self.viewModel.direction = .toOnChain(-1)
+      self.viewModel.isSendingMax = true
+      self.viewModel.primaryAmount = CurrencyConverter(fromBtcTo: .USD, fromAmount: amount, rates: self.viewModel.exchangeRates).fiatAmount
+      self.setupUIForFees(networkFee: response.result.networkFee, processingFee: response.result.processingFee)
+      self.setupTransactionUI()
+      self.refreshBothAmounts()
+    }.catch { error in
+      self.alertManager?.showError(message: error.localizedDescription, forDuration: 2.5)
+    }
   }
 
   @IBAction func closeButtonWasTouched() {
@@ -238,6 +266,10 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     feesView.setupFees(top: networkFee, bottom: processingFee)
   }
 
+  func currencySwappableAmountDataDidChange() {
+    viewModel.isSendingMax = false
+  }
+
 }
 
 extension WalletTransferViewController: LongPressConfirmButtonDelegate {
@@ -269,7 +301,11 @@ extension WalletTransferViewController: LongPressConfirmButtonDelegate {
                                                                 balanceToCheck: .lightning,
                                                                 ignoring: [.invitationMaximum])
         try lightningBalanceValidator.validate(value: viewModel.currencyConverter)
-        delegate.viewControllerDidConfirmWithdraw(self, btcAmount: btcAmount)
+        if viewModel.isSendingMax {
+          delegate.viewControllerDidConfirmWithdrawMax(self)
+        } else {
+          delegate.viewControllerDidConfirmWithdraw(self, btcAmount: btcAmount)
+        }
       } catch {
         delegate.viewControllerNetworkError(error)
       }
