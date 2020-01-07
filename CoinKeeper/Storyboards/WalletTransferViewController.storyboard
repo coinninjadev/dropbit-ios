@@ -47,6 +47,13 @@
                                     <constraint firstAttribute="height" constant="75" id="vhE-cE-Jbc"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ByN-RH-7LZ" customClass="LightBorderedButton" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="296" y="388" width="98" height="30"/>
+                                <state key="normal" title="Withdraw Max"/>
+                                <connections>
+                                    <action selector="withdrawMaxWasTouched" destination="8Bm-nf-e6d" eventType="touchUpInside" id="TQ2-AE-A5j"/>
+                                </connections>
+                            </button>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lSJ-Pb-4hA" customClass="FeesView" customModule="DropBit" customModuleProvider="target">
                                 <rect key="frame" x="38" y="475.5" width="338" height="85"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -74,12 +81,14 @@
                             <constraint firstItem="xkL-B7-v7E" firstAttribute="centerX" secondItem="WCI-6c-6N4" secondAttribute="centerX" id="G59-t6-NZi"/>
                             <constraint firstItem="6OJ-6w-vp7" firstAttribute="leading" secondItem="jnq-rQ-wcS" secondAttribute="leading" id="Jte-Vn-knS"/>
                             <constraint firstItem="jSB-ZY-MhK" firstAttribute="centerY" secondItem="jnq-rQ-wcS" secondAttribute="centerY" constant="-50" id="TMk-xl-sXs"/>
+                            <constraint firstAttribute="trailing" secondItem="ByN-RH-7LZ" secondAttribute="trailing" constant="20" id="aGj-KM-SHB"/>
                             <constraint firstItem="jSB-ZY-MhK" firstAttribute="leading" secondItem="jnq-rQ-wcS" secondAttribute="leading" constant="30" id="hBa-hw-XEv"/>
                             <constraint firstItem="6OJ-6w-vp7" firstAttribute="top" relation="greaterThanOrEqual" secondItem="lSJ-Pb-4hA" secondAttribute="bottom" constant="30" id="jRg-Gi-WDa"/>
                             <constraint firstItem="xkL-B7-v7E" firstAttribute="top" secondItem="jnq-rQ-wcS" secondAttribute="top" constant="25" id="jS2-M9-hHY"/>
                             <constraint firstItem="jSB-ZY-MhK" firstAttribute="centerX" secondItem="WCI-6c-6N4" secondAttribute="centerX" id="leG-9b-DTC"/>
                             <constraint firstItem="jnq-rQ-wcS" firstAttribute="trailing" secondItem="oeX-y5-uIm" secondAttribute="trailing" constant="20" id="mGs-ma-Vdo"/>
                             <constraint firstItem="6OJ-6w-vp7" firstAttribute="trailing" secondItem="jnq-rQ-wcS" secondAttribute="trailing" id="qlJ-pR-rSH"/>
+                            <constraint firstItem="ByN-RH-7LZ" firstAttribute="centerY" secondItem="jSB-ZY-MhK" secondAttribute="centerY" id="uIn-qo-pw2"/>
                             <constraint firstItem="jnq-rQ-wcS" firstAttribute="trailing" secondItem="jSB-ZY-MhK" secondAttribute="trailing" constant="30" id="vQK-gr-e6W"/>
                             <constraint firstItem="7F0-Wc-4DJ" firstAttribute="top" secondItem="xkL-B7-v7E" secondAttribute="bottom" constant="20" id="zKp-wO-yai"/>
                         </constraints>
@@ -92,11 +101,12 @@
                         <outlet property="feesView" destination="lSJ-Pb-4hA" id="bJv-u6-tNH"/>
                         <outlet property="titleLabel" destination="xkL-B7-v7E" id="w6Q-w7-9vM"/>
                         <outlet property="transferImageView" destination="7F0-Wc-4DJ" id="HbV-53-IWD"/>
+                        <outlet property="withdrawMaxButton" destination="ByN-RH-7LZ" id="BAN-nH-9hd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fcq-fs-jT8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="103" y="139"/>
+            <point key="canvasLocation" x="-196" y="122"/>
         </scene>
     </scenes>
     <resources>

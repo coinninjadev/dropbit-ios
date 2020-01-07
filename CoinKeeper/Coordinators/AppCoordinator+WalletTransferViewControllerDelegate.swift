@@ -12,6 +12,11 @@ import PromiseKit
 
 extension AppCoordinator: WalletTransferViewControllerDelegate {
 
+  func viewControllerDidRequestWithdrawMax(_ viewController: UIViewController) -> Promise<LNTransactionResponse> {
+    guard let receiveAddress = self.nextReceiveAddressForRequestPay() else { return Promise { _ in } }
+    return networkManager.withdrawMaxLightningAmountEstimate(to: receiveAddress)
+  }
+
   func viewControllerNeedsFeeEstimates(_ viewController: UIViewController, btcAmount: NSDecimalNumber) -> Promise<LNTransactionResponse> {
     guard let receiveAddress = self.nextReceiveAddressForRequestPay() else { return Promise { _ in } }
     let sats = btcAmount.asFractionalUnits(of: .BTC)
@@ -19,10 +24,14 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
     return networkManager.estimateLightningWithdrawalFees(to: receiveAddress, sats: sats)
   }
 
+  func viewControllerDidConfirmWithdrawMax(_ viewController: UIViewController) {
+    viewControllerDidConfirmWithdraw(viewController, btcAmount: LNTransactionTarget.withdrawMaxInBTC)
+  }
+
   func viewControllerDidConfirmWithdraw(_ viewController: UIViewController, btcAmount: NSDecimalNumber) {
     let context = self.persistenceManager.createBackgroundContext()
 
-    guard let receiveAddress = self.nextReceiveAddressForRequestPay(), let wallet = CKMWallet.find(in: context) else { return }
+    guard let receiveAddress = self.nextReceiveAddressForRequestPay() else { return }
     let sats = btcAmount.asFractionalUnits(of: .BTC)
 
     let viewModel = PaymentSuccessFailViewModel(mode: .pending)
@@ -31,6 +40,7 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
     successFailVC.action = { [unowned self] in
       self.networkManager.withdrawLightningFunds(to: receiveAddress, sats: sats)
         .done(in: context) { response in
+          guard let wallet = CKMWallet.find(in: context) else { return }
           self.persistenceManager.brokers.transaction.persistTemporaryTransaction(from: response, in: context)
           self.persistLightningPaymentResponse(response, receiver: nil, invitation: nil, inputs: nil)
           self.workerFactory().createTransactionDataWorker()?.processOnChainLightningTransfers(withLedger: [response.result],
