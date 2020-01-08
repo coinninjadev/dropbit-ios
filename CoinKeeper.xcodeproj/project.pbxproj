@@ -76,6 +76,7 @@
 		3B1BE86421B5819500CCFE29 /* SendPaymentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1BE86321B5819500CCFE29 /* SendPaymentPage.swift */; };
 		3B1FF6A123C652E10002AB7E /* RBFOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1FF6A023C652E10002AB7E /* RBFOption.swift */; };
 		3B1FF6A323C65C400002AB7E /* BaseCoin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1FF6A223C65C400002AB7E /* BaseCoin.swift */; };
+		3B1FF6A523C676EB0002AB7E /* Cnlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B1FF6A423C676EB0002AB7E /* Cnlib.framework */; };
 		3B219B3722C3AAD1007EDFCC /* NotificationTopicSubscriptionTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B219B3622C3AAD1007EDFCC /* NotificationTopicSubscriptionTarget.swift */; };
 		3B219B3922C3B9EE007EDFCC /* Data+PrettyPrinted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B219B3822C3B9EE007EDFCC /* Data+PrettyPrinted.swift */; };
 		3B23126320DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B23126220DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib */; };
@@ -187,7 +188,6 @@
 		3B4B929C22F354850018285C /* SendPaymentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1BE86321B5819500CCFE29 /* SendPaymentPage.swift */; };
 		3B4B929D22F354850018285C /* TransactionHistoryPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304BAED121FA1F9700065D6D /* TransactionHistoryPage.swift */; };
 		3B4B929E22F354850018285C /* WalletOverviewPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27DFDF122DCDCD200C2824C /* WalletOverviewPage.swift */; };
-		3B4E7DF723C4CE05001CAA40 /* Cnlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B4E7DF623C4CE05001CAA40 /* Cnlib.framework */; };
 		3B5052B12045FAD7000C739F /* BackupRecoveryWordsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B5052B02045FAD7000C739F /* BackupRecoveryWordsViewController.storyboard */; };
 		3B5052B32045FAFA000C739F /* BackupRecoveryWordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5052B22045FAFA000C739F /* BackupRecoveryWordsViewController.swift */; };
 		3B5052B52045FB5C000C739F /* BackupRecoveryWordsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5052B42045FB5C000C739F /* BackupRecoveryWordsViewControllerTests.swift */; };
@@ -1243,6 +1243,7 @@
 		3B1BE86321B5819500CCFE29 /* SendPaymentPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentPage.swift; sourceTree = "<group>"; };
 		3B1FF6A023C652E10002AB7E /* RBFOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RBFOption.swift; sourceTree = "<group>"; };
 		3B1FF6A223C65C400002AB7E /* BaseCoin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoin.swift; sourceTree = "<group>"; };
+		3B1FF6A423C676EB0002AB7E /* Cnlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Cnlib.framework; sourceTree = "<group>"; };
 		3B219B3622C3AAD1007EDFCC /* NotificationTopicSubscriptionTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTopicSubscriptionTarget.swift; sourceTree = "<group>"; };
 		3B219B3822C3B9EE007EDFCC /* Data+PrettyPrinted.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+PrettyPrinted.swift"; sourceTree = "<group>"; };
 		3B23126220DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionHistoryDetailCellAddressView.xib; sourceTree = "<group>"; };
@@ -1328,7 +1329,6 @@
 		3B4A9F2E21BEF55F0009CDF6 /* DatabaseMigratorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMigratorFactory.swift; sourceTree = "<group>"; };
 		3B4B39EF203773C5007B7CC8 /* PlaceholderViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PlaceholderViewController.storyboard; sourceTree = "<group>"; };
 		3B4B39F1203773E1007B7CC8 /* PlaceholderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderViewController.swift; sourceTree = "<group>"; };
-		3B4E7DF623C4CE05001CAA40 /* Cnlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Cnlib.framework; sourceTree = "<group>"; };
 		3B5052B02045FAD7000C739F /* BackupRecoveryWordsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = BackupRecoveryWordsViewController.storyboard; sourceTree = "<group>"; };
 		3B5052B22045FAFA000C739F /* BackupRecoveryWordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRecoveryWordsViewController.swift; sourceTree = "<group>"; };
 		3B5052B42045FB5C000C739F /* BackupRecoveryWordsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRecoveryWordsViewControllerTests.swift; sourceTree = "<group>"; };
@@ -2299,7 +2299,7 @@
 				B54D205E20F908C30057A694 /* SwiftMessages.framework in Frameworks */,
 				A2FDC54122D37BFA004B0EDD /* Charts.framework in Frameworks */,
 				D3050CCBBA9D3A897790120B /* Pods_DropBit.framework in Frameworks */,
-				3B4E7DF723C4CE05001CAA40 /* Cnlib.framework in Frameworks */,
+				3B1FF6A523C676EB0002AB7E /* Cnlib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2934,7 +2934,7 @@
 		3BAB4BB723A7C71000AADBF7 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				3B4E7DF623C4CE05001CAA40 /* Cnlib.framework */,
+				3B1FF6A423C676EB0002AB7E /* Cnlib.framework */,
 			);
 			path = lib;
 			sourceTree = "<group>";
