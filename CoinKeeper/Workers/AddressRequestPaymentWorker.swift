@@ -6,7 +6,7 @@
 //  Copyright © 2019 Coin Ninja, LLC. All rights reserved.
 //
 
-import CNBitcoinKit
+import Cnlib
 import CoreData
 import Moya
 import PromiseKit
@@ -32,7 +32,7 @@ class AddressRequestPaymentWorker {
   func completeWalletAddressRequestFulfillmentLocally(outgoingTransactionData: OutgoingTransactionData,
                                                       invitationId: String,
                                                       pendingInvitation: CKMInvitation,
-                                                      txData: CNBTransactionData?,
+                                                      txData: CNBCnlibTransactionData?,
                                                       in context: NSManagedObjectContext,
                                                       transactionType: WalletTransactionType) -> Promise<Void> {
     guard let postableObject = PayloadPostableOutgoingTransactionData(data: outgoingTransactionData) else {
@@ -236,18 +236,7 @@ class OnChainAddressRequestPaymentWorker: AddressRequestPaymentWorker {
       }
     }
 
-    let nsError = error as NSError
-    let errorCode = TransactionBroadcastError(errorCode: nsError.code)
-    switch errorCode {
-    case .broadcastTimedOut:
-      return Promise(error: TransactionBroadcastError.broadcastTimedOut)
-    case .networkUnreachable:
-      return Promise(error: TransactionBroadcastError.networkUnreachable)
-    case .unknown:
-      return Promise(error: TransactionBroadcastError.unknown)
-    case .insufficientFee:
-      return Promise(error: PendingInvitationError.insufficientFeeForInvitationWithID(responseId))
-    }
+    return Promise(error: error)
   }
 
 }

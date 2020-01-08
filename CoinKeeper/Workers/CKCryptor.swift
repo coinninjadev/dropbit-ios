@@ -7,9 +7,7 @@
 //
 
 import Foundation
-import RNCryptor
 import CoreData
-import CNBitcoinKit
 
 enum CKCryptorError: Error {
   case missingWalletManager
@@ -36,10 +34,17 @@ class CKCryptor {
   /// - Throws: CKCryptorError
   func encryptAsBase64String(message: Data, withRecipientUncompressedPubkey pubkey: Data, isEphemeral: Bool) throws -> String {
     guard let wmgr = walletManager else { throw CKCryptorError.missingWalletManager }
-    let keys = wmgr.encryptionCipherKeys(forUncompressedPublicKey: pubkey, withEntropy: isEphemeral)
-    let encryptor = RNCryptor.EncryptorV3(encryptionKey: keys.encryptionKey, hmacKey: keys.hmacKey)
-    let encryptedData = encryptor.encrypt(data: message)
-    return (encryptedData + keys.associatedPublicKey).base64EncodedString()
+    let wallet = wmgr.wallet
+    let pubkeyString = pubkey.hexString
+    if isEphemeral {
+      let entropy = WalletManager.secureEntropy()
+      let pubkeyString = pubkey.hexString
+      let enc = try wallet.encrypt(withEphemeralKey: entropy, body: message, recipientUncompressedPubkey: pubkeyString)
+      return enc.base64EncodedString()
+    } else {
+      let enc = try wallet.encryptMessage(message, recipientUncompressedPubkey: pubkeyString)
+      return enc.base64EncodedString()
+    }
   }
 
   /// Decrypt a message from CoinNinja API in Base64-encoded format.
@@ -56,37 +61,13 @@ class CKCryptor {
       throw CKPersistenceError.missingValue(key: "address")
     }
 
-    let dataOutputs = try self.splitData(from: base64String)
-    let keys = wmgr.decryptionCipherKeys(forReceiveAddressPath: path, withPublicKey: dataOutputs.uncompressedPubkeyData)
-    return try decrypt(encryptedData: dataOutputs.encryptedData, with: keys)
+    let data = Data(base64Encoded: base64String)
+    return try wmgr.wallet.decryptWithKey(from: path.asCNBDerivationPath(), body: data)
   }
 
   func decryptWithDefaultPrivateKey(payloadAsBase64String base64String: String) throws -> Data {
     guard let wmgr = walletManager else { throw CKCryptorError.missingWalletManager }
-    let dataOutputs = try self.splitData(from: base64String)
-    let keys = wmgr.decryptionCipherKeysWithDefaultPrivateKey(forPublicKey: dataOutputs.uncompressedPubkeyData)
-    return try decrypt(encryptedData: dataOutputs.encryptedData, with: keys)
+    let data = Data(base64Encoded: base64String)
+    return try wmgr.wallet.decryptMessage(data)
   }
-
-  private func decrypt(encryptedData: Data, with keys: CNBCipherKeys) throws -> Data {
-    let decryptor = RNCryptor.DecryptorV3(encryptionKey: keys.encryptionKey, hmacKey: keys.hmacKey)
-    return try decryptor.decrypt(data: encryptedData)
-  }
-
-  private func splitData(from base64String: String) throws -> EncryptedDataOutputs {
-    guard let payload = Data(base64Encoded: base64String) else { throw CKCryptorError.payloadNotBase64Encoded }
-
-    // separate pubkey and encrypted data
-    let pubkeyLength = 65
-    let pubkeyStart = payload.count - pubkeyLength
-    let uncompressedPubkeyData = payload.suffix(from: pubkeyStart)
-    let encryptedData = payload.prefix(upTo: pubkeyStart)
-    return EncryptedDataOutputs(uncompressedPubkeyData: uncompressedPubkeyData, encryptedData: encryptedData)
-  }
-
-  struct EncryptedDataOutputs {
-    let uncompressedPubkeyData: Data
-    let encryptedData: Data
-  }
-
 }

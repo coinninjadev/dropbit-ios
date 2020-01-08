@@ -51,6 +51,11 @@ Register new devices
 fastlane ios local_test
 ```
 Local testing, without resetting simulators or cleaning.
+### ios local_unit_tests
+```
+fastlane ios local_unit_tests
+```
+Local unit testing, without resetting simulators or cleaning.
 ### ios unit_tests
 ```
 fastlane ios unit_tests

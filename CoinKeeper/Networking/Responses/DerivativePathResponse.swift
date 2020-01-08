@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CNBitcoinKit
+import Cnlib
 
 struct DerivativePathResponse: Decodable {
   let purpose: Int
@@ -49,11 +49,12 @@ extension DerivativePathResponse {
 }
 
 extension DerivativePathResponse {
-  init(derivativePath: CNBDerivationPath) {
-    self.purpose = Int(derivativePath.purpose.rawValue)
-    self.coin = Int(derivativePath.coinType.rawValue)
-    self.account = Int(derivativePath.account)
-    self.change = Int(derivativePath.change)
-    self.index = Int(derivativePath.index)
+  init(derivativePath: CNBCnlibDerivationPath) {
+    let basecoin = derivativePath.baseCoin ?? BTCMainnetCoin(purpose: .segwit)
+    self.purpose = basecoin.purpose
+    self.coin = basecoin.coin
+    self.account = basecoin.account
+    self.change = derivativePath.change
+    self.index = derivativePath.index
   }
 }

@@ -6,9 +6,10 @@
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
 //
 
-import CNBitcoinKit
+import Cnlib
 import PromiseKit
 import enum Result.Result
+import UIKit
 
 struct SendingDelegateInputs {
   let primaryCurrency: CurrencyCode
@@ -16,14 +17,14 @@ struct SendingDelegateInputs {
   let contact: ContactType?
   let rates: ExchangeRates
   let sharedPayload: SharedPayloadDTO
-  let rbfReplaceabilityOption: CNBTransactionReplaceabilityOption
+  let rbfReplaceabilityOption: RBFOption
 
   init(primaryCurrency: CurrencyCode,
        walletTxType: WalletTransactionType,
        contact: ContactType?,
        rates: ExchangeRates,
        sharedPayload: SharedPayloadDTO,
-       rbfReplaceabilityOption: CNBTransactionReplaceabilityOption) {
+       rbfReplaceabilityOption: RBFOption) {
     self.primaryCurrency = primaryCurrency
     self.walletTxType = walletTxType
     self.contact = contact
@@ -35,7 +36,7 @@ struct SendingDelegateInputs {
   init(sendPaymentVM vm: SendPaymentViewModel,
        contact: ContactType?,
        payloadDTO: SharedPayloadDTO,
-       rbfReplaceabilityOption: CNBTransactionReplaceabilityOption = .Allowed) {
+       rbfReplaceabilityOption: RBFOption = .allowed) {
     self.init(primaryCurrency: vm.primaryCurrency,
               walletTxType: vm.walletTransactionType,
               contact: contact,
@@ -55,13 +56,13 @@ struct SendOnChainPaymentInputs {
   let contact: ContactType?
   let currencyPair: CurrencyPair
   let exchangeRates: ExchangeRates
-  let rbfReplaceabilityOption: CNBTransactionReplaceabilityOption
+  let rbfReplaceabilityOption: RBFOption
 }
 
 protocol SendPaymentViewControllerRoutingDelegate: PaymentBuildingDelegate {
 
   func viewController(_ viewController: UIViewController,
-                      sendingMax data: CNBTransactionData,
+                      sendingMax data: CNBCnlibTransactionData,
                       to address: String,
                       inputs: SendingDelegateInputs)
 

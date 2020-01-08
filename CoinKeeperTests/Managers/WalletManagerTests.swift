@@ -50,21 +50,21 @@ class WalletManagerTests: XCTestCase {
   // MARK: usable fee rate
   func testFlooredFeeRateAboveMinimumReturnsSameRate() {
     let feeRate: Double = 13
-    let expectedFlooredFeeRate: UInt = 13
+    let expectedFlooredFeeRate = 13
     let usableFeeRate = self.sut.usableFeeRate(from: feeRate)
     XCTAssertEqual(usableFeeRate, expectedFlooredFeeRate)
   }
 
   func testNonFlooredFeeRateAboveMinimumReturnsFlooredFeeRate() {
     let feeRate = 13.14159
-    let expectedFlooredFeeRate: UInt = 13
+    let expectedFlooredFeeRate = 13
     let usableFeeRate = self.sut.usableFeeRate(from: feeRate)
     XCTAssertEqual(usableFeeRate, expectedFlooredFeeRate)
   }
 
   func testFeeRateBelowMinimumReturnsMinimum() {
     let feeRate = 0.14159
-    let expectedFlooredFeeRate: UInt = self.sut.minimumFeeRate
+    let expectedFlooredFeeRate = self.sut.minimumFeeRate
     let usableFeeRate = self.sut.usableFeeRate(from: feeRate)
     XCTAssertEqual(usableFeeRate, expectedFlooredFeeRate)
   }

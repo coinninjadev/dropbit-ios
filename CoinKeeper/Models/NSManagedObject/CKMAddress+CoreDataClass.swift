@@ -9,7 +9,7 @@
 
 import Foundation
 import CoreData
-import CNBitcoinKit
+import Cnlib
 
 /**
  An address owned by the owner of this Bitcoin wallet.
@@ -30,16 +30,11 @@ public class CKMAddress: NSManagedObject {
 
   static func findOrCreate(
     withAddress address: String,
-    derivativePath path: CNBDerivationPath,
+    derivativePath path: CNBCnlibDerivationPath,
     in context: NSManagedObjectContext) -> CKMAddress {
     let address = CKMAddress.findOrCreate(withAddress: address, in: context)
     if address.derivativePath == nil {
-      let purpose = Int(path.purposeValue())
-      let coin = Int(path.coinValue())
-      let account = Int(path.account)
-      let change = Int(path.change)
-      let index = Int(path.index)
-      let newPath = CKMDerivativePath.findOrCreate(with: purpose, coin, account, change, index, in: context)
+      let newPath = CKMDerivativePath.findOrCreate(with: path, in: context)
 
       // set relationship both ways, as save operation may not happen before query is executed on addresses
       address.derivativePath = newPath

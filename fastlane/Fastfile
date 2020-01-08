@@ -16,7 +16,7 @@ default_platform(:ios)
 platform :ios do
 
   before_all do |lane|
-    lanes_to_exclude = [:quick_test, :register, :local_test, :autogen]
+    lanes_to_exclude = [:quick_test, :register, :local_test, :local_unit_tests, :autogen]
     if !lanes_to_exclude.include?(lane)
       bundle_install
       brew(command: "bundle")
@@ -126,6 +126,11 @@ platform :ios do
   # testing
   desc "Local testing, without resetting simulators or cleaning."
   lane :local_test do
+    scan
+  end
+
+  desc "Local unit testing, without resetting simulators or cleaning."
+  lane :local_unit_tests do
     scan
   end
 

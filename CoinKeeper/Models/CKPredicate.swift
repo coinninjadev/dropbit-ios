@@ -8,7 +8,7 @@
 
 import Foundation
 import CoreData
-import CNBitcoinKit
+import Cnlib
 
 struct CKPredicate {
 
@@ -144,9 +144,9 @@ struct CKPredicate {
       return NSPredicate(format: "\(addressPath) != nil")
     }
 
-    static func allPaths(for coin: CNBBaseCoin, changeIndex: Int) -> NSPredicate {
-      let purposePredicate = NSPredicate(format: "%K = %d", purposeKeyPath, coin.purpose.rawValue)
-      let coinPredicate = NSPredicate(format: "%K = %d", coinKeyPath, coin.coin.rawValue)
+    static func allPaths(for coin: CNBCnlibBaseCoin, changeIndex: Int) -> NSPredicate {
+      let purposePredicate = NSPredicate(format: "%K = %d", purposeKeyPath, coin.purpose)
+      let coinPredicate = NSPredicate(format: "%K = %d", coinKeyPath, coin.coin)
       let accountPredicate = NSPredicate(format: "%K = %d", accountKeyPath, coin.account)
       let changePredicate = NSPredicate(format: "%K = %d", changeKeyPath, changeIndex)
       return NSCompoundPredicate(andPredicateWithSubpredicates: [
@@ -342,11 +342,11 @@ struct CKPredicate {
       return txidPredicate
     }
 
-    static func matching(coin: CNBBaseCoin) -> NSPredicate {
+    static func matching(coin: CNBCnlibBaseCoin) -> NSPredicate {
       let purposeKeyPath = #keyPath(CKMAddressTransactionSummary.address.derivativePath.purpose)
-      let purposePredicate = NSPredicate(format: "%K = %d", purposeKeyPath, Int(coin.purpose.rawValue))
+      let purposePredicate = NSPredicate(format: "%K = %d", purposeKeyPath, coin.purpose)
       let coinKeyPath = #keyPath(CKMAddressTransactionSummary.address.derivativePath.coin)
-      let coinPredicate = NSPredicate(format: "%K = %d", coinKeyPath, Int(coin.coin.rawValue))
+      let coinPredicate = NSPredicate(format: "%K = %d", coinKeyPath, coin.coin)
       return NSCompoundPredicate(andPredicateWithSubpredicates: [purposePredicate, coinPredicate])
     }
   }

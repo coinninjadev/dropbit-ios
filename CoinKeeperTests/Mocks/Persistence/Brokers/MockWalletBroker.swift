@@ -6,7 +6,7 @@
 //  Copyright © 2019 Coin Ninja, LLC. All rights reserved.
 //
 
-import CNBitcoinKit
+import Cnlib
 import CoreData
 import Foundation
 import PromiseKit
@@ -47,7 +47,7 @@ class MockWalletBroker: CKPersistenceBroker, WalletBrokerType {
   }
 
   func persistAddedWalletAddresses(from responses: [WalletAddressResponse],
-                                   metaAddresses: [CNBMetaAddress],
+                                   metaAddresses: [CNBCnlibMetaAddress],
                                    in context: NSManagedObjectContext) -> Promise<Void> {
     return Promise { _ in }
   }
@@ -73,8 +73,8 @@ class MockWalletBroker: CKPersistenceBroker, WalletBrokerType {
     }
   }
 
-  var usableCoin: CNBBaseCoin {
-    return CNBBaseCoin(purpose: .BIP84, coin: .MainNet, account: 0)
+  var usableCoin: BaseCoin {
+    return BTCMainnetCoin(purpose: .segwit)
   }
 
 }

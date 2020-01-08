@@ -6,7 +6,7 @@
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
 //
 
-import CNBitcoinKit
+import Cnlib
 import PromiseKit
 
 protocol TransactionBroadcastable: AnyObject {
@@ -14,8 +14,8 @@ protocol TransactionBroadcastable: AnyObject {
   ///
   /// - Parameter transactionData: Object describing the transaction to be broadcast.
   /// - Returns: A Promise of a String, which is the `txid` in the event of a successful broadcast.
-  func broadcastTx(with transactionData: CNBTransactionData) -> Promise<String>
-  func broadcastTx(metadata: CNBTransactionMetadata) -> Promise<String>
+  func broadcastTx(with transactionData: CNBCnlibTransactionData) -> Promise<String>
+  func broadcastTx(metadata: CNBCnlibTransactionMetadata) -> Promise<String>
 
   func postSharedPayloadIfAppropriate(withPostableObject object: SharedPayloadPostableObject,
                                       walletManager: WalletManagerType) -> Promise<String>
@@ -61,17 +61,20 @@ struct BroadcastInfo: Error {
 
 extension NetworkManager: TransactionBroadcastable {
 
-  func broadcastTx(with transactionData: CNBTransactionData) -> Promise<String> {
+  func broadcastTx(with transactionData: CNBCnlibTransactionData) -> Promise<String> {
     guard let wmgr = walletDelegate?.mainWalletManager() else { return Promise(error: CKPersistenceError.noWalletWords) }
-    guard transactionData.unspentTransactionOutputs.isNotEmpty else { return Promise(error: TransactionDataError.noSpendableFunds) }
+    guard transactionData.utxoCount() > 0 else { return Promise(error: TransactionDataError.noSpendableFunds) }
     let wallet = wmgr.wallet
-    let transactionBuilder = CNBTransactionBuilder()
-    let txMetadata = transactionBuilder.generateTxMetadata(with: transactionData, wallet: wallet)
-
-    return broadcastTx(metadata: txMetadata)
+    do {
+      let txMetadata = try wallet.buildTransactionMetadata(transactionData)
+      return broadcastTx(metadata: txMetadata)
+    } catch {
+      log.error(error, message: "Failed to generate tx metadata before broadcasting.")
+      return Promise(error: error)
+    }
   }
 
-  func broadcastTx(metadata: CNBTransactionMetadata) -> Promise<String> {
+  func broadcastTx(metadata: CNBCnlibTransactionMetadata) -> Promise<String> {
 
     #if DEBUG
     if CKUserDefaults().useRegtest {
@@ -84,7 +87,7 @@ extension NetworkManager: TransactionBroadcastable {
     #endif
   }
 
-  private func broadcastMainnetTx(with txMetadata: CNBTransactionMetadata) -> Promise<String> {
+  private func broadcastMainnetTx(with txMetadata: CNBCnlibTransactionMetadata) -> Promise<String> {
     return when(resolved: [coinNinjaProvider.broadcastTransaction(with: txMetadata),
                            blockstreamProvider.broadcastTransaction(with: txMetadata)])
       .then { [weak self] (results: [PromiseKit.Result<BroadcastInfo>]) -> Promise<String> in
@@ -135,7 +138,7 @@ extension NetworkManager: TransactionBroadcastable {
     }
   }
 
-  private func broadcastRegtestTx(with transactionMetadata: CNBTransactionMetadata) -> Promise<String> {
+  private func broadcastRegtestTx(with transactionMetadata: CNBCnlibTransactionMetadata) -> Promise<String> {
     return cnProvider.requestVoid(BroadcastTarget.sendRawTransaction(transactionMetadata.encodedTx))
       .map { _ in return transactionMetadata.txid }
   }

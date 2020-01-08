@@ -121,8 +121,8 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     }
 
     var feeAdjustedOutgoingTxData = viewModel.outgoingTransactionData
-    feeAdjustedOutgoingTxData.amount = Int(txData.amount)
-    feeAdjustedOutgoingTxData.feeAmount = Int(txData.feeAmount)
+    feeAdjustedOutgoingTxData.amount = txData.amount
+    feeAdjustedOutgoingTxData.feeAmount = txData.feeAmount
 
     delegate.viewControllerDidConfirmOnChainPayment(
       self,

@@ -3,7 +3,7 @@
 // Copyright (c) 2018 Coin Ninja, LLC. All rights reserved.
 //
 
-import CNBitcoinKit
+import Cnlib
 import Foundation
 import CoreData
 import PromiseKit
@@ -16,7 +16,7 @@ class PersistenceManager: PersistenceManagerType {
   let contactCacheManager: ContactCacheManagerType
   let brokers: PersistenceBrokersType
 
-  var usableCoin: CNBBaseCoin {
+  var usableCoin: CNBCnlibBaseCoin {
     return brokers.wallet.usableCoin
   }
 

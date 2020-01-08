@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CNBitcoinKit
+import Cnlib
 import CoreData
 import PromiseKit
 @testable import DropBit
@@ -21,7 +21,7 @@ class MockPersistenceDatabaseManager: PersistenceDatabaseType {
   var sharedPayloadManager: SharedPayloadManagerType = SharedPayloadManager()
 
   func persistTemporaryTransaction(
-    from transactionData: CNBTransactionData,
+    from transactionData: CNBCnlibTransactionData,
     with outgoingTransactionData: OutgoingTransactionData,
     txid: String,
     invitation: CKMInvitation?,
@@ -137,7 +137,7 @@ class MockPersistenceDatabaseManager: PersistenceDatabaseType {
   }
 
   func persistServerAddress(
-    for metaAddress: CNBMetaAddress,
+    for metaAddress: CNBCnlibMetaAddress,
     createdAt: Date,
     wallet: CKMWallet,
     in context: NSManagedObjectContext) -> Promise<Void> {

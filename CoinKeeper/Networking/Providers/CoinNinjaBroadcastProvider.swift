@@ -8,7 +8,7 @@
 
 import Moya
 import PromiseKit
-import CNBitcoinKit
+import Cnlib
 
 class CoinNinjaBroadcastProvider {
 
@@ -16,7 +16,7 @@ class CoinNinjaBroadcastProvider {
     return MoyaProvider<CoinNinjaBroadcastTarget>()
   }
 
-  func broadcastTransaction(with metadata: CNBTransactionMetadata) -> Promise<BroadcastInfo> {
+  func broadcastTransaction(with metadata: CNBCnlibTransactionMetadata) -> Promise<BroadcastInfo> {
     return Promise { seal in
       provider.request(.broadcast(metadata.encodedTx)) { (result) in
         switch result {

@@ -9,10 +9,10 @@
 import CoreData
 import Foundation
 import PromiseKit
-import CNBitcoinKit
+import Cnlib
 
 struct PaymentData {
-  var broadcastData: CNBTransactionData
+  var broadcastData: CNBCnlibTransactionData
   var outgoingData: OutgoingTransactionData
 }
 
@@ -23,7 +23,7 @@ enum SelectedBTCAmount {
 
 protocol PaymentBuildingDelegate: CurrencyValueDataSourceType {
 
-  func transactionDataSendingMaxFunds(toAddress destinationAddress: String) -> Promise<CNBTransactionData>
+  func transactionDataSendingMaxFunds(toAddress destinationAddress: String) -> Promise<CNBCnlibTransactionData>
 
   func configureOutgoingTransactionData(with dto: OutgoingTransactionData,
                                         address: String?,
@@ -37,10 +37,10 @@ protocol PaymentBuildingDelegate: CurrencyValueDataSourceType {
 
 extension AppCoordinator: PaymentBuildingDelegate {
 
-  func transactionDataSendingMaxFunds(toAddress destinationAddress: String) -> Promise<CNBTransactionData> {
+  func transactionDataSendingMaxFunds(toAddress destinationAddress: String) -> Promise<CNBCnlibTransactionData> {
     return latestFees()
       .compactMap { self.usableFeeRate(from: $0) }
-      .then { feeRate -> Promise<CNBTransactionData> in
+      .then { feeRate -> Promise<CNBCnlibTransactionData> in
         guard let wmgr = self.walletManager else { return Promise(error: CKPersistenceError.noManagedWallet) }
         return wmgr.transactionDataSendingMax(to: destinationAddress, withFeeRate: feeRate)
     }
@@ -87,23 +87,25 @@ extension AppCoordinator: PaymentBuildingDelegate {
     feeRate: Double) -> PaymentData? {
     var outgoingTransactionData = OutgoingTransactionData.emptyInstance()
     let sharedPayload = SharedPayloadDTO.emptyInstance()
+    let rbfOption = RBFOption.mustNotBeRBF
     let inputs = SendingDelegateInputs(
       primaryCurrency: .BTC,
       walletTxType: .onChain,
       contact: nil,
       rates: exchangeRates,
       sharedPayload: sharedPayload,
-      rbfReplaceabilityOption: .MustNotBeRBF)
+      rbfReplaceabilityOption: rbfOption)
 
     outgoingTransactionData = configureOutgoingTransactionData(with: outgoingTransactionData, address: address, inputs: inputs)
     guard let broadcastData = nonReplaceableBroadcastData(for: selectedAmount, to: address, feeRate: feeRate) else { return nil }
     return PaymentData(broadcastData: broadcastData, outgoingData: outgoingTransactionData)
   }
 
-  private func nonReplaceableBroadcastData(for selectedAmount: SelectedBTCAmount, to address: String, feeRate: Double) -> CNBTransactionData? {
+  private func nonReplaceableBroadcastData(for selectedAmount: SelectedBTCAmount, to address: String, feeRate: Double) -> CNBCnlibTransactionData? {
     switch selectedAmount {
     case .specific(let btcAmount):
-      return walletManager?.failableTransactionData(forPayment: btcAmount, to: address, withFeeRate: feeRate, rbfOption: .MustNotBeRBF)
+      let rbfOption = RBFOption.mustNotBeRBF
+      return walletManager?.failableTransactionData(forPayment: btcAmount, to: address, withFeeRate: feeRate, rbfOption: rbfOption)
     case .max:
       return walletManager?.failableTransactionDataSendingMax(to: address, withFeeRate: feeRate)
     }
@@ -121,7 +123,8 @@ extension AppCoordinator: PaymentBuildingDelegate {
 
     let context = persistenceManager.createBackgroundContext()
     context.performAndWait {
-      if wmgr.createAddressDataSource().checkAddressExists(for: copy.destinationAddress, in: context) != nil {
+      let ads = wmgr.createAddressDataSource()
+      if (try? ads.checkAddressExists(for: copy.destinationAddress, in: context)) != nil {
         copy.sentToSelf = true
       }
     }
