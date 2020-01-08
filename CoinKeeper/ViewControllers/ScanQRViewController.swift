@@ -16,7 +16,7 @@ enum AVScanErrorType {
   var message: String {
     switch self {
     case .noBitcoinQRCodes:
-      return "Scan did not have any bitcoin QR codes"
+      return "Invalid Bitcoin address or Lightning invoice"
     }
   }
 }
