@@ -201,6 +201,7 @@ extension AppCoordinator: SettingsViewControllerDelegate {
   private func deleteAndResetWalletLocally() throws {
     try persistenceManager.brokers.wallet.resetWallet()
     resetUserAuthenticatedState()
+    localNotificationManager.unscheduleAll()
     walletManager = nil
   }
 
