@@ -87,7 +87,7 @@ extension AppCoordinator: PaymentBuildingDelegate {
     feeRate: Double) -> PaymentData? {
     var outgoingTransactionData = OutgoingTransactionData.emptyInstance()
     let sharedPayload = SharedPayloadDTO.emptyInstance()
-    let rbfOption = CNBCnlibRBFOption(CNBCnlibMustNotBeRBF)!
+    let rbfOption = RBFOption.mustNotBeRBF
     let inputs = SendingDelegateInputs(
       primaryCurrency: .BTC,
       walletTxType: .onChain,
@@ -104,7 +104,7 @@ extension AppCoordinator: PaymentBuildingDelegate {
   private func nonReplaceableBroadcastData(for selectedAmount: SelectedBTCAmount, to address: String, feeRate: Double) -> CNBCnlibTransactionData? {
     switch selectedAmount {
     case .specific(let btcAmount):
-      let rbfOption = CNBCnlibRBFOption(CNBCnlibMustNotBeRBF)!
+      let rbfOption = RBFOption.mustNotBeRBF
       return walletManager?.failableTransactionData(forPayment: btcAmount, to: address, withFeeRate: feeRate, rbfOption: rbfOption)
     case .max:
       return walletManager?.failableTransactionDataSendingMax(to: address, withFeeRate: feeRate)

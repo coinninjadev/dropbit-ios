@@ -129,7 +129,7 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
       .then { (rates: FeeRates) -> Promise<ConfirmTransactionFeeModel> in
         // Take rates, get fee config, and return a fee mode
         let config = TransactionFeeConfig(prefs: self.persistenceManager.brokers.preferences)
-        let rbfOption = CNBCnlibRBFOption(CNBCnlibAllowedToBeRBF)!
+        let rbfOption = RBFOption.allowed
 
         if let requiredFeeRate = inputs.outgoingTxData.requiredFeeRate {
           return inputs.wmgr.transactionData(forPayment: inputs.btcAmount,
@@ -271,7 +271,7 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
                                       btcAmount: NSDecimalNumber,
                                       address: String) -> Promise<AdjustableTransactionFeeViewModel> {
     let usableRates = UsableFeeRates(rates: rates, walletManager: wmgr)
-    let allowed = CNBCnlibRBFOption(CNBCnlibAllowedToBeRBF)!
+    let allowed = RBFOption.allowed
 
     return wmgr.transactionData(forPayment: btcAmount, to: address, withFeeRate: usableRates.lowRate, rbfOption: allowed)
       .map { lowTxData -> AdjustableTransactionFeeViewModel in

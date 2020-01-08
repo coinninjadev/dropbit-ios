@@ -74,6 +74,7 @@
 		3B1555EA20D2D48D00D6A70C /* VoutCoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1555E920D2D48D00D6A70C /* VoutCoreDataTests.swift */; };
 		3B1BE86021B57D0A00CCFE29 /* MemoEntryPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1BE85F21B57D0A00CCFE29 /* MemoEntryPage.swift */; };
 		3B1BE86421B5819500CCFE29 /* SendPaymentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1BE86321B5819500CCFE29 /* SendPaymentPage.swift */; };
+		3B1FF6A123C652E10002AB7E /* RBFOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1FF6A023C652E10002AB7E /* RBFOption.swift */; };
 		3B219B3722C3AAD1007EDFCC /* NotificationTopicSubscriptionTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B219B3622C3AAD1007EDFCC /* NotificationTopicSubscriptionTarget.swift */; };
 		3B219B3922C3B9EE007EDFCC /* Data+PrettyPrinted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B219B3822C3B9EE007EDFCC /* Data+PrettyPrinted.swift */; };
 		3B23126320DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B23126220DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib */; };
@@ -1239,6 +1240,7 @@
 		3B1555E920D2D48D00D6A70C /* VoutCoreDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoutCoreDataTests.swift; sourceTree = "<group>"; };
 		3B1BE85F21B57D0A00CCFE29 /* MemoEntryPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEntryPage.swift; sourceTree = "<group>"; };
 		3B1BE86321B5819500CCFE29 /* SendPaymentPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentPage.swift; sourceTree = "<group>"; };
+		3B1FF6A023C652E10002AB7E /* RBFOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RBFOption.swift; sourceTree = "<group>"; };
 		3B219B3622C3AAD1007EDFCC /* NotificationTopicSubscriptionTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTopicSubscriptionTarget.swift; sourceTree = "<group>"; };
 		3B219B3822C3B9EE007EDFCC /* Data+PrettyPrinted.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+PrettyPrinted.swift"; sourceTree = "<group>"; };
 		3B23126220DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionHistoryDetailCellAddressView.xib; sourceTree = "<group>"; };
@@ -2811,6 +2813,7 @@
 				307DF11E2151676900260369 /* JSONValue.swift */,
 				B509262822CA57CF00126250 /* CKLogger.swift */,
 				307DF12021517A8800260369 /* VersionInfo.swift */,
+				3B1FF6A023C652E10002AB7E /* RBFOption.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -5287,6 +5290,7 @@
 				3BA8F2B02358A3A300BEC698 /* SettingsWithInfoCell.swift in Sources */,
 				3B57207B223300160048A8CF /* SQLiteCoreDataStack.swift in Sources */,
 				B534CB362215E4DC00E6884A /* CKPhoneNumberTextField.swift in Sources */,
+				3B1FF6A123C652E10002AB7E /* RBFOption.swift in Sources */,
 				A260E8DB20FD312B008343F9 /* UIView+Enabler.swift in Sources */,
 				B5EABAB221FB8F4D00E32E08 /* CreateTransactionNotificationBody.swift in Sources */,
 				B5222063237F2CEB00F68280 /* LightningQuickLoadViewController.swift in Sources */,

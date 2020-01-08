@@ -17,14 +17,14 @@ struct SendingDelegateInputs {
   let contact: ContactType?
   let rates: ExchangeRates
   let sharedPayload: SharedPayloadDTO
-  let rbfReplaceabilityOption: CNBCnlibRBFOption
+  let rbfReplaceabilityOption: RBFOption
 
   init(primaryCurrency: CurrencyCode,
        walletTxType: WalletTransactionType,
        contact: ContactType?,
        rates: ExchangeRates,
        sharedPayload: SharedPayloadDTO,
-       rbfReplaceabilityOption: CNBCnlibRBFOption) {
+       rbfReplaceabilityOption: RBFOption) {
     self.primaryCurrency = primaryCurrency
     self.walletTxType = walletTxType
     self.contact = contact
@@ -36,7 +36,7 @@ struct SendingDelegateInputs {
   init(sendPaymentVM vm: SendPaymentViewModel,
        contact: ContactType?,
        payloadDTO: SharedPayloadDTO,
-       rbfReplaceabilityOption: CNBCnlibRBFOption = CNBCnlibRBFOption(CNBCnlibAllowedToBeRBF)!) {
+       rbfReplaceabilityOption: RBFOption = .allowed) {
     self.init(primaryCurrency: vm.primaryCurrency,
               walletTxType: vm.walletTransactionType,
               contact: contact,
@@ -56,7 +56,7 @@ struct SendOnChainPaymentInputs {
   let contact: ContactType?
   let currencyPair: CurrencyPair
   let exchangeRates: ExchangeRates
-  let rbfReplaceabilityOption: CNBCnlibRBFOption
+  let rbfReplaceabilityOption: RBFOption
 }
 
 protocol SendPaymentViewControllerRoutingDelegate: PaymentBuildingDelegate {

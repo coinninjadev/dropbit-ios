@@ -66,7 +66,7 @@ class LightningUpgradeStartViewControllerTests: XCTestCase {
     XCTAssertEqual(sut.activityIndicatorBottomConstraint.constant, 50)
 
     let coin = BTCMainnetCoin(purpose: 84)
-    let rbfOption = CNBCnlibRBFOption(CNBCnlibAllowedToBeRBF)!
+    let rbfOption = RBFOption.allowed.value
     let data = CNBCnlibNewTransactionDataStandard("", coin, 0, 0, nil, 0, rbfOption)
     try? data?.generate()
     data.map { self.sut.updateUI(withTransactionData: $0.transactionData) }

@@ -40,7 +40,7 @@ protocol WalletManagerType: AnyObject {
   func transactionData(forPayment payment: NSDecimalNumber,
                        to address: String,
                        withFeeRate feeRate: Double,
-                       rbfOption: CNBCnlibRBFOption) -> Promise<CNBCnlibTransactionData>
+                       rbfOption: RBFOption) -> Promise<CNBCnlibTransactionData>
 
   /// Returns nil instead of an error in the case of insufficient funds, uses default `rbfOption: .Allowed`
   func failableTransactionData(forPayment payment: NSDecimalNumber,
@@ -50,7 +50,7 @@ protocol WalletManagerType: AnyObject {
   func failableTransactionData(forPayment payment: NSDecimalNumber,
                                to address: String,
                                withFeeRate feeRate: Double,
-                               rbfOption: CNBCnlibRBFOption) -> CNBCnlibTransactionData?
+                               rbfOption: RBFOption) -> CNBCnlibTransactionData?
 
   /// Transaction data for payment to a recipient with a flat, predetermined fee.
   ///
@@ -271,7 +271,7 @@ class WalletManager: WalletManagerType {
     forPayment payment: NSDecimalNumber,
     to address: String,
     withFeeRate feeRate: Double,  // in Satoshis
-    rbfOption: CNBCnlibRBFOption
+    rbfOption: RBFOption
     ) -> Promise<CNBCnlibTransactionData> {
 
     return Promise { seal in
@@ -290,7 +290,7 @@ class WalletManager: WalletManagerType {
   func failableTransactionData(forPayment payment: NSDecimalNumber,
                                to address: String,
                                withFeeRate feeRate: Double) -> CNBCnlibTransactionData? {
-    let allowed = CNBCnlibRBFOption(CNBCnlibAllowedToBeRBF)!
+    let allowed = RBFOption.allowed
     return failableTransactionData(forPayment: payment, to: address, withFeeRate: feeRate, rbfOption: allowed)
   }
 
@@ -298,7 +298,7 @@ class WalletManager: WalletManagerType {
     forPayment payment: NSDecimalNumber,
     to address: String,
     withFeeRate feeRate: Double,
-    rbfOption: CNBCnlibRBFOption) -> CNBCnlibTransactionData? {
+    rbfOption: RBFOption) -> CNBCnlibTransactionData? {
     let paymentAmount = payment.asFractionalUnits(of: .BTC)
     let usableFeeRate = self.usableFeeRate(from: feeRate)
     let blockHeight = persistenceManager.brokers.checkIn.cachedBlockHeight
@@ -321,7 +321,7 @@ class WalletManager: WalletManagerType {
                                                  feeRate: usableFeeRate,
                                                  change: change,
                                                  blockHeight: blockHeight,
-                                                 rbfOption: rbfOption)
+                                                 rbfOption: rbfOption.value)
 
       for utxo in allAvailableOutputs {
         data?.add(utxo)
