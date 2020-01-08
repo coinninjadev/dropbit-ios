@@ -37,7 +37,7 @@ class DerivativePathTests: XCTestCase {
     fakePath.index = 0
     fakePath.address = CKMAddress(insertInto: context)
 
-    let coin = BTCTestnetCoin(purpose: 49)
+    let coin = BTCTestnetCoin(purpose: .nestedSegwit)
     let maxIndex = CKMDerivativePath.maxUsedReceiveIndex(forCoin: coin, in: context)
 
     XCTAssertEqual(maxIndex, 0)
@@ -52,7 +52,7 @@ class DerivativePathTests: XCTestCase {
     fakePath.index = 10
     fakePath.address = CKMAddress(insertInto: context)
 
-    let coin = BTCTestnetCoin(purpose: 49)
+    let coin = BTCTestnetCoin(purpose: .nestedSegwit)
     let maxIndex = CKMDerivativePath.maxUsedReceiveIndex(forCoin: coin, in: context)
 
     XCTAssertEqual(maxIndex, 10)
@@ -75,7 +75,7 @@ class DerivativePathTests: XCTestCase {
     serverAddressPath.index = 1
     serverAddressPath.serverAddress = CKMServerAddress(insertInto: context)
 
-    let coin = BTCTestnetCoin(purpose: 49)
+    let coin = BTCTestnetCoin(purpose: .nestedSegwit)
     let maxIndex = CKMDerivativePath.maxUsedReceiveIndex(forCoin: coin, in: context)
 
     XCTAssertEqual(maxIndex, 0)
@@ -91,7 +91,7 @@ class DerivativePathTests: XCTestCase {
     fakePath.index = 0
     fakePath.address = CKMAddress(insertInto: context)
 
-    let coin = BTCTestnetCoin(purpose: 49)
+    let coin = BTCTestnetCoin(purpose: .nestedSegwit)
     let maxIndex = CKMDerivativePath.maxUsedChangeIndex(forCoin: coin, in: context)
 
     XCTAssertEqual(maxIndex, 0)
@@ -106,7 +106,7 @@ class DerivativePathTests: XCTestCase {
     fakePath.index = 10
     fakePath.address = CKMAddress(insertInto: context)
 
-    let coin = BTCTestnetCoin(purpose: 49)
+    let coin = BTCTestnetCoin(purpose: .nestedSegwit)
     let maxIndex = CKMDerivativePath.maxUsedChangeIndex(forCoin: coin, in: context)
 
     XCTAssertEqual(maxIndex, 10)

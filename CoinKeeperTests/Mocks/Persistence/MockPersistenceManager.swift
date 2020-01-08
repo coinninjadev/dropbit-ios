@@ -17,7 +17,7 @@ class MockPersistenceManager: PersistenceManagerType {
   var hashingManager: HashingManager = HashingManager()
   let brokers: PersistenceBrokersType
 
-  var fakeCoinToUse: CNBCnlibBaseCoin = BTCTestnetCoin(purpose: 49)
+  var fakeCoinToUse: CNBCnlibBaseCoin = BTCTestnetCoin(purpose: .nestedSegwit)
   var usableCoin: CNBCnlibBaseCoin { return fakeCoinToUse }
 
   init(keychainManager: PersistenceKeychainType = MockPersistenceKeychainManager(store: MockKeychainAccessorType()),

@@ -124,17 +124,16 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
     }
   }
 
-  var usableCoin: CNBCnlibBaseCoin {
-    var coinType = 0
+  var usableCoin: BaseCoin {
+    var coinType = CoinType.mainnet
     #if DEBUG
-    coinType = CKUserDefaults().useRegtest ? 1 : 0
+    coinType = CKUserDefaults().useRegtest ? .testnet : .mainnet
     #endif
     let possibleSegwitWords = keychainManager.retrieveValue(for: .walletWordsV2) as? [String]
+    var purpose = CoinPurpose.nestedSegwit
     if let words = possibleSegwitWords, words.count == 12 {
-      return CNBCnlibNewBaseCoin(84, coinType, 0)!
-    } else {
-      return CNBCnlibNewBaseCoin(49, coinType, 0)!
+      purpose = .segwit
     }
+    return BaseCoin(purpose: purpose, coinType: coinType)
   }
-
 }

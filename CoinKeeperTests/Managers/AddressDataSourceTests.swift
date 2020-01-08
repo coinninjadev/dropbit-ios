@@ -19,7 +19,7 @@ class AddressDataSourceTests: MockedPersistenceTestCase {
 
   override func setUp() {
     super.setUp()
-    let coin = BTCMainnetCoin(purpose: 84)
+    let coin = BTCMainnetCoin(purpose: .segwit)
     let wallet = CNBCnlibNewHDWalletFromWords(TestHelpers.abandonAbandon().joined(separator: " "), coin)!
     sut = AddressDataSource(wallet: wallet, persistenceManager: mockPersistenceManager)
   }

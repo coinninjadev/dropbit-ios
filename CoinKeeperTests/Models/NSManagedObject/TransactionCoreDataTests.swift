@@ -164,7 +164,7 @@ class TransactionCoreDataTests: XCTestCase {
     let voutAddress1 = receiveAddress(at: 1)
     let voutAddress2 = changeAddress(at: 0)
     var transaction: CKMTransaction!
-    let baseCoin = BTCMainnetCoin(purpose: 49)
+    let baseCoin = BTCMainnetCoin(purpose: .nestedSegwit)
     let receiveDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
     let receiveDP1 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 1, in: context)
     let changeDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 1, index: 0, in: context)
@@ -191,7 +191,7 @@ class TransactionCoreDataTests: XCTestCase {
     let voutAddress1 = receiveAddress(at: 0)
     let voutAddress2 = externalAddress()
     var transaction: CKMTransaction!
-    let baseCoin = BTCMainnetCoin(purpose: 49)
+    let baseCoin = BTCMainnetCoin(purpose: .nestedSegwit)
     let receiveDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
     let voutManagedAddress1 = CKMAddress.findOrCreate(withAddress: voutAddress1, in: context)
     voutManagedAddress1.derivativePath = receiveDP0
@@ -224,7 +224,7 @@ class TransactionCoreDataTests: XCTestCase {
     let voutAddress2 = externalAddress()
 
     var transaction: CKMTransaction!
-    let baseCoin = BTCMainnetCoin(purpose: 49)
+    let baseCoin = BTCMainnetCoin(purpose: .nestedSegwit)
     let receiveDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
     let voutManagedAddress1 = CKMAddress.findOrCreate(withAddress: voutAddress1, in: context)
     voutManagedAddress1.derivativePath = receiveDP0
@@ -248,7 +248,7 @@ class TransactionCoreDataTests: XCTestCase {
     let voutAddress1 = receiveAddress(at: 1)
     let voutAddress2 = changeAddress(at: 0)
     var transaction: CKMTransaction!
-    let baseCoin = BTCMainnetCoin(purpose: 49)
+    let baseCoin = BTCMainnetCoin(purpose: .nestedSegwit)
     let receiveDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 0, in: context)
     let receiveDP1 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 0, index: 1, in: context)
     let changeDP0 = CKMDerivativePath.findOrCreate(with: baseCoin, change: 1, index: 0, in: context)
@@ -290,13 +290,13 @@ class TransactionCoreDataTests: XCTestCase {
   }
 
   private func receiveAddress(at index: Int) -> String {
-    let wallet = CNBCnlibNewHDWalletFromWords(fakeWords().joined(separator: " "), BTCMainnetCoin(purpose: 84))!
+    let wallet = CNBCnlibNewHDWalletFromWords(fakeWords().joined(separator: " "), BTCMainnetCoin(purpose: .segwit))!
     let address = try? wallet.receiveAddress(for: index)
     return address?.address ?? ""
   }
 
   private func changeAddress(at index: Int) -> String {
-    let wallet = CNBCnlibNewHDWalletFromWords(fakeWords().joined(separator: " "), BTCMainnetCoin(purpose: 84))!
+    let wallet = CNBCnlibNewHDWalletFromWords(fakeWords().joined(separator: " "), BTCMainnetCoin(purpose: .segwit))!
     let address = try? wallet.changeAddress(for: index)
     return address?.address ?? ""
   }

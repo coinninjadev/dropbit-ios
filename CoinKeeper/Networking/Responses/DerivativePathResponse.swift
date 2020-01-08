@@ -50,7 +50,7 @@ extension DerivativePathResponse {
 
 extension DerivativePathResponse {
   init(derivativePath: CNBCnlibDerivationPath) {
-    let basecoin = derivativePath.baseCoin ?? BTCMainnetCoin(purpose: 84)
+    let basecoin = derivativePath.baseCoin ?? BTCMainnetCoin(purpose: .segwit)
     self.purpose = basecoin.purpose
     self.coin = basecoin.coin
     self.account = basecoin.account

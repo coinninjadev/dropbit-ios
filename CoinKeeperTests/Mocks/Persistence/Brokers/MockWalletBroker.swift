@@ -73,8 +73,8 @@ class MockWalletBroker: CKPersistenceBroker, WalletBrokerType {
     }
   }
 
-  var usableCoin: CNBCnlibBaseCoin {
-    return BTCMainnetCoin(purpose: 84)
+  var usableCoin: BaseCoin {
+    return BTCMainnetCoin(purpose: .segwit)
   }
 
 }

@@ -8,8 +8,8 @@
 
 import Cnlib
 
-class BTCMainnetCoin: CNBCnlibBaseCoin {
-  init(purpose: Int) {
-    super.init(purpose, coin: 0, account: 0)!
+class BTCMainnetCoin: BaseCoin {
+  init(purpose: CoinPurpose) {
+    super.init(purpose: purpose, coinType: .mainnet)
   }
 }
