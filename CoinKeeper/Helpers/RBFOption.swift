@@ -14,11 +14,11 @@ enum RBFOption {
   case mustNotBeRBF
   case allowed
 
-  var value: CNBCnlibRBFOption {
+  var value: CNBCnlibRBFOption? {
     switch self {
-    case .mustBeRBF: return CNBCnlibRBFOption(CNBCnlibMustBeRBF)!
-    case .mustNotBeRBF: return CNBCnlibRBFOption(CNBCnlibMustNotBeRBF)!
-    case .allowed: return CNBCnlibRBFOption(CNBCnlibAllowedToBeRBF)!
+    case .mustBeRBF: return CNBCnlibRBFOption(CNBCnlibMustBeRBF)
+    case .mustNotBeRBF: return CNBCnlibRBFOption(CNBCnlibMustNotBeRBF)
+    case .allowed: return CNBCnlibRBFOption(CNBCnlibAllowedToBeRBF)
     }
   }
 }
