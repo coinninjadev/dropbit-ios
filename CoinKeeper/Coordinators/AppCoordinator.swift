@@ -55,6 +55,7 @@ class AppCoordinator: CoordinatorType {
   let ratingAndReviewManager: RatingAndReviewManagerType
   let featureConfigManager: FeatureConfigManagerType
   var userIdentifiableManager: UserIdentifiableManagerType
+  var localNotificationManager: LocalNotificationManagerType
   let uiTestArguments: [UITestArgument]
 
   // swiftlint:disable:next weak_delegate
@@ -107,6 +108,7 @@ class AppCoordinator: CoordinatorType {
     analyticsManager: AnalyticsManagerType = AnalyticsManager(),
     connectionManager: ConnectionManagerType = ConnectionManager(),
     serialQueueManager: SerialQueueManagerType = SerialQueueManager(),
+    localNotificationManager: LocalNotificationManagerType = LocalNotificationManager(),
     notificationManager: NotificationManagerType? = nil,
     messageManager: MessagesManagerType? = nil,
     currencyController: CurrencyController = CurrencyController(fiatCurrency: .USD),
@@ -125,6 +127,7 @@ class AppCoordinator: CoordinatorType {
     self.biometricsAuthenticationManager = biometricsAuthenticationManager
     let theLaunchStateManager = launchStateManager ?? LaunchStateManager(persistenceManager: persistenceManager)
     self.launchStateManager = theLaunchStateManager
+    self.localNotificationManager = localNotificationManager
     self.badgeManager = BadgeManager(persistenceManager: persistenceManager)
     self.analyticsManager = analyticsManager
     if let words = persistenceManager.brokers.wallet.walletWords() {

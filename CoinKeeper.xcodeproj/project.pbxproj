@@ -655,6 +655,7 @@
 		A2EF78D72384608300321809 /* ConfigTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EF78D62384608300321809 /* ConfigTarget.swift */; };
 		A2EF78D92384642000321809 /* NetworkManager+ConfigRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EF78D82384642000321809 /* NetworkManager+ConfigRequestable.swift */; };
 		A2EF78DB23848BF600321809 /* ConfigResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EF78DA23848BF600321809 /* ConfigResponse.swift */; };
+		A2F5689123C3E703000409F9 /* LocalNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F5689023C3E703000409F9 /* LocalNotificationManager.swift */; };
 		A2FDC54122D37BFA004B0EDD /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2FDC54022D37BFA004B0EDD /* Charts.framework */; };
 		A2FE198222FB0E5A00C2412D /* TryLightningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2FE198122FB0E5A00C2412D /* TryLightningViewController.swift */; };
 		A2FE198422FB0F5C00C2412D /* TryLightningViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2FE198322FB0F5C00C2412D /* TryLightningViewController.storyboard */; };
@@ -1799,6 +1800,7 @@
 		A2EF78D62384608300321809 /* ConfigTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigTarget.swift; sourceTree = "<group>"; };
 		A2EF78D82384642000321809 /* NetworkManager+ConfigRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+ConfigRequestable.swift"; sourceTree = "<group>"; };
 		A2EF78DA23848BF600321809 /* ConfigResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigResponse.swift; sourceTree = "<group>"; };
+		A2F5689023C3E703000409F9 /* LocalNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotificationManager.swift; sourceTree = "<group>"; };
 		A2FDC54022D37BFA004B0EDD /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = Carthage/Build/iOS/Charts.framework; sourceTree = "<group>"; };
 		A2FE198122FB0E5A00C2412D /* TryLightningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TryLightningViewController.swift; sourceTree = "<group>"; };
 		A2FE198322FB0F5C00C2412D /* TryLightningViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TryLightningViewController.storyboard; sourceTree = "<group>"; };
@@ -3724,6 +3726,7 @@
 				B5EEDA9F2209E225009434DC /* WalletSyncOperationFactory.swift */,
 				3B598FDB2315BF5100FF50CD /* WalletFlagsParser.swift */,
 				3BDBF43C2385C1C30076FE04 /* RatingAndReviewManager.swift */,
+				A2F5689023C3E703000409F9 /* LocalNotificationManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -5226,6 +5229,7 @@
 				B5CFA334221E008B002B1BDD /* CCMContact+CoreDataProperties.swift in Sources */,
 				B52B1E0C21A315DC0000B9CF /* NetworkManager+MerchantPaymentRequestRequestable.swift in Sources */,
 				3B219B3722C3AAD1007EDFCC /* NotificationTopicSubscriptionTarget.swift in Sources */,
+				A2F5689123C3E703000409F9 /* LocalNotificationManager.swift in Sources */,
 				B5CFA32A221DF594002B1BDD /* ContactCacheManager.swift in Sources */,
 				30E96A2D2178F83A008079B8 /* VerificationStatusViewController.swift in Sources */,
 				B59E2CA322E8F4C000A75AFE /* LNDecodePaymentRequestResponse.swift in Sources */,
