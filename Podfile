@@ -20,6 +20,7 @@ def shared_pods
   pod 'Firebase/Analytics'
   pod 'Firebase/DynamicLinks'
   pod 'OAuthSwift', '~> 2.1.0'
+  pod 'PMAlertController', '~> 4.0.0'
 end
 
 target 'DropBit' do

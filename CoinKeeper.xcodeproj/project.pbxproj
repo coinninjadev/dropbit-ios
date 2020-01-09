@@ -4494,6 +4494,7 @@
 				"${BUILT_PRODUCTS_DIR}/Mixpanel-swift/Mixpanel.framework",
 				"${BUILT_PRODUCTS_DIR}/Moya-framework/Moya.framework",
 				"${BUILT_PRODUCTS_DIR}/OAuthSwift-framework/OAuthSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/PMAlertController-framework/PMAlertController.framework",
 				"${BUILT_PRODUCTS_DIR}/Permission-framework/Permission.framework",
 				"${BUILT_PRODUCTS_DIR}/PhoneNumberKit-framework/PhoneNumberKit.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift-framework/Reachability.framework",
@@ -4513,6 +4514,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mixpanel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OAuthSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMAlertController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Permission.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PhoneNumberKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
@@ -4534,6 +4536,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-DropBitUIDatabaseTests/Pods-DropBitUIDatabaseTests-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/PMAlertController-library/PMAlertController.bundle",
 				"${PODS_ROOT}/PhoneNumberKit/PhoneNumberKit/Resources/PhoneNumberMetadata.json",
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
 				"${PODS_ROOT}/Sheeeeeeeeet/Sheeeeeeeeet/ActionSheet/ActionSheet.xib",
@@ -4541,6 +4544,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PMAlertController.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PhoneNumberMetadata.json",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ActionSheet.nib",
@@ -4608,7 +4612,6 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/Strongbox.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/PMAlertController.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/PromiseKit.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftMessages.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Gifu.framework",
@@ -4617,7 +4620,6 @@
 			name = "Carthage Copy-Frameworks Run Script";
 			outputPaths = (
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Strongbox.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/PMAlertController.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/PromiseKit.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftMessages.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Gifu.framework",
@@ -4656,6 +4658,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-DropBitUITests/Pods-DropBitUITests-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/PMAlertController-library/PMAlertController.bundle",
 				"${PODS_ROOT}/PhoneNumberKit/PhoneNumberKit/Resources/PhoneNumberMetadata.json",
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
 				"${PODS_ROOT}/Sheeeeeeeeet/Sheeeeeeeeet/ActionSheet/ActionSheet.xib",
@@ -4663,6 +4666,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PMAlertController.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PhoneNumberMetadata.json",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ActionSheet.nib",
