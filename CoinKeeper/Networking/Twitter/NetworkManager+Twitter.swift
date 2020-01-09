@@ -53,22 +53,22 @@ extension NetworkManager: TwitterRequestable {
   // MARK: private
   private func performTwitterSearch(using term: String) -> Promise<[TwitterUser]> {
     return Promise { seal in
-      twitterOAuthManager.client.get(
-        TwitterEndpoints.search.urlString,
-        parameters: ["q": term, "count": 5],
-        headers: nil,
-        success: { (response: OAuthSwiftResponse) in
-          do {
-            let users = try TwitterUser.decoder.decode([TwitterUser].self, from: response.data)
-            seal.fulfill(users)
-          } catch {
-            seal.reject(error)
-          }
-      },
-        failure: { (error: OAuthSwiftError) in
-          let mappedError = self.mappedError(from: error)
-          seal.reject(mappedError)
-      })
+      twitterOAuthManager.client.get(TwitterEndpoints.search.urlString,
+                                     parameters: ["q": term, "count": 5],
+                                     headers: nil) { (result: Swift.Result<OAuthSwiftResponse, OAuthSwiftError>) in
+                                      switch result {
+                                      case .success(let response):
+                                        do {
+                                          let users = try TwitterUser.decoder.decode([TwitterUser].self, from: response.data)
+                                          seal.fulfill(users)
+                                        } catch {
+                                          seal.reject(error)
+                                        }
+                                      case .failure(let error):
+                                        let mappedError = self.mappedError(from: error)
+                                        seal.reject(mappedError)
+                                      }
+      }
     }
   }
 
@@ -81,19 +81,20 @@ extension NetworkManager: TwitterRequestable {
       twitterOAuthManager.client.get(
         TwitterEndpoints.friends.urlString,
         parameters: ["skip_status": true, "count": 20, "include_user_entities": false],
-        headers: nil,
-        success: { (response: OAuthSwiftResponse) in
-          do {
-            let users = try TwitterUser.decoder.decode(TwitterFriends.self, from: response.data).users
-            seal.fulfill(users)
-          } catch {
-            seal.reject(error)
+        headers: nil) { (result: Swift.Result<OAuthSwiftResponse, OAuthSwiftError>) in
+          switch result {
+          case .success(let response):
+            do {
+              let users = try TwitterUser.decoder.decode(TwitterFriends.self, from: response.data).users
+              seal.fulfill(users)
+            } catch {
+              seal.reject(error)
+            }
+          case .failure(let error):
+            let mappedError = self.mappedError(from: error)
+            seal.reject(mappedError)
           }
-      },
-        failure: { (error: OAuthSwiftError) in
-          let mappedError = self.mappedError(from: error)
-          seal.reject(mappedError)
-      })
+      }
     }
   }
 
@@ -143,39 +144,42 @@ extension NetworkManager: TwitterRequestable {
     return Promise { seal in
       twitterOAuthManager.authorize(
         withCallbackURL: twitterOAuth.callbackURL,
-        success: { (credential: OAuthSwiftCredential, _: OAuthSwiftResponse?, params: OAuthSwift.Parameters) in
-          guard let userId = params["user_id"] as? String, let screenName = params["screen_name"] as? String else {
-            seal.reject(TwitterOAuthError.noUserFound)
-            return
+        headers: nil) { (result: Swift.Result<OAuthSwift.TokenSuccess, OAuthSwiftError>) in
+          switch result {
+          case .success(let tokenSuccess):
+            guard let userId = tokenSuccess.parameters["user_id"] as? String,
+              let screenName = tokenSuccess.parameters["screen_name"] as? String else {
+                seal.reject(TwitterOAuthError.noUserFound)
+                return
+            }
+            let credentials = TwitterOAuthStorage(
+              twitterOAuthToken: tokenSuccess.credential.oauthToken,
+              twitterOAuthTokenSecret: tokenSuccess.credential.oauthTokenSecret,
+              twitterUserId: userId,
+              twitterScreenName: screenName
+            )
+            seal.fulfill(credentials)
+          case .failure(let error):
+            log.error(error, message: "oauth failure")
+            if error.errorCode == CKOAuthError.invalidOrExpiredToken.errorCode {
+              self.resetTwitterOAuthManager()
+              seal.reject(CKOAuthError.invalidOrExpiredToken)
+            } else {
+              seal.reject(error)
+            }
           }
-          let credentials = TwitterOAuthStorage(
-            twitterOAuthToken: credential.oauthToken,
-            twitterOAuthTokenSecret: credential.oauthTokenSecret,
-            twitterUserId: userId,
-            twitterScreenName: screenName)
-
-          seal.fulfill(credentials)
-      },
-        failure: { (error: OAuthSwiftError) in
-          log.error(error, message: "oauth failure")
-          if error.errorCode == CKOAuthError.invalidOrExpiredToken.errorCode {
-            self.resetTwitterOAuthManager()
-            seal.reject(CKOAuthError.invalidOrExpiredToken)
-          } else {
-            seal.reject(error)
-          }
-        }
-      )
+      }
     }
   }
 
   func retrieveTwitterUser(with userId: String) -> Promise<TwitterUser> {
     return Promise { seal in
       twitterOAuthManager.client.get(
-        TwitterEndpoints.getUser.urlString,
-        parameters: ["user_id": userId],
-        headers: nil,
-        success: { (response: OAuthSwiftResponse) in
+      TwitterEndpoints.getUser.urlString,
+      parameters: ["user_id": userId],
+      headers: nil) { (result: Swift.Result<OAuthSwiftResponse, OAuthSwiftError>) in
+        switch result {
+        case .success(let response):
           do {
             let user = try TwitterUser.decoder.decode(TwitterUser.self, from: response.data)
             if let url = user.profileImageURL {
@@ -195,11 +199,10 @@ extension NetworkManager: TwitterRequestable {
           } catch {
             seal.reject(error)
           }
-        },
-        failure: { (error: OAuthSwiftError) in
+        case .failure(let error):
           seal.reject(error)
         }
-      )
+      }
     }
   }
 }
