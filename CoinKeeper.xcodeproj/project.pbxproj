@@ -517,7 +517,6 @@
 		A23BB4C9237B03D300D8FBD1 /* PurchaseMerchantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A23BB4C8237B03D300D8FBD1 /* PurchaseMerchantTableViewCell.swift */; };
 		A243269A23995BF100DDCED9 /* VerticalCenterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A243269923995BF100DDCED9 /* VerticalCenterButton.swift */; };
 		A243269C2399753800DDCED9 /* AppCoordinator+HolidaySelectorViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A243269B2399753800DDCED9 /* AppCoordinator+HolidaySelectorViewDelegate.swift */; };
-		A24525352100EBC80024D5F8 /* Gifu.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A24525342100EBC80024D5F8 /* Gifu.framework */; };
 		A245C6D020D9537400D99983 /* WalletAddressRequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = A245C6CF20D9537400D99983 /* WalletAddressRequestBody.swift */; };
 		A246C82122CA562D00AF1F52 /* NetworkManager+NewsDataRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A246C82022CA562D00AF1F52 /* NetworkManager+NewsDataRequestable.swift */; };
 		A246C82322CA6F1300AF1F52 /* PriceSummaryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A246C82222CA6F1300AF1F52 /* PriceSummaryResponse.swift */; };
@@ -2290,7 +2289,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A24525352100EBC80024D5F8 /* Gifu.framework in Frameworks */,
 				3B8269172032407C009B11EC /* Strongbox.framework in Frameworks */,
 				D3050CCBBA9D3A897790120B /* Pods_DropBit.framework in Frameworks */,
 				3B1FF6A523C676EB0002AB7E /* Cnlib.framework in Frameworks */,
@@ -4483,6 +4481,7 @@
 				"${BUILT_PRODUCTS_DIR}/Alamofire-framework/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Charts-framework/Charts.framework",
 				"${BUILT_PRODUCTS_DIR}/DZNEmptyDataSet-framework/DZNEmptyDataSet.framework",
+				"${BUILT_PRODUCTS_DIR}/Gifu-framework/Gifu.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities-framework/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/JKSteppedProgressBar-framework/JKSteppedProgressBar.framework",
 				"${BUILT_PRODUCTS_DIR}/MMDrawerController-framework/MMDrawerController.framework",
@@ -4506,6 +4505,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DZNEmptyDataSet.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gifu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JKSteppedProgressBar.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MMDrawerController.framework",
@@ -4614,12 +4614,10 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/Strongbox.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Gifu.framework",
 			);
 			name = "Carthage Copy-Frameworks Run Script";
 			outputPaths = (
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Strongbox.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Gifu.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
