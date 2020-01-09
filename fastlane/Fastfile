@@ -33,28 +33,6 @@ platform :ios do
     xcode_select(path)
   end
 
-  desc "Bootstrap Carthage dependencies"
-  lane :bootstrap_carthage do
-    sh 'rm -rf ~/Library/Caches/carthage'
-    sh 'rm -rf ~/Library/Caches/org.carthage.CarthageKit'
-    carthage(
-      command: "bootstrap",
-      verbose: false,
-      platform: 'iOS',
-      cache_builds: true
-    )
-  end
-
-  desc "Update Carthage dependencies"
-  lane :update_carthage do
-    carthage(
-      command: "update",
-      verbose: false,
-      platform: 'iOS',
-      cache_builds: true
-    )
-  end
-
   desc "Autogenerate Swift code with Sourcery. Current working dir for Fastlane's context is ./fastlane"
   lane :autogen do
     if File.exists?("../env-vars.sh")
@@ -152,14 +130,12 @@ platform :ios do
   desc "Runs full test suite with clean simulator installations."
   lane :test do
     reset_sims
-    bootstrap_carthage
     scan
   end
 
   desc "Runs UI tests"
   lane :ui_tests do
     reset_sims
-    bootstrap_carthage
     scan
   end
 
@@ -181,7 +157,6 @@ platform :ios do
     increment_build # lane defined above, encapsulating `increment_build_number` call
     set_version_if_applicable # lane defined above, setting version to match that in branch name
     match
-    bootstrap_carthage
     gym
     groups = ENV["PILOT_GROUPS"].split(",")
     changelog = changelog_from_git_commits
