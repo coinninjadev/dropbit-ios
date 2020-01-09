@@ -22,6 +22,7 @@ def shared_pods
   pod 'OAuthSwift', '~> 2.1.0'
   pod 'PMAlertController', '~> 4.0.0'
   pod 'Charts', '~> 3.4.0'
+  pod 'PromiseKit', '~> 6.8.0'
 end
 
 target 'DropBit' do

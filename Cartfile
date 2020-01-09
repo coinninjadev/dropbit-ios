@@ -1,4 +1,3 @@
 github "granoff/Strongbox"
-github "mxcl/PromiseKit" == 6.8.4
 github "SwiftKickMobile/SwiftMessages" == 7.0.0
 github "cntrump/Gifu"

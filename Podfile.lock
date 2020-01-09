@@ -103,6 +103,15 @@ PODS:
   - PhoneNumberKit/UIKit (2.6.0):
     - PhoneNumberKit/PhoneNumberKitCore
   - PMAlertController (4.0.0)
+  - PromiseKit (6.8.5):
+    - PromiseKit/CorePromise (= 6.8.5)
+    - PromiseKit/Foundation (= 6.8.5)
+    - PromiseKit/UIKit (= 6.8.5)
+  - PromiseKit/CorePromise (6.8.5)
+  - PromiseKit/Foundation (6.8.5):
+    - PromiseKit/CorePromise
+  - PromiseKit/UIKit (6.8.5):
+    - PromiseKit/CorePromise
   - ReachabilitySwift (4.3.1)
   - Result (4.1.0)
   - Sheeeeeeeeet (2.0.2)
@@ -126,6 +135,7 @@ DEPENDENCIES:
   - Permission/Photos (from `https://github.com/SixFiveSoftware/Permission.git`, commit `659c257`)
   - PhoneNumberKit (from `https://github.com/blwinters/PhoneNumberKit.git`, commit `6222471`)
   - PMAlertController (~> 4.0.0)
+  - PromiseKit (~> 6.8.0)
   - ReachabilitySwift (~> 4.3.1)
   - Sheeeeeeeeet (~> 2.0.2)
   - SVProgressHUD (~> 2.2.5)
@@ -150,6 +160,7 @@ SPEC REPOS:
     - nanopb
     - OAuthSwift
     - PMAlertController
+    - PromiseKit
     - ReachabilitySwift
     - Result
     - Sheeeeeeeeet
@@ -199,12 +210,13 @@ SPEC CHECKSUMS:
   Permission: c53c7235f14d76cd2851364df0a7cf05b464037f
   PhoneNumberKit: 167ee1f0bbb6efce7c62559e620eae745595532f
   PMAlertController: 5fad2da8b9eb687134ed50c3462fed12c3afe976
+  PromiseKit: 9616b0afef31eae56ab9ce044c8ec2b8612a15cd
   ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
   Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
   Sheeeeeeeeet: c3e93fa430d8b5259ab8c526e8c3a81ba515b07f
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   Willow: a6310f9aedcb6f4de8c35b94fd3416a660ae9280
 
-PODFILE CHECKSUM: fc24ee8a46baabcd007d85f40c0ee06e9b0bd2ea
+PODFILE CHECKSUM: 77f9be19d7accdcf506731bb5c12663bc4e2cd5c
 
 COCOAPODS: 1.7.4
