@@ -323,7 +323,6 @@
 		3B9A8DF72150388F00C78C2C /* AppCoordinator+WalletDelegateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9A8DF62150388F00C78C2C /* AppCoordinator+WalletDelegateType.swift */; };
 		3B9A8DFA2150414300C78C2C /* MockWalletDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9A8DF821503E6500C78C2C /* MockWalletDelegate.swift */; };
 		3B9A8E062152A93200C78C2C /* SendPaymentViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9A8E052152A93100C78C2C /* SendPaymentViewControllerTests.swift */; };
-		3B9EE8782058359400C0CC8C /* PMAlertController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B9EE8772058359400C0CC8C /* PMAlertController.framework */; };
 		3B9EE87C2058370000C0CC8C /* AlertManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9EE87B2058370000C0CC8C /* AlertManagerTests.swift */; };
 		3B9EE87E2058674C00C0CC8C /* MockNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9EE87D2058674B00C0CC8C /* MockNavigationController.swift */; };
 		3BA360842090B0C100732C43 /* CKMTransaction+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA360822090B0C100732C43 /* CKMTransaction+CoreDataClass.swift */; };
@@ -657,7 +656,6 @@
 		A2EF78D72384608300321809 /* ConfigTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EF78D62384608300321809 /* ConfigTarget.swift */; };
 		A2EF78D92384642000321809 /* NetworkManager+ConfigRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EF78D82384642000321809 /* NetworkManager+ConfigRequestable.swift */; };
 		A2EF78DB23848BF600321809 /* ConfigResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EF78DA23848BF600321809 /* ConfigResponse.swift */; };
-		A2FDC54122D37BFA004B0EDD /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2FDC54022D37BFA004B0EDD /* Charts.framework */; };
 		A2FE198222FB0E5A00C2412D /* TryLightningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2FE198122FB0E5A00C2412D /* TryLightningViewController.swift */; };
 		A2FE198422FB0F5C00C2412D /* TryLightningViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2FE198322FB0F5C00C2412D /* TryLightningViewController.storyboard */; };
 		A2FE198622FDDD3A00C2412D /* NSAttributedString+WalletTypeIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2FE198522FDDD3A00C2412D /* NSAttributedString+WalletTypeIdentifiers.swift */; };
@@ -832,7 +830,6 @@
 		B54BDCEB2086447500B71D6B /* TransactionHistorySummaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54BDCE92086447500B71D6B /* TransactionHistorySummaryCell.swift */; };
 		B54BDCEC2086447500B71D6B /* TransactionHistorySummaryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B54BDCEA2086447500B71D6B /* TransactionHistorySummaryCell.xib */; };
 		B54D0F1F234A2584001B89BD /* TransactionDetailInvalidCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D0F1E234A2584001B89BD /* TransactionDetailInvalidCellViewModel.swift */; };
-		B54D205E20F908C30057A694 /* SwiftMessages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B54D205D20F908C30057A694 /* SwiftMessages.framework */; };
 		B54D206020F9218A0057A694 /* CKBannerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B54D205F20F9218A0057A694 /* CKBannerView.xib */; };
 		B54D206220F921A20057A694 /* CKBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D206120F921A20057A694 /* CKBannerView.swift */; };
 		B54D206420F926110057A694 /* UIImage+Mask.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D206320F926110057A694 /* UIImage+Mask.swift */; };
@@ -2294,10 +2291,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A24525352100EBC80024D5F8 /* Gifu.framework in Frameworks */,
-				3B9EE8782058359400C0CC8C /* PMAlertController.framework in Frameworks */,
 				3B8269172032407C009B11EC /* Strongbox.framework in Frameworks */,
-				B54D205E20F908C30057A694 /* SwiftMessages.framework in Frameworks */,
-				A2FDC54122D37BFA004B0EDD /* Charts.framework in Frameworks */,
 				D3050CCBBA9D3A897790120B /* Pods_DropBit.framework in Frameworks */,
 				3B1FF6A523C676EB0002AB7E /* Cnlib.framework in Frameworks */,
 			);
@@ -4503,6 +4497,7 @@
 				"${BUILT_PRODUCTS_DIR}/Result-framework/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD-framework/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Sheeeeeeeeet-framework/Sheeeeeeeeet.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftMessages-framework/SwiftMessages.framework",
 				"${BUILT_PRODUCTS_DIR}/Willow-framework/Willow.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb-framework/nanopb.framework",
 			);
@@ -4525,6 +4520,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sheeeeeeeeet.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftMessages.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Willow.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -4545,6 +4541,7 @@
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
 				"${PODS_ROOT}/Sheeeeeeeeet/Sheeeeeeeeet/ActionSheet/ActionSheet.xib",
 				"${PODS_ROOT}/Sheeeeeeeeet/Sheeeeeeeeet/Items/Items/ActionSheetCollectionItemCell.xib",
+				"${PODS_CONFIGURATION_BUILD_DIR}/SwiftMessages-library/SwiftMessages.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -4553,6 +4550,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ActionSheet.nib",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ActionSheetCollectionItemCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SwiftMessages.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4616,13 +4614,11 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/Strongbox.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/SwiftMessages.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Gifu.framework",
 			);
 			name = "Carthage Copy-Frameworks Run Script";
 			outputPaths = (
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Strongbox.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftMessages.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Gifu.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4663,6 +4659,7 @@
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
 				"${PODS_ROOT}/Sheeeeeeeeet/Sheeeeeeeeet/ActionSheet/ActionSheet.xib",
 				"${PODS_ROOT}/Sheeeeeeeeet/Sheeeeeeeeet/Items/Items/ActionSheetCollectionItemCell.xib",
+				"${PODS_CONFIGURATION_BUILD_DIR}/SwiftMessages-library/SwiftMessages.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -4671,6 +4668,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ActionSheet.nib",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ActionSheetCollectionItemCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SwiftMessages.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
