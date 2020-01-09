@@ -266,7 +266,6 @@
 		3B80E27521BE9D7A00F6EF17 /* DatabaseMigrationWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B80E27421BE9D7A00F6EF17 /* DatabaseMigrationWorker.swift */; };
 		3B80E27821BEEDD300F6EF17 /* MigrateDatabaseV1toV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B80E27721BEEDD300F6EF17 /* MigrateDatabaseV1toV2.swift */; };
 		3B80E27B21BEF04500F6EF17 /* DatabaseMigrationWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B80E27A21BEF04500F6EF17 /* DatabaseMigrationWorkerTests.swift */; };
-		3B8269172032407C009B11EC /* Strongbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B8269162032407C009B11EC /* Strongbox.framework */; };
 		3B82691A20330B96009B11EC /* KeypadEntryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B82691920330B96009B11EC /* KeypadEntryView.xib */; };
 		3B82691C20330C6A009B11EC /* UIView+Xib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B82691B20330C6A009B11EC /* UIView+Xib.swift */; };
 		3B82691E20330CAC009B11EC /* KeypadEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B82691D20330CAC009B11EC /* KeypadEntryView.swift */; };
@@ -2289,7 +2288,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3B8269172032407C009B11EC /* Strongbox.framework in Frameworks */,
 				D3050CCBBA9D3A897790120B /* Pods_DropBit.framework in Frameworks */,
 				3B1FF6A523C676EB0002AB7E /* Cnlib.framework in Frameworks */,
 			);
@@ -4135,7 +4133,6 @@
 				3B124E082020EB2B00431E2E /* Sources */,
 				3B124E092020EB2B00431E2E /* Frameworks */,
 				3B124E0A2020EB2B00431E2E /* Resources */,
-				3BB854E120220D6D00190874 /* Carthage Copy-Frameworks Run Script */,
 				3B3BA04D202A2A0D00093971 /* SwiftLint Run Script */,
 				1FC1DD5B31944A61F0ADCABD /* [CP] Embed Pods Frameworks */,
 			);
@@ -4496,6 +4493,7 @@
 				"${BUILT_PRODUCTS_DIR}/Result-framework/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD-framework/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Sheeeeeeeeet-framework/Sheeeeeeeeet.framework",
+				"${BUILT_PRODUCTS_DIR}/Strongbox-framework/Strongbox.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftMessages-framework/SwiftMessages.framework",
 				"${BUILT_PRODUCTS_DIR}/Willow-framework/Willow.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb-framework/nanopb.framework",
@@ -4520,6 +4518,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sheeeeeeeeet.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Strongbox.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftMessages.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Willow.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
@@ -4606,22 +4605,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		3BB854E120220D6D00190874 /* Carthage Copy-Frameworks Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/Strongbox.framework",
-			);
-			name = "Carthage Copy-Frameworks Run Script";
-			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Strongbox.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
 		454C3F02C1B59DD47D010E57 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

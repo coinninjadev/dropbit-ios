@@ -116,6 +116,7 @@ PODS:
   - ReachabilitySwift (4.3.1)
   - Result (4.1.0)
   - Sheeeeeeeeet (2.0.2)
+  - Strongbox (0.5.3)
   - SVProgressHUD (2.2.5)
   - SwiftMessages (7.0.1):
     - SwiftMessages/App (= 7.0.1)
@@ -143,6 +144,7 @@ DEPENDENCIES:
   - PromiseKit (~> 6.8.0)
   - ReachabilitySwift (~> 4.3.1)
   - Sheeeeeeeeet (~> 2.0.2)
+  - Strongbox (~> 0.5.3)
   - SVProgressHUD (~> 2.2.5)
   - SwiftMessages (~> 7.0.0)
   - Willow (~> 5.0)
@@ -171,6 +173,7 @@ SPEC REPOS:
     - ReachabilitySwift
     - Result
     - Sheeeeeeeeet
+    - Strongbox
     - SVProgressHUD
     - SwiftMessages
     - Willow
@@ -223,10 +226,11 @@ SPEC CHECKSUMS:
   ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
   Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
   Sheeeeeeeeet: c3e93fa430d8b5259ab8c526e8c3a81ba515b07f
+  Strongbox: 83764666aa2497027b1a40691b8e366e17be8bee
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftMessages: b577dc7043be8b299857ab35bb663dbff6483bd0
   Willow: a6310f9aedcb6f4de8c35b94fd3416a660ae9280
 
-PODFILE CHECKSUM: 19973155c1acb0bcba420554127eac5d07a8f196
+PODFILE CHECKSUM: 1ac797d8fb1fa981584d00125ff9c5bbcdd7b701
 
 COCOAPODS: 1.7.4
