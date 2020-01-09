@@ -1,5 +1,8 @@
 PODS:
   - Alamofire (4.8.2)
+  - Charts (3.4.0):
+    - Charts/Core (= 3.4.0)
+  - Charts/Core (3.4.0)
   - DZNEmptyDataSet (1.8.1)
   - Firebase/Analytics (6.3.0):
     - Firebase/Core
@@ -107,6 +110,7 @@ PODS:
   - Willow (5.2.1)
 
 DEPENDENCIES:
+  - Charts (~> 3.4.0)
   - DZNEmptyDataSet (~> 1.8.1)
   - Firebase/Analytics
   - Firebase/DynamicLinks
@@ -130,6 +134,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - Charts
     - DZNEmptyDataSet
     - Firebase
     - FirebaseAnalytics
@@ -175,6 +180,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  Charts: 74c9f256eaf0460c0c416522d1cf8c634ea6b286
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Firebase: 8432d732974498afd5987e9001a05f90f1a3d625
   FirebaseAnalytics: 470ddab7253b21ad5a40bebd4a9903d7ae19386a
@@ -199,6 +205,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   Willow: a6310f9aedcb6f4de8c35b94fd3416a660ae9280
 
-PODFILE CHECKSUM: 962d707e979df355269f7e7c3da75493e4d5cce1
+PODFILE CHECKSUM: fc24ee8a46baabcd007d85f40c0ee06e9b0bd2ea
 
 COCOAPODS: 1.7.4

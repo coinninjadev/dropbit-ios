@@ -78,21 +78,21 @@ class NewsViewControllerDDS: NSObject {
         return coordinationDelegate.viewControllerDidRequestPriceDataFor(period: .daily)
       }.then { dailyPrice -> Promise<[PriceSummaryResponse]> in
         let day = self.configureDailyData(data: dailyPrice.reversed())
-        newsData.dayPriceData = LineChartDataSet(values: day.data, label: nil)
+        newsData.dayPriceData = LineChartDataSet(entries: day.data, label: nil)
         newsData.dayPriceResponse = day.response
         return coordinationDelegate.viewControllerDidRequestPriceDataFor(period: .monthly)
       }.then { monthlyPrice -> Promise<[PriceSummaryResponse]> in
         let monthlyData = self.configureWeekAndMonthData(data: monthlyPrice.reversed())
-        newsData.weeklyPriceData = LineChartDataSet(values: monthlyData.weekData, label: nil)
+        newsData.weeklyPriceData = LineChartDataSet(entries: monthlyData.weekData, label: nil)
         newsData.weeklyPriceResponse = monthlyData.weekResponse
-        newsData.monthlyPriceData = LineChartDataSet(values: monthlyData.monthData, label: nil)
+        newsData.monthlyPriceData = LineChartDataSet(entries: monthlyData.monthData, label: nil)
         newsData.monthlyPriceResponse = monthlyData.monthResponse
         return coordinationDelegate.viewControllerDidRequestPriceDataFor(period: .allTime)
       }.done { allTimePrice in
         let allTimeData = self.configureYearAndAllTimeData(data: allTimePrice.reversed())
-        newsData.allTimePriceData = LineChartDataSet(values: allTimeData.allTime, label: nil)
+        newsData.allTimePriceData = LineChartDataSet(entries: allTimeData.allTime, label: nil)
         newsData.allTimePriceResponse = allTimeData.allTimeResponse
-        newsData.yearlyPriceData = LineChartDataSet(values: allTimeData.year, label: nil)
+        newsData.yearlyPriceData = LineChartDataSet(entries: allTimeData.year, label: nil)
         newsData.yearlyPriceResponse = allTimeData.yearResponse
         self.delegate?.delegateFinishedLoadingData()
       }.catch(on: .main, policy: .allErrors) { error in

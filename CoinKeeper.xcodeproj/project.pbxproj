@@ -4487,6 +4487,7 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-DropBit/Pods-DropBit-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire-framework/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Charts-framework/Charts.framework",
 				"${BUILT_PRODUCTS_DIR}/DZNEmptyDataSet-framework/DZNEmptyDataSet.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities-framework/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/JKSteppedProgressBar-framework/JKSteppedProgressBar.framework",
@@ -4507,6 +4508,7 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DZNEmptyDataSet.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JKSteppedProgressBar.framework",
@@ -4615,7 +4617,6 @@
 				"$(SRCROOT)/Carthage/Build/iOS/PromiseKit.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftMessages.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Gifu.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Charts.framework",
 			);
 			name = "Carthage Copy-Frameworks Run Script";
 			outputPaths = (
@@ -4623,7 +4624,6 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/PromiseKit.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftMessages.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Gifu.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Charts.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
