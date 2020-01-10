@@ -105,37 +105,44 @@ platform :ios do
   # testing
   desc "Local testing, without resetting simulators or cleaning."
   lane :local_test do
+    ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
     scan
   end
 
   desc "Local unit testing, without resetting simulators or cleaning."
   lane :local_unit_tests do
+    ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
     scan
   end
 
   desc "Local testing (unit tests only), without resetting simulators or cleaning."
   lane :unit_tests do
+    ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
     scan
   end
 
   desc "Local testing (UI tests only), without resetting simulators or cleaning."
   lane :local_ui_tests do
+    ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
     scan
   end
 
   desc "Local testing, without the before_all lane"
   lane :quick_test do
+    ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
     scan
   end
 
   desc "Runs full test suite with clean simulator installations."
   lane :test do
+    ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
     reset_sims
     scan
   end
 
   desc "Runs UI tests"
   lane :ui_tests do
+    ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
     reset_sims
     scan
   end
@@ -155,6 +162,7 @@ platform :ios do
   end
 
   private_lane :build_and_upload do
+    ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
     increment_build # lane defined above, encapsulating `increment_build_number` call
     set_version_if_applicable # lane defined above, setting version to match that in branch name
     match
