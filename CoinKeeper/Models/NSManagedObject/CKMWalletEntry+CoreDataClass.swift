@@ -45,6 +45,19 @@ public class CKMWalletEntry: NSManagedObject {
     }
   }
 
+  var referralPaymentSenderAnalyticsIdentifier: String {
+    guard let memo = memo, counterparty?.type == .referral else { return "Unknown" }
+
+    if memo.contains("in Bitcoin for referring a friend!") {
+      return "False"
+    } else if memo.contains("in Bitcoin for being referred by a friend!") {
+      return "True"
+    } else {
+      return "Unknown"
+    }
+
+  }
+
 }
 
 extension CKMWalletEntry: InvitationParent { }
