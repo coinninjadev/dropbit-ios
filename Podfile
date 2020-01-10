@@ -59,5 +59,12 @@ post_install do |installer|
         config.build_settings['DEBUG_INFORMATION_FORMAT'] = 'DWARF'
       end
     end
+
+    # allow non-modular includes
+    # if target.name == 'Pods-DropBit'
+      target.build_configurations.each do |config|
+        target.build_settings(config.name)['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
+      end
+    # end
   end
 end
