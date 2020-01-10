@@ -17,7 +17,8 @@ platform :ios do
 
   before_all do |lane|
     lanes_to_exclude = [:quick_test, :register, :local_test, :local_unit_tests, :autogen]
-    if !lanes_to_exclude.include?(lane)
+    unless lanes_to_exclude.include?(lane)
+      clear_derived_data
       bundle_install
       brew(command: "bundle")
       config_tooling

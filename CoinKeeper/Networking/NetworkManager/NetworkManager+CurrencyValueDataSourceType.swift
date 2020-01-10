@@ -7,6 +7,7 @@
 //
 
 import PromiseKit
+import Foundation
 
 protocol CurrencyValueDataSourceType: AnyObject {
 

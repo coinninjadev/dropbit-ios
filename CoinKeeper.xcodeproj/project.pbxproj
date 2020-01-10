@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -366,6 +366,7 @@
 		3BBEE0C1208A5DA500A7DF9F /* CKMDerivativePath+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBEE0B7208A5DA500A7DF9F /* CKMDerivativePath+CoreDataClass.swift */; };
 		3BBEE0C2208A5DA500A7DF9F /* CKMDerivativePath+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBEE0B8208A5DA500A7DF9F /* CKMDerivativePath+CoreDataProperties.swift */; };
 		3BC23EF220BDCA5100877BB6 /* TransactionDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC23EF120BDCA5100877BB6 /* TransactionDataError.swift */; };
+		3BC289B623C8C6F6005B9933 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3BC289B523C8C6F6005B9933 /* PromiseKit */; };
 		3BC456FF20288D7300CC36B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BC456FE20288D7300CC36B1 /* LaunchScreen.storyboard */; };
 		3BC9E5522047440900444A53 /* BackupRecoveryWordCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC9E5512047440900444A53 /* BackupRecoveryWordCellData.swift */; };
 		3BC9E5542047516A00444A53 /* UICollectionView+ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC9E5532047516A00444A53 /* UICollectionView+ReusableView.swift */; };
@@ -2289,6 +2290,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3050CCBBA9D3A897790120B /* Pods_DropBit.framework in Frameworks */,
+				3BC289B623C8C6F6005B9933 /* PromiseKit in Frameworks */,
 				3B1FF6A523C676EB0002AB7E /* Cnlib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4141,6 +4143,9 @@
 			dependencies = (
 			);
 			name = DropBit;
+			packageProductDependencies = (
+				3BC289B523C8C6F6005B9933 /* PromiseKit */,
+			);
 			productName = CoinKeeper;
 			productReference = 3B124E0C2020EB2B00431E2E /* DropBit.app */;
 			productType = "com.apple.product-type.application";
@@ -4259,6 +4264,9 @@
 				Base,
 			);
 			mainGroup = 3B124E032020EB2B00431E2E;
+			packageReferences = (
+				3BC289B423C8C6F6005B9933 /* XCRemoteSwiftPackageReference "PromiseKit" */,
+			);
 			productRefGroup = 3B124E0D2020EB2B00431E2E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -4488,7 +4496,6 @@
 				"${BUILT_PRODUCTS_DIR}/PMAlertController-framework/PMAlertController.framework",
 				"${BUILT_PRODUCTS_DIR}/Permission-framework/Permission.framework",
 				"${BUILT_PRODUCTS_DIR}/PhoneNumberKit-framework/PhoneNumberKit.framework",
-				"${BUILT_PRODUCTS_DIR}/PromiseKit-framework/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift-framework/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/Result-framework/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD-framework/SVProgressHUD.framework",
@@ -4513,7 +4520,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMAlertController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Permission.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PhoneNumberKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
@@ -5821,7 +5827,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -5849,7 +5856,10 @@
 				);
 				INFOPLIST_FILE = CoinKeeper/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 3.7;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DDEBUG -DPUSHDEBUGENVIRONMENT";
 				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.CoinKeeper.beta;
@@ -5887,7 +5897,10 @@
 				);
 				INFOPLIST_FILE = CoinKeeper/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 3.7;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.CoinKeeper;
@@ -5915,7 +5928,11 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = CoinKeeperTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.CoinKeeperTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "CoinKeeperTests/CoinKeeperTests-Bridging-Header.h";
@@ -5940,7 +5957,11 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = CoinKeeperTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.CoinKeeperTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "CoinKeeperTests/CoinKeeperTests-Bridging-Header.h";
@@ -5999,7 +6020,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Beta;
@@ -6027,7 +6049,10 @@
 				);
 				INFOPLIST_FILE = CoinKeeper/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 3.7;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DDEBUG -DPUSHBETAENVIRONMENT";
 				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.CoinKeeper.beta;
@@ -6055,7 +6080,11 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = CoinKeeperTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.CoinKeeperTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "CoinKeeperTests/CoinKeeperTests-Bridging-Header.h";
@@ -6074,7 +6103,11 @@
 				DEVELOPMENT_TEAM = GV9ZP4A7U6;
 				INFOPLIST_FILE = DropBitUIDatabaseTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire-library/Alamofire.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/JKSteppedProgressBar-library/JKSteppedProgressBar.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Moya-library/Moya.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Permission-library/Permission.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/PhoneNumberKit-library/PhoneNumberKit.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift-library/Reachability.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Result-library/Result.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Sheeeeeeeeet-library/Sheeeeeeeeet.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Willow-library/Willow.modulemap\" -DUITEST";
@@ -6096,7 +6129,11 @@
 				DEVELOPMENT_TEAM = GV9ZP4A7U6;
 				INFOPLIST_FILE = DropBitUIDatabaseTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire-library/Alamofire.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/JKSteppedProgressBar-library/JKSteppedProgressBar.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Moya-library/Moya.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Permission-library/Permission.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/PhoneNumberKit-library/PhoneNumberKit.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift-library/Reachability.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Result-library/Result.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Sheeeeeeeeet-library/Sheeeeeeeeet.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Willow-library/Willow.modulemap\" -DUITEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.DropBitUIDatabaseTests;
@@ -6117,7 +6154,11 @@
 				DEVELOPMENT_TEAM = GV9ZP4A7U6;
 				INFOPLIST_FILE = DropBitUIDatabaseTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire-library/Alamofire.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/JKSteppedProgressBar-library/JKSteppedProgressBar.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Moya-library/Moya.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Permission-library/Permission.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/PhoneNumberKit-library/PhoneNumberKit.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift-library/Reachability.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Result-library/Result.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Sheeeeeeeeet-library/Sheeeeeeeeet.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Willow-library/Willow.modulemap\" -DUITEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.DropBitUIDatabaseTests;
@@ -6152,7 +6193,11 @@
 				);
 				INFOPLIST_FILE = DropBitUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire-library/Alamofire.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/JKSteppedProgressBar-library/JKSteppedProgressBar.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Moya-library/Moya.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Permission-library/Permission.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/PhoneNumberKit-library/PhoneNumberKit.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift-library/Reachability.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Result-library/Result.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Sheeeeeeeeet-library/Sheeeeeeeeet.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Willow-library/Willow.modulemap\" -DUITEST";
@@ -6190,7 +6235,11 @@
 				);
 				INFOPLIST_FILE = DropBitUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire-library/Alamofire.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/JKSteppedProgressBar-library/JKSteppedProgressBar.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Moya-library/Moya.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Permission-library/Permission.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/PhoneNumberKit-library/PhoneNumberKit.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift-library/Reachability.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Result-library/Result.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Sheeeeeeeeet-library/Sheeeeeeeeet.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Willow-library/Willow.modulemap\" -DUITEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.DropBitUITests;
@@ -6226,7 +6275,11 @@
 				);
 				INFOPLIST_FILE = DropBitUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire-library/Alamofire.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/JKSteppedProgressBar-library/JKSteppedProgressBar.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Moya-library/Moya.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Permission-library/Permission.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/PhoneNumberKit-library/PhoneNumberKit.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift-library/Reachability.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Result-library/Result.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Sheeeeeeeeet-library/Sheeeeeeeeet.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Willow-library/Willow.modulemap\" -DUITEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.DropBitUITests;
@@ -6293,6 +6346,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3BC289B423C8C6F6005B9933 /* XCRemoteSwiftPackageReference "PromiseKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mxcl/PromiseKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.8.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3BC289B523C8C6F6005B9933 /* PromiseKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3BC289B423C8C6F6005B9933 /* XCRemoteSwiftPackageReference "PromiseKit" */;
+			productName = PromiseKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		403AAD5C2063513900F7A2BA /* Model.xcdatamodeld */ = {

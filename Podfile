@@ -22,7 +22,6 @@ def shared_pods
   pod 'OAuthSwift', '~> 2.1.0'
   pod 'PMAlertController', '~> 4.0.0'
   pod 'Charts', '~> 3.4.0'
-  pod 'PromiseKit', '~> 6.8.0'
   pod 'SwiftMessages', '~> 7.0.0'
   pod 'Gifu', '~> 3.2.0'
   pod 'Strongbox', '~> 0.5.3'
@@ -59,12 +58,5 @@ post_install do |installer|
         config.build_settings['DEBUG_INFORMATION_FORMAT'] = 'DWARF'
       end
     end
-
-    # allow non-modular includes
-    # if target.name == 'Pods-DropBit'
-      target.build_configurations.each do |config|
-        target.build_settings(config.name)['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
-      end
-    # end
   end
 end

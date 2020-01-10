@@ -7,6 +7,7 @@
 //
 
 import PromiseKit
+import Foundation
 
 protocol AddressRequestable: AnyObject {
   func fetchTransactionSummaries(for addresses: [String], afterDate: Date?) -> Promise<[AddressTransactionSummaryResponse]>
