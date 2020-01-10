@@ -16,6 +16,7 @@ class TutorialUITests: UITestCase {
     app.launch()
   }
 
+  /*
   func testFirstShowsTutorialViewController() {
 
     addSystemAlertMonitor()
@@ -49,4 +50,5 @@ class TutorialUITests: UITestCase {
     XCTAssert(mainButton.exists, "Main button not found")
   }
 
+ */
 }
