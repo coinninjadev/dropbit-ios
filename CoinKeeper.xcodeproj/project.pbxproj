@@ -366,7 +366,7 @@
 		3BBEE0C1208A5DA500A7DF9F /* CKMDerivativePath+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBEE0B7208A5DA500A7DF9F /* CKMDerivativePath+CoreDataClass.swift */; };
 		3BBEE0C2208A5DA500A7DF9F /* CKMDerivativePath+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBEE0B8208A5DA500A7DF9F /* CKMDerivativePath+CoreDataProperties.swift */; };
 		3BC23EF220BDCA5100877BB6 /* TransactionDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC23EF120BDCA5100877BB6 /* TransactionDataError.swift */; };
-		3BC289B623C8C6F6005B9933 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3BC289B523C8C6F6005B9933 /* PromiseKit */; };
+		3BC289B623C8C6F6005B9933 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 3BC289B523C8C6F6005B9933 /* SwiftPackageProductDependency */; };
 		3BC456FF20288D7300CC36B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BC456FE20288D7300CC36B1 /* LaunchScreen.storyboard */; };
 		3BC9E5522047440900444A53 /* BackupRecoveryWordCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC9E5512047440900444A53 /* BackupRecoveryWordCellData.swift */; };
 		3BC9E5542047516A00444A53 /* UICollectionView+ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC9E5532047516A00444A53 /* UICollectionView+ReusableView.swift */; };
@@ -2290,7 +2290,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3050CCBBA9D3A897790120B /* Pods_DropBit.framework in Frameworks */,
-				3BC289B623C8C6F6005B9933 /* PromiseKit in Frameworks */,
+				3BC289B623C8C6F6005B9933 /* BuildFile in Frameworks */,
 				3B1FF6A523C676EB0002AB7E /* Cnlib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4144,7 +4144,7 @@
 			);
 			name = DropBit;
 			packageProductDependencies = (
-				3BC289B523C8C6F6005B9933 /* PromiseKit */,
+				3BC289B523C8C6F6005B9933 /* SwiftPackageProductDependency */,
 			);
 			productName = CoinKeeper;
 			productReference = 3B124E0C2020EB2B00431E2E /* DropBit.app */;
@@ -4265,7 +4265,7 @@
 			);
 			mainGroup = 3B124E032020EB2B00431E2E;
 			packageReferences = (
-				3BC289B423C8C6F6005B9933 /* XCRemoteSwiftPackageReference "PromiseKit" */,
+				3BC289B423C8C6F6005B9933 /* RemoteSwiftPackageReference */,
 			);
 			productRefGroup = 3B124E0D2020EB2B00431E2E /* Products */;
 			projectDirPath = "";
@@ -4481,53 +4481,12 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DropBit/Pods-DropBit-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire-framework/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/Charts-framework/Charts.framework",
-				"${BUILT_PRODUCTS_DIR}/DZNEmptyDataSet-framework/DZNEmptyDataSet.framework",
-				"${BUILT_PRODUCTS_DIR}/Gifu-framework/Gifu.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleUtilities-framework/GoogleUtilities.framework",
-				"${BUILT_PRODUCTS_DIR}/JKSteppedProgressBar-framework/JKSteppedProgressBar.framework",
-				"${BUILT_PRODUCTS_DIR}/MMDrawerController-framework/MMDrawerController.framework",
-				"${BUILT_PRODUCTS_DIR}/Mixpanel-swift/Mixpanel.framework",
-				"${BUILT_PRODUCTS_DIR}/Moya-framework/Moya.framework",
-				"${BUILT_PRODUCTS_DIR}/OAuthSwift-framework/OAuthSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/PMAlertController-framework/PMAlertController.framework",
-				"${BUILT_PRODUCTS_DIR}/Permission-framework/Permission.framework",
-				"${BUILT_PRODUCTS_DIR}/PhoneNumberKit-framework/PhoneNumberKit.framework",
-				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift-framework/Reachability.framework",
-				"${BUILT_PRODUCTS_DIR}/Result-framework/Result.framework",
-				"${BUILT_PRODUCTS_DIR}/SVProgressHUD-framework/SVProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/Sheeeeeeeeet-framework/Sheeeeeeeeet.framework",
-				"${BUILT_PRODUCTS_DIR}/Strongbox-framework/Strongbox.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftMessages-framework/SwiftMessages.framework",
-				"${BUILT_PRODUCTS_DIR}/Willow-framework/Willow.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb-framework/nanopb.framework",
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DropBit/Pods-DropBit-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DZNEmptyDataSet.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gifu.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JKSteppedProgressBar.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MMDrawerController.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mixpanel.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OAuthSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMAlertController.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Permission.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PhoneNumberKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sheeeeeeeeet.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Strongbox.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftMessages.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Willow.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DropBit/Pods-DropBit-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4539,23 +4498,12 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DropBitUIDatabaseTests/Pods-DropBitUIDatabaseTests-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/PMAlertController-library/PMAlertController.bundle",
-				"${PODS_ROOT}/PhoneNumberKit/PhoneNumberKit/Resources/PhoneNumberMetadata.json",
-				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
-				"${PODS_ROOT}/Sheeeeeeeeet/Sheeeeeeeeet/ActionSheet/ActionSheet.xib",
-				"${PODS_ROOT}/Sheeeeeeeeet/Sheeeeeeeeet/Items/Items/ActionSheetCollectionItemCell.xib",
-				"${PODS_CONFIGURATION_BUILD_DIR}/SwiftMessages-library/SwiftMessages.bundle",
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DropBitUIDatabaseTests/Pods-DropBitUIDatabaseTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PMAlertController.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PhoneNumberMetadata.json",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ActionSheet.nib",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ActionSheetCollectionItemCell.nib",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SwiftMessages.bundle",
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DropBitUIDatabaseTests/Pods-DropBitUIDatabaseTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4639,23 +4587,12 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DropBitUITests/Pods-DropBitUITests-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/PMAlertController-library/PMAlertController.bundle",
-				"${PODS_ROOT}/PhoneNumberKit/PhoneNumberKit/Resources/PhoneNumberMetadata.json",
-				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
-				"${PODS_ROOT}/Sheeeeeeeeet/Sheeeeeeeeet/ActionSheet/ActionSheet.xib",
-				"${PODS_ROOT}/Sheeeeeeeeet/Sheeeeeeeeet/Items/Items/ActionSheetCollectionItemCell.xib",
-				"${PODS_CONFIGURATION_BUILD_DIR}/SwiftMessages-library/SwiftMessages.bundle",
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DropBitUITests/Pods-DropBitUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PMAlertController.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PhoneNumberMetadata.json",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ActionSheet.nib",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ActionSheetCollectionItemCell.nib",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SwiftMessages.bundle",
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DropBitUITests/Pods-DropBitUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -6348,7 +6285,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		3BC289B423C8C6F6005B9933 /* XCRemoteSwiftPackageReference "PromiseKit" */ = {
+		3BC289B423C8C6F6005B9933 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mxcl/PromiseKit";
 			requirement = {
@@ -6359,9 +6296,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		3BC289B523C8C6F6005B9933 /* PromiseKit */ = {
+		3BC289B523C8C6F6005B9933 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3BC289B423C8C6F6005B9933 /* XCRemoteSwiftPackageReference "PromiseKit" */;
+			package = 3BC289B423C8C6F6005B9933 /* RemoteSwiftPackageReference */;
 			productName = PromiseKit;
 		};
 /* End XCSwiftPackageProductDependency section */
