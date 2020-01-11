@@ -7,6 +7,7 @@
 //
 
 import Moya
+import Foundation
 
 enum LNTransactionStatus: String, Codable {
   case pending, completed, expired, failed

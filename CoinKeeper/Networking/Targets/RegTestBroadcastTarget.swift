@@ -7,6 +7,7 @@
 //
 
 import Moya
+import Foundation
 
 public enum RegTestBroadcastTarget {
   case sendRawTransaction(String)
@@ -21,7 +22,7 @@ extension RegTestBroadcastTarget: TargetType {
     return "broadcast"
   }
 
-  public var method: Method {
+  public var method: Moya.Method {
     return .post
   }
 

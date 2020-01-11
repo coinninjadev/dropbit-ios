@@ -7,6 +7,7 @@
 //
 
 import Moya
+import Foundation
 
 protocol CoinNinjaTargetType: TargetType {
 

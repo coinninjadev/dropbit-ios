@@ -8,6 +8,7 @@
 
 import Moya
 import PromiseKit
+import Foundation
 
 class BlockchainInfoProvider {
 

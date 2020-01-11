@@ -7,6 +7,7 @@
 //
 
 import Alamofire
+import Foundation
 
 /// This session manager is used by Moya to customize the request timeout intervals.
 class CKAlamofireSessionManager: Alamofire.SessionManager {
