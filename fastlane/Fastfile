@@ -173,7 +173,7 @@ platform :ios do
       skip_waiting_for_build_processing: true,
       demo_account_required: false,
       changelog: changelog,
-      beta_app_description: changelog,
+      beta_app_description: "Test all the things",
       distribute_external: true,
       groups: groups
     )
