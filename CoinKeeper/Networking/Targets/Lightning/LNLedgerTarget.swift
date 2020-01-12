@@ -7,6 +7,7 @@
 //
 
 import Moya
+import Foundation
 
 public struct LNLedgerUrlParameters {
   var after: Date?
@@ -37,7 +38,7 @@ public enum LNLedgerTarget: CoinNinjaTargetType {
     return "ledger"
   }
 
-  public var method: Method {
+  public var method: Moya.Method {
     return .get
   }
 

@@ -17,8 +17,14 @@ def shared_pods
   pod 'DZNEmptyDataSet', '~> 1.8.1'
   pod 'Willow', '~> 5.0'
   pod 'Sheeeeeeeeet', '~> 2.0.2'
-  pod 'Firebase/Analytics'
-  pod 'Firebase/DynamicLinks'
+  pod 'Firebase/Analytics', '~> 6.14.0'
+  pod 'Firebase/DynamicLinks', '~> 6.14.0'
+  pod 'OAuthSwift', '~> 2.1.0'
+  pod 'PMAlertController', '~> 4.0.0'
+  pod 'Charts', '~> 3.4.0'
+  pod 'SwiftMessages', '~> 7.0.0'
+  pod 'Gifu', '~> 3.2.0'
+  pod 'Strongbox', '~> 0.5.3'
 end
 
 target 'DropBit' do

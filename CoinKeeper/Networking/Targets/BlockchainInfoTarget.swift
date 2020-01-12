@@ -7,6 +7,7 @@
 //
 
 import Moya
+import Foundation
 
 public enum BlockchainInfoTarget {
   case transaction(String)
@@ -24,7 +25,7 @@ extension BlockchainInfoTarget: TargetType {
     }
   }
 
-  public var method: Method {
+  public var method: Moya.Method {
     switch self {
     case .transaction:        return .get
     }

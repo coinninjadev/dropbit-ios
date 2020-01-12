@@ -7,6 +7,7 @@
 //
 
 import Moya
+import Foundation
 
 public struct LNPayBody: Encodable {
   let request: String
@@ -48,7 +49,7 @@ public enum LNTransactionTarget: CoinNinjaTargetType {
     return .underlying(moyaError)
   }
 
-  public var method: Method {
+  public var method: Moya.Method {
     switch self {
     case .pay,
          .preauth,

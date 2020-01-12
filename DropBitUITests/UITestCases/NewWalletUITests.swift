@@ -16,6 +16,7 @@ class NewWalletUITests: UITestCase, UITestRecoverWordBackupAutomatable {
     app.launch()
   }
 
+  /*
   func testSkippingRecoveryWordsShowsBadgeInDrawer() {
     StartPage().tapNewWallet()
     PinCreationPage().enterSimplePin(digit: 1, times: 6)
@@ -32,5 +33,6 @@ class NewWalletUITests: UITestCase, UITestRecoverWordBackupAutomatable {
 
     performBackup()
   }
+ */
 
 }

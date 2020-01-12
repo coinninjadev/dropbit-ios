@@ -21,16 +21,6 @@ or alternatively using `brew cask install fastlane`
 fastlane ios config_tooling
 ```
 Change toolset per supplied Xcode version in `xcversion.config` file.
-### ios bootstrap_carthage
-```
-fastlane ios bootstrap_carthage
-```
-Bootstrap Carthage dependencies
-### ios update_carthage
-```
-fastlane ios update_carthage
-```
-Update Carthage dependencies
 ### ios autogen
 ```
 fastlane ios autogen
