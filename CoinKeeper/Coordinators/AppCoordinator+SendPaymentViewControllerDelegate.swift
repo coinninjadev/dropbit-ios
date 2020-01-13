@@ -11,7 +11,6 @@ import Contacts
 import enum Result.Result
 import PromiseKit
 import Permission
-import MMDrawerController
 
 extension AppCoordinator: SendPaymentViewControllerDelegate {
 

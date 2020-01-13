@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import MMDrawerController
 import Sheeeeeeeeet
 
 extension AppCoordinator: WalletOverviewViewControllerDelegate {

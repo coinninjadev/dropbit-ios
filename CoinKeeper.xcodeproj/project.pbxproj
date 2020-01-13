@@ -78,6 +78,7 @@
 		3B1FF6A323C65C400002AB7E /* BaseCoin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1FF6A223C65C400002AB7E /* BaseCoin.swift */; };
 		3B219B3722C3AAD1007EDFCC /* NotificationTopicSubscriptionTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B219B3622C3AAD1007EDFCC /* NotificationTopicSubscriptionTarget.swift */; };
 		3B219B3922C3B9EE007EDFCC /* Data+PrettyPrinted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B219B3822C3B9EE007EDFCC /* Data+PrettyPrinted.swift */; };
+		3B227D7923CCD37D00D86BE8 /* FAPanels in Frameworks */ = {isa = PBXBuildFile; productRef = 3B227D7823CCD37D00D86BE8 /* FAPanels */; };
 		3B23126320DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B23126220DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib */; };
 		3B23126520DA6CBA0099A557 /* TransactionHistoryDetailCellAddressViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B23126420DA6CBA0099A557 /* TransactionHistoryDetailCellAddressViewTests.swift */; };
 		3B23126720DA6D0E0099A557 /* TransactionHistoryDetailCellAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B23126620DA6D0E0099A557 /* TransactionHistoryDetailCellAddressView.swift */; };
@@ -2292,8 +2293,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3050CCBBA9D3A897790120B /* Pods_DropBit.framework in Frameworks */,
-				3BA1AF3123CE908100F5494B /* Cnlib.framework in Frameworks */,
 				3BC289B623C8C6F6005B9933 /* PromiseKit in Frameworks */,
+				3B227D7923CCD37D00D86BE8 /* FAPanels in Frameworks */,
+				3B1FF6A523C676EB0002AB7E /* Cnlib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4148,6 +4150,7 @@
 			name = DropBit;
 			packageProductDependencies = (
 				3BC289B523C8C6F6005B9933 /* PromiseKit */,
+				3B227D7823CCD37D00D86BE8 /* FAPanels */,
 			);
 			productName = CoinKeeper;
 			productReference = 3B124E0C2020EB2B00431E2E /* DropBit.app */;
@@ -4269,6 +4272,7 @@
 			mainGroup = 3B124E032020EB2B00431E2E;
 			packageReferences = (
 				3BC289B423C8C6F6005B9933 /* XCRemoteSwiftPackageReference "PromiseKit" */,
+				3B227D7723CCD37D00D86BE8 /* XCRemoteSwiftPackageReference "FAPanels" */,
 			);
 			productRefGroup = 3B124E0D2020EB2B00431E2E /* Products */;
 			projectDirPath = "";
@@ -6289,6 +6293,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3B227D7723CCD37D00D86BE8 /* XCRemoteSwiftPackageReference "FAPanels" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/fahidattique55/FAPanels";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.1;
+			};
+		};
 		3BC289B423C8C6F6005B9933 /* XCRemoteSwiftPackageReference "PromiseKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mxcl/PromiseKit";
@@ -6300,6 +6312,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3B227D7823CCD37D00D86BE8 /* FAPanels */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B227D7723CCD37D00D86BE8 /* XCRemoteSwiftPackageReference "FAPanels" */;
+			productName = FAPanels;
+		};
 		3BC289B523C8C6F6005B9933 /* PromiseKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3BC289B423C8C6F6005B9933 /* XCRemoteSwiftPackageReference "PromiseKit" */;

@@ -9,7 +9,6 @@
 import Foundation
 import PromiseKit
 import UIKit
-import MMDrawerController
 import SVProgressHUD
 
 extension AppCoordinator: TransactionHistoryViewControllerDelegate {

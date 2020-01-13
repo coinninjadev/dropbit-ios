@@ -22,30 +22,29 @@ extension AppCoordinator: DrawerViewControllerDelegate {
 
   func earnButtonWasTouched() {
     analyticsManager.track(event: .earnButtonPressed, with: nil)
-    drawerController?.toggle(.left, animated: true, completion: { _ in
-      let context = self.persistenceManager.viewContext
-      var url: URL?
-      if let identity = self.persistenceManager.brokers.user.getUserPublicURLInfo(in: context)?.primaryIdentity {
-        url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMeReferral(handle: identity.handle))
-      }
+    drawerController?.openLeft(animated: true)
+    let context = self.persistenceManager.viewContext
+    var url: URL?
+    if let identity = self.persistenceManager.brokers.user.getUserPublicURLInfo(in: context)?.primaryIdentity {
+      url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMeReferral(handle: identity.handle))
+    }
 
-      let controller = EarnViewController.newInstance(delegate: self,
-                                                      referralLink: url?.absoluteString)
-      controller.modalPresentationStyle = .overFullScreen
-      controller.modalTransitionStyle = .crossDissolve
-      self.navigationController.present(controller, animated: true)
-    })
+    let controller = EarnViewController.newInstance(delegate: self,
+                                                    referralLink: url?.absoluteString)
+    controller.modalPresentationStyle = .overFullScreen
+    controller.modalTransitionStyle = .crossDissolve
+    self.navigationController.present(controller, animated: true)
   }
 
   func backupWordsWasTouched() {
     analyticsManager.track(event: .backupWordsButtonPressed, with: nil)
-    drawerController?.toggle(.left, animated: true, completion: nil)
+    drawerController?.openLeft(animated: true)
     self.showWordRecoveryFlow()
   }
 
   func verifyButtonWasTouched() {
     analyticsManager.track(event: .phoneButtonPressed, with: nil)
-    drawerController?.toggle(.left, animated: true, completion: nil)
+    drawerController?.openLeft(animated: true)
     showVerificationStatusViewController()
   }
 
@@ -56,7 +55,7 @@ extension AppCoordinator: DrawerViewControllerDelegate {
 
   func settingsButtonWasTouched() {
     analyticsManager.track(event: .settingsButtonPressed, with: nil)
-    drawerController?.toggle(.left, animated: true, completion: nil)
+    drawerController?.openLeft(animated: true)
     let settingsViewController = SettingsViewController.newInstance(with: self)
     let settingsNavigationController = CNNavigationController(rootViewController: settingsViewController)
     settingsNavigationController.navigationBar.tintColor = .darkBlueBackground
@@ -65,21 +64,21 @@ extension AppCoordinator: DrawerViewControllerDelegate {
 
   func spendButtonWasTouched() {
     analyticsManager.track(event: .spendButtonPressed, with: nil)
-    drawerController?.toggle(.left, animated: true, completion: nil)
+    drawerController?.openLeft(animated: true)
     let controller = SpendBitcoinViewController.newInstance(delegate: self)
     navigationController.pushViewController(controller, animated: true)
   }
 
   func supportButtonWasTouched() {
     analyticsManager.track(event: .supportButtonPressed, with: nil)
-    drawerController?.toggle(.left, animated: true, completion: nil)
+    drawerController?.openLeft(animated: true)
     let viewController = SupportViewController.newInstance(with: self)
     navigationController.present(viewController, animated: true, completion: nil)
   }
 
   func getBitcoinButtonWasTouched() {
     guard let controller = drawerController else { return }
-    controller.toggle(.left, animated: true, completion: nil)
+    drawerController?.openLeft(animated: true)
     viewControllerDidTapGetBitcoin(controller)
   }
 }
