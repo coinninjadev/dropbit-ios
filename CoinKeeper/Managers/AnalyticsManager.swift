@@ -130,6 +130,7 @@ enum AnalyticsManagerEventType: String {
   case paymentToInvoiceFailed = "PaymentToInvoiceFailed"
   case referralLinkDetected = "ReferralLinkDetected"
   case satsTransferred = "SatsTransferred"
+  case referralPaymentReceived = "ReferralPaymentReceived"
 
   var id: String {
     return self.rawValue
@@ -155,6 +156,7 @@ enum AnalyticsManagerEventKey: String {
 
   case countryCode = "CountryCode"
   case referrer = "Referrer"
+  case invited = "Invited"
 }
 
 struct SatsTransferredValues {

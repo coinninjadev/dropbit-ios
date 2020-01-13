@@ -78,6 +78,22 @@ class WalletSyncOperationFactory {
                 let receivedOnChain = bgContext.insertedObjects.compactMap { $0 as? CKMTransaction }.isNotEmpty
                 let receivedLightning = bgContext.insertedObjects.compactMap { $0 as? CKMLNLedgerEntry }.isNotEmpty
                 receivedFunds = receivedOnChain || receivedLightning
+
+                if bgContext.insertedObjects.isNotEmpty && !isFullSync {
+                  let ledgerEntries = bgContext.insertedObjects.compactMap({ object -> CKMLNLedgerEntry? in
+                    guard let walletEntry = object as? CKMWalletEntry else { return nil }
+                    return walletEntry.ledgerEntry
+                  })
+
+                  for object in ledgerEntries {
+                    guard let walletEntry = object.walletEntry,
+                      walletEntry.counterparty?.type == .referral else { continue }
+                    let wasInvited = AnalyticsEventValue(key: .invited,
+                                                         value: walletEntry.referralPaymentSenderAnalyticsIdentifier)
+                    dependencies.analyticsManager.track(event: .referralPaymentReceived, with: [wasInvited])
+                  }
+                }
+
                 do {
                   log.info("Sync routine: Saving database...")
                   try bgContext.saveRecursively()

@@ -27,6 +27,7 @@ extension AppCoordinator: VerifyRecoveryWordsViewControllerDelegate {
       .done(on: .main) {
         self.analyticsManager.track(property: MixpanelProperty(key: .hasWallet, value: true))
         self.analyticsManager.track(property: MixpanelProperty(key: .wordsBackedUp, value: true))
+        self.localNotificationManager.unschedule(.backupWords)
         self.badgeManager.publishBadgeUpdate()
         CKNotificationCenter.publish(key: .didUpdateWordsBackedUp)
         viewController.dismiss(animated: true, completion: nil)

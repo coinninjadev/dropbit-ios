@@ -213,6 +213,10 @@ extension AppCoordinator: PaymentSendingDelegate {
     self.networkManager.updateCachedMetadata()
       .then { _ in self.networkManager.broadcastTx(with: transactionData) }
       .then { txid -> Promise<String> in
+
+        let satsValues = SatsTransferredValues(transactionType: .onChain, isInvite: false, lightningType: nil)
+        self.analyticsManager.track(event: .satsTransferred, with: satsValues.values)
+
         let dataCopyWithTxid = outgoingTransactionData.copy(withTxid: txid)
         if let postableObject = PayloadPostableOutgoingTransactionData(data: dataCopyWithTxid) {
           return self.postSharedPayload(postableObject)

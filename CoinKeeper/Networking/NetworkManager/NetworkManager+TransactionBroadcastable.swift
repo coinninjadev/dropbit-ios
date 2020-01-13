@@ -128,8 +128,6 @@ extension NetworkManager: TransactionBroadcastable {
         }
 
         if success {
-          let satsValues = SatsTransferredValues(transactionType: .onChain, isInvite: false, lightningType: nil)
-          self?.analyticsManager.track(event: .satsTransferred, with: satsValues.values)
           return Promise.value(txid)
         } else {
           self?.analyticsManager.track(event: .paymentSentFailed, with: analyticEvents)
