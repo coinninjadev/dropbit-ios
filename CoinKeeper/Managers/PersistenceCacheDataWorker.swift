@@ -55,7 +55,6 @@ class PersistenceCacheDataWorker: PersistenceCacheDataWorkerType {
   private func trackTypesOfTransactions() {
     guard let dropbitTransactionsCacheTuple = dropbitTransactionsCacheTuple,
       let regularTransactionsCacheTuple = regularTransactionsCacheTuple else { return }
-    analyticsManager.track(property: MixpanelProperty(key: .hasSent, value: regularTransactionsCacheTuple.outgoing))
     analyticsManager.track(property: MixpanelProperty(key: .hasReceived, value: regularTransactionsCacheTuple.incoming))
     analyticsManager.track(property: MixpanelProperty(key: .hasSentDropBit, value: dropbitTransactionsCacheTuple.outgoing))
     analyticsManager.track(property: MixpanelProperty(key: .hasReceivedDropBit, value: dropbitTransactionsCacheTuple.incoming))

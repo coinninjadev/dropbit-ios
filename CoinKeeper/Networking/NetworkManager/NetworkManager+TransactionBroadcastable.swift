@@ -125,7 +125,6 @@ extension NetworkManager: TransactionBroadcastable {
         }
 
         if success {
-          self?.analyticsManager.track(event: .successBroadcastTransaction, with: analyticEvents)
           return Promise.value(txid)
         } else {
           self?.analyticsManager.track(event: .paymentSentFailed, with: analyticEvents)

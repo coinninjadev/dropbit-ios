@@ -17,7 +17,8 @@ extension AppCoordinator: EmptyStateLightningLoadDelegate {
       .done { paymentData in
         let rates = self.currencyController.exchangeRates
         let viewModel = WalletTransferViewModel(direction: .toLightning(paymentData), amount: amount, exchangeRates: rates)
-        let walletTransferViewController = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel)
+        let walletTransferViewController = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel,
+                                                                                    alertManager: self.alertManager)
         self.navigationController.present(walletTransferViewController, animated: true, completion: nil)
       }
       .catch { self.handleLightningLoadError($0) }

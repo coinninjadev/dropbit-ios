@@ -17,6 +17,7 @@ protocol DeviceVerificationCoordinatorDelegate: TwilioErrorDelegate {
   var persistenceManager: PersistenceManagerType { get }
   var alertManager: AlertManagerType { get }
   var twitterAccessManager: TwitterAccessManagerType { get }
+  var userIdentifiableManager: UserIdentifiableManagerType { get }
 
   func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify type: UserIdentityType, isInitialSetupFlow: Bool)
   func coordinatorSkippedPhoneVerification(_ coordinator: DeviceVerificationCoordinator)
@@ -99,34 +100,9 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
     let context = delegate.persistenceManager.createBackgroundContext()
     context.perform {
       self.registerAndPersistWalletIfNecessary(delegate: delegate, in: context)
-        .then(in: context) { delegate.twitterAccessManager.authorizedTwitterCredentials(presentingViewController: presentingViewController) }
-        .then(in: context) { creds -> Promise<(String, VerifyUserBody, TwitterOAuthStorage)> in
-          let maybeReferrer = delegate.persistenceManager.brokers.user.referredBy
-          let verifyBody = VerifyUserBody(twitterCredentials: creds, referrer: maybeReferrer)
-          return self.addTwitterUserIdentity(credentials: creds, delegate: delegate, in: context)
-          .then { userResponse in return Promise.value((userResponse.id, verifyBody, creds)) }
-        }
-        .then(in: context) { userId, body, creds -> Promise<UserResponse> in
-          return delegate.networkManager.verifyUser(id: userId, body: body)
-            .get(in: context) { response in
-              delegate.persistenceManager.keychainManager.store(oauthCredentials: creds)
-              delegate.persistenceManager.brokers.user.persistUserId(response.id, in: context)
-          }
-        }
-        .then(in: context) { (response: UserResponse) -> Promise<Void> in
-          log.debug("user response: \(response.id)")
-          return self.checkAndPersistVerificationStatus(from: response, crDelegate: delegate, in: context)
-        }
-        .then(in: context) { delegate.twitterAccessManager.getCurrentTwitterUser(in: context) }
-        .then { _ in delegate.networkManager.getOrCreateLightningAccount() }
-        .get(in: context) { lnAccountResponse in
-          delegate.persistenceManager.brokers.lightning.persistAccountResponse(lnAccountResponse, in: context)
-          do {
-            try context.saveRecursively()
-          } catch {
-            log.contextSaveError(error)
-          }
-        }
+        .then(in: context) { delegate.twitterAccessManager.authorizeAndStoreTwitterCredentials(
+          presentingViewController: presentingViewController,
+          in: context) }
         .done { _ in delegate.coordinator(self, didVerify: .twitter, isInitialSetupFlow: self.isInitialSetupFlow) }
         .catch { error in
           delegate.alertManager.showError(message: error.localizedDescription, forDuration: 3.0)
@@ -145,7 +121,8 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
     delegate: DeviceVerificationCoordinatorDelegate,
     in context: NSManagedObjectContext) -> Promise<UserIdentifiable> {
     let userIdentityBody = UserIdentityBody(twitterCredentials: credentials)
-    return self.registerUser(with: userIdentityBody, delegate: delegate, in: context)
+    return delegate.userIdentifiableManager.registerUser(with: userIdentityBody,
+                                                         in: context)
   }
 }
 
@@ -182,7 +159,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
       delegate.registerAndPersistWallet(in: bgContext)
         .then(in: bgContext) { _ -> Promise<UserIdentifiable> in
           let body = UserIdentityBody(phoneNumber: phoneNumber)
-          return self.registerUser(with: body, delegate: delegate, in: bgContext)
+          return delegate.userIdentifiableManager.registerUser(with: body, in: bgContext)
         }
         .get(in: bgContext) { _ in
           do {
@@ -251,79 +228,6 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     }
   }
 
-  fileprivate func registerUser(with body: UserIdentityBody,
-                                delegate: DeviceVerificationCoordinatorDelegate,
-                                in context: NSManagedObjectContext) -> Promise<UserIdentifiable> {
-
-    var maybeWalletId: String?
-    context.performAndWait {
-      maybeWalletId = delegate.persistenceManager.brokers.wallet.walletId(in: context)
-    }
-    guard let walletId = maybeWalletId else {
-      return Promise { $0.reject(CKPersistenceError.missingValue(key: "wallet ID")) }
-    }
-
-    return self.createUserOrIdentity(walletId: walletId, body: body, delegate: delegate, in: context)
-      .recover { (error: Error) -> Promise<UserIdentifiable> in
-        return self.handleCreateUserError(error, walletId: walletId, delegate: delegate, in: context)
-          .map { $0 as UserIdentifiable }
-    }
-  }
-
-  private func createUserOrIdentity(
-    walletId: String,
-    body: UserIdentityBody,
-    delegate: DeviceVerificationCoordinatorDelegate,
-    in context: NSManagedObjectContext
-    ) -> Promise<UserIdentifiable> {
-    let verifiedIdentities = delegate.persistenceManager.brokers.user.verifiedIdentities(in: context)
-    if verifiedIdentities.isEmpty {
-      return delegate.networkManager.createUser(walletId: walletId, body: body).map { $0 as UserIdentifiable }
-    } else {
-      guard let userId = delegate.persistenceManager.brokers.user.userId(in: context) else {
-        return Promise(error: CKPersistenceError.noUser)
-      }
-      return delegate.networkManager.addIdentity(body: body)
-        .map { _ in UserIdWrapper(id: userId) as UserIdentifiable }
-    }
-  }
-
-  /// If createUser results in statusCode 200, that function rejects with .userAlreadyExists and
-  /// we recover by calling resendVerification(). In the case of a Twilio error, we notify the delegate
-  /// for analytics and continue as normal. In both cases we eventually return a UserResponse so that
-  /// we can persist the userId returned by the server.
-  private func handleCreateUserError(_ error: Error,
-                                     walletId: String,
-                                     delegate: DeviceVerificationCoordinatorDelegate,
-                                     in context: NSManagedObjectContext) -> Promise<UserIdentifiable> {
-    if let providerError = error as? UserProviderError {
-      switch providerError {
-      case .userAlreadyExists(let userId, let body):
-        //ignore walletId available in the error in case it is different from the walletId we provided
-        let resendHeaders = DefaultRequestHeaders(walletId: walletId, userId: userId)
-
-        return delegate.networkManager.resendVerification(headers: resendHeaders, body: body)
-          .map { _ in UserIdWrapper(id: userId) as UserIdentifiable } // pass along the known userId, the /resend response does not include it
-          .recover { (error: Error) -> Promise<UserIdentifiable> in
-            if let providerError = error as? UserProviderError,
-              case let .twilioError(userResponse, _) = providerError {
-              delegate.didReceiveTwilioError(for: body.identity, route: .resendVerification)
-              return Promise.value(userResponse)
-            } else {
-              throw error
-            }
-        }
-      case .twilioError(let userResponse, let body):
-        delegate.didReceiveTwilioError(for: body.identity, route: .createUser)
-        return Promise.value(userResponse)
-      default:
-        return Promise(error: error)
-      }
-    } else {
-      return Promise(error: error)
-    }
-  }
-
   func viewController(_ codeEntryViewController: DeviceVerificationViewController,
                       didEnterCode code: String,
                       forUserId userId: String,
@@ -336,7 +240,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
       let body = VerifyUserBody(phoneNumber: phoneNumber, code: code, referrer: maybeReferrer)
       delegate.networkManager.verifyUser(id: userId, body: body)
         .get(in: bgContext) { response in delegate.persistenceManager.brokers.user.persistUserId(response.id, in: bgContext) }
-        .then(in: bgContext) { self.checkAndPersistVerificationStatus(from: $0, crDelegate: delegate, in: bgContext) }
+        .then(in: bgContext) { delegate.userIdentifiableManager.checkAndPersistVerificationStatus(from: $0, in: bgContext) }
         .then { delegate.networkManager.getOrCreateLightningAccount() }
         .get(in: bgContext) { lnAccountResponse in
           delegate.persistenceManager.brokers.lightning.persistAccountResponse(lnAccountResponse, in: bgContext)
@@ -420,18 +324,6 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     }
   }
 
-  private func checkAndPersistVerificationStatus(from response: UserResponse,
-                                                 crDelegate: DeviceVerificationCoordinatorDelegate,
-                                                 in context: NSManagedObjectContext) -> Promise<Void> {
-    guard let statusCase = UserVerificationStatus(rawValue: response.status) else {
-      return Promise { $0.reject(CKNetworkError.responseMissingValue(keyPath: UserResponseKey.status.path)) }
-    }
-    guard statusCase == .verified else {
-      return Promise { $0.reject(UserProviderError.unexpectedStatus(statusCase)) }
-    }
-
-    return crDelegate.persistenceManager.brokers.user.persistVerificationStatus(from: response, in: context).asVoid()
-  }
 
   func viewControllerDidSkipPhoneVerification(_ viewController: DeviceVerificationViewController) {
     guard let delegate = self.delegate else { return }

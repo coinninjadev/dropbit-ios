@@ -16,7 +16,7 @@ enum AVScanErrorType {
   var message: String {
     switch self {
     case .noBitcoinQRCodes:
-      return "Scan did not have any bitcoin QR codes"
+      return "Invalid Bitcoin address or Lightning invoice"
     }
   }
 }
@@ -144,10 +144,7 @@ extension ScanQRViewController: UINavigationControllerDelegate {}
 extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
 
   func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-    guard metadataObjects.isNotEmpty else {
-      delegate?.viewControllerHadScanFailure(self, error: .noBitcoinQRCodes)
-      return
-    }
+    guard metadataObjects.isNotEmpty else { return } //may initially be empty before a valid QR code is recognized if the phone is moving
 
     let rawCodes = metadataObjects.compactMap { $0 as? AVMetadataMachineReadableCodeObject }
     let destinations = rawCodes.compactMap { $0.stringValue }
