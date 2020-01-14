@@ -48,7 +48,8 @@ class BitcoinAddressValidator: ValidatorType<String> {
     } else {
       let valid = CNBCnlibAddressIsBase58CheckEncoded(value, &errorPtr)
       if !valid, let err = errorPtr {
-        log.error(err, message: "Address \(value) failed base58check decoding.")
+        let message = "Address \(value) failed base58check decoding. Error: \(err.localizedDescription)"
+        log.warn(message)
         error = .notBase58CheckValid
       }
     }
