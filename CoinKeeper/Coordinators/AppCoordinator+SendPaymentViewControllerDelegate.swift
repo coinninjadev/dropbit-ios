@@ -154,21 +154,20 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     }
   }
 
-  func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: Error?) {
+  func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: DisplayableError?) {
     guard let err = error else { return }
 
     let generalMessage = "Invalid bitcoin address or phone number."
     var fullMessage = ""
 
     if let parsingError = err as? CKRecipientParserError {
-      fullMessage = "\(parsingError.localizedDescription)"
+      fullMessage = "\(parsingError.displayMessage)"
 
-    } else if let validationError = err as? ValidatorTypeError,
-      let message = validationError.displayMessage {
-      fullMessage = message
+    } else if let validationError = err as? ValidatorErrorType {
+      fullMessage = validationError.displayMessage
 
     } else {
-      fullMessage = "\(generalMessage) \(err.localizedDescription)."
+      fullMessage = "\(generalMessage) \(err.displayMessage)."
     }
 
     alertManager.showError(message: fullMessage, forDuration: 3.5)

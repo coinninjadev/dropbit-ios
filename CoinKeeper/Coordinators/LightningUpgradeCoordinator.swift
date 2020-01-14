@@ -138,8 +138,8 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
             let tryAgain = AlertActionConfiguration(title: "Try Again", style: .default, action: { [weak self] in
               self?.proceedWithUpgrade(presentedController: controller)
             })
-            let alertVM = AlertControllerViewModel(title: txError.localizedDescription,
-                                                   description: txError.messageDescription,
+            let alertVM = AlertControllerViewModel(title: txError.displayTitle,
+                                                   description: txError.displayMessage,
                                                    image: nil,
                                                    style: .alert,
                                                    actions: [tryAgain])

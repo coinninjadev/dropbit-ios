@@ -45,6 +45,7 @@ protocol AlertManagerType: CKBannerViewDelegate {
 
   func showSuccess(message: String, forDuration duration: TimeInterval?)
   func showError(message: String, forDuration duration: TimeInterval?)
+  func showError(_ error: DisplayableError, forDuration duration: TimeInterval?)
   func defaultAlert(withTitle title: String?, description: String?) -> AlertControllerType
 
   // Workaround for default parameter

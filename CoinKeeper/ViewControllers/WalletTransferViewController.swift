@@ -39,7 +39,7 @@ BalanceDataSource & AnalyticsManagerAccessType & LightningLoadable {
   func viewControllerDidConfirmWithdrawMax(_ viewController: UIViewController)
   func viewControllerDidRequestWithdrawMax(_ viewController: UIViewController) -> Promise<LNTransactionResponse>
   func viewControllerNetworkError(_ error: Error)
-  func handleLightningLoadError(_ error: Error)
+  func handleLightningLoadError(_ error: DisplayableError)
 }
 
 enum TransferDirection {
@@ -135,8 +135,8 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
       self.setupUIForFees(networkFee: response.result.networkFee, processingFee: response.result.processingFee)
       self.setupTransactionUI()
       self.refreshBothAmounts()
-    }.catch { error in
-      self.alertManager?.showError(message: error.localizedDescription, forDuration: 2.5)
+    }.catchDisplayable { error in
+      self.alertManager?.showError(error, forDuration: 2.5)
     }
   }
 
@@ -168,12 +168,13 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
           self.viewModel.direction = .toLightning(paymentData)
           self.setupTransactionUI()
         }
-        .catch {
+        .catchDisplayable {
           self.delegate.handleLightningLoadError($0)
           self.disableConfirmButton()
       }
     } catch {
-      self.delegate.handleLightningLoadError(error)
+      let displayableError = DisplayableErrorWrapper.wrap(error)
+      self.delegate.handleLightningLoadError(displayableError)
       self.disableConfirmButton()
     }
   }
@@ -252,7 +253,8 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
           self.disableConfirmButton()
         }
       } catch {
-        delegate.handleLightningLoadError(error)
+        let displayableError = DisplayableErrorWrapper.wrap(error)
+        delegate.handleLightningLoadError(displayableError)
         self.disableConfirmButton()
       }
 

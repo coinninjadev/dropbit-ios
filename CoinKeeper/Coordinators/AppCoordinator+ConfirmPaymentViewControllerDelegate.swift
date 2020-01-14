@@ -103,7 +103,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
               strongSelf.showShareTransactionIfAppropriate(dropBitReceiver: output.invitationDTO.contact.asDropBitReceiver,
                                                            walletTxType: output.invitationDTO.walletTxType, delegate: strongSelf)
             }
-          .catch(on: .main) { error in
+          .catchDisplayable(on: .main) { error in
             log.error(error, message: "Failed to handle successful invite verification.")
             strongSelf.handleAddressRequestCreationError(error,
                                                          invitationDTO: outgoingInvitationDTO,
@@ -119,7 +119,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
           successFailVC.action?()
         })
       }
-      .catch { (error) in
+      .catchDisplayable { (error) in
         log.error(error, message: "Failed to handle successful invite verification.")
         strongSelf.handleAddressRequestCreationError(error,
                                                      invitationDTO: outgoingInvitationDTO,
@@ -193,7 +193,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
             topVC.present(tweetMethodVC, animated: true, completion: nil)
           }
         }
-        .catch { error in
+        .catchDisplayable { error in
           log.contextSaveError(error)
           successFailVC.setMode(.failure)
           self.handleFailureInvite(error: error)
@@ -243,7 +243,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     topVC?.present(alert, animated: true, completion: nil)
   }
 
-  private func handleFailureInvite(error: Error) {
+  private func handleFailureInvite(error: DisplayableError) {
     analyticsManager.track(event: .dropbitInitiationFailed, with: nil)
     log.error(error, message: "DropBit invite failed")
 
@@ -253,10 +253,10 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
       errorMessage = "For security reasons we must limit the number of DropBits sent too rapidly.  Please briefly wait and try sending again."
 
     } else if let txDataError = error as? TransactionDataError, case .insufficientFee = txDataError {
-      errorMessage = (error as? TransactionDataError)?.messageDescription ?? ""
+      errorMessage = txDataError.displayMessage
 
     } else {
-      errorMessage = "Oops something went wrong, try again later"
+      errorMessage = error.displayMessage
     }
 
     let alert = alertManager.defaultAlert(withTitle: "Error", description: errorMessage)
@@ -291,7 +291,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     }
   }
 
-  private func handleAddressRequestCreationError(_ error: Error,
+  private func handleAddressRequestCreationError(_ error: DisplayableError,
                                                  invitationDTO: OutgoingInvitationDTO,
                                                  inviteBody: WalletAddressRequestBody,
                                                  successFailVC: SuccessFailViewController,

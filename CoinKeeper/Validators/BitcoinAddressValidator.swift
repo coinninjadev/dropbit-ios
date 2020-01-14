@@ -9,12 +9,12 @@
 import Foundation
 import Cnlib
 
-enum BitcoinAddressValidatorError: ValidatorTypeError {
+enum BitcoinAddressValidatorError: ValidatorErrorType {
   case isInvalidBitcoinAddress
   case notBase58CheckValid
   case notBech32Valid
 
-  var debugMessage: String {
+  var displayMessage: String {
     switch self {
     case .isInvalidBitcoinAddress:  return "Invalid bitcoin address."
     case .notBase58CheckValid:      return "Address is not properly Base58Check encoded."
@@ -24,10 +24,6 @@ enum BitcoinAddressValidatorError: ValidatorTypeError {
       Please check that you have the correct address and try again.
       """.removingMultilineLineBreaks()
     }
-  }
-
-  var displayMessage: String? {
-    return debugMessage
   }
 
 }

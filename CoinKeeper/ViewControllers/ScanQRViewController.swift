@@ -10,10 +10,10 @@ import UIKit
 import AVFoundation
 import SVProgressHUD
 
-enum AVScanErrorType {
+enum AVScanErrorType: DisplayableError {
   case noBitcoinQRCodes
 
-  var message: String {
+  var displayMessage: String {
     switch self {
     case .noBitcoinQRCodes:
       return "Invalid Bitcoin address or Lightning invoice"
@@ -31,7 +31,7 @@ protocol ScanQRViewControllerDelegate: PaymentRequestResolver, LightningInvoiceR
                              walletTransactionType: WalletTransactionType, fallbackViewModel: SendPaymentViewModel?)
   func viewControllerDidScan(_ viewController: UIViewController, lightningInvoice: String, completion: @escaping CKCompletion)
 
-  func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: Error?)
+  func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: DisplayableError?)
   func viewControllerDidPressPhotoButton(_ viewController: PhotoViewController)
   func viewControllerHadScanFailure(_ viewController: UIViewController, error: AVScanErrorType)
 
@@ -189,7 +189,8 @@ extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
         delegate.viewControllerDidScan(self, qrCode: qrCode,
                                                     walletTransactionType: .onChain, fallbackViewModel: self.fallbackPaymentViewModel)
       } catch {
-        delegate.viewControllerDidAttemptInvalidDestination(self, error: error)
+        let displayableError = DisplayableErrorWrapper.wrap(error)
+        delegate.viewControllerDidAttemptInvalidDestination(self, error: displayableError)
       }
     }
   }

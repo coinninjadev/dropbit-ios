@@ -9,8 +9,27 @@
 import Foundation
 import Moya
 
-protocol DisplayableError: LocalizedError {
+protocol DisplayableError: Error {
   var displayMessage: String { get }
+}
+
+///Useful to avoid an extension on Error, which would conform all Error objects to DisplayableError
+struct DisplayableErrorWrapper: DisplayableError {
+  let error: Error
+  var displayMessage: String { error.localizedDescription }
+
+  private init(error: Error) {
+    self.error = error
+  }
+
+  static func wrap(_ error: Error) -> DisplayableError {
+    if let alreadyDisplayable = error as? DisplayableError {
+      return alreadyDisplayable
+    } else {
+      let wrappedError = DisplayableErrorWrapper(error: error)
+      return wrappedError
+    }
+  }
 }
 
 enum CKNetworkError: DisplayableError {

@@ -49,8 +49,8 @@ extension AppCoordinator: ContactsViewControllerDelegate {
     self.navigationController.topViewController()?.present(alert, animated: true)
   }
 
-  func showAlertForTwitterAPIError(_ error: Error) {
-    var message = "Please try again later or contact us for assistance. \n\nError: \(error.localizedDescription)"
+  func showAlertForTwitterAPIError(_ error: DisplayableError) {
+    var message = "Please try again later or contact us for assistance. \n\nError: \(error.displayMessage)"
     if let twitterError = error as? TwitterAPIError {
       message = twitterError.displayMessage
     }
@@ -61,7 +61,7 @@ extension AppCoordinator: ContactsViewControllerDelegate {
   func viewControllerDidRequestRefreshVerificationStatuses(_ viewController: UIViewController, completion: @escaping CKErrorCompletion) {
     self.contactCacheDataWorker.refreshStatuses()
       .done { completion(nil) }
-      .catch { error in
+      .catchDisplayable { error in
         completion(error)
         self.viewControllerDidEncounterError(viewController, error: error)
     }
@@ -75,8 +75,8 @@ extension AppCoordinator: ContactsViewControllerDelegate {
     return contactCacheManager.predicate(forSearch: searchText)
   }
 
-  func viewControllerDidEncounterError(_ viewController: UIViewController, error: Error) {
-    let title = "Error", detail = "Unable to connect to server. Please try again. \n\n\(error.localizedDescription)"
+  func viewControllerDidEncounterError(_ viewController: UIViewController, error: DisplayableError) {
+    let title = "Error", detail = "Unable to connect to server. Please try again. \n\n\(error.displayMessage)"
     let okConfig = AlertActionConfiguration(title: "OK", style: .default) {
       viewController.dismiss(animated: true, completion: nil)
     }

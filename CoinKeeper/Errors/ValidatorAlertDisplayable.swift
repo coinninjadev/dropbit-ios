@@ -14,17 +14,10 @@ protocol ValidatorAlertDisplayable: AnyObject {
 
 extension ValidatorAlertDisplayable where Self: UIViewController {
 
-  /// Handles casting the caught error to ValidatorTypeError and presenting an alert with its displayMessage
+  /// Handles casting the caught error to DisplayableError and presenting an alert with its displayMessage
   func showValidatorAlert(for error: Error, title: String) {
-    var message = error.localizedDescription
-
-    if let validationError = error as? ValidatorTypeError, let vMessage = validationError.displayMessage {
-      message = vMessage
-    } else if let parsingError = error as? CKRecipientParserError {
-      message = parsingError.localizedDescription
-    }
-
-    if let alert = alertManager?.defaultAlert(withTitle: title, description: message) {
+    let displayableError = DisplayableErrorWrapper.wrap(error)
+    if let alert = alertManager?.defaultAlert(withTitle: title, description: displayableError.displayMessage) {
       self.present(alert, animated: true, completion: nil)
     }
   }

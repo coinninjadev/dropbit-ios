@@ -361,6 +361,10 @@ class AlertManager: AlertManagerType {
     }
   }
 
+  func showError(_ error: DisplayableError, forDuration duration: TimeInterval?) {
+    showError(message: error.displayMessage, forDuration: duration)
+  }
+
   private func pmAlertStyle(from style: AlertActionStyle) -> PMAlertActionStyle {
     switch style {
     case .cancel: return .cancel

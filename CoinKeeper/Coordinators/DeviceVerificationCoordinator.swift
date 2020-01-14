@@ -104,8 +104,8 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
           presentingViewController: presentingViewController,
           in: context) }
         .done { _ in delegate.coordinator(self, didVerify: .twitter, isInitialSetupFlow: self.isInitialSetupFlow) }
-        .catch { error in
-          delegate.alertManager.showError(message: error.localizedDescription, forDuration: 3.0)
+        .catchDisplayable { error in
+          delegate.alertManager.showError(error, forDuration: 3.0)
           log.error(error, message: "failed to create or verify user")
       }
     }
@@ -341,9 +341,9 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
             }
           }
         }
-        .catch { error in
+        .catchDisplayable { error in
           log.error(error, message: "Failed to register wallet")
-          let message = "Failed to register wallet: \(error)"
+          let message = "Failed to register wallet: \(error.displayMessage)"
           DispatchQueue.main.async {
             viewController.updateErrorLabel(with: message)
           }

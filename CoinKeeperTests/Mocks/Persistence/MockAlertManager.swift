@@ -112,8 +112,8 @@ class MockAlertManager: AlertManagerType {
     wasAskedToShowSuccessMessage = true
   }
 
-  func showError(message: String, forDuration duration: TimeInterval?) {
-  }
+  func showError(message: String, forDuration duration: TimeInterval?) { }
+  func showError(_ error: DisplayableError, forDuration duration: TimeInterval?) { }
 
   var wasAskedToShowActivityHUD = false
   func showActivityHUD(withStatus status: String?) {

@@ -172,7 +172,7 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
 
   func sendPaymentViewControllerDidLoad(_ viewController: UIViewController) { }
 
-  func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: Error?) { }
+  func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: DisplayableError?) { }
 
   var didSelectMemoButton = false
   func viewControllerDidSelectMemoButton(_ viewController: UIViewController, memo: String?, completion: @escaping (String) -> Void) {

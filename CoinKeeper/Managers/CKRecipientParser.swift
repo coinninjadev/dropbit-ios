@@ -42,7 +42,7 @@ class CKRecipientParser: RecipientParserType {
                             candidatePhoneNumbers: possiblePhoneNumbers,
                             candidateAddresses: possibleAddresses,
                             matchingTypes: types)
-    } catch let error as ValidatorTypeError {
+    } catch let error as ValidatorErrorType {
       throw CKRecipientParserError.validation(error)
     } catch {
       throw error

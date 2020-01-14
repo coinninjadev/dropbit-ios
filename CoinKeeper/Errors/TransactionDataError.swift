@@ -6,12 +6,12 @@
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
 //
 
-enum TransactionDataError: Error {
+enum TransactionDataError: DisplayableError {
   case insufficientFunds
   case insufficientFee
   case noSpendableFunds
 
-  var localizedDescription: String {
+  var displayTitle: String {
     switch self {
     case .insufficientFunds: return "Insufficient Funds"
     case .insufficientFee: return "Insufficient Fee"
@@ -19,7 +19,7 @@ enum TransactionDataError: Error {
     }
   }
 
-  var messageDescription: String {
+  var displayMessage: String {
     switch self {
     case .insufficientFunds:
       return "Insufficient funds. You can't send more than you have in your wallet. This may be due to unconfirmed transactions."

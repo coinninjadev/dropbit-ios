@@ -270,9 +270,9 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
         self.updateViewWithViewModel()
         self.editAmountView.isUserInteractionEnabled = false
         self.addAmountButton.isHidden = true
-      }.catch { error in
+      }.catchDisplayable { error in
         SVProgressHUD.dismiss()
-        if let alert = self.alertManager?.defaultAlert(withTitle: "Error", description: error.localizedDescription) {
+        if let alert = self.alertManager?.defaultAlert(withTitle: "Error", description: error.displayMessage) {
           self.present(alert, animated: true, completion: nil)
         }
     }

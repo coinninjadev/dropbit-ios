@@ -84,8 +84,7 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
         let alert = self.alertManager.alert(from: alertVM)
         self.navigationController.present(alert, animated: true, completion: nil)
       default:
-        let message = validatorError.displayMessage ?? validatorError.localizedDescription
-        showDefaultAlert(withMessage: message)
+        showDefaultAlert(withMessage: validatorError.displayMessage)
       }
 
     } else {

@@ -22,7 +22,7 @@ extension AppCoordinator: PinVerificationDelegate {
         let action = self.postVerificationAction(forFlow: flow)
         self.biometricsAuthenticationManager.authenticate(completion: action, error: { _ in action() })
       }
-      .catch { error in self.alertManager.showError(message: error.localizedDescription, forDuration: 4.0) }
+      .catchDisplayable { error in self.alertManager.showError(error, forDuration: 4.0) }
   }
 
   private func postVerificationAction(forFlow flow: SetupFlow?) -> CKCompletion {

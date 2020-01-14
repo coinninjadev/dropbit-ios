@@ -94,7 +94,7 @@ protocol SendPaymentViewControllerDelegate: SendPaymentViewControllerRoutingDele
    */
   func viewControllerDidRequestVerificationCheck(_ viewController: UIViewController, completion: @escaping CKCompletion)
 
-  func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: Error?)
+  func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: DisplayableError?)
   func viewControllerDidSelectPaste(_ viewController: UIViewController)
   func viewControllerDidSelectMemoButton(_ viewController: UIViewController, memo: String?, completion: @escaping (String) -> Void)
   func viewControllerDidRequestAlert(_ viewController: UIViewController, viewModel: AlertControllerViewModel)
