@@ -56,9 +56,8 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
       responseHandler(CurrencyConverter.sampleRates)
     }
 
-    func latestFees() -> Promise<Fees> {
-      return Promise { _ in }
-    }
+    func latestExchangeRates() -> Promise<ExchangeRates> { Promise { _ in } }
+    func latestFees() -> Promise<Fees> { Promise { _ in } }
 
     func deviceCountryCode() -> Int? {
       return 1
