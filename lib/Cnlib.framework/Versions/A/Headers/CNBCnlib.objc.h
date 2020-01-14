@@ -17,6 +17,7 @@
 @class CNBCnlibImportedPrivateKey;
 @class CNBCnlibLightningInvoice;
 @class CNBCnlibMetaAddress;
+@class CNBCnlibPreviousOutputInfo;
 @class CNBCnlibRBFOption;
 @class CNBCnlibTransactionChangeMetadata;
 @class CNBCnlibTransactionData;
@@ -176,7 +177,7 @@
 - (nonnull instancetype)init;
 @property (nonatomic) NSString* _Nonnull possibleAddresses;
 @property (nonatomic) NSString* _Nonnull privateKeyAsWIF;
-@property (nonatomic) NSString* _Nonnull selectedAddress;
+@property (nonatomic) CNBCnlibPreviousOutputInfo* _Nullable previousOutputInfo;
 @end
 
 /**
@@ -211,6 +212,24 @@
  * IsReceiveAddress computes if the address is a receive address, vs change address.
  */
 - (BOOL)isReceiveAddress;
+@end
+
+/**
+ * PreviousOutputInfo contains selectedAddress, txid, index about the funding utxo.
+ */
+@interface CNBCnlibPreviousOutputInfo : NSObject <goSeqRefInterface> {
+}
+@property(strong, readonly) _Nonnull id _ref;
+
+- (nonnull instancetype)initWithRef:(_Nonnull id)ref;
+/**
+ * NewPreviousOutputInfo exposes an initializer to the client to provide previous output info to ImportedPrivateKey.
+ */
+- (nullable instancetype)init:(NSString* _Nullable)selectedAddress txid:(NSString* _Nullable)txid index:(long)index amount:(long)amount;
+@property (nonatomic) NSString* _Nonnull selectedAddress;
+@property (nonatomic) NSString* _Nonnull txid;
+@property (nonatomic) long index;
+@property (nonatomic) long amount;
 @end
 
 /**
@@ -463,6 +482,11 @@ FOUNDATION_EXPORT CNBCnlibHDWallet* _Nullable CNBCnlibNewHDWalletFromWords(NSStr
  * NewMetaAddress creates and returns a pointer to a MetaAddress object.
  */
 FOUNDATION_EXPORT CNBCnlibMetaAddress* _Nullable CNBCnlibNewMetaAddress(NSString* _Nullable address, CNBCnlibDerivationPath* _Nullable path, NSString* _Nullable uncompressedPublicKey);
+
+/**
+ * NewPreviousOutputInfo exposes an initializer to the client to provide previous output info to ImportedPrivateKey.
+ */
+FOUNDATION_EXPORT CNBCnlibPreviousOutputInfo* _Nullable CNBCnlibNewPreviousOutputInfo(NSString* _Nullable selectedAddress, NSString* _Nullable txid, long index, long amount);
 
 /**
  * NewRBFOption returns a pointer to RBFOption.
