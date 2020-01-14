@@ -37,11 +37,11 @@ extension WalletCheckInTarget {
     return .requestPlain
   }
 
-  func networkError(for moyaError: MoyaError) -> CKNetworkError? {
+  func customNetworkError(for moyaError: MoyaError) -> CKNetworkError? {
     if let statusCode = moyaError.response?.statusCode, statusCode == 401 {
       return CKNetworkError.reachabilityFailed(moyaError)
     } else {
-      return defaultNetworkError(for: moyaError)
+      return nil
     }
   }
 

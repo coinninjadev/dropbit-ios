@@ -100,10 +100,9 @@ extension UserTarget {
     }
   }
 
-  func networkError(for moyaError: MoyaError) -> CKNetworkError? {
-    let defaultError = defaultNetworkError(for: moyaError)
+  func customNetworkError(for moyaError: MoyaError) -> CKNetworkError? {
     guard let statusCode = moyaError.unacceptableStatusCode, let response = moyaError.response else {
-      return defaultError
+      return nil
     }
 
     switch statusCode {
@@ -113,19 +112,19 @@ extension UserTarget {
       if case .get = self, moyaError.responseDescription.containsAny(messagesToUnverify) {
         return .shouldUnverify(moyaError, .user)
       } else {
-        return defaultError
+        return nil
       }
     case 424:
-      return countryCodeDisabledError() ?? defaultError
+      return countryCodeDisabledError()
     case 501:
       switch self {
       case .create, .resendVerification:
         return .twilioError(response)
       default:
-        return defaultError
+        return nil
       }
     default:
-      return defaultError
+      return nil
     }
   }
 

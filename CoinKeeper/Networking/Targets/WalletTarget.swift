@@ -54,7 +54,7 @@ extension WalletTarget {
     }
   }
 
-  func networkError(for moyaError: MoyaError) -> CKNetworkError? {
+  func customNetworkError(for moyaError: MoyaError) -> CKNetworkError? {
     if let statusCode = moyaError.unacceptableStatusCode,
       statusCode == 401,
       case .get = self,
@@ -63,7 +63,7 @@ extension WalletTarget {
       return .shouldUnverify(moyaError, .wallet)
 
     } else {
-      return defaultNetworkError(for: moyaError)
+      return nil
     }
   }
 

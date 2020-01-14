@@ -9,7 +9,11 @@
 import Foundation
 import Moya
 
-enum CKNetworkError: UserNotifiableError {
+protocol DisplayableError: LocalizedError {
+  var displayMessage: String { get }
+}
+
+enum CKNetworkError: DisplayableError {
 
   case reachabilityFailed(_ underlying: MoyaError)
   case shouldUnverify(_ underlying: MoyaError, _ type: RecordType)
@@ -30,9 +34,11 @@ enum CKNetworkError: UserNotifiableError {
   case decodingFailed(type: String)
   case countryCodeDisabled
   case twilioError(Response) //server returns a successful response with 501 if Twilio responds with error
-  case invoiceAmountTooHigh //400
-  case underlying(MoyaError)
   case thunderdomeUnavailable // 503
+
+  ///In general, rely on CoinNinjaTargetType.defaultNetworkError to decode
+  ///CoinNinjaErrorResponse for CoinNinja API calls. For other APIs, fallback to this error case.
+  case underlying(MoyaError)
 
   /// The associated response can be used as the default value if recovering from this error
   case invalidValue(keyPath: String, value: String?, response: Decodable)
@@ -43,6 +49,10 @@ enum CKNetworkError: UserNotifiableError {
     }
 
     self = networkError
+  }
+
+  var displayMessage: String {
+    errorDescription ?? self.localizedDescription
   }
 
   var errorDescription: String? {
@@ -64,7 +74,6 @@ enum CKNetworkError: UserNotifiableError {
     case .decodingFailed(let type):       return "Failed to decode object of type: \(type)"
     case .countryCodeDisabled:            return "Country code not enabled"
     case .twilioError:                    return "Twilio responded with error."
-    case .invoiceAmountTooHigh:           return "Invoice amount too high."
     case .underlying(let error):          return error.humanReadableDescription
 
     case .invalidValue(let keypath, let value, _):
@@ -115,6 +124,11 @@ extension MoyaError {
     } else {
       return self.errorDescription ?? "MoyaError.response has no description"
     }
+  }
+
+  var coinNinjaErrorResponse: CoinNinjaErrorResponse? {
+    guard let data = self.response?.data else { return nil }
+    return try? JSONDecoder().decode(CoinNinjaErrorResponse.self, from: data)
   }
 
   var humanReadableDescription: String {

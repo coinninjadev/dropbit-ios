@@ -59,7 +59,7 @@ extension CoinNinjaProviderType {
 
         case .failure(let error):
           log.error("Failure from \(target.path) request: %@", privateArgs: [error.responseDescription])
-          if let networkError = target.networkError(for: error) {
+          if let networkError = target.displayableNetworkError(for: error) {
             seal.reject(networkError)
           } else {
             seal.reject(error)
@@ -85,7 +85,7 @@ extension CoinNinjaProviderType {
 
         case .failure(let error):
           log.error("Failure from \(target.path) request: %@", privateArgs: [error.responseDescription])
-          if let networkError = target.networkError(for: error) {
+          if let networkError = target.displayableNetworkError(for: error) {
             seal.reject(networkError)
           } else {
             seal.reject(error)
@@ -104,7 +104,7 @@ extension CoinNinjaProviderType {
 
         case .failure(let error):
           log.error("Failure from \(target.path) request: %@", privateArgs: [error.responseDescription])
-          if let networkError = target.networkError(for: error) {
+          if let networkError = target.displayableNetworkError(for: error) {
             seal.reject(networkError)
           } else {
             seal.reject(error)
@@ -131,7 +131,7 @@ extension CoinNinjaProviderType {
 
         case .failure(let error):
           log.error("Failure from \(target.path) request: %@", privateArgs: [error.responseDescription])
-          if let networkError = target.networkError(for: error) {
+          if let networkError = target.displayableNetworkError(for: error) {
             seal.reject(networkError)
           } else {
             seal.reject(error)

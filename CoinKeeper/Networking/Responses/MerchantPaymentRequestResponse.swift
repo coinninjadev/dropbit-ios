@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum MerchantPaymentRequestError: UserNotifiableError {
+enum MerchantPaymentRequestError: DisplayableError {
   case expired(Date)
   case incorrectCurrency(String)
   case incorrectNetwork(String)
@@ -18,6 +18,10 @@ enum MerchantPaymentRequestError: UserNotifiableError {
 
   /// Useful when the server returns the error message as the response data
   case serverErrorMessage(String)
+
+  var displayMessage: String {
+    errorDescription ?? localizedDescription
+  }
 
   var errorDescription: String? {
     let generalErrorPrefix = "There was an error with the payment request:"

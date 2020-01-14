@@ -21,10 +21,6 @@ public enum LNAccountTarget: CoinNinjaTargetType {
     return "account"
   }
 
-  func networkError(for moyaError: MoyaError) -> CKNetworkError? {
-    return defaultNetworkError(for: moyaError)
-  }
-
   public var method: Method {
     switch self {
     case .get:  return .get

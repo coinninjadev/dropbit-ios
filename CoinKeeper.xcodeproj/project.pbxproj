@@ -1007,7 +1007,6 @@
 		B5A3BA5E215193E6005EE657 /* UserTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3BA5D215193E6005EE657 /* UserTarget.swift */; };
 		B5A3BA602151940E005EE657 /* WalletAddressRequestsTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3BA5F2151940E005EE657 /* WalletAddressRequestsTarget.swift */; };
 		B5A3BA622151941E005EE657 /* WalletAddressesTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3BA612151941E005EE657 /* WalletAddressesTarget.swift */; };
-		B5A42A98217A31D800EB32CB /* UserNotifiableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A42A97217A31D800EB32CB /* UserNotifiableError.swift */; };
 		B5A42A9A217A3E0F00EB32CB /* KeyPathDescribable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A42A99217A3E0F00EB32CB /* KeyPathDescribable.swift */; };
 		B5A5B1B3216B854500345468 /* MockNetworkManager+WalletRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A5B1B2216B854500345468 /* MockNetworkManager+WalletRequestable.swift */; };
 		B5A5B1B5216B87AD00345468 /* MockNetworkManager+AddressRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A5B1B4216B87AD00345468 /* MockNetworkManager+AddressRequestable.swift */; };
@@ -2136,7 +2135,6 @@
 		B5A3BA5D215193E6005EE657 /* UserTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTarget.swift; sourceTree = "<group>"; };
 		B5A3BA5F2151940E005EE657 /* WalletAddressRequestsTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressRequestsTarget.swift; sourceTree = "<group>"; };
 		B5A3BA612151941E005EE657 /* WalletAddressesTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressesTarget.swift; sourceTree = "<group>"; };
-		B5A42A97217A31D800EB32CB /* UserNotifiableError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotifiableError.swift; sourceTree = "<group>"; };
 		B5A42A99217A3E0F00EB32CB /* KeyPathDescribable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPathDescribable.swift; sourceTree = "<group>"; };
 		B5A5B1B2216B854500345468 /* MockNetworkManager+WalletRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+WalletRequestable.swift"; sourceTree = "<group>"; };
 		B5A5B1B4216B87AD00345468 /* MockNetworkManager+AddressRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+AddressRequestable.swift"; sourceTree = "<group>"; };
@@ -2984,7 +2982,6 @@
 				B5192FA1216E7BCA00DCC39B /* WalletAddressError.swift */,
 				B5192FA3216E7BEA00DCC39B /* BlockchainInfoProviderError.swift */,
 				B5E7EE7C21B04C1100E058EF /* TestError.swift */,
-				B5A42A97217A31D800EB32CB /* UserNotifiableError.swift */,
 				B5A42A99217A3E0F00EB32CB /* KeyPathDescribable.swift */,
 				B5192FA5216E7BFF00DCC39B /* UserProviderError.swift */,
 				3B30228021C9290D007F137A /* SyncRoutineError.swift */,
@@ -5045,7 +5042,6 @@
 				3B5A88A0228AFC850082BBA4 /* CNContactSearchBar.swift in Sources */,
 				3B598FE02318337C00FF50CD /* LightningUpgradeStartViewController.swift in Sources */,
 				B56E15972167DB26003B69D4 /* NetworkManager+WalletRequestable.swift in Sources */,
-				B5A42A98217A31D800EB32CB /* UserNotifiableError.swift in Sources */,
 				A29CE0C72098F84300761B91 /* SuccessFailViewController.swift in Sources */,
 				B512D67223171F37004D9E0F /* SummaryCellPaddedLabelView.swift in Sources */,
 				B567CBEB20C5534400105C2C /* NSManagedObjectContext+Changes.swift in Sources */,
