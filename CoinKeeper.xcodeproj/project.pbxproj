@@ -2411,11 +2411,6 @@
 		3B124E2F2020F1E500431E2E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A2FDC54022D37BFA004B0EDD /* Charts.framework */,
-				A24525342100EBC80024D5F8 /* Gifu.framework */,
-				B54D205D20F908C30057A694 /* SwiftMessages.framework */,
-				3B9EE8772058359400C0CC8C /* PMAlertController.framework */,
-				3B8269162032407C009B11EC /* Strongbox.framework */,
 				1737718592249CB505AF79DB /* Pods_DropBit.framework */,
 				E20946923A0E7F2A5AB722BB /* Pods_DropBitTests.framework */,
 				C84B0D140F3ED5CBE884E39D /* libPods-DropBitUITests.a */,
