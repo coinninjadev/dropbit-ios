@@ -51,6 +51,37 @@ struct DBTError {
     }
   }
 
+  enum Biometrics: DBTErrorType {
+    case authenticationFailed
+    case userCancel
+    case systemCancel
+    case lockedOut
+    case notEnrolled
+    case notAvailable
+    case unknown
+
+    init(code: LAError.Code) {
+      switch code {
+      case .authenticationFailed: self = .authenticationFailed
+      case .userCancel: self = .userCancel
+      case .systemCancel: self = .systemCancel
+      case LAError.Code.biometryLockout: self = .lockedOut
+      case LAError.Code.biometryNotEnrolled: self = .notEnrolled
+      case LAError.Code.biometryNotAvailable: self = .notAvailable
+      default: self = .unknown
+      }
+    }
+
+    var displayMessage: String {
+      switch self {
+      case .authenticationFailed: return "Authentication failed"
+      case .notEnrolled: return "Not enrolled in biometric authentication"
+      case .notAvailable: return "Biometric authentication is not available"
+      default: return "If you are enrolled in biometric authentication, please try again."
+      }
+    }
+  }
+
   enum Network: DBTErrorType {
     case reachabilityFailed(_ underlying: MoyaError)
     case shouldUnverify(_ underlying: MoyaError, _ type: RecordType)
@@ -211,50 +242,6 @@ struct DBTError {
     }
   }
 
-  enum Wallet: DBTErrorType {
-    case failedToDeactivate
-    case unexpectedAddress
-
-    var displayMessage: String {
-      switch self {
-      case .failedToDeactivate:
-        return "Failed to deactivate existing wallet."
-      case .unexpectedAddress:
-        return "Address received in response does not match one of the CNBCnlibMetaAddresses provided"
-      }
-    }
-  }
-
-  enum Biometrics: DBTErrorType {
-    case authenticationFailed
-    case userCancel
-    case systemCancel
-    case lockedOut
-    case notEnrolled
-    case notAvailable
-    case unknown
-
-    init(code: LAError.Code) {
-      switch code {
-      case .authenticationFailed: self = .authenticationFailed
-      case .userCancel: self = .userCancel
-      case .systemCancel: self = .systemCancel
-      case LAError.Code.biometryLockout: self = .lockedOut
-      case LAError.Code.biometryNotEnrolled: self = .notEnrolled
-      case LAError.Code.biometryNotAvailable: self = .notAvailable
-      default: self = .unknown
-      }
-    }
-
-    var displayMessage: String {
-      switch self {
-      case .authenticationFailed: return "Authentication failed"
-      case .notEnrolled: return "Not enrolled in biometric authentication"
-      case .notAvailable: return "Biometric authentication is not available"
-      default: return "If you are enrolled in biometric authentication, please try again."
-      }
-    }
-  }
 
   enum SyncRoutine: String, DBTErrorType {
     case syncRoutineInProgress
@@ -341,6 +328,20 @@ struct DBTError {
     /// Check the response string for this message to determine whether to throw .codeInvalid
     static let invalidCodeMessage = "verification code invalid"
 
+  }
+
+  enum Wallet: DBTErrorType {
+    case failedToDeactivate
+    case unexpectedAddress
+
+    var displayMessage: String {
+      switch self {
+      case .failedToDeactivate:
+        return "Failed to deactivate existing wallet."
+      case .unexpectedAddress:
+        return "Address received in response does not match one of the CNBCnlibMetaAddresses provided"
+      }
+    }
   }
 
 }
