@@ -264,7 +264,7 @@ extension AppCoordinator: PaymentSendingDelegate {
 
           failure(error)
         } else {
-          failure(SyncRoutineError.missingWalletManager)
+          failure(DBTError.SyncRoutine.missingWalletManager)
         }
     }
   }

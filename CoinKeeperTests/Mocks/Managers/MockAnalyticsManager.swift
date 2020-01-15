@@ -17,7 +17,6 @@ class MockAnalyticsManager: AnalyticsManagerType {
     eventValueString = value?.value
   }
 
-  func track(error: AnalyticsManagerErrorType, with message: String) {}
   func track(event: AnalyticsManagerEventType, with values: [JSONObject]?) {}
   func track(property: MixpanelProperty) {}
 

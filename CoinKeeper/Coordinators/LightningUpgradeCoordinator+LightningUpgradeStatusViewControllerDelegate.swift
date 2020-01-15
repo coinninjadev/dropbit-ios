@@ -35,7 +35,7 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
       }
       .then(in: context) { _ -> Promise<Void> in
         guard let newWalletManager = WalletManager(words: self.newWords, persistenceManager: self.parent.persistenceManager) else {
-          return Promise(error: SyncRoutineError.missingWalletManager)
+          return Promise(error: DBTError.SyncRoutine.missingWalletManager)
         }
 
         let userIsVerified = self.parent.persistenceManager.brokers.user.userIsVerified(in: context)

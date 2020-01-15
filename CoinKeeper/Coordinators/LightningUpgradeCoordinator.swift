@@ -78,7 +78,7 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
     properties.forEach { self.parent.analyticsManager.track(property: $0) }
   }
 
-  private func presentDebugInfoAlert(withController controller: UIViewController, error: Error = SyncRoutineError.missingWalletManager) {
+  private func presentDebugInfoAlert(withController controller: UIViewController, error: Error = DBTError.SyncRoutine.missingWalletManager) {
     log.info("~*~*~*~*~ Has wallet words v1: \(parent.persistenceManager.keychainManager.retrieveValue(for: .walletWords) != nil)")
     log.info("~*~*~*~*~ Has wallet words v2: \(parent.persistenceManager.keychainManager.retrieveValue(for: .walletWordsV2) != nil)")
     log.info("~*~*~*~*~ Has pin: \(parent.persistenceManager.keychainManager.retrieveValue(for: .userPin) != nil)")

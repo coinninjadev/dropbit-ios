@@ -51,29 +51,29 @@ extension AppCoordinator: SerialQueueManagerDelegate {
 
     guard (launchStateManager.userAuthenticated && self.verificationSatisfied) || background || launchStateManager.upgradeInProgress else {
       log.event("Sync routine prevented by pending pin entry or verification step")
-      return Promise(error: SyncRoutineError.notReady)
+      return Promise(error: DBTError.SyncRoutine.notReady)
     }
 
     // Ensure the wallet is using the words from the keychain before sending any requests, especially deverification checks
     guard let keychainWords = self.persistenceManager.brokers.wallet.walletWords() else {
       log.event("wallet does not yet exist, stopping sync")
-      return Promise(error: SyncRoutineError.missingRecoveryWords)
+      return Promise(error: DBTError.SyncRoutine.missingRecoveryWords)
     }
 
     guard let wmgr = walletManager else {
       log.error("wallet manager does not exist in sync routine")
-      return Promise(error: SyncRoutineError.missingWalletManager)
+      return Promise(error: DBTError.SyncRoutine.missingWalletManager)
     }
     wmgr.resetWallet(with: keychainWords)  // this is a safety precaution to ensure the current wallet instance contains current words
 
     guard let txDataWorker = localWorkerFactory.createTransactionDataWorker(),
       let walletWorker = localWorkerFactory.createWalletAddressDataWorker(delegate: self) else {
-        return Promise(error: SyncRoutineError.missingWorkers)
+        return Promise(error: DBTError.SyncRoutine.missingWorkers)
     }
 
     guard let dbWorker = localWorkerFactory.createDatabaseMigrationWorker(in: context) else {
       log.error("database migration worker does not exist in sync routine")
-      return Promise(error: SyncRoutineError.missingDatabaseMigrationWorker)
+      return Promise(error: DBTError.SyncRoutine.missingDatabaseMigrationWorker)
     }
 
     let keychainWorker = localWorkerFactory.createKeychainMigrationWorker()

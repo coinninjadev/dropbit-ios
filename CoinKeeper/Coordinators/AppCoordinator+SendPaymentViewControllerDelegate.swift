@@ -15,7 +15,7 @@ import Permission
 extension AppCoordinator: SendPaymentViewControllerDelegate {
 
   func viewControllerDidReceiveLightningURLToDecode(_ lightningUrl: LightningURL) -> Promise<LNDecodePaymentRequestResponse> {
-    guard let wmgr = walletManager else { return Promise(error: SyncRoutineError.missingWalletManager) }
+    guard let wmgr = walletManager else { return Promise(error: DBTError.SyncRoutine.missingWalletManager) }
     return wmgr.decodeLightningInvoice(lightningUrl.invoice)
   }
 

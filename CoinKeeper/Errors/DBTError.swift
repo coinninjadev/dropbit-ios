@@ -256,6 +256,28 @@ struct DBTError {
     }
   }
 
+  enum SyncRoutine: String, DBTErrorType {
+    case syncRoutineInProgress
+    case missingRecoveryWords
+    case missingWalletManager
+    case notReady
+    case missingWorkers
+    case missingDatabaseMigrationWorker
+    case missingSyncTask
+    case missingQueueDelegate
+
+    var displayTitle: String { "Sync Error" }
+
+    var displayMessage: String {
+      switch self {
+      case .syncRoutineInProgress: return "Sync routine already in progress."
+      case .missingSyncTask: return "Sync task not assigned"
+      case .missingQueueDelegate: return "Serial queue delegate not assigned"
+      default: return rawValue
+      }
+    }
+  }
+
   enum System: DBTErrorType {
     case missingValue(key: String)
 

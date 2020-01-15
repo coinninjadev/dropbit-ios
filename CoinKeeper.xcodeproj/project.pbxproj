@@ -104,7 +104,6 @@
 		3B2EBF73223176D9003C0D0E /* MockUserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EBF72223176D9003C0D0E /* MockUserDefaultsManager.swift */; };
 		3B2EBF7522318476003C0D0E /* ContactCacheManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EBF7422318476003C0D0E /* ContactCacheManagerTests.swift */; };
 		3B2EBF782232AB17003C0D0E /* CoreDataStackConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EBF762232AAD6003C0D0E /* CoreDataStackConfig.swift */; };
-		3B30228121C9290D007F137A /* SyncRoutineError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B30228021C9290D007F137A /* SyncRoutineError.swift */; };
 		3B302F262123160800A7E070 /* PromiseKit+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B302F252123160800A7E070 /* PromiseKit+CoreData.swift */; };
 		3B30AF1521B810FF009BAE5A /* ConfirmPaymentViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B30AF1421B810FF009BAE5A /* ConfirmPaymentViewControllerTests.swift */; };
 		3B325D4D219090CD0094897C /* RecoveryWordsIntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B325D4C219090CD0094897C /* RecoveryWordsIntroViewController.swift */; };
@@ -1256,7 +1255,6 @@
 		3B2EBF72223176D9003C0D0E /* MockUserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserDefaultsManager.swift; sourceTree = "<group>"; };
 		3B2EBF7422318476003C0D0E /* ContactCacheManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCacheManagerTests.swift; sourceTree = "<group>"; };
 		3B2EBF762232AAD6003C0D0E /* CoreDataStackConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStackConfig.swift; sourceTree = "<group>"; };
-		3B30228021C9290D007F137A /* SyncRoutineError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncRoutineError.swift; sourceTree = "<group>"; };
 		3B302F252123160800A7E070 /* PromiseKit+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PromiseKit+CoreData.swift"; sourceTree = "<group>"; };
 		3B30AF1421B810FF009BAE5A /* ConfirmPaymentViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPaymentViewControllerTests.swift; sourceTree = "<group>"; };
 		3B325D4C219090CD0094897C /* RecoveryWordsIntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryWordsIntroViewController.swift; sourceTree = "<group>"; };
@@ -2952,7 +2950,6 @@
 				B5E7EE7C21B04C1100E058EF /* TestError.swift */,
 				B5A42A99217A3E0F00EB32CB /* KeyPathDescribable.swift */,
 				B5192FA5216E7BFF00DCC39B /* UserProviderError.swift */,
-				3B30228021C9290D007F137A /* SyncRoutineError.swift */,
 				3BD085B823515D64006CE008 /* SetupFlowError.swift */,
 			);
 			path = Errors;
@@ -4602,7 +4599,6 @@
 				B5A3BA4D21516BF2005EE657 /* WalletTarget.swift in Sources */,
 				B53804FC209A4C070096DA33 /* AppCoordinator+URLOpener.swift in Sources */,
 				3B287CBB21020CC700A43E57 /* WalletAddressRequest.swift in Sources */,
-				3B30228121C9290D007F137A /* SyncRoutineError.swift in Sources */,
 				B5437B5A23160FE60002B77C /* MockTransactionDataGenerator.swift in Sources */,
 				307DF11F2151676900260369 /* JSONValue.swift in Sources */,
 				A246C82522CB9AFB00AF1F52 /* NewsTarget.swift in Sources */,

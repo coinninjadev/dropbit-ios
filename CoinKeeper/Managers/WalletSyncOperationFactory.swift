@@ -32,7 +32,7 @@ class WalletSyncOperationFactory {
 
   func performOnChainOnlySync(in context: NSManagedObjectContext) -> Promise<Void> {
     guard let queueDelegate = self.delegate else {
-      return Promise(error: SyncRoutineError.missingQueueDelegate)
+      return Promise(error: DBTError.SyncRoutine.missingQueueDelegate)
     }
 
     return queueDelegate.syncManagerDidRequestDependencies(in: context, inBackground: false)
@@ -44,7 +44,7 @@ class WalletSyncOperationFactory {
                            fetchResult: ((UIBackgroundFetchResult) -> Void)?,
                            in context: NSManagedObjectContext) -> Promise<AsynchronousOperation> {
     guard let queueDelegate = self.delegate else {
-      return Promise.init(error: SyncRoutineError.missingQueueDelegate)
+      return Promise.init(error: DBTError.SyncRoutine.missingQueueDelegate)
     }
 
     let inBackground = (fetchResult != nil)

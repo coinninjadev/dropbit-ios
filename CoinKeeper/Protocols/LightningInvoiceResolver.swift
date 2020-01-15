@@ -19,7 +19,7 @@ extension LightningInvoiceResolver {
   func resolveLightningInvoice(invoice: String,
                                completion: @escaping (Result<LNDecodePaymentRequestResponse, Error>) -> Void) {
     guard let wmgr = walletManager else {
-      completion(.failure(SyncRoutineError.missingWalletManager))
+      completion(.failure(DBTError.SyncRoutine.missingWalletManager))
       return
     }
 

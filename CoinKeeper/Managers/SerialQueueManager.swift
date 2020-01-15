@@ -182,7 +182,7 @@ class SerialQueueManager: SerialQueueManagerType {
                                       fetchResult: ((UIBackgroundFetchResult) -> Void)?) {
     guard let queueDelegate = self.delegate,
       let operationFactory = self.walletSyncOperationFactory else {
-        completion?(SyncRoutineError.missingQueueDelegate)
+        completion?(DBTError.SyncRoutine.missingQueueDelegate)
         fetchResult?(.failed)
         return
     }
