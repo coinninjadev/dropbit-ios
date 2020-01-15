@@ -323,7 +323,7 @@
 		3B9A8E062152A93200C78C2C /* SendPaymentViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9A8E052152A93100C78C2C /* SendPaymentViewControllerTests.swift */; };
 		3B9EE87C2058370000C0CC8C /* AlertManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9EE87B2058370000C0CC8C /* AlertManagerTests.swift */; };
 		3B9EE87E2058674C00C0CC8C /* MockNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9EE87D2058674B00C0CC8C /* MockNavigationController.swift */; };
-		3BA1AF2D23CE384000F5494B /* Cnlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BA1AF2C23CE384000F5494B /* Cnlib.framework */; };
+		3BA1AF3123CE908100F5494B /* Cnlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BA1AF3023CE908000F5494B /* Cnlib.framework */; };
 		3BA360842090B0C100732C43 /* CKMTransaction+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA360822090B0C100732C43 /* CKMTransaction+CoreDataClass.swift */; };
 		3BA360852090B0C100732C43 /* CKMTransaction+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA360832090B0C100732C43 /* CKMTransaction+CoreDataProperties.swift */; };
 		3BA360882090BAD900732C43 /* NSManagedObject+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA360872090BAD900732C43 /* NSManagedObject+Init.swift */; };
@@ -1465,7 +1465,7 @@
 		3B9EE8772058359400C0CC8C /* PMAlertController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PMAlertController.framework; path = Carthage/Build/iOS/PMAlertController.framework; sourceTree = "<group>"; };
 		3B9EE87B2058370000C0CC8C /* AlertManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManagerTests.swift; sourceTree = "<group>"; };
 		3B9EE87D2058674B00C0CC8C /* MockNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNavigationController.swift; sourceTree = "<group>"; };
-		3BA1AF2C23CE384000F5494B /* Cnlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Cnlib.framework; sourceTree = "<group>"; };
+		3BA1AF3023CE908000F5494B /* Cnlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Cnlib.framework; sourceTree = "<group>"; };
 		3BA360822090B0C100732C43 /* CKMTransaction+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMTransaction+CoreDataClass.swift"; sourceTree = "<group>"; };
 		3BA360832090B0C100732C43 /* CKMTransaction+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMTransaction+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		3BA360872090BAD900732C43 /* NSManagedObject+Init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Init.swift"; sourceTree = "<group>"; };
@@ -2292,7 +2292,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3050CCBBA9D3A897790120B /* Pods_DropBit.framework in Frameworks */,
-				3BA1AF2D23CE384000F5494B /* Cnlib.framework in Frameworks */,
+				3BA1AF3123CE908100F5494B /* Cnlib.framework in Frameworks */,
 				3BC289B623C8C6F6005B9933 /* PromiseKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2928,7 +2928,7 @@
 		3BAB4BB723A7C71000AADBF7 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				3BA1AF2C23CE384000F5494B /* Cnlib.framework */,
+				3BA1AF3023CE908000F5494B /* Cnlib.framework */,
 			);
 			path = lib;
 			sourceTree = "<group>";
