@@ -136,7 +136,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
       self.setupTransactionUI()
       self.refreshBothAmounts()
     }.catchDisplayable { error in
-      self.alertManager?.showError(error, forDuration: 2.5)
+      self.alertManager?.showErrorHUD(error, forDuration: 2.5)
     }
   }
 

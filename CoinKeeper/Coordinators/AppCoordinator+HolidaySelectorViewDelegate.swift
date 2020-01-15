@@ -22,7 +22,7 @@ extension AppCoordinator: HolidaySelectorViewDelegate {
         user?.holidayType = holiday
         try? context.saveRecursively()
     }.catchDisplayable { error in
-      self.alertManager.showError(error, forDuration: 2.0)
+      self.alertManager.showErrorHUD(error, forDuration: 2.0)
       failure()
     }
   }

@@ -105,7 +105,7 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
           in: context) }
         .done { _ in delegate.coordinator(self, didVerify: .twitter, isInitialSetupFlow: self.isInitialSetupFlow) }
         .catchDisplayable { error in
-          delegate.alertManager.showError(error, forDuration: 3.0)
+          delegate.alertManager.showErrorHUD(error, forDuration: 3.0)
           log.error(error, message: "failed to create or verify user")
       }
     }

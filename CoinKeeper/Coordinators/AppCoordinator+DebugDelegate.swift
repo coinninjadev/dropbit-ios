@@ -29,7 +29,7 @@ extension AppCoordinator: DebugDelegate {
   private func presentDebugInfo(from viewController: UIViewController) {
     guard let dbFileURL = self.persistenceManager.persistentStore()?.url else {
       self.alertManager.hideActivityHUD(withDelay: 0) {
-        self.alertManager.showError(message: "Failed to find database", forDuration: 4.0)
+        self.alertManager.showErrorHUD(message: "Failed to find database", forDuration: 4.0)
       }
       return
     }
@@ -37,7 +37,7 @@ extension AppCoordinator: DebugDelegate {
     let walFileURL = URL(string: dbFileURL.absoluteString + "-wal")
     guard MFMailComposeViewController.canSendMail() else {
       self.alertManager.hideActivityHUD(withDelay: 0) {
-        self.alertManager.showError(message: "Your mail client is not configured", forDuration: 4.0)
+        self.alertManager.showErrorHUD(message: "Your mail client is not configured", forDuration: 4.0)
       }
       return
     }

@@ -28,13 +28,13 @@ extension AppCoordinator: EmptyStateLightningLoadDelegate {
     let defaultDuration = 4.0
     if let validationError = error as? BitcoinAddressValidatorError {
       let message = validationError.displayMessage + "\n\nThere was a problem obtaining a valid payment address.\n\nPlease try again later."
-      alertManager.showError(message: message, forDuration: defaultDuration)
+      alertManager.showErrorHUD(message: message, forDuration: defaultDuration)
     } else if let txDataError = error as? TransactionDataError {
-      alertManager.showError(txDataError, forDuration: defaultDuration)
+      alertManager.showErrorHUD(txDataError, forDuration: defaultDuration)
     } else if let validationError = error as? LightningWalletAmountValidatorError {
-      alertManager.showError(validationError, forDuration: defaultDuration)
+      alertManager.showErrorHUD(validationError, forDuration: defaultDuration)
     } else {
-      alertManager.showError(error, forDuration: defaultDuration)
+      alertManager.showErrorHUD(error, forDuration: defaultDuration)
     }
   }
 

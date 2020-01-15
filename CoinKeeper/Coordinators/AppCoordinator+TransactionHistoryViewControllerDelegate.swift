@@ -47,7 +47,7 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
         self.navigationController.pushViewController(controller, animated: true)
         self.alertManager.hideActivityHUD(withDelay: nil, completion: nil)
     }.catchDisplayable { error in
-      self.alertManager.showError(error, forDuration: 2.0)
+      self.alertManager.showErrorHUD(error, forDuration: 2.0)
     }
 
   }

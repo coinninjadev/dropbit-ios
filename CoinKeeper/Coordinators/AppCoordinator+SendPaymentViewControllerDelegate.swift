@@ -170,7 +170,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
       fullMessage = "\(generalMessage) \(err.displayMessage)."
     }
 
-    alertManager.showError(message: fullMessage, forDuration: 3.5)
+    alertManager.showErrorHUD(message: fullMessage, forDuration: 3.5)
   }
 
   func viewControllerShouldInitiallyAllowMemoSharing(_ viewController: SendPaymentViewController) -> Bool {

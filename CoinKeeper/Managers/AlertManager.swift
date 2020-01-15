@@ -354,15 +354,16 @@ class AlertManager: AlertManagerType {
     }
   }
 
-  func showError(message: String, forDuration duration: TimeInterval?) {
+  func showErrorHUD(message: String, forDuration duration: TimeInterval?) {
     DispatchQueue.main.async {
       SVProgressHUD.showError(withStatus: message)
       duration.flatMap { SVProgressHUD.dismiss(withDelay: $0) }
     }
   }
 
-  func showError(_ error: DisplayableError, forDuration duration: TimeInterval?) {
-    showError(message: error.displayMessage, forDuration: duration)
+  func showErrorHUD(_ error: Error, forDuration duration: TimeInterval?) {
+    let displayableError = DisplayableErrorWrapper.wrap(error)
+    showErrorHUD(message: displayableError.displayMessage, forDuration: duration)
   }
 
   private func pmAlertStyle(from style: AlertActionStyle) -> PMAlertActionStyle {

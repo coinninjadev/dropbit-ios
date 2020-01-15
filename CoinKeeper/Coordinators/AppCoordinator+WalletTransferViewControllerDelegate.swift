@@ -98,6 +98,6 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
 
   func viewControllerNetworkError(_ error: Error) {
     let displayableError = DisplayableErrorWrapper.wrap(error)
-    alertManager.showError(displayableError, forDuration: 2.0)
+    alertManager.showErrorHUD(displayableError, forDuration: 2.0)
   }
 }
