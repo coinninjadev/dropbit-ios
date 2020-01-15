@@ -439,7 +439,7 @@ extension SendPaymentViewController {
           self.applyFetchedBitcoinModelAndUpdateView(fetchedModel: viewModel)
 
         })
-      }.catchDisplayable { error in
+      }.catch { error in
         self.handleError(error: error)
     }
   }

@@ -103,7 +103,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
               strongSelf.showShareTransactionIfAppropriate(dropBitReceiver: output.invitationDTO.contact.asDropBitReceiver,
                                                            walletTxType: output.invitationDTO.walletTxType, delegate: strongSelf)
             }
-          .catchDisplayable(on: .main) { error in
+          .catch(on: .main) { error in
             log.error(error, message: "Failed to handle successful invite verification.")
             strongSelf.handleAddressRequestCreationError(error,
                                                          invitationDTO: outgoingInvitationDTO,
@@ -119,7 +119,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
           successFailVC.action?()
         })
       }
-      .catchDisplayable { (error) in
+      .catch { (error) in
         log.error(error, message: "Failed to handle successful invite verification.")
         strongSelf.handleAddressRequestCreationError(error,
                                                      invitationDTO: outgoingInvitationDTO,
@@ -193,7 +193,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
             topVC.present(tweetMethodVC, animated: true, completion: nil)
           }
         }
-        .catchDisplayable { error in
+        .catch { error in
           log.contextSaveError(error)
           successFailVC.setMode(.failure)
           self.handleFailureInvite(error: error)

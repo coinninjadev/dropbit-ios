@@ -55,7 +55,7 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
             log.contextSaveError(error)
           }
         }
-        .catchDisplayable { error in
+        .catch { error in
           log.error(error, message: "Failed to withdraw from lightning account. \(error.displayMessage)")
           successFailVC.setMode(.failure)
       }

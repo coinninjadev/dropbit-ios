@@ -34,7 +34,7 @@ extension AppCoordinator: TransactionHistoryDetailsViewControllerDelegate {
               viewController.collectionView.reloadItems(at: [indexPath])
             }
           }
-          .catchDisplayable { error in
+          .catch { error in
             strongSelf.alertManager.showErrorHUD(message: "Failed to cancel invitation.\nError details: \(error.displayMessage)", forDuration: 5.0)
         }
       }

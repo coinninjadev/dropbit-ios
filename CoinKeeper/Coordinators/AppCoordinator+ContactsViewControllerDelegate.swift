@@ -61,7 +61,7 @@ extension AppCoordinator: ContactsViewControllerDelegate {
   func viewControllerDidRequestRefreshVerificationStatuses(_ viewController: UIViewController, completion: @escaping CKErrorCompletion) {
     self.contactCacheDataWorker.refreshStatuses()
       .done { completion(nil) }
-      .catchDisplayable { error in
+      .catch { error in
         completion(error)
         self.viewControllerDidEncounterError(viewController, error: error)
     }

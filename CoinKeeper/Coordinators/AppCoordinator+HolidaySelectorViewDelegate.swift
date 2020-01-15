@@ -21,7 +21,7 @@ extension AppCoordinator: HolidaySelectorViewDelegate {
         let user = CKMUser.find(in: context)
         user?.holidayType = holiday
         try? context.saveRecursively()
-    }.catchDisplayable { error in
+    }.catch { error in
       self.alertManager.showErrorHUD(error, forDuration: 2.0)
       failure()
     }

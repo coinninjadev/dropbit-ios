@@ -45,7 +45,7 @@ extension AppCoordinator: DropBitMeViewControllerDelegate {
           }
         }
       }
-      .catchDisplayable { error in
+      .catch { error in
         self.alertManager.showErrorHUD(message: "Failed to change DropBit.me URL status. Error: \(error.displayMessage)", forDuration: 3.0)
       }
       .finally {

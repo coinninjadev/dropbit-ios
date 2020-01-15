@@ -162,7 +162,7 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
         activityIndiciator.startAnimating()
         delegate.viewControllerDidRequestDefaultTwitterFriends(self)
           .done(on: .main) { self.twitterUserDataSource.updateDefaultFriends($0) }
-          .catchDisplayable { error in
+          .catch { error in
             self.delegate.showAlertForTwitterAPIError(error)
             log.error(error, message: "failed to fetch Twitter friends")
           }

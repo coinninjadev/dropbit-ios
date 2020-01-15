@@ -1013,7 +1013,6 @@
 		B5A5B1B9216B89AD00345468 /* MockNetworkManager+CurrencyValueDataSourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A5B1B8216B89AD00345468 /* MockNetworkManager+CurrencyValueDataSourceType.swift */; };
 		B5A5B1BB216B8B4D00345468 /* MockNetworkManager+DeviceRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A5B1BA216B8B4D00345468 /* MockNetworkManager+DeviceRequestable.swift */; };
 		B5A5C5A32218AF430088C4D1 /* DeviceVerificationErrorMessageFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A5C5A22218AF430088C4D1 /* DeviceVerificationErrorMessageFactory.swift */; };
-		B5A5E84E23CE5281001E1F37 /* PromiseKit+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A5E84D23CE5281001E1F37 /* PromiseKit+Error.swift */; };
 		B5A7523C2225D90B0017DB35 /* DeviceCountryCodeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A7523B2225D90B0017DB35 /* DeviceCountryCodeProvider.swift */; };
 		B5A7523E2225E62F0017DB35 /* HashingManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A7523D2225E62F0017DB35 /* HashingManagerTests.swift */; };
 		B5A98AE72241741F00DEF96F /* CKKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A98AE62241741F00DEF96F /* CKKeychain.swift */; };
@@ -2141,7 +2140,6 @@
 		B5A5B1B8216B89AD00345468 /* MockNetworkManager+CurrencyValueDataSourceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+CurrencyValueDataSourceType.swift"; sourceTree = "<group>"; };
 		B5A5B1BA216B8B4D00345468 /* MockNetworkManager+DeviceRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+DeviceRequestable.swift"; sourceTree = "<group>"; };
 		B5A5C5A22218AF430088C4D1 /* DeviceVerificationErrorMessageFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceVerificationErrorMessageFactory.swift; sourceTree = "<group>"; };
-		B5A5E84D23CE5281001E1F37 /* PromiseKit+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PromiseKit+Error.swift"; sourceTree = "<group>"; };
 		B5A7523B2225D90B0017DB35 /* DeviceCountryCodeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceCountryCodeProvider.swift; sourceTree = "<group>"; };
 		B5A7523D2225E62F0017DB35 /* HashingManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashingManagerTests.swift; sourceTree = "<group>"; };
 		B5A98AE62241741F00DEF96F /* CKKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKKeychain.swift; sourceTree = "<group>"; };
@@ -2573,7 +2571,6 @@
 				B56788B0227A430300A39534 /* UIView+CornerRadius.swift */,
 				A2893BBF20FD4E7700E96B07 /* UIViewController+ToolbarUtilities.swift */,
 				3B302F252123160800A7E070 /* PromiseKit+CoreData.swift */,
-				B5A5E84D23CE5281001E1F37 /* PromiseKit+Error.swift */,
 				3B474156217E4E4E004DA223 /* URLRequest+Helpers.swift */,
 				3060489E218A670B009C6E86 /* UIView+Shadow.swift */,
 				B527AFBC2195CFF6007D9484 /* UIView+AccessibilityIdentifier.swift */,
@@ -4824,7 +4821,6 @@
 				30BF4FED21B6E42A0018AE87 /* AppCoordinator+TransactionPopoverDetailsViewControllerDelegate.swift in Sources */,
 				B518226320BF191A00AA3E36 /* CKMServerAddress+CoreDataProperties.swift in Sources */,
 				A268F13B22EA067B00410040 /* SyncSubscribeable.swift in Sources */,
-				B5A5E84E23CE5281001E1F37 /* PromiseKit+Error.swift in Sources */,
 				B5DDB0F721DE69C100A25929 /* KeychainMigratorFactory.swift in Sources */,
 				B54D206420F926110057A694 /* UIImage+Mask.swift in Sources */,
 				B58A6A02232016E700D50298 /* TransactionHistorySummaryFooter.swift in Sources */,

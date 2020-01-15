@@ -46,7 +46,7 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
                                                               bitcoinAddress: btcAddress)
         self.navigationController.pushViewController(controller, animated: true)
         self.alertManager.hideActivityHUD(withDelay: nil, completion: nil)
-    }.catchDisplayable { error in
+    }.catch { error in
       self.alertManager.showErrorHUD(error, forDuration: 2.0)
     }
 

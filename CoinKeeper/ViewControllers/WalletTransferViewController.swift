@@ -135,7 +135,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
       self.setupUIForFees(networkFee: response.result.networkFee, processingFee: response.result.processingFee)
       self.setupTransactionUI()
       self.refreshBothAmounts()
-    }.catchDisplayable { error in
+    }.catch { error in
       self.alertManager?.showErrorHUD(error, forDuration: 2.5)
     }
   }
@@ -168,7 +168,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
           self.viewModel.direction = .toLightning(paymentData)
           self.setupTransactionUI()
         }
-        .catchDisplayable {
+        .catch {
           self.delegate.handleLightningLoadError($0)
           self.disableConfirmButton()
       }

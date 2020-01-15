@@ -21,7 +21,7 @@ extension AppCoordinator: EmptyStateLightningLoadDelegate {
                                                                                     alertManager: self.alertManager)
         self.navigationController.present(walletTransferViewController, animated: true, completion: nil)
       }
-      .catchDisplayable { self.handleLightningLoadError($0) }
+      .catch { self.handleLightningLoadError($0) }
   }
 
   func handleLightningLoadError(_ error: DisplayableError) {

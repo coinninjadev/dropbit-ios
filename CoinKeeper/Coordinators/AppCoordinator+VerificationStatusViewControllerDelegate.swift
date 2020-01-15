@@ -131,11 +131,12 @@ extension AppCoordinator: VerificationStatusViewControllerDelegate {
       self.unverifyVerifiedIdentity(identityType: identityType, allVerifiedIdentities: verifiedIdentities)
         .done(on: .main) {
           successfulCompletion()
-        }.catchDisplayable { error in
-          log.error(error, message: "failed to unverify phone: \(error.displayMessage)")
+        }.catch { error in
+          let CKErrorType = DisplayableErrorWrapper.wrap(error)
+          log.error(error, message: "failed to unverify phone: \(CKErrorType.localizedDescription)")
           self.alertManager.hideActivityHUD(withDelay: nil, completion: nil)
           let title = "We are currently having trouble removing your phone number. " +
-                      "\(error.displayMessage). Please try again."
+                      "\(CKErrorType.displayMessage). Please try again."
           let alert = self.alertManager.alert(withTitle: title,
                                               description: nil,
                                               image: nil,
