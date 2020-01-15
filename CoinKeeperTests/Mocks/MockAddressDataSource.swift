@@ -39,7 +39,7 @@ class MockAddressDataSource: AddressDataSourceType {
     if validAddresses.contains(address) {
       return CNBCnlibMetaAddress(address, path: nil, uncompressedPublicKey: nil)!
     } else {
-      throw WalletAddressError.unexpectedAddress
+      throw DBTError.Wallet.unexpectedAddress
     }
   }
 

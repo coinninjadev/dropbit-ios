@@ -213,10 +213,14 @@ struct DBTError {
 
   enum Wallet: DBTErrorType {
     case failedToDeactivate
+    case unexpectedAddress
 
     var displayMessage: String {
       switch self {
-      case .failedToDeactivate:     return "Failed to deactivate existing wallet."
+      case .failedToDeactivate:
+        return "Failed to deactivate existing wallet."
+      case .unexpectedAddress:
+        return "Address received in response does not match one of the CNBCnlibMetaAddresses provided"
       }
     }
   }
