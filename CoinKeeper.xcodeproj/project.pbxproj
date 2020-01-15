@@ -378,7 +378,6 @@
 		3BCBFCCC229EF71D00F633BA /* SettingsRecoveryWordsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BCBFCCA229EF71D00F633BA /* SettingsRecoveryWordsCell.xib */; };
 		3BCC3BAF2295CBB100B8FB66 /* SharedPayloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCC3BAE2295CBB100B8FB66 /* SharedPayloadManager.swift */; };
 		3BD013172272478300C92771 /* TransactionHistoryDetailValidCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BD013162272478300C92771 /* TransactionHistoryDetailValidCell.xib */; };
-		3BD085B923515D64006CE008 /* SetupFlowError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD085B823515D64006CE008 /* SetupFlowError.swift */; };
 		3BD7B73120D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD7B73020D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift */; };
 		3BDA207F203DE6F600CBA6B1 /* BiometricAuthenticationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA207E203DE6F600CBA6B1 /* BiometricAuthenticationManagerTests.swift */; };
 		3BDA2085203E17E000CBA6B1 /* BiometricErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA2084203E17E000CBA6B1 /* BiometricErrorTests.swift */; };
@@ -689,7 +688,6 @@
 		B518226320BF191A00AA3E36 /* CKMServerAddress+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B518226120BF191A00AA3E36 /* CKMServerAddress+CoreDataProperties.swift */; };
 		B51894792089304E00E75C20 /* MockTransactionHistoryDetailCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51894782089304E00E75C20 /* MockTransactionHistoryDetailCellDelegate.swift */; };
 		B5192F93216E6EFA00DCC39B /* MockCoinNinjaProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5192F91216E6EE200DCC39B /* MockCoinNinjaProvider.swift */; };
-		B5192FA6216E7BFF00DCC39B /* UserProviderError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5192FA5216E7BFF00DCC39B /* UserProviderError.swift */; };
 		B5192FAC216E893100DCC39B /* DeviceResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5192FAB216E893100DCC39B /* DeviceResponseTests.swift */; };
 		B5192FAE216E8A8600DCC39B /* DeviceEndpointResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5192FAD216E8A8600DCC39B /* DeviceEndpointResponseTests.swift */; };
 		B5192FB0216E8D4A00DCC39B /* PriceTransactionResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5192FAF216E8D4A00DCC39B /* PriceTransactionResponseTests.swift */; };
@@ -1504,7 +1502,6 @@
 		3BCBFCCA229EF71D00F633BA /* SettingsRecoveryWordsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsRecoveryWordsCell.xib; sourceTree = "<group>"; };
 		3BCC3BAE2295CBB100B8FB66 /* SharedPayloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPayloadManager.swift; sourceTree = "<group>"; };
 		3BD013162272478300C92771 /* TransactionHistoryDetailValidCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionHistoryDetailValidCell.xib; sourceTree = "<group>"; };
-		3BD085B823515D64006CE008 /* SetupFlowError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupFlowError.swift; sourceTree = "<group>"; };
 		3BD7B73020D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontallyPaginatedCollectionViewLayout.swift; sourceTree = "<group>"; };
 		3BDA207E203DE6F600CBA6B1 /* BiometricAuthenticationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricAuthenticationManagerTests.swift; sourceTree = "<group>"; };
 		3BDA2084203E17E000CBA6B1 /* BiometricErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricErrorTests.swift; sourceTree = "<group>"; };
@@ -1820,7 +1817,6 @@
 		B518226120BF191A00AA3E36 /* CKMServerAddress+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMServerAddress+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B51894782089304E00E75C20 /* MockTransactionHistoryDetailCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTransactionHistoryDetailCellDelegate.swift; sourceTree = "<group>"; };
 		B5192F91216E6EE200DCC39B /* MockCoinNinjaProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCoinNinjaProvider.swift; sourceTree = "<group>"; };
-		B5192FA5216E7BFF00DCC39B /* UserProviderError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProviderError.swift; sourceTree = "<group>"; };
 		B5192FAB216E893100DCC39B /* DeviceResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceResponseTests.swift; sourceTree = "<group>"; };
 		B5192FAD216E8A8600DCC39B /* DeviceEndpointResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceEndpointResponseTests.swift; sourceTree = "<group>"; };
 		B5192FAF216E8D4A00DCC39B /* PriceTransactionResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTransactionResponseTests.swift; sourceTree = "<group>"; };
@@ -2945,8 +2941,6 @@
 				B5A5C5A22218AF430088C4D1 /* DeviceVerificationErrorMessageFactory.swift */,
 				B5E7EE7A21B02FFB00E058EF /* ValidatorAlertDisplayable.swift */,
 				B5E7EE7C21B04C1100E058EF /* TestError.swift */,
-				B5192FA5216E7BFF00DCC39B /* UserProviderError.swift */,
-				3BD085B823515D64006CE008 /* SetupFlowError.swift */,
 			);
 			path = Errors;
 			sourceTree = "<group>";
@@ -4897,7 +4891,6 @@
 				A2952F7622BBBAAB00BDCE65 /* TimePeriodCell.swift in Sources */,
 				3B8FA48320C16F5C0074B617 /* CKMTemporarySentTransaction+CoreDataClass.swift in Sources */,
 				B53D7EC52119DC6B00D1DCBF /* BlockchainInfoTarget.swift in Sources */,
-				3BD085B923515D64006CE008 /* SetupFlowError.swift in Sources */,
 				3BF41AB020750692008B3D0A /* RequestPayViewController.swift in Sources */,
 				3B5052B82046E686000C739F /* BackupRecoveryWordsCollectionDDS.swift in Sources */,
 				3BA9F605208F6D060047C213 /* AppCoordinator+VerifyRecoveryWordsViewControllerDelegate.swift in Sources */,
@@ -4978,7 +4971,6 @@
 				3B80E27821BEEDD300F6EF17 /* MigrateDatabaseV1toV2.swift in Sources */,
 				3BA9F5F9208F63480047C213 /* AppCoordinator+PinCreationViewControllerDelegate.swift in Sources */,
 				3B474155217A4B4A004DA223 /* NetworkManager+NotificationNetworkInteractable.swift in Sources */,
-				B5192FA6216E7BFF00DCC39B /* UserProviderError.swift in Sources */,
 				5B62D55F20879C4100E9D466 /* String+BitcoinRegex.swift in Sources */,
 				B5839FAF22949E98006BA6AF /* ClaimInviteMethodViewController.swift in Sources */,
 				A2E9846C2384538800107C53 /* MerchantCallToActionResponse.swift in Sources */,

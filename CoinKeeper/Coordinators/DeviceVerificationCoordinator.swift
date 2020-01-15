@@ -207,7 +207,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
       }
       .catch { [weak self] error in
         self?.handleResendError(error)
-        if let providerError = error as? UserProviderError, case .twilioError = providerError {
+        if let providerError = error as? DBTError.UserRequest, case .twilioError = providerError {
           delegate.didReceiveTwilioError(for: body.identity, route: .resendVerification)
         }
       }

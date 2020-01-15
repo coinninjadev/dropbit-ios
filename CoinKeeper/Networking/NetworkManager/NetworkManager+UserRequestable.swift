@@ -54,10 +54,10 @@ extension NetworkManager: UserRequestable {
           switch networkError {
           case .recordAlreadyExists(let response):
             let userResponse = try response.map(UserResponse.self, using: UserResponse.decoder)
-            throw UserProviderError.userAlreadyExists(userResponse.id, body)
+            throw DBTError.UserRequest.userAlreadyExists(userResponse.id, body)
           case .twilioError(let response):
             let userResponse = try response.map(UserResponse.self, using: UserResponse.decoder)
-            throw UserProviderError.twilioError(userResponse, body)
+            throw DBTError.UserRequest.twilioError(userResponse, body)
           default:
             throw error
           }
@@ -100,7 +100,7 @@ extension NetworkManager: UserRequestable {
       .recover { error -> Promise<UserResponse> in
         if let networkError = error as? DBTError.Network, case let .twilioError(response) = networkError {
           let userResponse = try response.map(UserResponse.self, using: UserResponse.decoder)
-          throw UserProviderError.twilioError(userResponse, body)
+          throw DBTError.UserRequest.twilioError(userResponse, body)
         } else {
           throw error
         }

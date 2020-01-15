@@ -75,7 +75,7 @@ class UserIdentifiableManager: UserIdentifiableManagerType {
       return Promise { $0.reject(DBTError.Network.responseMissingValue(keyPath: UserResponseKey.status.path)) }
     }
     guard statusCase == .verified else {
-      return Promise { $0.reject(UserProviderError.unexpectedStatus(statusCase)) }
+      return Promise { $0.reject(DBTError.UserRequest.unexpectedStatus(statusCase)) }
     }
 
     return persistenceManager.brokers.user.persistVerificationStatus(from: response, in: context).asVoid()
@@ -88,7 +88,7 @@ class UserIdentifiableManager: UserIdentifiableManagerType {
   private func handleCreateUserError(_ error: Error,
                                      walletId: String,
                                      in context: NSManagedObjectContext) -> Promise<UserIdentifiable> {
-    if let providerError = error as? UserProviderError {
+    if let providerError = error as? DBTError.UserRequest {
       switch providerError {
       case .userAlreadyExists(let userId, let body):
         //ignore walletId available in the error in case it is different from the walletId we provided
@@ -97,7 +97,7 @@ class UserIdentifiableManager: UserIdentifiableManagerType {
         return self.networkManager.resendVerification(headers: resendHeaders, body: body)
           .map { _ in UserIdWrapper(id: userId) as UserIdentifiable } // pass along the known userId, the /resend response does not include it
           .recover { (error: Error) -> Promise<UserIdentifiable> in
-            if let providerError = error as? UserProviderError,
+            if let providerError = error as? DBTError.UserRequest,
               case let .twilioError(userResponse, _) = providerError {
               self.delegate?.didReceiveTwilioError(for: body.identity, route: .resendVerification)
               return Promise.value(userResponse)
