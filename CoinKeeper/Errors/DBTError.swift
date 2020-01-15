@@ -127,7 +127,22 @@ struct DBTError {
         return description
       }
     }
-  } //End of Network errors
+  }
+
+  enum OAuth: Int, DBTErrorType {
+    case invalidOrExpiredToken = -11
+
+    var errorCode: Int {
+      return self.rawValue
+    }
+
+    var displayMessage: String {
+      switch self {
+      case .invalidOrExpiredToken:
+        return "The session token is invalid or has expired. Please close and try again."
+      }
+    }
+  }
 
   enum Persistence: DBTErrorType {
     case missingValue(key: String)

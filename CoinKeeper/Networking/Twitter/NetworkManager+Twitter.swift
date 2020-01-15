@@ -161,9 +161,9 @@ extension NetworkManager: TwitterRequestable {
             seal.fulfill(credentials)
           case .failure(let error):
             log.error(error, message: "oauth failure")
-            if error.errorCode == CKOAuthError.invalidOrExpiredToken.errorCode {
+            if error.errorCode == DBTError.OAuth.invalidOrExpiredToken.errorCode {
               self.resetTwitterOAuthManager()
-              seal.reject(CKOAuthError.invalidOrExpiredToken)
+              seal.reject(DBTError.OAuth.invalidOrExpiredToken)
             } else {
               seal.reject(error)
             }
