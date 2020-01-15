@@ -2945,7 +2945,6 @@
 				B5A5C5A22218AF430088C4D1 /* DeviceVerificationErrorMessageFactory.swift */,
 				B5E7EE7A21B02FFB00E058EF /* ValidatorAlertDisplayable.swift */,
 				B5E7EE7C21B04C1100E058EF /* TestError.swift */,
-				B5A42A99217A3E0F00EB32CB /* KeyPathDescribable.swift */,
 				B5192FA5216E7BFF00DCC39B /* UserProviderError.swift */,
 				3BD085B823515D64006CE008 /* SetupFlowError.swift */,
 			);
@@ -3424,6 +3423,7 @@
 				B5C314D722DE59100069294F /* CurrencySwappableAmountEditor.swift */,
 				B52D4523208E5ECA00A56A5C /* ExchangeRateUpdatable.swift */,
 				B5730E26239FF54A00106E19 /* FeatureConfigurable.swift */,
+				B5A42A99217A3E0F00EB32CB /* KeyPathDescribable.swift */,
 				B589C20120C1EB72006A8FDB /* PaymentAmountValidatable.swift */,
 				B5E5032821B865A4008FBDAB /* PaymentRequestResolver.swift */,
 				B5860549222888C50048979D /* PhoneNumberEntryViewDisplayable.swift */,
