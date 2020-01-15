@@ -384,7 +384,6 @@
 		3BD085B923515D64006CE008 /* SetupFlowError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD085B823515D64006CE008 /* SetupFlowError.swift */; };
 		3BD7B73120D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD7B73020D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift */; };
 		3BDA207F203DE6F600CBA6B1 /* BiometricAuthenticationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA207E203DE6F600CBA6B1 /* BiometricAuthenticationManagerTests.swift */; };
-		3BDA2081203E17A700CBA6B1 /* BiometricError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA2080203E17A700CBA6B1 /* BiometricError.swift */; };
 		3BDA2085203E17E000CBA6B1 /* BiometricErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA2084203E17E000CBA6B1 /* BiometricErrorTests.swift */; };
 		3BDA364120B2FCF8001E24FB /* SuccessFailViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA364020B2FCF8001E24FB /* SuccessFailViewControllerTests.swift */; };
 		3BDA364320B4D50E001E24FB /* SpendableBalanceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA364220B4D50E001E24FB /* SpendableBalanceError.swift */; };
@@ -1520,7 +1519,6 @@
 		3BD085B823515D64006CE008 /* SetupFlowError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupFlowError.swift; sourceTree = "<group>"; };
 		3BD7B73020D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontallyPaginatedCollectionViewLayout.swift; sourceTree = "<group>"; };
 		3BDA207E203DE6F600CBA6B1 /* BiometricAuthenticationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricAuthenticationManagerTests.swift; sourceTree = "<group>"; };
-		3BDA2080203E17A700CBA6B1 /* BiometricError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricError.swift; sourceTree = "<group>"; };
 		3BDA2084203E17E000CBA6B1 /* BiometricErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricErrorTests.swift; sourceTree = "<group>"; };
 		3BDA364020B2FCF8001E24FB /* SuccessFailViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessFailViewControllerTests.swift; sourceTree = "<group>"; };
 		3BDA364220B4D50E001E24FB /* SpendableBalanceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendableBalanceError.swift; sourceTree = "<group>"; };
@@ -2960,7 +2958,6 @@
 		3BDA2082203E17BA00CBA6B1 /* Errors */ = {
 			isa = PBXGroup;
 			children = (
-				3BDA2080203E17A700CBA6B1 /* BiometricError.swift */,
 				3BDA364220B4D50E001E24FB /* SpendableBalanceError.swift */,
 				3BC23EF120BDCA5100877BB6 /* TransactionDataError.swift */,
 				B50384C520B304780091AB37 /* DBTError.swift */,
@@ -4833,7 +4830,6 @@
 				B5FBE42020DD76550029D273 /* SettingsViewModel.swift in Sources */,
 				A2B4EB022326D406005D0A65 /* NSDecimalNumber+Arithmetic.swift in Sources */,
 				B52A25CD2077FFF600F636A1 /* Date+Extensions.swift in Sources */,
-				3BDA2081203E17A700CBA6B1 /* BiometricError.swift in Sources */,
 				3B27D3FA225E84E900291B82 /* GetBitcoinViewController.swift in Sources */,
 				3BA9F5F2208F61A70047C213 /* BTCTestnetCoin.swift in Sources */,
 				5B91E3982076BEB500DD9A86 /* DrawerViewController.swift in Sources */,

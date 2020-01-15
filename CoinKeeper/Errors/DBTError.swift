@@ -8,6 +8,7 @@
 
 import Foundation
 import Moya
+import LocalAuthentication
 
 protocol DBTErrorType: LocalizedError {
   var displayTitle: String { get }
@@ -170,6 +171,37 @@ struct DBTError {
       }
     }
   } //End of Wallet errors
+
+  enum Biometrics: DBTErrorType {
+    case authenticationFailed
+    case userCancel
+    case systemCancel
+    case lockedOut
+    case notEnrolled
+    case notAvailable
+    case unknown
+
+    init(code: LAError.Code) {
+      switch code {
+      case .authenticationFailed: self = .authenticationFailed
+      case .userCancel: self = .userCancel
+      case .systemCancel: self = .systemCancel
+      case LAError.Code.biometryLockout: self = .lockedOut
+      case LAError.Code.biometryNotEnrolled: self = .notEnrolled
+      case LAError.Code.biometryNotAvailable: self = .notAvailable
+      default: self = .unknown
+      }
+    }
+
+    var displayMessage: String {
+      switch self {
+      case .authenticationFailed: return "Authentication failed"
+      case .notEnrolled: return "Not enrolled in biometric authentication"
+      case .notAvailable: return "Biometric authentication is not available"
+      default: return "If you are enrolled in biometric authentication, please try again."
+      }
+    }
+  } //End of Biometrics errors
 
 }
 
