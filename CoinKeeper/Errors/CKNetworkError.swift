@@ -9,8 +9,19 @@
 import Foundation
 import Moya
 
-protocol DisplayableError: Error {
+protocol DisplayableError: LocalizedError {
+  var displayTitle: String { get }
   var displayMessage: String { get }
+}
+
+extension DisplayableError {
+
+  ///Customize this to show a different title in the alert shown to the user.
+  var displayTitle: String { "Error" }
+
+  ///Supply the `displayMessage` as the default value for `localizedDescription`.
+  ///Errors conforming to `DisplayableError` can still provide their own implementation for `LocalizedError`.
+  var errorDescription: String? { displayMessage }
 }
 
 ///Useful to avoid an extension on Error, which would conform all Error objects to DisplayableError
