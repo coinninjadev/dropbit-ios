@@ -432,15 +432,15 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
   func payInvitationRequest(for response: WalletAddressRequestResponse, in context: NSManagedObjectContext) -> Promise<Void> {
     guard let pendingInvitation = CKMInvitation.find(withId: response.id, in: context), pendingInvitation.isFulfillable else {
-        return Promise(error: PendingInvitationError.noSentInvitationExistsForID)
+        return Promise(error: DBTError.PendingInvitation.noSentInvitationExistsForID)
     }
 
-    guard let paymentTarget = response.address else { return Promise(error: PendingInvitationError.noAddressProvided) }
-    guard let delegate = paymentSendingDelegate else { return Promise(error: PendingInvitationError.noPaymentDelegate) }
+    guard let paymentTarget = response.address else { return Promise(error: DBTError.PendingInvitation.noAddressProvided) }
+    guard let delegate = paymentSendingDelegate else { return Promise(error: DBTError.PendingInvitation.noPaymentDelegate) }
 
     if response.addressTypeCase == .lightning {
       guard paymentTarget != WalletAddressesTarget.autogenerateInvoicesAddressValue else {
-        return Promise(error: PendingInvitationError.noInvoiceProvided)
+        return Promise(error: DBTError.PendingInvitation.noInvoiceProvided)
       }
     }
 

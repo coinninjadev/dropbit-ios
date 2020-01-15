@@ -144,6 +144,30 @@ struct DBTError {
     }
   }
 
+  enum PendingInvitation: DBTErrorType {
+    case noPendingInvitationExistsForID
+    case noSentInvitationExistsForID
+    case noAddressProvided
+    case noInvoiceProvided
+    case noPaymentDelegate
+    case insufficientFundsForInvitationWithID(String)
+    case insufficientFeeForInvitationWithID(String)
+
+    var displayMessage: String {
+      switch self {
+      case .noPendingInvitationExistsForID:   return "No pending invitation exists for ID"
+      case .noSentInvitationExistsForID:      return "No sent invitation exists for ID"
+      case .noAddressProvided:                return "No address provided"
+      case .noInvoiceProvided:                return "No invoice provided"
+      case .noPaymentDelegate:                return "No payment delegate"
+      case .insufficientFundsForInvitationWithID(let id):
+        return "Insufficient funds for invitation with ID: \(id)"
+      case .insufficientFeeForInvitationWithID(let id):
+        return "Insufficient fee for invitation with ID: \(id)"
+      }
+    }
+  }
+
   enum Persistence: DBTErrorType {
     case missingValue(key: String)
     case noWalletWords

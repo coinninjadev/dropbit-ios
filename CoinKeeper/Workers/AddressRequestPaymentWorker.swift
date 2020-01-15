@@ -154,11 +154,11 @@ class LightningAddressRequestPaymentWorker: AddressRequestPaymentWorker {
     let satsToPay = pendingInvitation.totalPendingAmount
     let spendableBalance = self.walletManager.spendableBalance(in: context)
     guard spendableBalance.lightning >= satsToPay else {
-      return Promise(error: PendingInvitationError.insufficientFundsForInvitationWithID(responseId))
+      return Promise(error: DBTError.PendingInvitation.insufficientFundsForInvitationWithID(responseId))
     }
 
     guard let paymentDelegate = paymentSendingDelegate else {
-      return Promise(error: PendingInvitationError.noPaymentDelegate)
+      return Promise(error: DBTError.PendingInvitation.noPaymentDelegate)
     }
 
     let lightningInputs = LightningPaymentInputs(sats: satsToPay, invoice: invoice, sharedPayload: outgoingTxData.sharedPayloadDTO)
@@ -204,7 +204,7 @@ class OnChainAddressRequestPaymentWorker: AddressRequestPaymentWorker {
           let spendableBalance = self.walletManager.spendableBalance(in: context)
           let totalPendingAmount = pendingInvitation.totalPendingAmount
           guard spendableBalance.onChain >= totalPendingAmount else {
-            return Promise(error: PendingInvitationError.insufficientFundsForInvitationWithID(responseId))
+            return Promise(error: DBTError.PendingInvitation.insufficientFundsForInvitationWithID(responseId))
           }
 
           return self.walletManager.transactionData(forPayment: btcAmount, to: address, withFlatFee: pendingInvitation.fees)
@@ -230,9 +230,9 @@ class OnChainAddressRequestPaymentWorker: AddressRequestPaymentWorker {
     if let txDataError = error as? DBTError.TransactionData {
       switch txDataError {
       case .insufficientFunds, .noSpendableFunds:
-        return Promise(error: PendingInvitationError.insufficientFundsForInvitationWithID(responseId))
+        return Promise(error: DBTError.PendingInvitation.insufficientFundsForInvitationWithID(responseId))
       case .insufficientFee:
-        return Promise(error: PendingInvitationError.insufficientFeeForInvitationWithID(responseId))
+        return Promise(error: DBTError.PendingInvitation.insufficientFeeForInvitationWithID(responseId))
       }
     }
 
