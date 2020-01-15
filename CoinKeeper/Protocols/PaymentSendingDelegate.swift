@@ -45,7 +45,7 @@ extension PaymentSendingDelegate {
 
   func handleFailure(error: Error?, action: CKCompletion? = nil) {
     var localizedDescription = ""
-    if let txError = error as? TransactionDataError {
+    if let txError = error as? DBTError.TransactionData {
       localizedDescription = txError.displayMessage
     } else {
       localizedDescription = error?.localizedDescription ?? "Unknown error"

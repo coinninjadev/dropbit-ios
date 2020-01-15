@@ -130,7 +130,7 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
       }
       .catch { (error: Error) in
         log.error(error, message: "Failed to create send max transaction.")
-        if let txError = error as? TransactionDataError {
+        if let txError = error as? DBTError.TransactionData {
           switch txError {
           case .noSpendableFunds:
             controller.updateUI(with: nil, txMetadata: nil)

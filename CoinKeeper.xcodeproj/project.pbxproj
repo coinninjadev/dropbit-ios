@@ -364,7 +364,6 @@
 		3BBDF7E822E780AD00E35EA0 /* TransactionHistoryDetailsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBDF7E722E780AD00E35EA0 /* TransactionHistoryDetailsViewControllerTests.swift */; };
 		3BBEE0C1208A5DA500A7DF9F /* CKMDerivativePath+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBEE0B7208A5DA500A7DF9F /* CKMDerivativePath+CoreDataClass.swift */; };
 		3BBEE0C2208A5DA500A7DF9F /* CKMDerivativePath+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBEE0B8208A5DA500A7DF9F /* CKMDerivativePath+CoreDataProperties.swift */; };
-		3BC23EF220BDCA5100877BB6 /* TransactionDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC23EF120BDCA5100877BB6 /* TransactionDataError.swift */; };
 		3BC289B623C8C6F6005B9933 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3BC289B523C8C6F6005B9933 /* PromiseKit */; };
 		3BC456FF20288D7300CC36B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BC456FE20288D7300CC36B1 /* LaunchScreen.storyboard */; };
 		3BC9E5522047440900444A53 /* BackupRecoveryWordCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC9E5512047440900444A53 /* BackupRecoveryWordCellData.swift */; };
@@ -1498,7 +1497,6 @@
 		3BBDF7E722E780AD00E35EA0 /* TransactionHistoryDetailsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailsViewControllerTests.swift; sourceTree = "<group>"; };
 		3BBEE0B7208A5DA500A7DF9F /* CKMDerivativePath+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMDerivativePath+CoreDataClass.swift"; sourceTree = "<group>"; };
 		3BBEE0B8208A5DA500A7DF9F /* CKMDerivativePath+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMDerivativePath+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		3BC23EF120BDCA5100877BB6 /* TransactionDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDataError.swift; sourceTree = "<group>"; };
 		3BC456FE20288D7300CC36B1 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3BC8011821B995DF008D15E6 /* Model v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model v2.xcdatamodel"; sourceTree = "<group>"; };
 		3BC9E5512047440900444A53 /* BackupRecoveryWordCellData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRecoveryWordCellData.swift; sourceTree = "<group>"; };
@@ -2957,7 +2955,6 @@
 			isa = PBXGroup;
 			children = (
 				B50384C520B304780091AB37 /* DBTError.swift */,
-				3BC23EF120BDCA5100877BB6 /* TransactionDataError.swift */,
 				B5F6EC2422554CF20045633B /* TwilioErrorDelegate.swift */,
 				B5654CB9238837990062CB01 /* CKSystemError.swift */,
 				3BF1123B22A7F35600C776AE /* CKOAuthError.swift */,
@@ -4830,7 +4827,6 @@
 				3B27D3FA225E84E900291B82 /* GetBitcoinViewController.swift in Sources */,
 				3BA9F5F2208F61A70047C213 /* BTCTestnetCoin.swift in Sources */,
 				5B91E3982076BEB500DD9A86 /* DrawerViewController.swift in Sources */,
-				3BC23EF220BDCA5100877BB6 /* TransactionDataError.swift in Sources */,
 				3BA9F60D208F6EA20047C213 /* AppCoordinator+CurrencyValueManager.swift in Sources */,
 				B51D55E12346300000AEAA60 /* TransactionViewModelObject+CKMWalletEntry.swift in Sources */,
 				307DF12121517A8800260369 /* VersionInfo.swift in Sources */,

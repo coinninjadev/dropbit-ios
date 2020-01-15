@@ -34,7 +34,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
       if outgoingInvitationDTO.walletTxType == .onChain {
         guard outgoingInvitationDTO.fee > 0 else {
           log.error("DropBit invitation fee is zero")
-          self.handleFailure(error: TransactionDataError.insufficientFee)
+          self.handleFailure(error: DBTError.TransactionData.insufficientFee)
           return
         }
       }
@@ -75,7 +75,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
       if outgoingInvitationDTO.walletTxType == .onChain {
         guard outgoingInvitationDTO.fee > 0 else {
           log.error("DropBit invitation fee is zero")
-          strongSelf.handleFailure(error: TransactionDataError.insufficientFee)
+          strongSelf.handleFailure(error: DBTError.TransactionData.insufficientFee)
           return
         }
       }
@@ -252,7 +252,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     if let networkError = error as? DBTError.Network, case .rateLimitExceeded = networkError {
       errorMessage = "For security reasons we must limit the number of DropBits sent too rapidly.  Please briefly wait and try sending again."
 
-    } else if let txDataError = error as? TransactionDataError, case .insufficientFee = txDataError {
+    } else if let txDataError = error as? DBTError.TransactionData, case .insufficientFee = txDataError {
       errorMessage = txDataError.displayMessage
 
     } else {

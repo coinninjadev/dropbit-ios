@@ -213,6 +213,31 @@ struct DBTError {
     }
   } //End of Biometrics errors
 
+  enum TransactionData: DBTErrorType {
+    case insufficientFunds
+    case insufficientFee
+    case noSpendableFunds
+
+    var displayTitle: String {
+      switch self {
+      case .insufficientFunds: return "Insufficient Funds"
+      case .insufficientFee: return "Insufficient Fee"
+      case .noSpendableFunds: return "No Spendable Funds"
+      }
+    }
+
+    var displayMessage: String {
+      switch self {
+      case .insufficientFunds:
+        return "You can't send more than you have in your wallet. This may be due to unconfirmed transactions."
+      case .insufficientFee:
+        return "Something went wrong calculating a fee for this DropBit invitation, please try again."
+      case .noSpendableFunds:
+        return "This wallet has no known unspent transaction outputs."
+      }
+    }
+  }
+
 }
 
 /// The raw value of each case matches the error description returned in the body of the error response from our API.

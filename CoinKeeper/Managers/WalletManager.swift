@@ -282,7 +282,7 @@ class WalletManager: WalletManagerType {
       if let data = txData {
         seal.fulfill(data)
       } else {
-        seal.reject(TransactionDataError.insufficientFunds)
+        seal.reject(DBTError.TransactionData.insufficientFunds)
       }
     }
   }
@@ -348,7 +348,7 @@ class WalletManager: WalletManagerType {
     return Promise { seal in
       guard flatFee > 0 else {
         log.error("flatFee was zero. payment: %d, to address: %@", privateArgs: [payment, address])
-        seal.reject(TransactionDataError.insufficientFee)
+        seal.reject(DBTError.TransactionData.insufficientFee)
         return
       }
       let bgContext = persistenceManager.createBackgroundContext()
@@ -383,7 +383,7 @@ class WalletManager: WalletManagerType {
           if let data = txData?.transactionData {
             seal.fulfill(data)
           } else {
-            seal.reject(TransactionDataError.insufficientFunds)
+            seal.reject(DBTError.TransactionData.insufficientFunds)
           }
         } catch {
           seal.reject(error)
@@ -398,7 +398,7 @@ class WalletManager: WalletManagerType {
       if let data = maybeTxData {
         seal.fulfill(data)
       } else {
-        seal.reject(TransactionDataError.insufficientFunds)
+        seal.reject(DBTError.TransactionData.insufficientFunds)
       }
     }
   }
@@ -434,7 +434,7 @@ class WalletManager: WalletManagerType {
       let context = persistenceManager.viewContext
       let unspent = CKMVout.unspentBalance(in: context)
       guard unspent > 0 else {
-        seal.reject(TransactionDataError.noSpendableFunds)
+        seal.reject(DBTError.TransactionData.noSpendableFunds)
         return
       }
 
@@ -442,7 +442,7 @@ class WalletManager: WalletManagerType {
       if let data = maybeTxData {
         seal.fulfill(data)
       } else {
-        seal.reject(TransactionDataError.insufficientFunds)
+        seal.reject(DBTError.TransactionData.insufficientFunds)
       }
     }
   }

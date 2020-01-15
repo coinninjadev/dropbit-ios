@@ -227,7 +227,7 @@ class OnChainAddressRequestPaymentWorker: AddressRequestPaymentWorker {
       return Promise(error: error)
     }
 
-    if let txDataError = error as? TransactionDataError {
+    if let txDataError = error as? DBTError.TransactionData {
       switch txDataError {
       case .insufficientFunds, .noSpendableFunds:
         return Promise(error: PendingInvitationError.insufficientFundsForInvitationWithID(responseId))

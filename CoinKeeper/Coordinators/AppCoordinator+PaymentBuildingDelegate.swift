@@ -75,7 +75,7 @@ extension AppCoordinator: PaymentBuildingDelegate {
             return Promise(error: error)
           }
         } else {
-          return Promise(error: TransactionDataError.insufficientFunds)
+          return Promise(error: DBTError.TransactionData.insufficientFunds)
         }
     }
   }
