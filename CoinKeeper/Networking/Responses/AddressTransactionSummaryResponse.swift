@@ -66,12 +66,12 @@ extension AddressTransactionSummaryResponse {
   static func validateResponse(_ response: AddressTransactionSummaryResponse) throws -> AddressTransactionSummaryResponse {
     guard response.vin >= 0 else {
       let path = AddressTransactionSummaryResponseKey.vin.path
-      throw CKNetworkError.invalidValue(keyPath: path, value: String(response.vin), response: response)
+      throw DBTError.Network.invalidValue(keyPath: path, value: String(response.vin), response: response)
     }
 
     guard response.vout >= 0 else {
       let path = AddressTransactionSummaryResponseKey.vout.path
-      throw CKNetworkError.invalidValue(keyPath: path, value: String(response.vout), response: response)
+      throw DBTError.Network.invalidValue(keyPath: path, value: String(response.vout), response: response)
     }
 
     let stringValidatedResponse = try response.validateStringValues()

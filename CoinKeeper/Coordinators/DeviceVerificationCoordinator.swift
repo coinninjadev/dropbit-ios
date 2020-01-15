@@ -270,7 +270,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
   private func handleUserRegistrationFailure(withError error: Error,
                                              phoneNumber: GlobalPhoneNumber,
                                              delegate: DeviceVerificationCoordinatorDelegate) {
-    guard let networkError = CKNetworkError(for: error) else {
+    guard let networkError = DBTError.Network(for: error) else {
       self.showVerificationErrorAlert(.general, delegate: delegate)
       return
     }
@@ -289,7 +289,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
   }
 
   private func handleCodeEntryFailure(withError error: Error, delegate: DeviceVerificationCoordinatorDelegate) {
-    guard let networkError = CKNetworkError(for: error) else {
+    guard let networkError = DBTError.Network(for: error) else {
       self.showVerificationErrorAlert(.general, delegate: delegate)
       return
     }

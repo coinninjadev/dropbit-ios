@@ -100,7 +100,7 @@ extension UserTarget {
     }
   }
 
-  func customNetworkError(for moyaError: MoyaError) -> CKNetworkError? {
+  func customNetworkError(for moyaError: MoyaError) -> DBTError.Network? {
     guard let statusCode = moyaError.unacceptableStatusCode, let response = moyaError.response else {
       return nil
     }
@@ -128,7 +128,7 @@ extension UserTarget {
     }
   }
 
-  private func countryCodeDisabledError() -> CKNetworkError? {
+  private func countryCodeDisabledError() -> DBTError.Network? {
     switch self {
     case .create, .resendVerification:
       return .countryCodeDisabled

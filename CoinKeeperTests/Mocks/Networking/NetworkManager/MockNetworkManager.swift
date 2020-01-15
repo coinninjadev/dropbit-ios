@@ -37,8 +37,8 @@ class MockNetworkManager: NetworkManagerType {
   var latestFeesWasCalled = false
   var getUserWasCalled = false
   var getWalletWasCalled = false
-  var getUserError: CKNetworkError?
-  var getWalletError: CKNetworkError?
+  var getUserError: DBTError.Network?
+  var getWalletError: DBTError.Network?
 
   var walletCheckInShouldSucceed = true
 

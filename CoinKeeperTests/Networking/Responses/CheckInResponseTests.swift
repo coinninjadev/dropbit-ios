@@ -50,7 +50,7 @@ class CheckInResponseTests: XCTestCase, ResponseStringsTestable {
     let negativeCheckIn = checkIn(withPricing: PriceResponse(last: -1), sample: sample)
 
     XCTAssertThrowsError(try CheckInResponse.validateResponse(negativeCheckIn), "Negative price should throw error", { error in
-      if let networkError = error as? CKNetworkError,
+      if let networkError = error as? DBTError.Network,
         case let .invalidValue(keyPath, value, _) = networkError {
         XCTAssertEqual(keyPath, PriceResponseKey.last.path, "Incorrect key description")
         XCTAssertEqual(value, "-1.0", "Incorrect value description")
@@ -63,7 +63,7 @@ class CheckInResponseTests: XCTestCase, ResponseStringsTestable {
 
     XCTAssertThrowsError(try CheckInResponse.validateResponse(zeroCheckIn),
                          "Zero price should throw error", { error in
-                          if let networkError = error as? CKNetworkError {
+                          if let networkError = error as? DBTError.Network {
                             let errorDesc = networkError.errorDescription ?? "-"
                             log.error("Identified sample price of 0 as invalid: \(errorDesc)")
                           }
@@ -85,7 +85,7 @@ class CheckInResponseTests: XCTestCase, ResponseStringsTestable {
 
     XCTAssertThrowsError(try CheckInResponse.validateResponse(maxCheckIn),
                          "Negative max fee should throw error", { error in
-                          if let networkError = error as? CKNetworkError,
+                          if let networkError = error as? DBTError.Network,
                             case let .invalidValue(keyPath, value, _) = networkError {
                             XCTAssertEqual(keyPath, FeesResponseKey.fast.path, "Incorrect key description")
                             XCTAssertEqual(value, "-10.0", "Incorrect value description")
@@ -105,7 +105,7 @@ class CheckInResponseTests: XCTestCase, ResponseStringsTestable {
     let excessiveMaxCheckIn = checkIn(withFees: generateFeesResponse(max: excessiveFee), sample: sample)
     XCTAssertThrowsError(try CheckInResponse.validateResponse(excessiveMaxCheckIn),
                          "Excessive max fee should throw error", { error in
-                          if let networkError = error as? CKNetworkError,
+                          if let networkError = error as? DBTError.Network,
                             case let .invalidValue(keyPath, value, _) = networkError {
                             XCTAssertEqual(keyPath, FeesResponseKey.fast.path, "Incorrect key description")
                             XCTAssertEqual(value, "10000001.0", "Incorrect value description")

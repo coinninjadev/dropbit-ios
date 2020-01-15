@@ -17,7 +17,7 @@ struct DeviceVerificationErrorMessageFactory {
   let twilio = "The verification code could not be sent. Please try again later."
 
   func messageForResendCodeFailure(error: Error) -> String {
-    if let networkError = CKNetworkError(for: error),
+    if let networkError = DBTError.Network(for: error),
       case .rateLimitExceeded = networkError {
       log.error(error, message: "Rate limit exceeded when verifying phone number.")
       return "Verification codes can only be requested every 30 seconds"

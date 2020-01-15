@@ -249,7 +249,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
 
     var errorMessage = ""
 
-    if let networkError = error as? CKNetworkError, case .rateLimitExceeded = networkError {
+    if let networkError = error as? DBTError.Network, case .rateLimitExceeded = networkError {
       errorMessage = "For security reasons we must limit the number of DropBits sent too rapidly.  Please briefly wait and try sending again."
 
     } else if let txDataError = error as? TransactionDataError, case .insufficientFee = txDataError {
@@ -298,7 +298,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
                                                  successFailVC: SuccessFailViewController,
                                                  in context: NSManagedObjectContext) {
     let dbtError = DBTError.cast(error)
-    if let networkError = error as? CKNetworkError,
+    if let networkError = error as? DBTError.Network,
       case let .twilioError(response) = networkError,
       let typedResponse = try? response.map(WalletAddressRequestResponse.self, using: WalletAddressRequestResponse.decoder) {
 

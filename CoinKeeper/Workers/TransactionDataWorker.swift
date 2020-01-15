@@ -299,7 +299,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
         return Promise.value(combinedDTO)
     }
     .recover { (error: Error) -> Promise<TransactionDataWorkerDTO> in
-      if let authError = error as? CKNetworkError, case .unauthorized = authError {
+      if let authError = error as? DBTError.Network, case .unauthorized = authError {
         log.info("Request unauthorized, but ok in this scenario. \(error.localizedDescription)")
         return Promise.value(dto)
       } else {
@@ -398,7 +398,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
       }
       .recover { (error: Error) -> Promise<[AddressTransactionSummaryResponse]> in
         var isEmptyResponseError = false
-        if let networkError = error as? CKNetworkError, case .emptyResponse = networkError {
+        if let networkError = error as? DBTError.Network, case .emptyResponse = networkError {
           isEmptyResponseError = true
         }
 
@@ -615,7 +615,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     }
     .then { txid in self.networkManager.fetchDayAveragePrice(for: txid) }
     .recover { error -> Promise<PriceTransactionResponse> in
-        if let providerError = error as? CKNetworkError {
+        if let providerError = error as? DBTError.Network {
           switch providerError {
           case .recordNotFound,
                .unknownServerError:

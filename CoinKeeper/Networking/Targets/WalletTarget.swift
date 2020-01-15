@@ -54,7 +54,7 @@ extension WalletTarget {
     }
   }
 
-  func customNetworkError(for moyaError: MoyaError) -> CKNetworkError? {
+  func customNetworkError(for moyaError: MoyaError) -> DBTError.Network? {
     if let statusCode = moyaError.unacceptableStatusCode,
       statusCode == 401,
       case .get = self,

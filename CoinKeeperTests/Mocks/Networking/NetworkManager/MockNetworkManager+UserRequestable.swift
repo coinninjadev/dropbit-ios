@@ -32,7 +32,7 @@ extension MockNetworkManager: UserRequestable {
 
   func getUser() -> Promise<UserResponse> {
     getUserWasCalled = true
-    let error = getUserError ?? CKNetworkError.emptyResponse
+    let error = getUserError ?? DBTError.Network.emptyResponse
     // reject so that intermediate promises don't need to be filled in and the catch block
     // will call the completion handler with the test's assertions
     return Promise { $0.reject(error) }

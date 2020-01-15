@@ -111,7 +111,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
   func updateReceivedAddressRequests(in context: NSManagedObjectContext) -> Promise<Void> {
     guard persistenceManager.brokers.user.userId(in: context) != nil else {
-      return Promise(error: CKNetworkError.userNotVerified)
+      return Promise(error: DBTError.Network.userNotVerified)
     }
 
     return self.networkManager.getWalletAddressRequests(forSide: .received)

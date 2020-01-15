@@ -104,7 +104,7 @@ extension AppCoordinator: SerialQueueManagerDelegate {
   }
 
   /// This should only be called in response to errors on the getUser and getWallet routes to prevent unintended deverification
-  func handleAuthorizationError(_ networkError: CKNetworkError, recordType: RecordType, in context: NSManagedObjectContext) {
+  func handleAuthorizationError(_ networkError: DBTError.Network, recordType: RecordType, in context: NSManagedObjectContext) {
     guard case let .shouldUnverify(moyaError, recordType) = networkError else {
       return
     }
@@ -126,7 +126,7 @@ extension AppCoordinator: SerialQueueManagerDelegate {
     }
   }
 
-  func handleInvalidResponseError(_ networkError: CKNetworkError) {
+  func handleInvalidResponseError(_ networkError: DBTError.Network) {
     self.connectionManager.setAPIUnreachable(true)
 
     // Send flare

@@ -108,7 +108,7 @@ class NotificationManager: NSObject, NotificationManagerType {
     let deviceId = delegate.localDeviceId(self)
     return networkInteractor.getDevice(forLocalUUIDString: deviceId)
       .recover { (error) -> Promise<DeviceResponse> in
-        if let networkError = error as? CKNetworkError, case .recordNotFound = networkError {
+        if let networkError = error as? DBTError.Network, case .recordNotFound = networkError {
           return self.networkInteractor.createDevice(forLocalUUIDString: deviceId)
         } else {
           throw error

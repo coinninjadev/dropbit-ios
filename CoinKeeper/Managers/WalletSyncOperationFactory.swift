@@ -193,7 +193,7 @@ class WalletSyncOperationFactory {
   }
 
   private func recoverSyncError(_ error: Error) -> Promise<Void> {
-    if let providerError = error as? CKNetworkError {
+    if let providerError = error as? DBTError.Network {
       switch providerError {
       case .userNotVerified:  return Promise.value(())
       default:                return Promise(error: error)
@@ -238,7 +238,7 @@ class WalletSyncOperationFactory {
       return dependencies.networkManager
         .getWallet()
         .recover { (error: Error) -> Promise<WalletResponse> in
-          if case CKNetworkError.unauthorized = error {
+          if case DBTError.Network.unauthorized = error {
             var flagsParser = WalletFlagsParser(flags: 0).setVersion(.v0).setPurpose(.BIP49)
             if let words = dependencies.persistenceManager.keychainManager.retrieveValue(for: .walletWords) as? [String],
               let newWalletManager = WalletManager(words: words, persistenceManager: dependencies.persistenceManager) {
@@ -282,7 +282,7 @@ class WalletSyncOperationFactory {
         delegate?.handleMissingWalletError(persistenceError)
       default: break
       }
-    } else if let networkError = error as? CKNetworkError {
+    } else if let networkError = error as? DBTError.Network {
       switch networkError {
       case .reachabilityFailed(let moyaError):
         delegate?.handleReachabilityError(moyaError)

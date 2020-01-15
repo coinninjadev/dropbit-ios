@@ -72,7 +72,7 @@ class UserIdentifiableManager: UserIdentifiableManagerType {
   func checkAndPersistVerificationStatus(from response: UserResponse,
                                          in context: NSManagedObjectContext) -> Promise<Void> {
     guard let statusCase = UserVerificationStatus(rawValue: response.status) else {
-      return Promise { $0.reject(CKNetworkError.responseMissingValue(keyPath: UserResponseKey.status.path)) }
+      return Promise { $0.reject(DBTError.Network.responseMissingValue(keyPath: UserResponseKey.status.path)) }
     }
     guard statusCase == .verified else {
       return Promise { $0.reject(UserProviderError.unexpectedStatus(statusCase)) }

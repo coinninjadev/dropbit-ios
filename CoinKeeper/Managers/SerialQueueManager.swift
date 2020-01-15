@@ -93,8 +93,8 @@ struct SyncConfig {
 }
 
 protocol NetworkErrorDelegate: AnyObject {
-  func handleAuthorizationError(_ networkError: CKNetworkError, recordType: RecordType, in context: NSManagedObjectContext)
-  func handleInvalidResponseError(_ networkError: CKNetworkError)
+  func handleAuthorizationError(_ networkError: DBTError.Network, recordType: RecordType, in context: NSManagedObjectContext)
+  func handleInvalidResponseError(_ networkError: DBTError.Network)
   func handleReachabilityError(_ underlyingError: MoyaError)
 }
 

@@ -33,14 +33,14 @@ class BlockchainInfoProvider {
               seal.fulfill(false)
 
             } catch {
-              seal.reject(CKNetworkError.badResponse)
+              seal.reject(DBTError.Network.badResponse)
             }
           default:
             switch response.statusCode {
             case 500:
               seal.fulfill(true) //confirmed that txid does not exist on BCI
             default:
-              seal.reject(CKNetworkError.unexpectedStatusCode(response.statusCode))
+              seal.reject(DBTError.Network.unexpectedStatusCode(response.statusCode))
             }
           }
         case .failure:

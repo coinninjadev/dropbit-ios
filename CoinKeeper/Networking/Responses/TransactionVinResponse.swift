@@ -83,13 +83,13 @@ struct TransactionVinResponse: ResponseDecodable {
 
   static func validateResponse(_ response: TransactionVinResponse) throws -> TransactionVinResponse {
     guard response.vout >= 0 else {
-      throw CKNetworkError.invalidValue(keyPath: TransactionVinResponseKey.vout.path,
+      throw DBTError.Network.invalidValue(keyPath: TransactionVinResponseKey.vout.path,
                                         value: String(response.vout),
                                         response: response)
     }
 
     guard response.value >= 0 else {
-      throw CKNetworkError.invalidValue(keyPath: TransactionVinResponseKey.value.path,
+      throw DBTError.Network.invalidValue(keyPath: TransactionVinResponseKey.value.path,
                                         value: String(response.value),
                                         response: response)
     }

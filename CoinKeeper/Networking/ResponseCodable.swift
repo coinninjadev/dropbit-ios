@@ -81,7 +81,7 @@ extension ResponseDecodable {
       guard stringValue.isNotEmpty else {
         let typeName = String(describing: response.self)
         // Swift cannot currently generate a description of the keyPath
-        throw CKNetworkError.invalidValue(keyPath: "\(typeName).unknownStringKey", value: stringValue, response: response)
+        throw DBTError.Network.invalidValue(keyPath: "\(typeName).unknownStringKey", value: stringValue, response: response)
       }
     }
 
@@ -91,7 +91,7 @@ extension ResponseDecodable {
         guard stringValue.isNotEmpty else {
           let typeName = String(describing: response.self)
           // Swift cannot currently generate a description of the keyPath
-          throw CKNetworkError.invalidValue(keyPath: "\(typeName).unknownStringArrayKey", value: stringValue, response: response)
+          throw DBTError.Network.invalidValue(keyPath: "\(typeName).unknownStringArrayKey", value: stringValue, response: response)
         }
       }
     }
