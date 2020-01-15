@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum MerchantPaymentRequestError: DisplayableError {
+enum MerchantPaymentRequestError: DBTErrorType {
   case expired(Date)
   case incorrectCurrency(String)
   case incorrectNetwork(String)

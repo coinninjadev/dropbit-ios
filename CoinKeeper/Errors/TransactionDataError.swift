@@ -6,7 +6,7 @@
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
 //
 
-enum TransactionDataError: DisplayableError {
+enum TransactionDataError: DBTErrorType {
   case insufficientFunds
   case insufficientFee
   case noSpendableFunds

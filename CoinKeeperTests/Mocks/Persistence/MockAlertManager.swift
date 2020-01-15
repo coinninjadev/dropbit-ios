@@ -46,6 +46,11 @@ class MockAlertManager: AlertManagerType {
     return alertManager.alert(withTitle: title, description: description, image: nil, style: .alert, actionConfigs: [])
   }
 
+  func defaultAlert(withError error: Error) -> AlertControllerType {
+    let dbtError = DBTErrorWrapper.wrap(error)
+    return defaultAlert(withTitle: dbtError.displayTitle, description: dbtError.displayMessage)
+  }
+
   func showBanner(with message: String, duration: AlertDuration) { }
   func showBanner(with message: String, duration: AlertDuration, alertKind kind: CKBannerViewKind) { }
   func showBanner(with message: String, alertKind kind: CKBannerViewKind) { }
@@ -113,7 +118,8 @@ class MockAlertManager: AlertManagerType {
   }
 
   func showError(message: String, forDuration duration: TimeInterval?) { }
-  func showError(_ error: DisplayableError, forDuration duration: TimeInterval?) { }
+  func showErrorHUD(message: String, forDuration duration: TimeInterval?) { }
+  func showErrorHUD(_ error: Error, forDuration duration: TimeInterval?) { }
 
   var wasAskedToShowActivityHUD = false
   func showActivityHUD(withStatus status: String?) {

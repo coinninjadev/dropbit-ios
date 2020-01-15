@@ -396,8 +396,7 @@ extension SendPaymentViewController {
       updateViewModel(withParsedRecipient: recipient)
     } catch {
       self.viewModel.paymentRecipient = nil
-      let wrappedError = DisplayableErrorWrapper.wrap(error)
-      delegate.viewControllerDidAttemptInvalidDestination(self, error: wrappedError)
+      delegate.viewControllerDidAttemptInvalidDestination(self, error: error)
     }
 
     updateViewWithModel()
@@ -444,9 +443,10 @@ extension SendPaymentViewController {
     }
   }
 
-  private func handleError(error: DisplayableError) {
+  private func handleError(error: Error) {
+    let dbtError = DBTErrorWrapper.wrap(error)
     self.alertManager?.hideActivityHUD(withDelay: nil) {
-      let viewModel = AlertControllerViewModel(title: "", description: error.displayMessage)
+      let viewModel = AlertControllerViewModel(title: "", description: dbtError.displayMessage)
       self.delegate.viewControllerDidRequestAlert(self, viewModel: viewModel)
     }
   }
@@ -801,8 +801,8 @@ extension SendPaymentViewController {
   }
 
   private func handleContactValidationError(_ error: Error) {
-    let displayableError = DisplayableErrorWrapper.wrap(error)
-    self.showValidatorAlert(for: displayableError, title: "")
+    let dbtError = DBTErrorWrapper.wrap(error)
+    self.showValidatorAlert(for: dbtError, title: "")
   }
 
   private func validateRegisteredContact(_ contact: ContactType, sharedPayload: SharedPayloadDTO) throws {

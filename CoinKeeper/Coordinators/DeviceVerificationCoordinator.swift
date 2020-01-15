@@ -343,7 +343,8 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
         }
         .catch { error in
           log.error(error, message: "Failed to register wallet")
-          let message = "Failed to register wallet: \(error.displayMessage)"
+          let wrapped = DBTErrorWrapper.wrap(error)
+          let message = "Failed to register wallet: \(wrapped.displayMessage)"
           DispatchQueue.main.async {
             viewController.updateErrorLabel(with: message)
           }

@@ -26,7 +26,7 @@ protocol CoinNinjaTargetType: TargetType {
   /// The target should return nil if no customization is needed and this protocol will fallback
   /// to the error message provided by the server or a general network error based on the status code.
   /// A default implementation makes this optional.
-  func customNetworkError(for moyaError: MoyaError) -> DisplayableError?
+  func customNetworkError(for moyaError: MoyaError) -> DBTErrorType?
 
 }
 
@@ -71,18 +71,18 @@ extension CoinNinjaTargetType {
     return nil
   }
 
-  func customNetworkError(for moyaError: MoyaError) -> DisplayableError? {
+  func customNetworkError(for moyaError: MoyaError) -> DBTErrorType? {
     return nil
   }
 
   // MARK: - Helper methods for conforming targets
 
   ///Returns an error appropriate for displaying to the user.
-  func displayableNetworkError(for moyaError: MoyaError) -> DisplayableError? {
+  func displayableNetworkError(for moyaError: MoyaError) -> DBTErrorType? {
     return customNetworkError(for: moyaError) ?? defaultNetworkError(for: moyaError)
   }
 
-  private func defaultNetworkError(for moyaError: MoyaError) -> DisplayableError? {
+  private func defaultNetworkError(for moyaError: MoyaError) -> DBTErrorType? {
     guard let statusCode = moyaError.response?.statusCode else {
       return CKNetworkError.reachabilityFailed(moyaError)
     }

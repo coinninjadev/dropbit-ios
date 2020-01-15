@@ -32,7 +32,7 @@ protocol ContactsViewControllerDelegate: ViewControllerDismissable, URLOpener {
                                           validSelectionDelegate: SelectedValidContactDelegate)
 
   func showAlertForInvalidContactOrPhoneNumber(contactName: String?, displayNumber: String)
-  func showAlertForTwitterAPIError(_ error: DisplayableError)
+  func showAlertForTwitterAPIError(_ error: Error)
   func viewController(_ viewController: UIViewController, searchForTwitterUsersWith searchTerm: String) -> Promise<[TwitterUser]>
   func viewControllerDidRequestDefaultTwitterFriends(_ viewController: UIViewController) -> Promise<[TwitterUser]>
   func viewController(_ viewController: UIViewController,

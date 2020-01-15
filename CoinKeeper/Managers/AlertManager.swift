@@ -327,6 +327,11 @@ class AlertManager: AlertManagerType {
                  actionConfigs: [okAlertActionConfig])
   }
 
+  func defaultAlert(withError error: Error) -> AlertControllerType {
+    let dbtError = DBTErrorWrapper.wrap(error)
+    return defaultAlert(withTitle: dbtError.displayTitle, description: dbtError.displayMessage)
+  }
+
   func alertActionSheet(withTitle title: String?,
                         message: String?,
                         options: [AlertActionConfiguration]) -> UIAlertController {
@@ -362,8 +367,8 @@ class AlertManager: AlertManagerType {
   }
 
   func showErrorHUD(_ error: Error, forDuration duration: TimeInterval?) {
-    let displayableError = DisplayableErrorWrapper.wrap(error)
-    showErrorHUD(message: displayableError.displayMessage, forDuration: duration)
+    let dbtError = DBTErrorWrapper.wrap(error)
+    showErrorHUD(message: dbtError.displayMessage, forDuration: duration)
   }
 
   private func pmAlertStyle(from style: AlertActionStyle) -> PMAlertActionStyle {

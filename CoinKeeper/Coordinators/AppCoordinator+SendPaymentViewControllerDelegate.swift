@@ -154,7 +154,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     }
   }
 
-  func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: DisplayableError?) {
+  func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: Error?) {
     guard let err = error else { return }
 
     let generalMessage = "Invalid bitcoin address or phone number."
@@ -167,7 +167,8 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
       fullMessage = validationError.displayMessage
 
     } else {
-      fullMessage = "\(generalMessage) \(err.displayMessage)."
+      let dbtError = DBTErrorWrapper.wrap(err)
+      fullMessage = "\(generalMessage) \(dbtError.displayMessage)."
     }
 
     alertManager.showErrorHUD(message: fullMessage, forDuration: 3.5)

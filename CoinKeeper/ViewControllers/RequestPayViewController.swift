@@ -272,7 +272,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
         self.addAmountButton.isHidden = true
       }.catch { error in
         SVProgressHUD.dismiss()
-        if let alert = self.alertManager?.defaultAlert(withTitle: "Error", description: error.displayMessage) {
+        if let alert = self.alertManager?.defaultAlert(withError: error) {
           self.present(alert, animated: true, completion: nil)
         }
     }

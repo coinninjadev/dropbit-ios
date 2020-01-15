@@ -47,6 +47,7 @@ protocol AlertManagerType: CKBannerViewDelegate {
   func showErrorHUD(message: String, forDuration duration: TimeInterval?)
   func showErrorHUD(_ error: Error, forDuration duration: TimeInterval?)
   func defaultAlert(withTitle title: String?, description: String?) -> AlertControllerType
+  func defaultAlert(withError error: Error) -> AlertControllerType
 
   // Workaround for default parameter
   func showBanner(with message: String)

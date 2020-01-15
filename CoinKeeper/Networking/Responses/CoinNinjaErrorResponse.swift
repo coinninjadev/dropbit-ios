@@ -9,7 +9,7 @@
 import Foundation
 
 /// All errors returned by the Coin Ninja API use this response format
-struct CoinNinjaErrorResponse: Codable, DisplayableError {
+struct CoinNinjaErrorResponse: Codable, DBTErrorType {
   let status: Int?
   let error: String
   let message: String

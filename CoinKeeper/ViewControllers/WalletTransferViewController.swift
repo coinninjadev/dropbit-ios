@@ -39,7 +39,7 @@ BalanceDataSource & AnalyticsManagerAccessType & LightningLoadable {
   func viewControllerDidConfirmWithdrawMax(_ viewController: UIViewController)
   func viewControllerDidRequestWithdrawMax(_ viewController: UIViewController) -> Promise<LNTransactionResponse>
   func viewControllerNetworkError(_ error: Error)
-  func handleLightningLoadError(_ error: DisplayableError)
+  func handleLightningLoadError(_ error: Error)
 }
 
 enum TransferDirection {
@@ -173,8 +173,8 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
           self.disableConfirmButton()
       }
     } catch {
-      let displayableError = DisplayableErrorWrapper.wrap(error)
-      self.delegate.handleLightningLoadError(displayableError)
+      let dbtError = DBTErrorWrapper.wrap(error)
+      self.delegate.handleLightningLoadError(dbtError)
       self.disableConfirmButton()
     }
   }
@@ -253,8 +253,8 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
           self.disableConfirmButton()
         }
       } catch {
-        let displayableError = DisplayableErrorWrapper.wrap(error)
-        delegate.handleLightningLoadError(displayableError)
+        let dbtError = DBTErrorWrapper.wrap(error)
+        delegate.handleLightningLoadError(dbtError)
         self.disableConfirmButton()
       }
 

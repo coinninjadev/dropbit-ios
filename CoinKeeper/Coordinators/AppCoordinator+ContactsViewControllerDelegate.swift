@@ -49,8 +49,9 @@ extension AppCoordinator: ContactsViewControllerDelegate {
     self.navigationController.topViewController()?.present(alert, animated: true)
   }
 
-  func showAlertForTwitterAPIError(_ error: DisplayableError) {
-    var message = "Please try again later or contact us for assistance. \n\nError: \(error.displayMessage)"
+  func showAlertForTwitterAPIError(_ error: Error) {
+    let wrapped = DBTErrorWrapper.wrap(error)
+    var message = "Please try again later or contact us for assistance. \n\nError: \(wrapped.displayMessage)"
     if let twitterError = error as? TwitterAPIError {
       message = twitterError.displayMessage
     }
@@ -75,8 +76,9 @@ extension AppCoordinator: ContactsViewControllerDelegate {
     return contactCacheManager.predicate(forSearch: searchText)
   }
 
-  func viewControllerDidEncounterError(_ viewController: UIViewController, error: DisplayableError) {
-    let title = "Error", detail = "Unable to connect to server. Please try again. \n\n\(error.displayMessage)"
+  func viewControllerDidEncounterError(_ viewController: UIViewController, error: Error) {
+    let wrapped = DBTErrorWrapper.wrap(error)
+    let title = "Error", detail = "Unable to connect to server. Please try again. \n\n\(wrapped.displayMessage)"
     let okConfig = AlertActionConfiguration(title: "OK", style: .default) {
       viewController.dismiss(animated: true, completion: nil)
     }

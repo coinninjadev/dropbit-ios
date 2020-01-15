@@ -9,23 +9,27 @@
 import Foundation
 import Moya
 
-protocol DisplayableError: LocalizedError {
+protocol DBTErrorType: LocalizedError {
   var displayTitle: String { get }
   var displayMessage: String { get }
+  var debugMessage: String { get }
 }
 
-extension DisplayableError {
+extension DBTErrorType {
 
   ///Customize this to show a different title in the alert shown to the user.
   var displayTitle: String { "Error" }
 
   ///Supply the `displayMessage` as the default value for `localizedDescription`.
-  ///Errors conforming to `DisplayableError` can still provide their own implementation for `LocalizedError`.
+  ///Errors conforming to `DBTErrorType` can still provide their own implementation for `LocalizedError`.
   var errorDescription: String? { displayMessage }
+
+  ///Customize this to provide more details for logging/debugging purposes.
+  var debugMessage: String { displayMessage }
 }
 
-///Useful to avoid an extension on Error, which would conform all Error objects to DisplayableError
-struct DisplayableErrorWrapper: DisplayableError {
+///Useful to avoid an extension on Error, which would conform all Error objects to DBTErrorType
+struct DBTErrorWrapper: DBTErrorType {
   let error: Error
   var displayMessage: String { error.localizedDescription }
 
@@ -33,17 +37,17 @@ struct DisplayableErrorWrapper: DisplayableError {
     self.error = error
   }
 
-  static func wrap(_ error: Error) -> DisplayableError {
-    if let alreadyDisplayable = error as? DisplayableError {
+  static func wrap(_ error: Error) -> DBTErrorType {
+    if let alreadyDisplayable = error as? DBTErrorType {
       return alreadyDisplayable
     } else {
-      let wrappedError = DisplayableErrorWrapper(error: error)
+      let wrappedError = DBTErrorWrapper(error: error)
       return wrappedError
     }
   }
 }
 
-enum CKNetworkError: DisplayableError {
+enum CKNetworkError: DBTErrorType {
 
   case reachabilityFailed(_ underlying: MoyaError)
   case shouldUnverify(_ underlying: MoyaError, _ type: RecordType)
@@ -125,6 +129,8 @@ enum CKNetworkError: DisplayableError {
       return description
     }
   }
+
+
 
 }
 

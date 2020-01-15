@@ -24,9 +24,9 @@ enum CKRecipientType: CaseIterable {
   case phoneNumber, bitcoinURL, lightningURL
 }
 
-protocol ValidatorErrorType: DisplayableError { }
+protocol ValidatorErrorType: DBTErrorType { }
 
-enum CKRecipientParserError: DisplayableError {
+enum CKRecipientParserError: DBTErrorType {
   case multipleRecipients
   case validation(ValidatorErrorType)
   case noResults

@@ -24,9 +24,10 @@ extension AppCoordinator: EmptyStateLightningLoadDelegate {
       .catch { self.handleLightningLoadError($0) }
   }
 
-  func handleLightningLoadError(_ error: DisplayableError) {
+  func handleLightningLoadError(_ error: Error) {
+    let dbtError = DBTErrorWrapper.wrap(error)
     let defaultDuration = 4.0
-    if let validationError = error as? BitcoinAddressValidatorError {
+    if let validationError = dbtError as? BitcoinAddressValidatorError {
       let message = validationError.displayMessage + "\n\nThere was a problem obtaining a valid payment address.\n\nPlease try again later."
       alertManager.showErrorHUD(message: message, forDuration: defaultDuration)
     } else if let txDataError = error as? TransactionDataError {
