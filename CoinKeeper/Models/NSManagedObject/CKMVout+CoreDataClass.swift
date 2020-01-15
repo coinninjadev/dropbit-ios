@@ -157,7 +157,7 @@ public class CKMVout: NSManagedObject {
     do {
       unspentVouts = try context.fetch(fetchRequest)
     } catch {
-      throw SpendableBalanceError.voutFetchFailed
+      throw DBTError.Persistence.failedToFetch("unspent vouts", error)
     }
 
     return unspentVouts

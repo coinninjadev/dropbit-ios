@@ -645,7 +645,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
         unspentVouts = try CKMVout.findAllUnspent(in: context)
       } catch {
         log.error(error, message: nil)
-        seal.reject(SpendableBalanceError.voutFetchFailed)
+        seal.reject(error)
       }
 
       // for each vout, get its txid and index, and see if there are any vins with the same previousTxid and index
@@ -660,7 +660,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
           let matchingVinExists = try context.fetch(vinFetchReqest).first != nil
           vout.isSpent = matchingVinExists
         } catch {
-          seal.reject(SpendableBalanceError.vinFetchFailed)
+          seal.reject(DBTError.Persistence.failedToFetch("", error))
         }
       }
       seal.fulfill(())

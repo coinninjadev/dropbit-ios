@@ -136,8 +136,8 @@ struct DBTError {
     case noWalletManager
     case noUser
     case phoneNotVerified
-    case unexpectedResult
-    case failedToFetch(String)
+    case unexpectedResult(String)
+    case failedToFetch(String, Error) //object description, error returned by fetch
     case keychainWriteFailed(key: String)
     case failedToBatchDeleteWallet([NSError])
 
@@ -149,15 +149,25 @@ struct DBTError {
       case .noWalletManager:        return "Wallet manager is nil"
       case .noUser:                 return "Failed to find user"
       case .phoneNotVerified:       return "Phone not verified. Please verify your phone number to send a DropBit."
-      case .unexpectedResult:       return "Fetch request returned unexpected result"
+      case .unexpectedResult(let desc): return "Fetch request returned unexpected result: \(desc)"
       case .failedToFetch(let key): return "Failed to fetch results: \(key)"
       case .keychainWriteFailed(let key): return "Failed to store value in keychain for key: \(key)"
       case .failedToBatchDeleteWallet(let nsErrors):
         var message = "Failed to batch delete wallet. Errors:"
         for nsError in nsErrors {
-          message.append("\n\n\t\(nsError.localizedDescription): \(nsError.userInfo)")
+          message.append("\n\n\t\(nsError.debugDescription)")
         }
         return message
+      }
+    }
+
+    var debugMessage: String {
+      switch self {
+      case .failedToFetch(let object, let error):
+        let nsError = error as NSError
+        return "Error fetching \(object). Error: \(nsError.debugDescription)"
+      default:
+        return displayMessage
       }
     }
   } //End of Persistence errors

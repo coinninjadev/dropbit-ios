@@ -386,7 +386,6 @@
 		3BDA207F203DE6F600CBA6B1 /* BiometricAuthenticationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA207E203DE6F600CBA6B1 /* BiometricAuthenticationManagerTests.swift */; };
 		3BDA2085203E17E000CBA6B1 /* BiometricErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA2084203E17E000CBA6B1 /* BiometricErrorTests.swift */; };
 		3BDA364120B2FCF8001E24FB /* SuccessFailViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA364020B2FCF8001E24FB /* SuccessFailViewControllerTests.swift */; };
-		3BDA364320B4D50E001E24FB /* SpendableBalanceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA364220B4D50E001E24FB /* SpendableBalanceError.swift */; };
 		3BDB6C532220521000E75DD2 /* SendPaymentMemoViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDB6C522220520F00E75DD2 /* SendPaymentMemoViewTests.swift */; };
 		3BDBE63422839A6B009C23CB /* MockNeworkManager+Twitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDBE632228399F9009C23CB /* MockNeworkManager+Twitter.swift */; };
 		3BDBF43D2385C1C30076FE04 /* RatingAndReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDBF43C2385C1C30076FE04 /* RatingAndReviewManager.swift */; };
@@ -1521,7 +1520,6 @@
 		3BDA207E203DE6F600CBA6B1 /* BiometricAuthenticationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricAuthenticationManagerTests.swift; sourceTree = "<group>"; };
 		3BDA2084203E17E000CBA6B1 /* BiometricErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricErrorTests.swift; sourceTree = "<group>"; };
 		3BDA364020B2FCF8001E24FB /* SuccessFailViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessFailViewControllerTests.swift; sourceTree = "<group>"; };
-		3BDA364220B4D50E001E24FB /* SpendableBalanceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendableBalanceError.swift; sourceTree = "<group>"; };
 		3BDB6C522220520F00E75DD2 /* SendPaymentMemoViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentMemoViewTests.swift; sourceTree = "<group>"; };
 		3BDBE632228399F9009C23CB /* MockNeworkManager+Twitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNeworkManager+Twitter.swift"; sourceTree = "<group>"; };
 		3BDBF43C2385C1C30076FE04 /* RatingAndReviewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingAndReviewManager.swift; sourceTree = "<group>"; };
@@ -2958,9 +2956,8 @@
 		3BDA2082203E17BA00CBA6B1 /* Errors */ = {
 			isa = PBXGroup;
 			children = (
-				3BDA364220B4D50E001E24FB /* SpendableBalanceError.swift */,
-				3BC23EF120BDCA5100877BB6 /* TransactionDataError.swift */,
 				B50384C520B304780091AB37 /* DBTError.swift */,
+				3BC23EF120BDCA5100877BB6 /* TransactionDataError.swift */,
 				B5F6EC2422554CF20045633B /* TwilioErrorDelegate.swift */,
 				B5654CB9238837990062CB01 /* CKSystemError.swift */,
 				3BF1123B22A7F35600C776AE /* CKOAuthError.swift */,
@@ -4933,7 +4930,6 @@
 				3B5052B82046E686000C739F /* BackupRecoveryWordsCollectionDDS.swift in Sources */,
 				3BA9F605208F6D060047C213 /* AppCoordinator+VerifyRecoveryWordsViewControllerDelegate.swift in Sources */,
 				3B55538C21961CB700C5A9A8 /* WordsNotBackedUpBadgeTopic.swift in Sources */,
-				3BDA364320B4D50E001E24FB /* SpendableBalanceError.swift in Sources */,
 				B5B37B23206AFCDF001816F6 /* Money.swift in Sources */,
 				B5437B5F2316C0580002B77C /* TransactionHistoryViewController+CollectionView.swift in Sources */,
 				B5F5CC5320EA6B1400717667 /* MoyaResponse+ErrorMessage.swift in Sources */,
