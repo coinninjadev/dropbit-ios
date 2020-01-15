@@ -173,7 +173,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
           self.disableConfirmButton()
       }
     } catch {
-      let dbtError = DBTErrorWrapper.wrap(error)
+      let dbtError = DBTError.cast(error)
       self.delegate.handleLightningLoadError(dbtError)
       self.disableConfirmButton()
     }
@@ -253,7 +253,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
           self.disableConfirmButton()
         }
       } catch {
-        let dbtError = DBTErrorWrapper.wrap(error)
+        let dbtError = DBTError.cast(error)
         delegate.handleLightningLoadError(dbtError)
         self.disableConfirmButton()
       }

@@ -30,21 +30,26 @@ extension DBTErrorType {
 
 ///Useful to avoid an extension on Error, which would conform all Error objects to DBTErrorType
 struct DBTErrorWrapper: DBTErrorType {
-  let error: Error
-  var displayMessage: String { error.localizedDescription }
+  let underlying: Error
+  var displayMessage: String { underlying.localizedDescription }
 
-  private init(error: Error) {
-    self.error = error
+  fileprivate init(error: Error) {
+    self.underlying = error
   }
 
-  static func wrap(_ error: Error) -> DBTErrorType {
-    if let alreadyDisplayable = error as? DBTErrorType {
-      return alreadyDisplayable
+}
+
+struct DBTError {
+
+  static func cast(_ error: Error) -> DBTErrorType {
+    if let alreadyDBTError = error as? DBTErrorType {
+      return alreadyDBTError
     } else {
       let wrappedError = DBTErrorWrapper(error: error)
       return wrappedError
     }
   }
+
 }
 
 enum CKNetworkError: DBTErrorType {

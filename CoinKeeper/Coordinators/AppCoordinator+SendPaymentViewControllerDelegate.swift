@@ -167,7 +167,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
       fullMessage = validationError.displayMessage
 
     } else {
-      let dbtError = DBTErrorWrapper.wrap(err)
+      let dbtError = DBTError.cast(err)
       fullMessage = "\(generalMessage) \(dbtError.displayMessage)."
     }
 

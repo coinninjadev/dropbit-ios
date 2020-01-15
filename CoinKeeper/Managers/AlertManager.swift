@@ -328,7 +328,7 @@ class AlertManager: AlertManagerType {
   }
 
   func defaultAlert(withError error: Error) -> AlertControllerType {
-    let dbtError = DBTErrorWrapper.wrap(error)
+    let dbtError = DBTError.cast(error)
     return defaultAlert(withTitle: dbtError.displayTitle, description: dbtError.displayMessage)
   }
 
@@ -367,7 +367,7 @@ class AlertManager: AlertManagerType {
   }
 
   func showErrorHUD(_ error: Error, forDuration duration: TimeInterval?) {
-    let dbtError = DBTErrorWrapper.wrap(error)
+    let dbtError = DBTError.cast(error)
     showErrorHUD(message: dbtError.displayMessage, forDuration: duration)
   }
 

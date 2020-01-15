@@ -35,7 +35,7 @@ extension AppCoordinator: TransactionHistoryDetailsViewControllerDelegate {
             }
           }
           .catch { error in
-            let dbtError = DBTErrorWrapper.wrap(error)
+            let dbtError = DBTError.cast(error)
             strongSelf.alertManager.showErrorHUD(message: "Failed to cancel invitation.\nError details: \(dbtError.displayMessage)", forDuration: 5.0)
         }
       }

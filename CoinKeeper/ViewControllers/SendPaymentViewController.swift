@@ -444,7 +444,7 @@ extension SendPaymentViewController {
   }
 
   private func handleError(error: Error) {
-    let dbtError = DBTErrorWrapper.wrap(error)
+    let dbtError = DBTError.cast(error)
     self.alertManager?.hideActivityHUD(withDelay: nil) {
       let viewModel = AlertControllerViewModel(title: "", description: dbtError.displayMessage)
       self.delegate.viewControllerDidRequestAlert(self, viewModel: viewModel)
@@ -801,7 +801,7 @@ extension SendPaymentViewController {
   }
 
   private func handleContactValidationError(_ error: Error) {
-    let dbtError = DBTErrorWrapper.wrap(error)
+    let dbtError = DBTError.cast(error)
     self.showValidatorAlert(for: dbtError, title: "")
   }
 

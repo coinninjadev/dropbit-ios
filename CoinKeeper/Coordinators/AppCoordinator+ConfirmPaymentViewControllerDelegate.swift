@@ -256,7 +256,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
       errorMessage = txDataError.displayMessage
 
     } else {
-      let dbtError = DBTErrorWrapper.wrap(error)
+      let dbtError = DBTError.cast(error)
       errorMessage = dbtError.displayMessage
     }
 
@@ -297,7 +297,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
                                                  inviteBody: WalletAddressRequestBody,
                                                  successFailVC: SuccessFailViewController,
                                                  in context: NSManagedObjectContext) {
-    let dbtError = DBTErrorWrapper.wrap(error)
+    let dbtError = DBTError.cast(error)
     if let networkError = error as? CKNetworkError,
       case let .twilioError(response) = networkError,
       let typedResponse = try? response.map(WalletAddressRequestResponse.self, using: WalletAddressRequestResponse.decoder) {
