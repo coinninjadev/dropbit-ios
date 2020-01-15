@@ -147,7 +147,7 @@ class NotificationManager: NSObject, NotificationManagerType {
   private func createNotificationSubscriptionsIfNeeded(
     fromDeviceEndpointResponse response: DeviceEndpointResponse
     ) -> Promise<Void> {
-    guard let localDelegate = delegate else { return Promise(error: CKPersistenceError.missingValue(key: "notificationManagerDelegate")) }
+    guard let localDelegate = delegate else { return Promise(error: DBTError.Persistence.missingValue(key: "notificationManagerDelegate")) }
     return networkInteractor.getSubscriptionInfo(withDeviceEndpointResponse: response)
       .then { (subInfoResponse: SubscriptionInfoResponse) -> Promise<[SubscriptionAvailableTopicResponse]> in
         let subscribedIds = subInfoResponse.subscriptions.map { $0.ownerId }.asSet()
@@ -185,23 +185,23 @@ class NotificationManager: NSObject, NotificationManagerType {
 
   @discardableResult
   func subscribeToTopic(type: SubscriptionTopicType) -> Promise<Void> {
-    guard let delegate = delegate else { return Promise(error: CKPersistenceError.missingValue(key: "delegate")) }
+    guard let delegate = delegate else { return Promise(error: DBTError.Persistence.missingValue(key: "delegate")) }
     return self.deviceEndpointResponse()
       .then { delegate.subscribeToTopic(type: type, deviceEndpointIds: DeviceEndpointIds(response: $0)) }
   }
 
   @discardableResult
   func unsubscribeFromTopic(type: SubscriptionTopicType) -> Promise<Void> {
-    guard let delegate = delegate else { return Promise(error: CKPersistenceError.missingValue(key: "delegate")) }
+    guard let delegate = delegate else { return Promise(error: DBTError.Persistence.missingValue(key: "delegate")) }
     return self.deviceEndpointResponse()
       .then { delegate.unsubscribeFromTopic(type: type, deviceEndpointIds: DeviceEndpointIds(response: $0)) }
   }
 
   private func deviceEndpointResponse(token: String? = nil) -> Promise<DeviceEndpointResponse> {
-    guard let localDelegate = delegate else { return Promise(error: CKPersistenceError.missingValue(key: "delegate")) }
+    guard let localDelegate = delegate else { return Promise(error: DBTError.Persistence.missingValue(key: "delegate")) }
     let localDeviceID = localDelegate.localDeviceId(self)
     let maybeToken = token ?? localDelegate.pushToken()
-    guard let localToken = maybeToken else { return Promise(error: CKPersistenceError.missingValue(key: "push token")) }
+    guard let localToken = maybeToken else { return Promise(error: DBTError.Persistence.missingValue(key: "push token")) }
     var serverDeviceId = ""
     return networkInteractor.getDevice(forLocalUUIDString: localDeviceID)
       .get { serverDeviceId = $0.id }

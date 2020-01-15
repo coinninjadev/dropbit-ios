@@ -61,7 +61,6 @@
 		3B0C785623197B0A00D4C216 /* LightningUpgradePageViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B0C785523197B0A00D4C216 /* LightningUpgradePageViewController.storyboard */; };
 		3B0C7858231E891600D4C216 /* LightningUpgradeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0C7857231E891600D4C216 /* LightningUpgradeCoordinator.swift */; };
 		3B0C785A231EDF3600D4C216 /* LightningUpgradeGradientOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0C7859231EDF3600D4C216 /* LightningUpgradeGradientOverlayView.swift */; };
-		3B0FF8C420C333DC00AADC9E /* CKPersistenceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0FF8C320C333DC00AADC9E /* CKPersistenceError.swift */; };
 		3B124E102020EB2B00431E2E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B124E0F2020EB2B00431E2E /* AppDelegate.swift */; };
 		3B124E172020EB2B00431E2E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B124E162020EB2B00431E2E /* Assets.xcassets */; };
 		3B13439621AEDAE6006EC5FC /* LightBorderedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B13439521AEDAE6006EC5FC /* LightBorderedButton.swift */; };
@@ -1219,7 +1218,6 @@
 		3B0C785523197B0A00D4C216 /* LightningUpgradePageViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningUpgradePageViewController.storyboard; sourceTree = "<group>"; };
 		3B0C7857231E891600D4C216 /* LightningUpgradeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeCoordinator.swift; sourceTree = "<group>"; };
 		3B0C7859231EDF3600D4C216 /* LightningUpgradeGradientOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeGradientOverlayView.swift; sourceTree = "<group>"; };
-		3B0FF8C320C333DC00AADC9E /* CKPersistenceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKPersistenceError.swift; sourceTree = "<group>"; };
 		3B11042C20D2E6D60011E2CF /* CoinKeeper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CoinKeeper.entitlements; sourceTree = "<group>"; };
 		3B124E0C2020EB2B00431E2E /* DropBit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DropBit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B124E0F2020EB2B00431E2E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -2969,7 +2967,6 @@
 				3BC23EF120BDCA5100877BB6 /* TransactionDataError.swift */,
 				B50384C520B304780091AB37 /* DBTError.swift */,
 				B5F6EC2422554CF20045633B /* TwilioErrorDelegate.swift */,
-				3B0FF8C320C333DC00AADC9E /* CKPersistenceError.swift */,
 				B5654CB9238837990062CB01 /* CKSystemError.swift */,
 				3BF1123B22A7F35600C776AE /* CKOAuthError.swift */,
 				B5A5C5A22218AF430088C4D1 /* DeviceVerificationErrorMessageFactory.swift */,
@@ -4861,7 +4858,6 @@
 				B5A98AE72241741F00DEF96F /* CKKeychain.swift in Sources */,
 				A2952F8222BD250100BDCE65 /* AppCoordinator+NewsViewControllerDelegate.swift in Sources */,
 				B52A25BF2077CA7C00F636A1 /* TransactionHistorySecondaryAmountLabel.swift in Sources */,
-				3B0FF8C420C333DC00AADC9E /* CKPersistenceError.swift in Sources */,
 				3B071A5220C2C3ED009C2BF6 /* OutgoingTransactionData.swift in Sources */,
 				3B6749E320AA5CA40032FE02 /* CKMVout+CoreDataClass.swift in Sources */,
 				30349F872188A99700A32AFA /* ServerAddressViewModel.swift in Sources */,

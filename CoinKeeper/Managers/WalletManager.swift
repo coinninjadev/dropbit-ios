@@ -113,7 +113,7 @@ class WalletManager: WalletManagerType {
 
   func encryptPayload<T>(_ payload: T, addressPubKey: String, keyIsEphemeral: Bool) -> Promise<String> where T: SharedPayloadCodable {
     guard let addressPubKeyData = Data(fromHexEncodedString: addressPubKey) else {
-      return Promise(error: CKPersistenceError.missingValue(key: "addressPubKeyData"))
+      return Promise(error: DBTError.Persistence.missingValue(key: "addressPubKeyData"))
     }
 
     return Promise { seal in

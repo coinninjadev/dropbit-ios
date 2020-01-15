@@ -41,7 +41,7 @@ class MockPersistenceKeychainManager: PersistenceKeychainType {
     if exists {
       return .value(())
     } else {
-      return Promise(error: CKPersistenceError.missingValue(key: key))
+      return Promise(error: DBTError.Persistence.missingValue(key: key))
     }
   }
 

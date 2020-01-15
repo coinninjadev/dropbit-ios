@@ -55,9 +55,9 @@ public class CKMVout: NSManagedObject {
     let voutIndexKeyPath = #keyPath(CNBCnlibTransactionMetadata.transactionChangeMetadata.voutIndex).description
 
     let changeMetadata = metadata.transactionChangeMetadata
-    guard let changeAddress = changeMetadata?.address else { throw CKPersistenceError.missingValue(key: changeAddressKeyPath) }
-    guard let path = changeMetadata?.path else { throw CKPersistenceError.missingValue(key: changePathKeyPath) }
-    guard let index = changeMetadata?.voutIndex else { throw CKPersistenceError.missingValue(key: voutIndexKeyPath) }
+    guard let changeAddress = changeMetadata?.address else { throw DBTError.Persistence.missingValue(key: changeAddressKeyPath) }
+    guard let path = changeMetadata?.path else { throw DBTError.Persistence.missingValue(key: changePathKeyPath) }
+    guard let index = changeMetadata?.voutIndex else { throw DBTError.Persistence.missingValue(key: voutIndexKeyPath) }
 
     let fetchRequest: NSFetchRequest<CKMVout> = CKMVout.fetchRequest()
     fetchRequest.predicate = CKPredicate.Vout.matching(txid: metadata.txid, index: index)

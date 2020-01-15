@@ -142,7 +142,7 @@ extension AppCoordinator: SettingsViewControllerDelegate {
           localSelf.analyticsManager.track(property: MixpanelProperty(key: .isDropBitMeEnabled, value: false))
         }.catch(on: .main) { error in
           var errorDetails = error.localizedDescription
-          if let persistenceError = error as? CKPersistenceError, case .failedToBatchDeleteWallet = persistenceError {
+          if let persistenceError = error as? DBTError.Persistence, case .failedToBatchDeleteWallet = persistenceError {
             errorDetails = persistenceError.errorDescription ?? "-"
           }
 

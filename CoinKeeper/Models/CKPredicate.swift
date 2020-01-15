@@ -316,7 +316,7 @@ struct CKPredicate {
 
     static func matching(response: TransactionVoutResponse) throws -> NSPredicate {
       let txidKeyPath = #keyPath(CKMVout.txid)
-      guard let txid = response.txid else { throw CKPersistenceError.missingValue(key: txidKeyPath) }
+      guard let txid = response.txid else { throw DBTError.Persistence.missingValue(key: txidKeyPath) }
       return matching(txid: txid, index: response.n)
     }
 

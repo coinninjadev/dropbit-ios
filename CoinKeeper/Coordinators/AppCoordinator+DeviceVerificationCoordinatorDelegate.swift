@@ -17,9 +17,9 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
    Call this after the seed words are backed up or skipped.
    */
   func registerAndPersistWallet(in context: NSManagedObjectContext) -> Promise<Void> {
-    guard let wmgr = walletManager else { return Promise(error: CKPersistenceError.noWalletManager) }
+    guard let wmgr = walletManager else { return Promise(error: DBTError.Persistence.noWalletManager) }
     guard let syncFactory = self.serialQueueManager.walletSyncOperationFactory else {
-      return Promise(error: CKPersistenceError.missingValue(key: "walletSyncOperationFactory"))
+      return Promise(error: DBTError.Persistence.missingValue(key: "walletSyncOperationFactory"))
     }
 
     // Skip registration if wallet was previously registered and persisted

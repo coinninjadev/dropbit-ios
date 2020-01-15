@@ -18,7 +18,7 @@ protocol WalletSyncDelegate: AnyObject {
   func syncManagerDidFinishSync()
   func showAlertsForSyncedChanges(in context: NSManagedObjectContext) -> Promise<Void>
   func syncManagerDidSetWalletManager(walletManager: WalletManagerType, in context: NSManagedObjectContext) -> Promise<Void>
-  func handleMissingWalletError(_ error: CKPersistenceError)
+  func handleMissingWalletError(_ error: DBTError.Persistence)
 }
 
 class WalletSyncOperationFactory {
@@ -250,7 +250,7 @@ class WalletSyncOperationFactory {
               return newWalletManager.hexEncodedPublicKeyPromise()
                 .then { return dependencies.networkManager.createWallet(withPublicKey: $0, walletFlags: flagsParser.flags) }
             } else {
-              return Promise(error: CKPersistenceError.noWalletWords)
+              return Promise(error: DBTError.Persistence.noWalletWords)
             }
           } else {
             return Promise(error: error)
@@ -261,7 +261,7 @@ class WalletSyncOperationFactory {
     } else { // walletId is nil
       guard let keychainWords = dependencies.persistenceManager.brokers.wallet.walletWords(),
         let walletManager = WalletManager(words: keychainWords, persistenceManager: dependencies.persistenceManager) else {
-        return Promise { $0.reject(CKPersistenceError.noWalletWords) }
+        return Promise { $0.reject(DBTError.Persistence.noWalletWords) }
       }
 
       // Make sure we are registering a wallet with the words stored in the keychain
@@ -276,7 +276,7 @@ class WalletSyncOperationFactory {
   }
 
   private func handleSyncRoutineError(_ error: Error, in context: NSManagedObjectContext) {
-    if let persistenceError = error as? CKPersistenceError {
+    if let persistenceError = error as? DBTError.Persistence {
       switch persistenceError {
       case .noWalletWords:
         delegate?.handleMissingWalletError(persistenceError)

@@ -187,7 +187,7 @@ extension AppCoordinator: PaymentSendingDelegate {
 
   private func postSharedPayload(_ postableObject: SharedPayloadPostableObject) -> Promise<String> {
     guard let wmgr = self.walletManager else {
-      return Promise(error: CKPersistenceError.missingValue(key: "walletManager"))
+      return Promise(error: DBTError.Persistence.missingValue(key: "walletManager"))
     }
 
     return self.networkManager.postSharedPayloadIfAppropriate(withPostableObject: postableObject, walletManager: wmgr)

@@ -169,7 +169,7 @@ extension AppCoordinator: SerialQueueManagerDelegate {
     self.persistenceManager.brokers.user.unverifyUser(in: context)
   }
 
-  func handleMissingWalletError(_ error: CKPersistenceError) {
+  func handleMissingWalletError(_ error: DBTError.Persistence) {
     if walletManager == nil {
       resetWalletManagerIfNeeded()
     }

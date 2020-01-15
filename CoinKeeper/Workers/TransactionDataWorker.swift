@@ -94,7 +94,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
 
   func performFetchAndStoreAllLightningTransactions(in context: NSManagedObjectContext, fullSync: Bool) -> Promise<Void> {
     guard let wallet = CKMWallet.find(in: context) else {
-      return Promise(error: CKPersistenceError.noManagedWallet)
+      return Promise(error: DBTError.Persistence.noManagedWallet)
     }
 
     let lnBroker = self.persistenceManager.brokers.lightning

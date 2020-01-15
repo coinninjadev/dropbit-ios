@@ -36,7 +36,7 @@ class AddressRequestPaymentWorker {
                                                       in context: NSManagedObjectContext,
                                                       transactionType: WalletTransactionType) -> Promise<Void> {
     guard let postableObject = PayloadPostableOutgoingTransactionData(data: outgoingTransactionData) else {
-      return Promise(error: CKPersistenceError.missingValue(key: "postableOutgoingTransactionData"))
+      return Promise(error: DBTError.Persistence.missingValue(key: "postableOutgoingTransactionData"))
     }
 
     return self.networkManager.postSharedPayloadIfAppropriate(withPostableObject: postableObject, walletManager: self.walletManager)

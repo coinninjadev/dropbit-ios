@@ -74,7 +74,7 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
     return Promise { seal in
 
       guard let wallet = CKMWallet.find(in: context) else {
-        seal.reject(CKPersistenceError.noManagedWallet)
+        seal.reject(DBTError.Persistence.noManagedWallet)
         return
       }
 

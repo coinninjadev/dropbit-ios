@@ -58,7 +58,7 @@ class CKCryptor {
   func decrypt(payloadAsBase64String base64String: String, withReceiveAddress address: String, in context: NSManagedObjectContext) throws -> Data {
     guard let wmgr = walletManager else { throw CKCryptorError.missingWalletManager }
     guard let path: CKMDerivativePath = CKMAddress.find(withAddress: address, in: context)?.derivativePath else {
-      throw CKPersistenceError.missingValue(key: "address")
+      throw DBTError.Persistence.missingValue(key: "address")
     }
 
     let data = Data(base64Encoded: base64String)

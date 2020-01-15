@@ -42,7 +42,7 @@ class UserIdentifiableManager: UserIdentifiableManagerType {
       maybeWalletId = self.persistenceManager.brokers.wallet.walletId(in: context)
     }
     guard let walletId = maybeWalletId else {
-      return Promise { $0.reject(CKPersistenceError.missingValue(key: "wallet ID")) }
+      return Promise { $0.reject(DBTError.Persistence.missingValue(key: "wallet ID")) }
     }
 
     return self.createUserOrIdentity(walletId: walletId, body: body, in: context)
@@ -62,7 +62,7 @@ class UserIdentifiableManager: UserIdentifiableManagerType {
       return self.networkManager.createUser(walletId: walletId, body: body).map { $0 as UserIdentifiable }
     } else {
       guard let userId = self.persistenceManager.brokers.user.userId(in: context) else {
-        return Promise(error: CKPersistenceError.noUser)
+        return Promise(error: DBTError.Persistence.noUser)
       }
       return self.networkManager.addIdentity(body: body)
         .map { _ in UserIdWrapper(id: userId) as UserIdentifiable }
