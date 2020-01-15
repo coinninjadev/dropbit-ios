@@ -117,12 +117,16 @@ extension AppCoordinator: PaymentSendingDelegate {
   /// Provides a completion handler to be called in the catch block of payment promise chains
   private func paymentErrorHandler(for successFailVC: SuccessFailViewController, isLightning: Bool) -> CKErrorCompletion {
     let errorHandler: CKErrorCompletion = { [unowned self] error in
-      if let networkError = error as? DBTError.Network,
+      guard let err = error else {
+        successFailVC.setMode(.failure)
+        return
+      }
+      if let networkError = err as? DBTError.Network,
         case let .reachabilityFailed(moyaError) = networkError {
         self.handleReachabilityError(moyaError)
 
       } else {
-        self.handleFailure(error: error, action: {
+        self.handleFailure(error: err, action: {
           successFailVC.setMode(.failure)
         })
       }

@@ -185,7 +185,7 @@ struct DBTError {
         return displayMessage
       }
     }
-  } //End of Persistence errors
+  }
 
   enum Wallet: DBTErrorType {
     case failedToDeactivate
@@ -195,7 +195,7 @@ struct DBTError {
       case .failedToDeactivate:     return "Failed to deactivate existing wallet."
       }
     }
-  } //End of Wallet errors
+  }
 
   enum Biometrics: DBTErrorType {
     case authenticationFailed
@@ -226,7 +226,7 @@ struct DBTError {
       default: return "If you are enrolled in biometric authentication, please try again."
       }
     }
-  } //End of Biometrics errors
+  }
 
   enum System: DBTErrorType {
     case missingValue(key: String)

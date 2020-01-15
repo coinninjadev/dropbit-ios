@@ -537,7 +537,6 @@
 		A257CEC4230C3EBD0063670B /* CKLightningURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEC3230C3EBD0063670B /* CKLightningURLParser.swift */; };
 		A257CEC6230C3F6D0063670B /* LightningInvoiceValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEC5230C3F6D0063670B /* LightningInvoiceValidator.swift */; };
 		A257CEC82314662C0063670B /* ExpirationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEC72314662C0063670B /* ExpirationLabel.swift */; };
-		A25923EC20C981770005B1A0 /* AnalyticsManagerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25923EB20C981770005B1A0 /* AnalyticsManagerError.swift */; };
 		A260E8C720FCD482008343F9 /* PrimaryAmountTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E8C620FCD482008343F9 /* PrimaryAmountTextField.swift */; };
 		A260E8CF20FCFE11008343F9 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E8CE20FCFE11008343F9 /* TutorialViewController.swift */; };
 		A260E8D320FCFE96008343F9 /* TutorialViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A260E8D220FCFE96008343F9 /* TutorialViewController.storyboard */; };
@@ -1669,7 +1668,6 @@
 		A257CEC3230C3EBD0063670B /* CKLightningURLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKLightningURLParser.swift; sourceTree = "<group>"; };
 		A257CEC5230C3F6D0063670B /* LightningInvoiceValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningInvoiceValidator.swift; sourceTree = "<group>"; };
 		A257CEC72314662C0063670B /* ExpirationLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationLabel.swift; sourceTree = "<group>"; };
-		A25923EB20C981770005B1A0 /* AnalyticsManagerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManagerError.swift; sourceTree = "<group>"; };
 		A260E8C620FCD482008343F9 /* PrimaryAmountTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryAmountTextField.swift; sourceTree = "<group>"; };
 		A260E8CE20FCFE11008343F9 /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		A260E8D220FCFE96008343F9 /* TutorialViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TutorialViewController.storyboard; sourceTree = "<group>"; };
@@ -2953,7 +2951,6 @@
 				B50384C520B304780091AB37 /* DBTError.swift */,
 				B5F6EC2422554CF20045633B /* TwilioErrorDelegate.swift */,
 				B5A5C5A22218AF430088C4D1 /* DeviceVerificationErrorMessageFactory.swift */,
-				A25923EB20C981770005B1A0 /* AnalyticsManagerError.swift */,
 				3B72A288210648CF00E94171 /* PendingInvitationError.swift */,
 				B5E7EE7A21B02FFB00E058EF /* ValidatorAlertDisplayable.swift */,
 				B5192FA1216E7BCA00DCC39B /* WalletAddressError.swift */,
@@ -4964,7 +4961,6 @@
 				B52A25C12077CCEF00F636A1 /* TransactionHistoryViewController.swift in Sources */,
 				B50ACBB221662C7B00E877DF /* CoinNinjaTargetType.swift in Sources */,
 				B5C8F5C7216D397900E3E85B /* CreateDeviceEndpointBody.swift in Sources */,
-				A25923EC20C981770005B1A0 /* AnalyticsManagerError.swift in Sources */,
 				3B325D532190A37B0094897C /* SecondaryActionButton.swift in Sources */,
 				3B547A722280AEE5007B0366 /* ChangeRemoveVerificationButton.swift in Sources */,
 				B5CD0C13234982DF0035E6F3 /* TitleDetailView.swift in Sources */,
