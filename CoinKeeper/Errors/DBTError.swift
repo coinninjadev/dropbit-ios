@@ -161,6 +161,16 @@ struct DBTError {
     }
   } //End of Persistence errors
 
+  enum Wallet: DBTErrorType {
+    case failedToDeactivate
+
+    var displayMessage: String {
+      switch self {
+      case .failedToDeactivate:     return "Failed to deactivate existing wallet."
+      }
+    }
+  } //End of Wallet errors
+
 }
 
 /// The raw value of each case matches the error description returned in the body of the error response from our API.

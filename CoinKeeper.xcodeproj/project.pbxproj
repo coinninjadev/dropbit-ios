@@ -291,7 +291,6 @@
 		3B8FF10D20337495003436EE /* PinCreationViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8FF10C20337495003436EE /* PinCreationViewControllerTests.swift */; };
 		3B8FF11020346730003436EE /* AppCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8FF10F20346730003436EE /* AppCoordinatorTests.swift */; };
 		3B934D2220EFE53A00979ADC /* TransactionDataWorkerDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B934D2120EFE53A00979ADC /* TransactionDataWorkerDTO.swift */; };
-		3B936ADB23218F810067CA97 /* CKWalletError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B936ADA23218F810067CA97 /* CKWalletError.swift */; };
 		3B936ADD2322C1250067CA97 /* LightningUpgradeCompleteViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B936ADC2322C1250067CA97 /* LightningUpgradeCompleteViewController.storyboard */; };
 		3B936ADF2322C2B30067CA97 /* LightningUpgradeCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B936ADE2322C2B30067CA97 /* LightningUpgradeCompleteViewController.swift */; };
 		3B936AE12322CD4E0067CA97 /* LightningUpgradeCoordinator+LightningUpgradeCompleteViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B936AE02322CD4E0067CA97 /* LightningUpgradeCoordinator+LightningUpgradeCompleteViewControllerDelegate.swift */; };
@@ -1428,7 +1427,6 @@
 		3B8FF10C20337495003436EE /* PinCreationViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCreationViewControllerTests.swift; sourceTree = "<group>"; };
 		3B8FF10F20346730003436EE /* AppCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinatorTests.swift; sourceTree = "<group>"; };
 		3B934D2120EFE53A00979ADC /* TransactionDataWorkerDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDataWorkerDTO.swift; sourceTree = "<group>"; };
-		3B936ADA23218F810067CA97 /* CKWalletError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKWalletError.swift; sourceTree = "<group>"; };
 		3B936ADC2322C1250067CA97 /* LightningUpgradeCompleteViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningUpgradeCompleteViewController.storyboard; sourceTree = "<group>"; };
 		3B936ADE2322C2B30067CA97 /* LightningUpgradeCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeCompleteViewController.swift; sourceTree = "<group>"; };
 		3B936AE02322CD4E0067CA97 /* LightningUpgradeCoordinator+LightningUpgradeCompleteViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LightningUpgradeCoordinator+LightningUpgradeCompleteViewControllerDelegate.swift"; sourceTree = "<group>"; };
@@ -2979,7 +2977,6 @@
 				B5A42A99217A3E0F00EB32CB /* KeyPathDescribable.swift */,
 				B5192FA5216E7BFF00DCC39B /* UserProviderError.swift */,
 				3B30228021C9290D007F137A /* SyncRoutineError.swift */,
-				3B936ADA23218F810067CA97 /* CKWalletError.swift */,
 				3BD085B823515D64006CE008 /* SetupFlowError.swift */,
 			);
 			path = Errors;
@@ -5197,7 +5194,6 @@
 				B5222063237F2CEB00F68280 /* LightningQuickLoadViewController.swift in Sources */,
 				B552EDFB211E33D000332BB5 /* CKAlamofireSessionManager.swift in Sources */,
 				B52F690A22417B0100790E97 /* CKDatabase.swift in Sources */,
-				3B936ADB23218F810067CA97 /* CKWalletError.swift in Sources */,
 				3B23232E2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift in Sources */,
 				B51AE4A7209398FE008380CC /* CKMPhoneNumber+CoreDataProperties.swift in Sources */,
 				300CD8F121FA668400BFF560 /* NSAttributedString+Helpers.swift in Sources */,
