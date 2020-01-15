@@ -213,6 +213,16 @@ struct DBTError {
     }
   } //End of Biometrics errors
 
+  enum System: DBTErrorType {
+    case missingValue(key: String)
+
+    var displayMessage: String {
+      switch self {
+      case .missingValue(let key):  return "System is missing \(key)."
+      }
+    }
+  }
+
   enum TransactionData: DBTErrorType {
     case insufficientFunds
     case insufficientFee

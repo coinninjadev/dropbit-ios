@@ -354,7 +354,7 @@ class WalletManager: WalletManagerType {
       let bgContext = persistenceManager.createBackgroundContext()
       bgContext.perform { [weak self] in
         guard let strongSelf = self else {
-          seal.reject(CKSystemError.missingValue(key: "wallet manager self"))
+          seal.reject(DBTError.System.missingValue(key: "wallet manager self"))
           return
         }
         let usableVouts = strongSelf.usableVouts(in: bgContext)

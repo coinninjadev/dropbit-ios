@@ -876,7 +876,6 @@
 		B56512F62153DDA500A5D044 /* WalletCheckInTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56512F52153DDA500A5D044 /* WalletCheckInTarget.swift */; };
 		B5654CB5238709B60062CB01 /* LightningQuickLoadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5654CB4238709B60062CB01 /* LightningQuickLoadViewModel.swift */; };
 		B5654CB823870A0E0062CB01 /* LightningQuickLoadViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5654CB6238709E70062CB01 /* LightningQuickLoadViewModelTests.swift */; };
-		B5654CBA238837990062CB01 /* CKSystemError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5654CB9238837990062CB01 /* CKSystemError.swift */; };
 		B56639CD22B151E400FA0EC3 /* TransactionShareable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56639CC22B151E400FA0EC3 /* TransactionShareable.swift */; };
 		B56639CF22B1944200FA0EC3 /* UIButton+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56639CE22B1944200FA0EC3 /* UIButton+Helpers.swift */; };
 		B566CB2222FB5A5A00648589 /* MigrateDatabaseV6toV7.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566CB2122FB5A5A00648589 /* MigrateDatabaseV6toV7.swift */; };
@@ -2007,7 +2006,6 @@
 		B56512F52153DDA500A5D044 /* WalletCheckInTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCheckInTarget.swift; sourceTree = "<group>"; };
 		B5654CB4238709B60062CB01 /* LightningQuickLoadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningQuickLoadViewModel.swift; sourceTree = "<group>"; };
 		B5654CB6238709E70062CB01 /* LightningQuickLoadViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningQuickLoadViewModelTests.swift; sourceTree = "<group>"; };
-		B5654CB9238837990062CB01 /* CKSystemError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKSystemError.swift; sourceTree = "<group>"; };
 		B56639CC22B151E400FA0EC3 /* TransactionShareable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionShareable.swift; sourceTree = "<group>"; };
 		B56639CE22B1944200FA0EC3 /* UIButton+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Helpers.swift"; sourceTree = "<group>"; };
 		B566CB2022FB3F4A00648589 /* Model v7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model v7.xcdatamodel"; sourceTree = "<group>"; };
@@ -2956,7 +2954,6 @@
 			children = (
 				B50384C520B304780091AB37 /* DBTError.swift */,
 				B5F6EC2422554CF20045633B /* TwilioErrorDelegate.swift */,
-				B5654CB9238837990062CB01 /* CKSystemError.swift */,
 				3BF1123B22A7F35600C776AE /* CKOAuthError.swift */,
 				B5A5C5A22218AF430088C4D1 /* DeviceVerificationErrorMessageFactory.swift */,
 				A25923EB20C981770005B1A0 /* AnalyticsManagerError.swift */,
@@ -5013,7 +5010,6 @@
 				B582AD4F20A084AD007A6459 /* CKMCounterpartyAddress+CoreDataClass.swift in Sources */,
 				3B61B6E220DD282E0021D69E /* SendPaymentViewControllerDelegate.swift in Sources */,
 				3B124E102020EB2B00431E2E /* AppDelegate.swift in Sources */,
-				B5654CBA238837990062CB01 /* CKSystemError.swift in Sources */,
 				B5090D902283244700E57423 /* LocationManagerDelegate.swift in Sources */,
 				3BD7B73120D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift in Sources */,
 				3BDFADFC2267AEFF0077DEF2 /* BlockstreamTarget.swift in Sources */,
