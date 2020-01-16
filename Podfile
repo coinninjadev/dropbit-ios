@@ -3,7 +3,6 @@ platform :ios, '12.2'
 inhibit_all_warnings!
 
 def shared_pods
-  pod 'MMDrawerController', '~> 0.6.0'
   pod 'Permission/Camera', git: 'https://github.com/SixFiveSoftware/Permission.git', commit: '659c257'
   pod 'Permission/Notifications', git: 'https://github.com/SixFiveSoftware/Permission.git', commit: '659c257'
   pod 'Permission/Contacts', git: 'https://github.com/SixFiveSoftware/Permission.git', commit: '659c257'

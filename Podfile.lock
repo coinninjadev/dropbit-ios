@@ -76,18 +76,6 @@ PODS:
   - Mixpanel-swift (2.6.3):
     - Mixpanel-swift/Complete (= 2.6.3)
   - Mixpanel-swift/Complete (2.6.3)
-  - MMDrawerController (0.6.0):
-    - MMDrawerController/Core (= 0.6.0)
-    - MMDrawerController/MMDrawerBarButtonItem (= 0.6.0)
-    - MMDrawerController/MMDrawerVisualStates (= 0.6.0)
-    - MMDrawerController/Subclass (= 0.6.0)
-  - MMDrawerController/Core (0.6.0)
-  - MMDrawerController/MMDrawerBarButtonItem (0.6.0):
-    - MMDrawerController/Core
-  - MMDrawerController/MMDrawerVisualStates (0.6.0):
-    - MMDrawerController/Core
-  - MMDrawerController/Subclass (0.6.0):
-    - MMDrawerController/Core
   - Moya (13.0.1):
     - Moya/Core (= 13.0.1)
   - Moya/Core (13.0.1):
@@ -135,7 +123,6 @@ DEPENDENCIES:
   - Gifu (~> 3.2.0)
   - JKSteppedProgressBar (from `https://github.com/MitchellMalleo/JKSteppedProgressBar.git`, commit `0519aa3`)
   - Mixpanel-swift (~> 2.6.2)
-  - MMDrawerController (~> 0.6.0)
   - Moya (~> 13.0.1)
   - OAuthSwift (~> 2.1.0)
   - Permission/Camera (from `https://github.com/SixFiveSoftware/Permission.git`, commit `659c257`)
@@ -171,7 +158,6 @@ SPEC REPOS:
     - GoogleDataTransportCCTSupport
     - GoogleUtilities
     - Mixpanel-swift
-    - MMDrawerController
     - Moya
     - nanopb
     - OAuthSwift
@@ -225,7 +211,6 @@ SPEC CHECKSUMS:
   GoogleUtilities: 29bd0d8f850efbd28cff6d99e8b7da1f8d236bcf
   JKSteppedProgressBar: e61561a7faee1a4a216ac4510b4b6d1a3760e318
   Mixpanel-swift: b022ad6cc352f916581b4f223f8a1e76d047fbe3
-  MMDrawerController: e3a54a5570388463ad3b36975251575b50c4e1a0
   Moya: f4a4b80ff2f8a4ffc208dfb31cd91636622fee6e
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   OAuthSwift: ab1675598273e04355e0282459c328e65c9ddacd
@@ -240,6 +225,6 @@ SPEC CHECKSUMS:
   SwiftMessages: b577dc7043be8b299857ab35bb663dbff6483bd0
   Willow: a6310f9aedcb6f4de8c35b94fd3416a660ae9280
 
-PODFILE CHECKSUM: 2eef89a73e518aa4f4af746e38a14bbdb882d543
+PODFILE CHECKSUM: ca7495d0c9d9d9d1cabc36eb135b61c7c8d87331
 
 COCOAPODS: 1.7.4

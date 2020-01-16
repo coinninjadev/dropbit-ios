@@ -15,8 +15,12 @@ extension AppCoordinator: CurrencyValueDataSourceType {
     networkManager.latestExchangeRates(responseHandler: responseHandler)
   }
 
+  func latestExchangeRates() -> Promise<ExchangeRates> {
+    networkManager.latestExchangeRates()
+  }
+
   func latestFees() -> Promise<Fees> {
-    return networkManager.latestFees()
+    networkManager.latestFees()
   }
 
 }

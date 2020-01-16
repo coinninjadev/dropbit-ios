@@ -91,9 +91,8 @@ class TransactionHistoryViewControllerTests: XCTestCase {
     func emptyViewDidRequestRefill(withAmount amount: TransferAmount) { }
 
     func latestExchangeRates(responseHandler: ExchangeRatesRequest) { }
-    func latestFees() -> Promise<Fees> {
-      return Promise { _ in }
-    }
+    func latestExchangeRates() -> Promise<ExchangeRates> { Promise { _ in } }
+    func latestFees() -> Promise<Fees> { Promise { _ in } }
 
     func viewControllerDidSelectSummaryHeader(_ viewController: UIViewController) { }
     func summaryHeaderType(for viewController: UIViewController) -> SummaryHeaderType? {

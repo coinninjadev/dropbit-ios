@@ -126,9 +126,8 @@ class RequestPayViewControllerTests: XCTestCase {
     }
 
     func latestExchangeRates(responseHandler: (ExchangeRates) -> Void) {}
-    func latestFees() -> Promise<Fees> {
-      return Promise { _ in }
-    }
+    func latestExchangeRates() -> Promise<ExchangeRates> { Promise { _ in } }
+    func latestFees() -> Promise<Fees> { Promise { _ in } }
 
     func viewControllerDidRequestNextReceiveAddress(_ viewController: UIViewController) -> String? {
       return nil

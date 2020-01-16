@@ -23,7 +23,7 @@ extension AppCoordinator: WalletOverviewTopBarDelegate {
   }
 
   func containerDidTapLeftButton(in viewController: UIViewController) {
-    self.drawerController?.toggle(.left, animated: true, completion: nil)
+    drawerController?.openLeft(animated: true)
   }
 
   func containerDidTapDropBitMe(in viewController: UIViewController) {

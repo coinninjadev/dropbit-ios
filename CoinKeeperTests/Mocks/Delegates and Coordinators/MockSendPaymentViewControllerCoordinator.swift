@@ -93,10 +93,8 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
   }
 
   func latestExchangeRates(responseHandler: (ExchangeRates) -> Void) { }
-
-  func latestFees() -> Promise<Fees> {
-    return Promise.value([:])
-  }
+  func latestExchangeRates() -> Promise<ExchangeRates> { Promise { _ in } }
+  func latestFees() -> Promise<Fees> { Promise.value([:]) }
 
   var didTapTwitter = false
   func viewControllerDidPressTwitter(_ viewController: UIViewController & SelectedValidContactDelegate) {

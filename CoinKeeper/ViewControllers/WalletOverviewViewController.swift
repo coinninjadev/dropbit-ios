@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import MMDrawerController
+import FAPanels
 
 protocol WalletOverviewViewControllerDelegate: WalletOverviewTopBarDelegate & BadgeUpdateDelegate & AnalyticsManagerAccessType & DebugDelegate {
   var badgeManager: BadgeManagerType { get }
@@ -409,7 +409,7 @@ extension WalletOverviewViewController: TransactionHistorySummaryCollectionViewD
 
   func collectionViewDidUncoverWalletBalance() {
     guard !topBar.balanceView.isHidden
-      && navigationController?.topViewController() is MMDrawerController else { return }
+      && navigationController?.topViewController() is FAPanelController else { return }
 
     topBar.toggleChartAndBalance()
     sendReceiveActionView.isHidden = false

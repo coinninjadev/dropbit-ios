@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import MMDrawerController
+import FAPanels
 import Moya
 import Permission
 import AVFoundation
@@ -172,8 +172,8 @@ class AppCoordinator: CoordinatorType {
     self.userIdentifiableManager.delegate = self
   }
 
-  var drawerController: MMDrawerController? {
-    return navigationController.topViewController.flatMap { $0 as? MMDrawerController }
+  var drawerController: FAPanelController? {
+    return navigationController.topViewController().flatMap { $0 as? FAPanelController }
   }
 
   func startSegwitUpgrade() {
@@ -457,8 +457,8 @@ class AppCoordinator: CoordinatorType {
   }
 
   private var walletOverviewViewController: WalletOverviewViewController? {
-    guard let topViewController = (navigationController.topViewController() as? MMDrawerController) else { return nil }
-    return topViewController.centerViewController as? WalletOverviewViewController
+    guard let topViewController = (navigationController.topViewController() as? FAPanelController) else { return nil }
+    return topViewController.center as? WalletOverviewViewController
   }
 
   func toggleChartAndBalance() {

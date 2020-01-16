@@ -8,7 +8,7 @@
 
 import XCTest
 @testable import DropBit
-import MMDrawerController
+import FAPanels
 
 class AppCoordinatorStartVCDelegateTests: XCTestCase {
 
@@ -92,7 +92,7 @@ class AppCoordinatorStartVCDelegateTests: XCTestCase {
 
     self.sut.start()
 
-    XCTAssertTrue(mockNavigationController.viewControllers.first is MMDrawerController, "nav vc first should be drawer")
+    XCTAssertTrue(mockNavigationController.viewControllers.first is FAPanelController, "nav vc first should be drawer")
     XCTAssertEqual(mockNavigationController.viewControllers.count, 1, "nav vc count should be 1")
   }
 }

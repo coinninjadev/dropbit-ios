@@ -23,19 +23,17 @@ Ensure you have the prerequisites listed below, then go to the "Installing, Test
 
 If not running/testing the app via Fastlane (i.e., you'll be using Xcode), execute the following before running/testing:
 * `brew bundle`
-* `carthage update --platform iOS` (assumes you have valid SSH access to the CNBitcoinKit repo)
+* `bundle exec pod install`
 * Open Xcode
 * To test, select a device from the CoinKeeper scheme, then press Cmd + U. UI Integration Tests will likely fail outside of the Coin Ninja organization.
 * To run, select a device from the CoinKeeper scheme, then press Cmd + R
 
 To run the tests without Xcode, execute the following:
 * `bundle exec fastlane test`
-This will install all necessary dependencies, and remove and reinstall all available simulators.
+This will install all necessary dependencies, and remove and reinstall all necessary simulators.
 
-If adding new dependencies via Carthage, update the `Cartfile` as needed, then simply run the following:
-* `bundle exec fastlane update_carthage`
-...or if you only want to install the one dependency without possibly updating others...
-* `carthage update <name_of_new_dependency> --platform iOS`
+If adding new dependencies via Cocoapods, update the `Podfile` as needed, then simply run the following:
+`bundle exec pod install`
 
 To run the project, open the .xcodeproj file in Xcode, select a device to run on from the Scheme drop-down, then press Cmd + R.
 
@@ -83,7 +81,7 @@ To easily fix auto-correctable issues, run:
 ## Built With
 
 * [Fastlane](http://fastlane.tools/) - Automation
-* [Carthage](https://github.com/Carthage/Carthage/) - Dependency Management
+* [Swift Package Manager](https://swift.org/package-manager/) - Dependency Management
 * [CocoaPods](https://cocoapods.org) - Dependency Management
 
 ## Contributing

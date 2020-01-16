@@ -78,6 +78,7 @@
 		3B1FF6A323C65C400002AB7E /* BaseCoin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1FF6A223C65C400002AB7E /* BaseCoin.swift */; };
 		3B219B3722C3AAD1007EDFCC /* NotificationTopicSubscriptionTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B219B3622C3AAD1007EDFCC /* NotificationTopicSubscriptionTarget.swift */; };
 		3B219B3922C3B9EE007EDFCC /* Data+PrettyPrinted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B219B3822C3B9EE007EDFCC /* Data+PrettyPrinted.swift */; };
+		3B227D7923CCD37D00D86BE8 /* FAPanels in Frameworks */ = {isa = PBXBuildFile; productRef = 3B227D7823CCD37D00D86BE8 /* FAPanels */; };
 		3B23126320DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B23126220DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib */; };
 		3B23126520DA6CBA0099A557 /* TransactionHistoryDetailCellAddressViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B23126420DA6CBA0099A557 /* TransactionHistoryDetailCellAddressViewTests.swift */; };
 		3B23126720DA6D0E0099A557 /* TransactionHistoryDetailCellAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B23126620DA6D0E0099A557 /* TransactionHistoryDetailCellAddressView.swift */; };
@@ -323,7 +324,6 @@
 		3B9A8E062152A93200C78C2C /* SendPaymentViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9A8E052152A93100C78C2C /* SendPaymentViewControllerTests.swift */; };
 		3B9EE87C2058370000C0CC8C /* AlertManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9EE87B2058370000C0CC8C /* AlertManagerTests.swift */; };
 		3B9EE87E2058674C00C0CC8C /* MockNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9EE87D2058674B00C0CC8C /* MockNavigationController.swift */; };
-		3BA1AF3123CE908100F5494B /* Cnlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BA1AF3023CE908000F5494B /* Cnlib.framework */; };
 		3BA360842090B0C100732C43 /* CKMTransaction+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA360822090B0C100732C43 /* CKMTransaction+CoreDataClass.swift */; };
 		3BA360852090B0C100732C43 /* CKMTransaction+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA360832090B0C100732C43 /* CKMTransaction+CoreDataProperties.swift */; };
 		3BA360882090BAD900732C43 /* NSManagedObject+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA360872090BAD900732C43 /* NSManagedObject+Init.swift */; };
@@ -355,6 +355,7 @@
 		3BAB1449204EE7FD001D41A2 /* VerifyRecoveryWordsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB1448204EE7FD001D41A2 /* VerifyRecoveryWordsViewControllerTests.swift */; };
 		3BAB144B204F3CD0001D41A2 /* OnboardingTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB144A204F3CD0001D41A2 /* OnboardingTitleLabel.swift */; };
 		3BACDB992190B7DB0006F2D4 /* AppCoordinator+RecoveryWordsIntroViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BACDB982190B7DB0006F2D4 /* AppCoordinator+RecoveryWordsIntroViewControllerDelegate.swift */; };
+		3BACE08423D0BAA500327CD0 /* Cnlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BACE08323D0BAA500327CD0 /* Cnlib.framework */; };
 		3BB01BC1220A4233006B4D25 /* NoConnectionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB01BC0220A4233006B4D25 /* NoConnectionViewControllerTests.swift */; };
 		3BB01BC3220A56F6006B4D25 /* AppCoordinator+NoConnectionViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB01BC2220A56F6006B4D25 /* AppCoordinator+NoConnectionViewControllerDelegate.swift */; };
 		3BB05AC1209CF407000297E1 /* Typealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB05AC0209CF407000297E1 /* Typealiases.swift */; };
@@ -1403,7 +1404,6 @@
 		3B80E27421BE9D7A00F6EF17 /* DatabaseMigrationWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMigrationWorker.swift; sourceTree = "<group>"; };
 		3B80E27721BEEDD300F6EF17 /* MigrateDatabaseV1toV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateDatabaseV1toV2.swift; sourceTree = "<group>"; };
 		3B80E27A21BEF04500F6EF17 /* DatabaseMigrationWorkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMigrationWorkerTests.swift; sourceTree = "<group>"; };
-		3B8269162032407C009B11EC /* Strongbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Strongbox.framework; path = Carthage/Build/iOS/Strongbox.framework; sourceTree = "<group>"; };
 		3B82691920330B96009B11EC /* KeypadEntryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KeypadEntryView.xib; sourceTree = "<group>"; };
 		3B82691B20330C6A009B11EC /* UIView+Xib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Xib.swift"; sourceTree = "<group>"; };
 		3B82691D20330CAC009B11EC /* KeypadEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeypadEntryView.swift; sourceTree = "<group>"; };
@@ -1462,10 +1462,8 @@
 		3B9A8DF62150388F00C78C2C /* AppCoordinator+WalletDelegateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+WalletDelegateType.swift"; sourceTree = "<group>"; };
 		3B9A8DF821503E6500C78C2C /* MockWalletDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWalletDelegate.swift; sourceTree = "<group>"; };
 		3B9A8E052152A93100C78C2C /* SendPaymentViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendPaymentViewControllerTests.swift; sourceTree = "<group>"; };
-		3B9EE8772058359400C0CC8C /* PMAlertController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PMAlertController.framework; path = Carthage/Build/iOS/PMAlertController.framework; sourceTree = "<group>"; };
 		3B9EE87B2058370000C0CC8C /* AlertManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManagerTests.swift; sourceTree = "<group>"; };
 		3B9EE87D2058674B00C0CC8C /* MockNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNavigationController.swift; sourceTree = "<group>"; };
-		3BA1AF3023CE908000F5494B /* Cnlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Cnlib.framework; sourceTree = "<group>"; };
 		3BA360822090B0C100732C43 /* CKMTransaction+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMTransaction+CoreDataClass.swift"; sourceTree = "<group>"; };
 		3BA360832090B0C100732C43 /* CKMTransaction+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMTransaction+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		3BA360872090BAD900732C43 /* NSManagedObject+Init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Init.swift"; sourceTree = "<group>"; };
@@ -1497,6 +1495,7 @@
 		3BAB1448204EE7FD001D41A2 /* VerifyRecoveryWordsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyRecoveryWordsViewControllerTests.swift; sourceTree = "<group>"; };
 		3BAB144A204F3CD0001D41A2 /* OnboardingTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTitleLabel.swift; sourceTree = "<group>"; };
 		3BACDB982190B7DB0006F2D4 /* AppCoordinator+RecoveryWordsIntroViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+RecoveryWordsIntroViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		3BACE08323D0BAA500327CD0 /* Cnlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Cnlib.framework; sourceTree = "<group>"; };
 		3BB01BC0220A4233006B4D25 /* NoConnectionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoConnectionViewControllerTests.swift; sourceTree = "<group>"; };
 		3BB01BC2220A56F6006B4D25 /* AppCoordinator+NoConnectionViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+NoConnectionViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		3BB05AC0209CF407000297E1 /* Typealiases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typealiases.swift; sourceTree = "<group>"; };
@@ -1660,7 +1659,6 @@
 		A23BB4C8237B03D300D8FBD1 /* PurchaseMerchantTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseMerchantTableViewCell.swift; sourceTree = "<group>"; };
 		A243269923995BF100DDCED9 /* VerticalCenterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalCenterButton.swift; sourceTree = "<group>"; };
 		A243269B2399753800DDCED9 /* AppCoordinator+HolidaySelectorViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+HolidaySelectorViewDelegate.swift"; sourceTree = "<group>"; };
-		A24525342100EBC80024D5F8 /* Gifu.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Gifu.framework; path = Carthage/Build/iOS/Gifu.framework; sourceTree = "<group>"; };
 		A245C6CF20D9537400D99983 /* WalletAddressRequestBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressRequestBody.swift; sourceTree = "<group>"; };
 		A246C82022CA562D00AF1F52 /* NetworkManager+NewsDataRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+NewsDataRequestable.swift"; sourceTree = "<group>"; };
 		A246C82222CA6F1300AF1F52 /* PriceSummaryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceSummaryResponse.swift; sourceTree = "<group>"; };
@@ -1800,7 +1798,6 @@
 		A2EF78D82384642000321809 /* NetworkManager+ConfigRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+ConfigRequestable.swift"; sourceTree = "<group>"; };
 		A2EF78DA23848BF600321809 /* ConfigResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigResponse.swift; sourceTree = "<group>"; };
 		A2F5689023C3E703000409F9 /* LocalNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotificationManager.swift; sourceTree = "<group>"; };
-		A2FDC54022D37BFA004B0EDD /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = Carthage/Build/iOS/Charts.framework; sourceTree = "<group>"; };
 		A2FE198122FB0E5A00C2412D /* TryLightningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TryLightningViewController.swift; sourceTree = "<group>"; };
 		A2FE198322FB0F5C00C2412D /* TryLightningViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TryLightningViewController.storyboard; sourceTree = "<group>"; };
 		A2FE198522FDDD3A00C2412D /* NSAttributedString+WalletTypeIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+WalletTypeIdentifiers.swift"; sourceTree = "<group>"; };
@@ -1972,7 +1969,6 @@
 		B54BDCE92086447500B71D6B /* TransactionHistorySummaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistorySummaryCell.swift; sourceTree = "<group>"; };
 		B54BDCEA2086447500B71D6B /* TransactionHistorySummaryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionHistorySummaryCell.xib; sourceTree = "<group>"; };
 		B54D0F1E234A2584001B89BD /* TransactionDetailInvalidCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailInvalidCellViewModel.swift; sourceTree = "<group>"; };
-		B54D205D20F908C30057A694 /* SwiftMessages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftMessages.framework; path = Carthage/Build/iOS/SwiftMessages.framework; sourceTree = "<group>"; };
 		B54D205F20F9218A0057A694 /* CKBannerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CKBannerView.xib; sourceTree = "<group>"; };
 		B54D206120F921A20057A694 /* CKBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKBannerView.swift; sourceTree = "<group>"; };
 		B54D206320F926110057A694 /* UIImage+Mask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Mask.swift"; sourceTree = "<group>"; };
@@ -2292,8 +2288,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3050CCBBA9D3A897790120B /* Pods_DropBit.framework in Frameworks */,
-				3BA1AF3123CE908100F5494B /* Cnlib.framework in Frameworks */,
 				3BC289B623C8C6F6005B9933 /* PromiseKit in Frameworks */,
+				3B227D7923CCD37D00D86BE8 /* FAPanels in Frameworks */,
+				3BACE08423D0BAA500327CD0 /* Cnlib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2414,11 +2411,6 @@
 		3B124E2F2020F1E500431E2E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A2FDC54022D37BFA004B0EDD /* Charts.framework */,
-				A24525342100EBC80024D5F8 /* Gifu.framework */,
-				B54D205D20F908C30057A694 /* SwiftMessages.framework */,
-				3B9EE8772058359400C0CC8C /* PMAlertController.framework */,
-				3B8269162032407C009B11EC /* Strongbox.framework */,
 				1737718592249CB505AF79DB /* Pods_DropBit.framework */,
 				E20946923A0E7F2A5AB722BB /* Pods_DropBitTests.framework */,
 				C84B0D140F3ED5CBE884E39D /* libPods-DropBitUITests.a */,
@@ -2928,7 +2920,7 @@
 		3BAB4BB723A7C71000AADBF7 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				3BA1AF3023CE908000F5494B /* Cnlib.framework */,
+				3BACE08323D0BAA500327CD0 /* Cnlib.framework */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -4148,6 +4140,7 @@
 			name = DropBit;
 			packageProductDependencies = (
 				3BC289B523C8C6F6005B9933 /* PromiseKit */,
+				3B227D7823CCD37D00D86BE8 /* FAPanels */,
 			);
 			productName = CoinKeeper;
 			productReference = 3B124E0C2020EB2B00431E2E /* DropBit.app */;
@@ -4161,7 +4154,6 @@
 				3B124E1C2020EB2B00431E2E /* Sources */,
 				3B124E1D2020EB2B00431E2E /* Frameworks */,
 				3B124E1E2020EB2B00431E2E /* Resources */,
-				3B124E372020F26B00431E2E /* Carthage Copy-Frameworks Run Script */,
 			);
 			buildRules = (
 			);
@@ -4269,6 +4261,7 @@
 			mainGroup = 3B124E032020EB2B00431E2E;
 			packageReferences = (
 				3BC289B423C8C6F6005B9933 /* XCRemoteSwiftPackageReference "PromiseKit" */,
+				3B227D7723CCD37D00D86BE8 /* XCRemoteSwiftPackageReference "FAPanels" */,
 			);
 			productRefGroup = 3B124E0D2020EB2B00431E2E /* Products */;
 			projectDirPath = "";
@@ -4534,20 +4527,6 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
-		};
-		3B124E372020F26B00431E2E /* Carthage Copy-Frameworks Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Carthage Copy-Frameworks Run Script";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
 		3B3BA04D202A2A0D00093971 /* SwiftLint Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5792,7 +5771,6 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/lib",
 				);
 				INFOPLIST_FILE = CoinKeeper/Info.plist;
@@ -5833,7 +5811,6 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/lib",
 				);
 				INFOPLIST_FILE = CoinKeeper/Info.plist;
@@ -5864,10 +5841,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = GV9ZP4A7U6;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = CoinKeeperTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5893,10 +5867,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = GV9ZP4A7U6;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = CoinKeeperTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5985,7 +5956,6 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/lib",
 				);
 				INFOPLIST_FILE = CoinKeeper/Info.plist;
@@ -6016,10 +5986,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = GV9ZP4A7U6;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = CoinKeeperTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -6130,7 +6097,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Result\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/SVProgressHUD\"",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = DropBitUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
@@ -6172,7 +6138,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Result\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/SVProgressHUD\"",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = DropBitUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
@@ -6212,7 +6177,6 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Result\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/SVProgressHUD\"",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = DropBitUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
@@ -6289,6 +6253,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3B227D7723CCD37D00D86BE8 /* XCRemoteSwiftPackageReference "FAPanels" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/fahidattique55/FAPanels";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.1;
+			};
+		};
 		3BC289B423C8C6F6005B9933 /* XCRemoteSwiftPackageReference "PromiseKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mxcl/PromiseKit";
@@ -6300,6 +6272,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3B227D7823CCD37D00D86BE8 /* FAPanels */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B227D7723CCD37D00D86BE8 /* XCRemoteSwiftPackageReference "FAPanels" */;
+			productName = FAPanels;
+		};
 		3BC289B523C8C6F6005B9933 /* PromiseKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3BC289B423C8C6F6005B9933 /* XCRemoteSwiftPackageReference "PromiseKit" */;
