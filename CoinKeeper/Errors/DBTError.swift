@@ -51,7 +51,7 @@ struct DBTError {
     }
   }
 
-  enum Biometrics: DBTErrorType {
+  enum Biometrics: String, DBTErrorType {
     case authenticationFailed
     case userCancel
     case systemCancel
@@ -77,7 +77,7 @@ struct DBTError {
       case .authenticationFailed: return "Authentication failed"
       case .notEnrolled: return "Not enrolled in biometric authentication"
       case .notAvailable: return "Biometric authentication is not available"
-      default: return "If you are enrolled in biometric authentication, please try again."
+      default: return "If you are enrolled in biometric authentication, please try again. \n\n(Error: \(rawValue))"
       }
     }
   }

@@ -54,38 +54,37 @@ class BiometricErrorTests: XCTestCase {
   func testAuthenticationFailedErrorDescription() {
     self.sut = DBTError.Biometrics(code: .authenticationFailed)
     let expectedText = "Authentication failed"
-    XCTAssertEqual(self.sut.errorDescription, expectedText)
+    XCTAssertEqual(self.sut.displayMessage, expectedText)
   }
 
   func testNotEnrolledErrorDescription() {
     self.sut = DBTError.Biometrics(code: .biometryNotEnrolled)
     let expectedText = "Not enrolled in biometric authentication"
-    XCTAssertEqual(self.sut.errorDescription, expectedText)
+    XCTAssertEqual(self.sut.displayMessage, expectedText)
   }
 
   func testBiometryNotAvailableFailedErrorDescription() {
     self.sut = DBTError.Biometrics(code: .biometryNotAvailable)
-    XCTAssertNil(self.sut.errorDescription, "error description should be nil")
+    XCTAssertEqual(self.sut.displayMessage, "Biometric authentication is not available")
   }
 
   func testUnknownErrorDescription() {
     self.sut = DBTError.Biometrics.unknown
-    let expectedText = "If you are enrolled in biometric authentication, please try again."
-    XCTAssertEqual(self.sut.errorDescription, expectedText)
+    XCTAssertTrue(self.sut.displayMessage.isNotEmpty)
   }
 
   func testSystemCancelErrorDescription() {
     self.sut = DBTError.Biometrics(code: .systemCancel)
-    XCTAssertNil(self.sut.errorDescription, "error description should be nil")
+    XCTAssertTrue(self.sut.displayMessage.isNotEmpty)
   }
 
   func testBiometryLockoutErrorDescription() {
     self.sut = DBTError.Biometrics(code: .biometryLockout)
-    XCTAssertNil(self.sut.errorDescription, "error description should be nil")
+    XCTAssertTrue(self.sut.displayMessage.isNotEmpty)
   }
 
   func testUserCancelErrorDescription() {
     self.sut = DBTError.Biometrics(code: .userCancel)
-    XCTAssertNil(self.sut.errorDescription, "error description should be nil")
+    XCTAssertTrue(self.sut.displayMessage.isNotEmpty)
   }
 }
