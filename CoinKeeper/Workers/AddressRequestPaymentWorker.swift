@@ -234,6 +234,8 @@ class OnChainAddressRequestPaymentWorker: AddressRequestPaymentWorker {
         return Promise(error: DBTError.PendingInvitation.insufficientFundsForInvitationWithID(responseId))
       case .insufficientFee:
         return Promise(error: DBTError.PendingInvitation.insufficientFeeForInvitationWithID(responseId))
+      case .dust, .createTransactionFailure:
+        return Promise(error: txDataError)
       }
     }
 

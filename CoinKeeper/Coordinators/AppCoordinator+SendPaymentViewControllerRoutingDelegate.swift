@@ -273,19 +273,31 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
     let usableRates = UsableFeeRates(rates: rates, walletManager: wmgr)
     let allowed = RBFOption.allowed
 
+    var viewModel: AdjustableTransactionFeeViewModel!
+    
     return wmgr.transactionData(forPayment: btcAmount, to: address, withFeeRate: usableRates.lowRate, rbfOption: allowed)
       .map { lowTxData -> AdjustableTransactionFeeViewModel in
-        let maybeMediumTxData = wmgr.failableTransactionData(
-          forPayment: btcAmount, to: address, withFeeRate: usableRates.mediumRate, rbfOption: allowed
-        )
-        let maybeHighTxData = wmgr.failableTransactionData(
-          forPayment: btcAmount, to: address, withFeeRate: usableRates.highRate, rbfOption: allowed
-        )
-        return AdjustableTransactionFeeViewModel(preferredFeeType: config.defaultFeeType,
-                                                 lowFeeTxData: lowTxData,
-                                                 mediumFeeTxData: maybeMediumTxData,
-                                                 highFeeTxData: maybeHighTxData,
-                                                 isAdjustable: config.adjustableFeesEnabled)
+        viewModel = AdjustableTransactionFeeViewModel(preferredFeeType: config.defaultFeeType,
+                                                      lowFeeTxData: lowTxData,
+                                                      mediumFeeTxData: nil,
+                                                      highFeeTxData: nil,
+                                                      isAdjustable: config.adjustableFeesEnabled)
+        return viewModel
+    }.then { (viewModel: AdjustableTransactionFeeViewModel) -> Promise<AdjustableTransactionFeeViewModel> in
+      return wmgr.transactionData(forPayment: btcAmount, to: address, withFeeRate: usableRates.mediumRate, rbfOption: allowed)
+        .then { (data: CNBCnlibTransactionData) -> Promise<AdjustableTransactionFeeViewModel> in
+          viewModel.mediumFeeTxData = data
+          return Promise.value(viewModel)
+      }
+      .recover { _ in return Promise.value(viewModel) }
+    }
+    .then { (viewModel: AdjustableTransactionFeeViewModel) -> Promise<AdjustableTransactionFeeViewModel> in
+      return wmgr.transactionData(forPayment: btcAmount, to: address, withFeeRate: usableRates.highRate, rbfOption: allowed)
+        .then { (data: CNBCnlibTransactionData) -> Promise<AdjustableTransactionFeeViewModel> in
+          viewModel.highFeeTxData = data
+          return Promise.value(viewModel)
+      }
+      .recover { _ in return Promise.value(viewModel) }
     }
   }
 
