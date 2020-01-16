@@ -22,9 +22,11 @@ protocol CoinNinjaTargetType: TargetType {
   var subPath: String? { get }
 
   /// This gives the target the opportunity to translate the status code
-  /// into a CKNetworkError that is more specific to its context.
-  /// There is a default implementation which references `defaultNetworkError()`.
-  func networkError(for moyaError: MoyaError) -> CKNetworkError?
+  /// into a DBTError.Network that is more specific to its context.
+  /// The target should return nil if no customization is needed and this protocol will fallback
+  /// to the error message provided by the server or a general network error based on the status code.
+  /// A default implementation makes this optional.
+  func customNetworkError(for moyaError: MoyaError) -> DBTErrorType?
 
 }
 
@@ -69,29 +71,38 @@ extension CoinNinjaTargetType {
     return nil
   }
 
-  func networkError(for moyaError: MoyaError) -> CKNetworkError? {
-    return defaultNetworkError(for: moyaError)
+  func customNetworkError(for moyaError: MoyaError) -> DBTErrorType? {
+    return nil
   }
 
   // MARK: - Helper methods for conforming targets
 
-  func defaultNetworkError(for moyaError: MoyaError) -> CKNetworkError? {
+  ///Returns an error appropriate for displaying to the user.
+  func displayableNetworkError(for moyaError: MoyaError) -> DBTErrorType? {
+    return customNetworkError(for: moyaError) ?? defaultNetworkError(for: moyaError)
+  }
+
+  private func defaultNetworkError(for moyaError: MoyaError) -> DBTErrorType? {
     guard let statusCode = moyaError.response?.statusCode else {
-      return CKNetworkError.reachabilityFailed(moyaError)
+      return DBTError.Network.reachabilityFailed(moyaError)
     }
 
     if case .objectMapping = moyaError {
-      return CKNetworkError.decodingFailed(type: String(describing: ResponseType.self))
+      return DBTError.Network.decodingFailed(type: String(describing: ResponseType.self))
     }
 
-    switch statusCode {
-    case 400: return .badResponse
-    case 401: return .unauthorized
-    case 404: return .recordNotFound
-    case 409: return .serverConflict
-    case 429: return .rateLimitExceeded
-    case 500: return .unknownServerError(moyaError)
-    default:  return nil
+    if let errorResponse = moyaError.coinNinjaErrorResponse {
+      return errorResponse
+    } else {
+      switch statusCode {
+      case 400: return DBTError.Network.badResponse
+      case 401: return DBTError.Network.unauthorized
+      case 404: return DBTError.Network.recordNotFound
+      case 409: return DBTError.Network.serverConflict
+      case 429: return DBTError.Network.rateLimitExceeded
+      case 500: return DBTError.Network.unknownServerError(moyaError)
+      default:  return nil
+      }
     }
   }
 

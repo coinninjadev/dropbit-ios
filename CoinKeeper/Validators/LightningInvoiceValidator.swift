@@ -8,17 +8,13 @@
 
 import Foundation
 
-enum LightningInvoiceValidatorError: ValidatorTypeError {
+enum LightningInvoiceValidatorError: ValidatorErrorType {
   case isInvalidLightningInvoice
 
-  var debugMessage: String {
+  var displayMessage: String {
     switch self {
     case .isInvalidLightningInvoice:  return "Invalid Lightning Invoice"
     }
-  }
-
-  var displayMessage: String? {
-    return debugMessage
   }
 
 }

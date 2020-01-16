@@ -8,15 +8,15 @@
 
 import Foundation
 
-enum LightningWalletAmountValidatorError: ValidatorTypeError {
+enum LightningWalletAmountValidatorError: ValidatorErrorType {
   case walletMaximum
   case reloadMinimum
   case invalidAmount
 
-  var debugMessage: String {
+  var displayMessage: String {
     switch self {
     case .invalidAmount:
-      return "There was an unexpected error, please re-sync your wallet in settings"
+      return "There was an unexpected error, please re-sync your wallet in settings."
     case .walletMaximum:
       let symbol = LightningWalletAmountValidator.maxWalletValue.currency.symbol
       let maxAmount = LightningWalletAmountValidator.maxWalletValue.amount
@@ -31,21 +31,6 @@ enum LightningWalletAmountValidatorError: ValidatorTypeError {
       \(LightningWalletAmountValidator.minReloadAmount.currency.symbol)
       \(LightningWalletAmountValidator.minReloadAmount.amount) to your lightning wallet
       """.removingMultilineLineBreaks()
-    }
-  }
-
-  var displayMessage: String? {
-    switch self {
-    case .invalidAmount:
-      return "Unable to convert amount to fiat, stopping"
-    case .walletMaximum:
-      let fiatFormatter = FiatFormatter(currency: .USD, withSymbol: true)
-      let amountString = fiatFormatter.string(fromDecimal: LightningWalletAmountValidator.maxWalletValue.amount) ?? ""
-      return "Unable to load Lightning wallet via DropBit when Lightning balance would exceed \(amountString)."
-    case .reloadMinimum:
-      let fiatFormatter = FiatFormatter(currency: .USD, withSymbol: true)
-      let amountString = fiatFormatter.string(fromDecimal: LightningWalletAmountValidator.minReloadAmount.amount) ?? ""
-      return "Unable to load Lightning wallet, requested amount is below \(amountString) minimum."
     }
   }
 }

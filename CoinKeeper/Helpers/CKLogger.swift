@@ -62,11 +62,12 @@ class CKLogger: Logger {
   /// Convenience method to log the localizedDescription of an error, after joining it with an optional message
   func error(_ error: Error, message: String?,
              file: String = #file, function: String = #function, line: Int = #line) {
+    let dbtError = DBTError.cast(error)
     var combinedMessage = ""
     if let msg = message {
       combinedMessage = "\(msg), error: "
     }
-    combinedMessage += error.localizedDescription
+    combinedMessage += dbtError.debugMessage
     let location = self.logLocation(file, function, line)
     logMessage(combinedMessage, privateArgs: [], level: .error, location: location)
   }

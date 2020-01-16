@@ -444,8 +444,9 @@ extension SendPaymentViewController {
   }
 
   private func handleError(error: Error) {
+    let dbtError = DBTError.cast(error)
     self.alertManager?.hideActivityHUD(withDelay: nil) {
-      let viewModel = AlertControllerViewModel(title: "", description: error.localizedDescription)
+      let viewModel = AlertControllerViewModel(title: "", description: dbtError.displayMessage)
       self.delegate.viewControllerDidRequestAlert(self, viewModel: viewModel)
     }
   }
@@ -461,7 +462,7 @@ extension SendPaymentViewController {
                                                      exchangeRates: self.viewModel.exchangeRates,
                                                      fiatCurrency: self.viewModel.fiatCurrency)
         guard let fetchedModel = maybeFetchedModel, fetchedModel.address != nil else {
-            self.showValidatorAlert(for: MerchantPaymentRequestError.missingOutput, title: errorTitle)
+            self.showValidatorAlert(for: DBTError.MerchantPaymentRequest.missingOutput, title: errorTitle)
             return
         }
 
@@ -800,7 +801,8 @@ extension SendPaymentViewController {
   }
 
   private func handleContactValidationError(_ error: Error) {
-    self.showValidatorAlert(for: error, title: "")
+    let dbtError = DBTError.cast(error)
+    self.showValidatorAlert(for: dbtError, title: "")
   }
 
   private func validateRegisteredContact(_ contact: ContactType, sharedPayload: SharedPayloadDTO) throws {

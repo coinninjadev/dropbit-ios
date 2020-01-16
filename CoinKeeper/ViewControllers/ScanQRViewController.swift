@@ -10,17 +10,6 @@ import UIKit
 import AVFoundation
 import SVProgressHUD
 
-enum AVScanErrorType {
-  case noBitcoinQRCodes
-
-  var message: String {
-    switch self {
-    case .noBitcoinQRCodes:
-      return "Invalid Bitcoin address or Lightning invoice"
-    }
-  }
-}
-
 typealias PhotoViewController = UIViewController & UIImagePickerControllerDelegate & UINavigationControllerDelegate
 
 //swiftlint:disable class_delegate_protocol
@@ -33,7 +22,7 @@ protocol ScanQRViewControllerDelegate: PaymentRequestResolver, LightningInvoiceR
 
   func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: Error?)
   func viewControllerDidPressPhotoButton(_ viewController: PhotoViewController)
-  func viewControllerHadScanFailure(_ viewController: UIViewController, error: AVScanErrorType)
+  func viewControllerHadScanFailure(_ viewController: UIViewController, error: DBTError.AVScan)
 
 }
 

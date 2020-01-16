@@ -41,7 +41,7 @@ extension AppCoordinator: PaymentBuildingDelegate {
     return latestFees()
       .compactMap { self.usableFeeRate(from: $0) }
       .then { feeRate -> Promise<CNBCnlibTransactionData> in
-        guard let wmgr = self.walletManager else { return Promise(error: CKPersistenceError.noManagedWallet) }
+        guard let wmgr = self.walletManager else { return Promise(error: DBTError.Persistence.noManagedWallet) }
         return wmgr.transactionDataSendingMax(to: destinationAddress, withFeeRate: feeRate)
     }
   }
@@ -75,7 +75,7 @@ extension AppCoordinator: PaymentBuildingDelegate {
             return Promise(error: error)
           }
         } else {
-          return Promise(error: TransactionDataError.insufficientFunds)
+          return Promise(error: DBTError.TransactionData.insufficientFunds)
         }
     }
   }

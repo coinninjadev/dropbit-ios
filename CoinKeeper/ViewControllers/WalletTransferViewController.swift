@@ -136,7 +136,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
       self.setupTransactionUI()
       self.refreshBothAmounts()
     }.catch { error in
-      self.alertManager?.showError(message: error.localizedDescription, forDuration: 2.5)
+      self.alertManager?.showErrorHUD(error, forDuration: 2.5)
     }
   }
 
@@ -173,7 +173,8 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
           self.disableConfirmButton()
       }
     } catch {
-      self.delegate.handleLightningLoadError(error)
+      let dbtError = DBTError.cast(error)
+      self.delegate.handleLightningLoadError(dbtError)
       self.disableConfirmButton()
     }
   }
@@ -252,7 +253,8 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
           self.disableConfirmButton()
         }
       } catch {
-        delegate.handleLightningLoadError(error)
+        let dbtError = DBTError.cast(error)
+        delegate.handleLightningLoadError(dbtError)
         self.disableConfirmButton()
       }
 

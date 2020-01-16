@@ -40,7 +40,7 @@ extension SharedPayloadCodable {
       return try encoder.encode(self)
     } catch {
       let typeDesc = String(describing: self)
-      throw CKNetworkError.encodingFailed(type: typeDesc)
+      throw DBTError.Network.encodingFailed(type: typeDesc)
     }
   }
 
@@ -49,7 +49,7 @@ extension SharedPayloadCodable {
       self = try Self.decoder.decode(Self.self, from: data)
     } catch {
       let typeDesc = String(describing: Self.self)
-      throw CKNetworkError.decodingFailed(type: typeDesc)
+      throw DBTError.Network.decodingFailed(type: typeDesc)
     }
   }
 

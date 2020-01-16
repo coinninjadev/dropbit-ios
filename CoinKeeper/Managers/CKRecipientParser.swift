@@ -42,8 +42,8 @@ class CKRecipientParser: RecipientParserType {
                             candidatePhoneNumbers: possiblePhoneNumbers,
                             candidateAddresses: possibleAddresses,
                             matchingTypes: types)
-    } catch let error as ValidatorTypeError {
-      throw CKRecipientParserError.validation(error)
+    } catch let error as ValidatorErrorType {
+      throw DBTError.RecipientParser.validation(error)
     } catch {
       throw error
     }
@@ -54,11 +54,11 @@ class CKRecipientParser: RecipientParserType {
     let results = try findRecipients(inText: text, ofTypes: types)
     switch results.count {
     case 0:
-      throw CKRecipientParserError.noResults
+      throw DBTError.RecipientParser.noResults
     case 1:
       return results.first!
     default:
-      throw CKRecipientParserError.multipleRecipients
+      throw DBTError.RecipientParser.multipleRecipients
     }
   }
 

@@ -43,22 +43,9 @@ protocol AllPaymentSendingDelegate: LightningPaymentSendingDelegate, OnChainPaym
 
 extension PaymentSendingDelegate {
 
-  func handleFailure(error: Error?, action: CKCompletion? = nil) {
-    var localizedDescription = ""
-    if let txError = error as? TransactionDataError {
-      localizedDescription = txError.messageDescription
-    } else {
-      localizedDescription = error?.localizedDescription ?? "Unknown error"
-    }
-    analyticsManager.track(error: .submitTransactionError, with: localizedDescription)
-    let config = AlertActionConfiguration(title: "OK", style: .default, action: action)
-    let configs = [config]
-    let alert = alertManager.alert(
-      withTitle: nil,
-      description: localizedDescription,
-      image: nil,
-      style: .alert,
-      actionConfigs: configs)
+  func handleFailure(error: Error, action: CKCompletion? = nil) {
+    log.error(error, message: nil)
+    let alert = alertManager.defaultAlert(withError: error)
     DispatchQueue.main.async { self.navigationController.topViewController()?.present(alert, animated: true) }
   }
 

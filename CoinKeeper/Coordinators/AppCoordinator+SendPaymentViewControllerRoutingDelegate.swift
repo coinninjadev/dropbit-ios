@@ -356,10 +356,10 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
 
   private func handleTransactionError(_ error: Error) {
     log.error(error, message: nil)
-    if let txError = error as? TransactionDataError {
-      let messageDescription = txError.messageDescription
+    if let txError = error as? DBTError.TransactionData {
       let config = AlertActionConfiguration(title: "OK", style: .default, action: nil)
-      let alert = self.alertManager.alert(withTitle: nil, description: messageDescription, image: nil, style: .alert, actionConfigs: [config])
+      let alert = self.alertManager.alert(withTitle: nil, description: txError.displayMessage,
+                                          image: nil, style: .alert, actionConfigs: [config])
       self.navigationController.present(alert, animated: true, completion: nil)
     }
   }

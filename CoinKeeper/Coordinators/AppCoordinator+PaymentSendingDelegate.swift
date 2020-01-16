@@ -117,12 +117,16 @@ extension AppCoordinator: PaymentSendingDelegate {
   /// Provides a completion handler to be called in the catch block of payment promise chains
   private func paymentErrorHandler(for successFailVC: SuccessFailViewController, isLightning: Bool) -> CKErrorCompletion {
     let errorHandler: CKErrorCompletion = { [unowned self] error in
-      if let networkError = error as? CKNetworkError,
+      guard let err = error else {
+        successFailVC.setMode(.failure)
+        return
+      }
+      if let networkError = err as? DBTError.Network,
         case let .reachabilityFailed(moyaError) = networkError {
         self.handleReachabilityError(moyaError)
 
       } else {
-        self.handleFailure(error: error, action: {
+        self.handleFailure(error: err, action: {
           successFailVC.setMode(.failure)
         })
       }
@@ -187,7 +191,7 @@ extension AppCoordinator: PaymentSendingDelegate {
 
   private func postSharedPayload(_ postableObject: SharedPayloadPostableObject) -> Promise<String> {
     guard let wmgr = self.walletManager else {
-      return Promise(error: CKPersistenceError.missingValue(key: "walletManager"))
+      return Promise(error: DBTError.Persistence.missingValue(key: "walletManager"))
     }
 
     return self.networkManager.postSharedPayloadIfAppropriate(withPostableObject: postableObject, walletManager: wmgr)
@@ -260,7 +264,7 @@ extension AppCoordinator: PaymentSendingDelegate {
 
           failure(error)
         } else {
-          failure(SyncRoutineError.missingWalletManager)
+          failure(DBTError.SyncRoutine.missingWalletManager)
         }
     }
   }

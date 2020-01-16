@@ -59,7 +59,7 @@ extension CoinNinjaProviderType {
 
         case .failure(let error):
           log.error("Failure from \(target.path) request: %@", privateArgs: [error.responseDescription])
-          if let networkError = target.networkError(for: error) {
+          if let networkError = target.displayableNetworkError(for: error) {
             seal.reject(networkError)
           } else {
             seal.reject(error)
@@ -85,7 +85,7 @@ extension CoinNinjaProviderType {
 
         case .failure(let error):
           log.error("Failure from \(target.path) request: %@", privateArgs: [error.responseDescription])
-          if let networkError = target.networkError(for: error) {
+          if let networkError = target.displayableNetworkError(for: error) {
             seal.reject(networkError)
           } else {
             seal.reject(error)
@@ -104,7 +104,7 @@ extension CoinNinjaProviderType {
 
         case .failure(let error):
           log.error("Failure from \(target.path) request: %@", privateArgs: [error.responseDescription])
-          if let networkError = target.networkError(for: error) {
+          if let networkError = target.displayableNetworkError(for: error) {
             seal.reject(networkError)
           } else {
             seal.reject(error)
@@ -123,7 +123,7 @@ extension CoinNinjaProviderType {
             if let jsonObject = try JSONSerialization.jsonObject(with: response.data, options: .allowFragments) as? JSONObject {
               seal.fulfill(jsonObject)
             } else {
-              seal.reject(CKNetworkError.badResponse)
+              seal.reject(DBTError.Network.badResponse)
             }
           } catch {
             seal.reject(error)
@@ -131,7 +131,7 @@ extension CoinNinjaProviderType {
 
         case .failure(let error):
           log.error("Failure from \(target.path) request: %@", privateArgs: [error.responseDescription])
-          if let networkError = target.networkError(for: error) {
+          if let networkError = target.displayableNetworkError(for: error) {
             seal.reject(networkError)
           } else {
             seal.reject(error)
@@ -141,10 +141,10 @@ extension CoinNinjaProviderType {
     }
   }
 
-  /// Maps MoyaError to CKNetworkError if appropriate
+  /// Maps MoyaError to DBTError.Network if appropriate
   private func mappedDecodingError(for error: Error, typeDesc: String) -> Error {
     if let moyaError = error as? MoyaError, case .objectMapping = moyaError {
-      return CKNetworkError.decodingFailed(type: typeDesc)
+      return DBTError.Network.decodingFailed(type: typeDesc)
     } else {
       return error
     }

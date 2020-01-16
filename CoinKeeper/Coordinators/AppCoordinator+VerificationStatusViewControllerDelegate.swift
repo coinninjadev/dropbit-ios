@@ -132,9 +132,11 @@ extension AppCoordinator: VerificationStatusViewControllerDelegate {
         .done(on: .main) {
           successfulCompletion()
         }.catch { error in
-          log.error(error, message: "failed to unverify phone")
+          let dbtError = DBTError.cast(error)
+          log.error(error, message: "failed to unverify phone: \(dbtError.localizedDescription)")
           self.alertManager.hideActivityHUD(withDelay: nil, completion: nil)
-          let title = "We are currently having trouble removing your phone number. Please try again."
+          let title = "We are currently having trouble removing your phone number. " +
+                      "\(dbtError.displayMessage). Please try again."
           let alert = self.alertManager.alert(withTitle: title,
                                               description: nil,
                                               image: nil,

@@ -50,7 +50,8 @@ extension AppCoordinator: ContactsViewControllerDelegate {
   }
 
   func showAlertForTwitterAPIError(_ error: Error) {
-    var message = "Please try again later or contact us for assistance. \n\nError: \(error.localizedDescription)"
+    let wrapped = DBTError.cast(error)
+    var message = "Please try again later or contact us for assistance. \n\nError: \(wrapped.displayMessage)"
     if let twitterError = error as? TwitterAPIError {
       message = twitterError.displayMessage
     }
@@ -76,7 +77,8 @@ extension AppCoordinator: ContactsViewControllerDelegate {
   }
 
   func viewControllerDidEncounterError(_ viewController: UIViewController, error: Error) {
-    let title = "Error", detail = "Unable to connect to server. Please try again. \n\n\(error.localizedDescription)"
+    let wrapped = DBTError.cast(error)
+    let title = "Error", detail = "Unable to connect to server. Please try again. \n\n\(wrapped.displayMessage)"
     let okConfig = AlertActionConfiguration(title: "OK", style: .default) {
       viewController.dismiss(animated: true, completion: nil)
     }

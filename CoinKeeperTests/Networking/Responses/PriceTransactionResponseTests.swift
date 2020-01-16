@@ -21,7 +21,7 @@ class PriceTransactionResponseTests: XCTestCase, ResponseStringsTestable {
     let response = PriceTransactionResponse(average: -1)
 
     XCTAssertThrowsError(try PriceTransactionResponse.validateResponse(response), "Negative price should throw error", { error in
-      if let networkError = error as? CKNetworkError,
+      if let networkError = error as? DBTError.Network,
         case let .invalidValue(keyPath, value, _) = networkError {
         XCTAssertEqual(keyPath, PriceTransactionResponseKey.average.path, "Incorrect key description")
         XCTAssertEqual(value, "-1.0", "Incorrect value description")

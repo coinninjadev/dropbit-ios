@@ -105,7 +105,7 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
           in: context) }
         .done { _ in delegate.coordinator(self, didVerify: .twitter, isInitialSetupFlow: self.isInitialSetupFlow) }
         .catch { error in
-          delegate.alertManager.showError(message: error.localizedDescription, forDuration: 3.0)
+          delegate.alertManager.showErrorHUD(error, forDuration: 3.0)
           log.error(error, message: "failed to create or verify user")
       }
     }
@@ -207,7 +207,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
       }
       .catch { [weak self] error in
         self?.handleResendError(error)
-        if let providerError = error as? UserProviderError, case .twilioError = providerError {
+        if let providerError = error as? DBTError.UserRequest, case .twilioError = providerError {
           delegate.didReceiveTwilioError(for: body.identity, route: .resendVerification)
         }
       }
@@ -270,7 +270,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
   private func handleUserRegistrationFailure(withError error: Error,
                                              phoneNumber: GlobalPhoneNumber,
                                              delegate: DeviceVerificationCoordinatorDelegate) {
-    guard let networkError = CKNetworkError(for: error) else {
+    guard let networkError = DBTError.Network(for: error) else {
       self.showVerificationErrorAlert(.general, delegate: delegate)
       return
     }
@@ -289,7 +289,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
   }
 
   private func handleCodeEntryFailure(withError error: Error, delegate: DeviceVerificationCoordinatorDelegate) {
-    guard let networkError = CKNetworkError(for: error) else {
+    guard let networkError = DBTError.Network(for: error) else {
       self.showVerificationErrorAlert(.general, delegate: delegate)
       return
     }
@@ -343,7 +343,8 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
         }
         .catch { error in
           log.error(error, message: "Failed to register wallet")
-          let message = "Failed to register wallet: \(error)"
+          let wrapped = DBTError.cast(error)
+          let message = "Failed to register wallet: \(wrapped.displayMessage)"
           DispatchQueue.main.async {
             viewController.updateErrorLabel(with: message)
           }

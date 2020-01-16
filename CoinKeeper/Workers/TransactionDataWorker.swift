@@ -94,7 +94,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
 
   func performFetchAndStoreAllLightningTransactions(in context: NSManagedObjectContext, fullSync: Bool) -> Promise<Void> {
     guard let wallet = CKMWallet.find(in: context) else {
-      return Promise(error: CKPersistenceError.noManagedWallet)
+      return Promise(error: DBTError.Persistence.noManagedWallet)
     }
 
     let lnBroker = self.persistenceManager.brokers.lightning
@@ -299,7 +299,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
         return Promise.value(combinedDTO)
     }
     .recover { (error: Error) -> Promise<TransactionDataWorkerDTO> in
-      if let authError = error as? CKNetworkError, case .unauthorized = authError {
+      if let authError = error as? DBTError.Network, case .unauthorized = authError {
         log.info("Request unauthorized, but ok in this scenario. \(error.localizedDescription)")
         return Promise.value(dto)
       } else {
@@ -398,7 +398,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
       }
       .recover { (error: Error) -> Promise<[AddressTransactionSummaryResponse]> in
         var isEmptyResponseError = false
-        if let networkError = error as? CKNetworkError, case .emptyResponse = networkError {
+        if let networkError = error as? DBTError.Network, case .emptyResponse = networkError {
           isEmptyResponseError = true
         }
 
@@ -615,7 +615,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     }
     .then { txid in self.networkManager.fetchDayAveragePrice(for: txid) }
     .recover { error -> Promise<PriceTransactionResponse> in
-        if let providerError = error as? CKNetworkError {
+        if let providerError = error as? DBTError.Network {
           switch providerError {
           case .recordNotFound,
                .unknownServerError:
@@ -645,7 +645,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
         unspentVouts = try CKMVout.findAllUnspent(in: context)
       } catch {
         log.error(error, message: nil)
-        seal.reject(SpendableBalanceError.voutFetchFailed)
+        seal.reject(error)
       }
 
       // for each vout, get its txid and index, and see if there are any vins with the same previousTxid and index
@@ -660,7 +660,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
           let matchingVinExists = try context.fetch(vinFetchReqest).first != nil
           vout.isSpent = matchingVinExists
         } catch {
-          seal.reject(SpendableBalanceError.vinFetchFailed)
+          seal.reject(DBTError.Persistence.failedToFetch("", error))
         }
       }
       seal.fulfill(())

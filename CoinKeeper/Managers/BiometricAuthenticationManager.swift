@@ -13,7 +13,7 @@ protocol BiometricAuthenticationManagerType {
   var canAuthenticateWithBiometrics: Bool { get }
   var biometricType: BiometricType { get }
   var loginReason: String { get }
-  func authenticate(completion: @escaping CKCompletion, error: ((BiometricError) -> Void)?)
+  func authenticate(completion: @escaping CKCompletion, error: ((DBTError.Biometrics) -> Void)?)
   func resetPolicy()
 }
 
@@ -73,7 +73,7 @@ class BiometricAuthenticationManager: BiometricAuthenticationManagerType {
     }
   }
 
-  func authenticate(completion: @escaping CKCompletion, error: ((BiometricError) -> Void)?) {
+  func authenticate(completion: @escaping CKCompletion, error: ((DBTError.Biometrics) -> Void)?) {
     guard canAuthenticateWithBiometrics else {
       error?(.notEnrolled)
       return
@@ -85,7 +85,7 @@ class BiometricAuthenticationManager: BiometricAuthenticationManagerType {
           completion()
         } else {
           guard let evaluationError = evaluationError as? LAError else { return }
-          error?(BiometricError(code: evaluationError.code))
+          error?(DBTError.Biometrics(code: evaluationError.code))
         }
       }
     }

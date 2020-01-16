@@ -74,14 +74,14 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
     return Promise { seal in
 
       guard let wallet = CKMWallet.find(in: context) else {
-        seal.reject(CKPersistenceError.noManagedWallet)
+        seal.reject(DBTError.Persistence.noManagedWallet)
         return
       }
 
       var persistencePromises: [Promise<Void>] = []
       for response in responses {
         guard let matchingMetaAddress = metaAddresses.filter({ $0.address == response.address }).first else {
-          seal.reject(WalletAddressError.unexpectedAddress)
+          seal.reject(DBTError.Wallet.unexpectedAddress)
           return
         }
 

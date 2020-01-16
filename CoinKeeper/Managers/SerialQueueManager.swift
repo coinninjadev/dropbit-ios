@@ -93,8 +93,8 @@ struct SyncConfig {
 }
 
 protocol NetworkErrorDelegate: AnyObject {
-  func handleAuthorizationError(_ networkError: CKNetworkError, recordType: RecordType, in context: NSManagedObjectContext)
-  func handleInvalidResponseError(_ networkError: CKNetworkError)
+  func handleAuthorizationError(_ networkError: DBTError.Network, recordType: RecordType, in context: NSManagedObjectContext)
+  func handleInvalidResponseError(_ networkError: DBTError.Network)
   func handleReachabilityError(_ underlyingError: MoyaError)
 }
 
@@ -182,7 +182,7 @@ class SerialQueueManager: SerialQueueManagerType {
                                       fetchResult: ((UIBackgroundFetchResult) -> Void)?) {
     guard let queueDelegate = self.delegate,
       let operationFactory = self.walletSyncOperationFactory else {
-        completion?(SyncRoutineError.missingQueueDelegate)
+        completion?(DBTError.SyncRoutine.missingQueueDelegate)
         fetchResult?(.failed)
         return
     }

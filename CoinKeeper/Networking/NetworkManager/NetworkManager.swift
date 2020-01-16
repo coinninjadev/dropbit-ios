@@ -103,7 +103,7 @@ class NetworkManager: NetworkManagerType {
   }
 
   func handleUpdateCachedMetadataError(error: Error) {
-    if let networkError = error as? CKNetworkError {
+    if let networkError = error as? DBTError.Network {
       switch networkError {
       case .reachabilityFailed(let moyaError):
         log.error(moyaError, message: nil)

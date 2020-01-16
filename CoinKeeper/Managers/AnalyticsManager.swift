@@ -250,7 +250,6 @@ protocol AnalyticsManagerType: AnyObject {
   func track(property: MixpanelProperty)
   func track(event: AnalyticsManagerEventType, with value: AnalyticsEventValue?)
   func track(event: AnalyticsManagerEventType, with values: [AnalyticsEventValue])
-  func track(error: AnalyticsManagerErrorType, with message: String)
 }
 
 class AnalyticsManager: AnalyticsManagerType {
@@ -292,7 +291,4 @@ class AnalyticsManager: AnalyticsManagerType {
     Mixpanel.mainInstance().track(event: event.id, properties: castedValues)
   }
 
-  func track(error: AnalyticsManagerErrorType, with message: String) {
-    log.error(error, message: message)
-  }
 }

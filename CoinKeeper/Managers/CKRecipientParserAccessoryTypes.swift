@@ -24,20 +24,4 @@ enum CKRecipientType: CaseIterable {
   case phoneNumber, bitcoinURL, lightningURL
 }
 
-enum CKRecipientParserError: LocalizedError {
-  case multipleRecipients
-  case validation(ValidatorTypeError)
-  case noResults
-
-  var errorDescription: String? {
-    switch self {
-    case .multipleRecipients:
-      return "Multiplie potential recipients were found in the text."
-    case .validation(let validatorError):
-      return validatorError.displayMessage ?? validatorError.debugMessage
-    case .noResults:
-      return "No valid recipients were found in the text."
-    }
-  }
-
-}
+protocol ValidatorErrorType: DBTErrorType { }

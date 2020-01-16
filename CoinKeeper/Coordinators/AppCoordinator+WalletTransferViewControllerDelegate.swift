@@ -56,7 +56,8 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
           }
         }
         .catch { error in
-          log.error(error, message: "Failed to withdraw from lightning account")
+          let dbtError = DBTError.cast(error)
+          log.error(error, message: "Failed to withdraw from lightning account. \(dbtError.displayMessage)")
           successFailVC.setMode(.failure)
       }
     }
@@ -97,6 +98,7 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
   }
 
   func viewControllerNetworkError(_ error: Error) {
-    alertManager.showError(message: error.localizedDescription, forDuration: 2.0)
+    let dbtError = DBTError.cast(error)
+    alertManager.showErrorHUD(dbtError, forDuration: 2.0)
   }
 }

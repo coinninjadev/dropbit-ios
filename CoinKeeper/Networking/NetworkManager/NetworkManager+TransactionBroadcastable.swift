@@ -62,8 +62,8 @@ struct BroadcastInfo: Error {
 extension NetworkManager: TransactionBroadcastable {
 
   func broadcastTx(with transactionData: CNBCnlibTransactionData) -> Promise<String> {
-    guard let wmgr = walletDelegate?.mainWalletManager() else { return Promise(error: CKPersistenceError.noWalletWords) }
-    guard transactionData.utxoCount() > 0 else { return Promise(error: TransactionDataError.noSpendableFunds) }
+    guard let wmgr = walletDelegate?.mainWalletManager() else { return Promise(error: DBTError.Persistence.noWalletWords) }
+    guard transactionData.utxoCount() > 0 else { return Promise(error: DBTError.TransactionData.noSpendableFunds) }
     let wallet = wmgr.wallet
     do {
       let txMetadata = try wallet.buildTransactionMetadata(transactionData)
@@ -151,7 +151,7 @@ extension NetworkManager: TransactionBroadcastable {
     }
 
     guard let amountInfo = sharedPayloadDTO.amountInfo else {
-      return Promise(error: CKPersistenceError.missingValue(key: "amountInfo"))
+      return Promise(error: DBTError.Persistence.missingValue(key: "amountInfo"))
     }
 
     let payload = SharedPayloadV2(txid: object.paymentId,

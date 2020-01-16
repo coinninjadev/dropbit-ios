@@ -16,7 +16,7 @@ extension MockNetworkManager: WalletRequestable {
     getWalletWasCalled = true
     // reject so that intermediate promises don't need to be filled in and the catch block
     // will call the completion handler with the test's assertions
-    let error = getWalletError ?? CKNetworkError.emptyResponse
+    let error = getWalletError ?? DBTError.Network.emptyResponse
     return Promise { $0.reject(error) }
   }
 
@@ -55,7 +55,7 @@ extension MockNetworkManager: WalletRequestable {
     } else {
       let moyaResponse = Moya.Response(statusCode: 404, data: "foo".data(using: .utf8)!)
       let error = MoyaError.statusCode(moyaResponse)
-      return Promise(error: CKNetworkError.reachabilityFailed(error))
+      return Promise(error: DBTError.Network.reachabilityFailed(error))
     }
   }
 }

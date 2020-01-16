@@ -12,9 +12,7 @@ import Result
 
 extension MockNetworkManager: MerchantPaymentRequestRequestable {
 
-  func getMerchantPaymentRequest(at url: URL,
-                                 completion: @escaping (Result<MerchantPaymentRequestResponse, MerchantPaymentRequestError>) -> Void) {
-
+  func getMerchantPaymentRequest(at url: URL, completion: @escaping (GetMerchantPaymentRequestResult) -> Void) {
   }
 
 }

@@ -78,7 +78,7 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
     properties.forEach { self.parent.analyticsManager.track(property: $0) }
   }
 
-  private func presentDebugInfoAlert(withController controller: UIViewController, error: Error = SyncRoutineError.missingWalletManager) {
+  private func presentDebugInfoAlert(withController controller: UIViewController, error: Error = DBTError.SyncRoutine.missingWalletManager) {
     log.info("~*~*~*~*~ Has wallet words v1: \(parent.persistenceManager.keychainManager.retrieveValue(for: .walletWords) != nil)")
     log.info("~*~*~*~*~ Has wallet words v2: \(parent.persistenceManager.keychainManager.retrieveValue(for: .walletWordsV2) != nil)")
     log.info("~*~*~*~*~ Has pin: \(parent.persistenceManager.keychainManager.retrieveValue(for: .userPin) != nil)")
@@ -130,7 +130,7 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
       }
       .catch { (error: Error) in
         log.error(error, message: "Failed to create send max transaction.")
-        if let txError = error as? TransactionDataError {
+        if let txError = error as? DBTError.TransactionData {
           switch txError {
           case .noSpendableFunds:
             controller.updateUI(with: nil, txMetadata: nil)
@@ -138,8 +138,8 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
             let tryAgain = AlertActionConfiguration(title: "Try Again", style: .default, action: { [weak self] in
               self?.proceedWithUpgrade(presentedController: controller)
             })
-            let alertVM = AlertControllerViewModel(title: txError.localizedDescription,
-                                                   description: txError.messageDescription,
+            let alertVM = AlertControllerViewModel(title: txError.displayTitle,
+                                                   description: txError.displayMessage,
                                                    image: nil,
                                                    style: .alert,
                                                    actions: [tryAgain])

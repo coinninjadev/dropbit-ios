@@ -10,81 +10,6 @@ import CoreData
 import PromiseKit
 import Cnlib
 
-protocol WalletManagerType: AnyObject {
-  static func createMnemonicWords() -> [String]
-  static func secureEntropy() -> Data
-  func validateBase58Check(for address: String) -> Bool
-  func validateBech32Encoding(for address: String) -> Bool
-  var coin: CNBCnlibBaseCoin { get }
-  var wallet: CNBCnlibHDWallet { get }
-  func hexEncodedPublicKey() throws -> String
-  func hexEncodedPublicKeyPromise() -> Promise<String>
-  func signatureSigning(data: Data) throws -> String
-  func signatureSigningPromise(data: Data) -> Promise<String>
-  func usableFeeRate(from feeRate: Double) -> Int
-  func mnemonicWords() -> [String]
-  func resetWallet(with words: [String])
-
-  func createAddressDataSource() -> AddressDataSourceType
-
-  /// Use this when displaying the balance
-  func balanceNetPending(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int)
-
-  /// Spendable UTXOs
-  /// number of confirmations affects isSpendable, returns a min of 0
-  func spendableBalance(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int)
-
-  func activeTemporarySentTxTotal(forType walletTxType: WalletTransactionType,
-                                  in context: NSManagedObjectContext) -> Int
-
-  func transactionData(forPayment payment: NSDecimalNumber,
-                       to address: String,
-                       withFeeRate feeRate: Double,
-                       rbfOption: RBFOption) -> Promise<CNBCnlibTransactionData>
-
-  /// Returns nil instead of an error in the case of insufficient funds, uses default `rbfOption: .Allowed`
-  func failableTransactionData(forPayment payment: NSDecimalNumber,
-                               to address: String,
-                               withFeeRate feeRate: Double) -> CNBCnlibTransactionData?
-
-  func failableTransactionData(forPayment payment: NSDecimalNumber,
-                               to address: String,
-                               withFeeRate feeRate: Double,
-                               rbfOption: RBFOption) -> CNBCnlibTransactionData?
-
-  /// Transaction data for payment to a recipient with a flat, predetermined fee.
-  ///
-  /// - Parameters:
-  ///   - payment: Amount (in satoshis) to pay.
-  ///   - address: Destination payment address.
-  ///   - flatFee: Predetermined fee (NOT a rate) for the transaction
-  /// - Returns: A Promise that either contains a CNBCnlibTransactionData object, or rejects if insufficient funds.
-  func transactionData(
-    forPayment payment: Int,
-    to address: String,
-    withFlatFee flatFee: Int
-    ) -> Promise<CNBCnlibTransactionData>
-
-  /// Transaction data for sending max wallet amount, minus fee, to a given address.
-  ///
-  /// - Parameters:
-  ///   - address: Destination payment address.
-  ///   - feeRate: Fee rate per bytes, in Satoshis
-  /// - Returns: A Promise that either contains a CNBCnlibTransactionData object, ro rejects if insufficient funds.
-  func transactionDataSendingMax(to address: String, withFeeRate feeRate: Double) -> Promise<CNBCnlibTransactionData>
-
-  /// Returns nil instead of an error in the case of insufficient funds
-  func failableTransactionDataSendingMax(to address: String, withFeeRate feeRate: Double) -> CNBCnlibTransactionData?
-
-  /// Returns nil instead of an error in the case of insufficient funds. Takes all unspent outputs, ignoring dust protection and confirmation count.
-  func failableTransactionDataSendingAll(to address: String, withFeeRate feeRate: Double) -> CNBCnlibTransactionData?
-  func transactionDataSendingAll(to address: String, withFeeRate feeRate: Double) -> Promise<CNBCnlibTransactionData>
-
-  func encryptPayload<T>(_ payload: T, addressPubKey: String, keyIsEphemeral: Bool) -> Promise<String> where T: SharedPayloadCodable
-
-  func decodeLightningInvoice(_ invoiceString: String) -> Promise<LNDecodePaymentRequestResponse>
-}
-
 /**
  Warning: Do not store a reference to the wallet manager outside of the single instance assigned to the AppCoordinator.
  All other classes should keep a delegate (WalletDelegateType) reference to the AppCoordinator to access the single wallet manager.
@@ -113,7 +38,7 @@ class WalletManager: WalletManagerType {
 
   func encryptPayload<T>(_ payload: T, addressPubKey: String, keyIsEphemeral: Bool) -> Promise<String> where T: SharedPayloadCodable {
     guard let addressPubKeyData = Data(fromHexEncodedString: addressPubKey) else {
-      return Promise(error: CKPersistenceError.missingValue(key: "addressPubKeyData"))
+      return Promise(error: DBTError.Persistence.missingValue(key: "addressPubKeyData"))
     }
 
     return Promise { seal in
@@ -282,7 +207,7 @@ class WalletManager: WalletManagerType {
       if let data = txData {
         seal.fulfill(data)
       } else {
-        seal.reject(TransactionDataError.insufficientFunds)
+        seal.reject(DBTError.TransactionData.insufficientFunds)
       }
     }
   }
@@ -348,13 +273,13 @@ class WalletManager: WalletManagerType {
     return Promise { seal in
       guard flatFee > 0 else {
         log.error("flatFee was zero. payment: %d, to address: %@", privateArgs: [payment, address])
-        seal.reject(TransactionDataError.insufficientFee)
+        seal.reject(DBTError.TransactionData.insufficientFee)
         return
       }
       let bgContext = persistenceManager.createBackgroundContext()
       bgContext.perform { [weak self] in
         guard let strongSelf = self else {
-          seal.reject(CKSystemError.missingValue(key: "wallet manager self"))
+          seal.reject(DBTError.System.missingValue(key: "wallet manager self"))
           return
         }
         let usableVouts = strongSelf.usableVouts(in: bgContext)
@@ -383,7 +308,7 @@ class WalletManager: WalletManagerType {
           if let data = txData?.transactionData {
             seal.fulfill(data)
           } else {
-            seal.reject(TransactionDataError.insufficientFunds)
+            seal.reject(DBTError.TransactionData.insufficientFunds)
           }
         } catch {
           seal.reject(error)
@@ -398,7 +323,7 @@ class WalletManager: WalletManagerType {
       if let data = maybeTxData {
         seal.fulfill(data)
       } else {
-        seal.reject(TransactionDataError.insufficientFunds)
+        seal.reject(DBTError.TransactionData.insufficientFunds)
       }
     }
   }
@@ -434,7 +359,7 @@ class WalletManager: WalletManagerType {
       let context = persistenceManager.viewContext
       let unspent = CKMVout.unspentBalance(in: context)
       guard unspent > 0 else {
-        seal.reject(TransactionDataError.noSpendableFunds)
+        seal.reject(DBTError.TransactionData.noSpendableFunds)
         return
       }
 
@@ -442,7 +367,7 @@ class WalletManager: WalletManagerType {
       if let data = maybeTxData {
         seal.fulfill(data)
       } else {
-        seal.reject(TransactionDataError.insufficientFunds)
+        seal.reject(DBTError.TransactionData.insufficientFunds)
       }
     }
   }

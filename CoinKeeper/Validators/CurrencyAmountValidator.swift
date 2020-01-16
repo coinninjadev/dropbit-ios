@@ -8,40 +8,25 @@
 
 import Foundation
 
-enum CurrencyStringValidatorError: ValidatorTypeError {
+enum CurrencyStringValidatorError: ValidatorErrorType {
   case isZero
   case notANumber
 
-  var debugMessage: String {
+  var displayMessage: String {
     switch self {
-    case .isZero: return "Amount cannot be zero."
+    case .isZero:     return "Amount cannot be zero."
     case .notANumber: return "Amount is not a number."
     }
   }
 
-  var displayMessage: String? {
-    return debugMessage
-  }
-
 }
 
-enum CurrencyAmountValidatorError: ValidatorTypeError {
+enum CurrencyAmountValidatorError: ValidatorErrorType {
   case invitationMaximum(Money)
   case usableBalance(Money) //Should be BTC
   case notANumber(String)
 
-  var debugMessage: String {
-    switch self {
-    case .invitationMaximum(let money):
-      return "Amount exceeds send to contact maximum: \(money.displayString)"
-    case .usableBalance(let money):
-      return "Amount exceeds usable balance of \(money.displayString)"
-    case .notANumber(let string):
-      return "The text, \"" + string + "\" is not a number."
-    }
-  }
-
-  var displayMessage: String? {
+  var displayMessage: String {
     switch self {
     case .invitationMaximum:
       return """
@@ -52,8 +37,8 @@ enum CurrencyAmountValidatorError: ValidatorTypeError {
       return """
       Amount cannot exceed your usable balance of \(money.displayString).
       """
-    case .notANumber:
-      return debugMessage
+    case .notANumber(let string):
+      return "The text, \"" + string + "\" is not a number."
     }
   }
 

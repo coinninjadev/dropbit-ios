@@ -76,7 +76,7 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     if let data = fakeTransactionData {
       return Promise.value(data)
     } else {
-      return Promise(error: TransactionDataError.insufficientFunds)
+      return Promise(error: DBTError.TransactionData.insufficientFunds)
     }
   }
 

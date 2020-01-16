@@ -38,7 +38,7 @@ extension NetworkManager: AddressRequestable {
     return cnProvider.requestList(AddressesTarget.query(addresses, page, perPage, afterDate))
       .get { responses in
         if !isIncremental, responses.isEmpty, page == 1 {
-          throw CKNetworkError.emptyResponse
+          throw DBTError.Network.emptyResponse
         }
       }
       .then { (responses: [AddressTransactionSummaryResponse]) -> Promise<[AddressTransactionSummaryResponse]> in

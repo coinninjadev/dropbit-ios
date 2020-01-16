@@ -81,7 +81,7 @@ class CKDatabase: PersistenceDatabaseType {
 
       if errors.isNotEmpty {
         let nsErrors = errors.map { $0 as NSError }
-        throw CKPersistenceError.failedToBatchDeleteWallet(nsErrors)
+        throw DBTError.Persistence.failedToBatchDeleteWallet(nsErrors)
       }
     }
   }
@@ -124,7 +124,7 @@ class CKDatabase: PersistenceDatabaseType {
 
   func persistWalletResponse(_ response: WalletResponse, in context: NSManagedObjectContext) throws {
     guard let wallet = CKMWallet.find(in: context) else {
-      throw CKPersistenceError.noManagedWallet
+      throw DBTError.Persistence.noManagedWallet
     }
 
     wallet.id = response.id
@@ -155,7 +155,7 @@ class CKDatabase: PersistenceDatabaseType {
     return Promise { seal in
       context.perform {
         guard let user = CKMUser.find(in: context) else {
-          seal.reject(CKPersistenceError.noUser)
+          seal.reject(DBTError.Persistence.noUser)
           return
         }
 
@@ -174,7 +174,7 @@ class CKDatabase: PersistenceDatabaseType {
     in context: NSManagedObjectContext) -> Promise<Void> {
     return Promise { seal in
       guard let metaPath = metaAddress.derivationPath else {
-        seal.reject(CKPersistenceError.missingValue(key: "metaAddress.derivationPath"))
+        seal.reject(DBTError.Persistence.missingValue(key: "metaAddress.derivationPath"))
         return
       }
       let addressString = metaAddress.address

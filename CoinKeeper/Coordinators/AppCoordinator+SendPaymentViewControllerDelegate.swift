@@ -15,7 +15,7 @@ import Permission
 extension AppCoordinator: SendPaymentViewControllerDelegate {
 
   func viewControllerDidReceiveLightningURLToDecode(_ lightningUrl: LightningURL) -> Promise<LNDecodePaymentRequestResponse> {
-    guard let wmgr = walletManager else { return Promise(error: SyncRoutineError.missingWalletManager) }
+    guard let wmgr = walletManager else { return Promise(error: DBTError.SyncRoutine.missingWalletManager) }
     return wmgr.decodeLightningInvoice(lightningUrl.invoice)
   }
 
@@ -160,18 +160,18 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     let generalMessage = "Invalid bitcoin address or phone number."
     var fullMessage = ""
 
-    if let parsingError = err as? CKRecipientParserError {
-      fullMessage = "\(parsingError.localizedDescription)"
+    if let parsingError = err as? DBTError.RecipientParser {
+      fullMessage = "\(parsingError.displayMessage)"
 
-    } else if let validationError = err as? ValidatorTypeError,
-      let message = validationError.displayMessage {
-      fullMessage = message
+    } else if let validationError = err as? ValidatorErrorType {
+      fullMessage = validationError.displayMessage
 
     } else {
-      fullMessage = "\(generalMessage) \(err.localizedDescription)."
+      let dbtError = DBTError.cast(err)
+      fullMessage = "\(generalMessage) \(dbtError.displayMessage)."
     }
 
-    alertManager.showError(message: fullMessage, forDuration: 3.5)
+    alertManager.showErrorHUD(message: fullMessage, forDuration: 3.5)
   }
 
   func viewControllerShouldInitiallyAllowMemoSharing(_ viewController: SendPaymentViewController) -> Bool {

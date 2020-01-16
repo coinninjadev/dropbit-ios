@@ -142,7 +142,7 @@ extension AppCoordinator: SettingsViewControllerDelegate {
           localSelf.analyticsManager.track(property: MixpanelProperty(key: .isDropBitMeEnabled, value: false))
         }.catch(on: .main) { error in
           var errorDetails = error.localizedDescription
-          if let persistenceError = error as? CKPersistenceError, case .failedToBatchDeleteWallet = persistenceError {
+          if let persistenceError = error as? DBTError.Persistence, case .failedToBatchDeleteWallet = persistenceError {
             errorDetails = persistenceError.errorDescription ?? "-"
           }
 
@@ -171,7 +171,7 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     let completion: CKErrorCompletion = { error in
       if let err = error {
         self.alertManager.hideActivityHUD(withDelay: 1.0) {
-          self.alertManager.showError(message: "Something went wrong. Please try again.\n\nError: \(err.localizedDescription)", forDuration: 3.0)
+          self.alertManager.showErrorHUD(message: "Something went wrong. Please try again.\n\nError: \(err.localizedDescription)", forDuration: 3.0)
         }
       } else {
         self.alertManager.hideActivityHUD(withDelay: 1.0) {

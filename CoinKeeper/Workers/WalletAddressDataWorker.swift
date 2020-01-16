@@ -11,29 +11,6 @@ import Moya
 import PromiseKit
 import UIKit
 
-protocol WalletAddressDataWorkerType: AnyObject {
-
-  var targetWalletAddressCount: Int { get }
-
-  ///This will fulfill Void early if not verified.
-  func updateServerPoolAddresses(in context: NSManagedObjectContext) -> Promise<Void>
-
-  ///This will retrieve and register addresses from the wallet manager based on the lastReceiveIndex and the provided `number` (quantity).
-  ///This may be used independently of the updateServerAddresses function.
-  func registerAndPersistServerAddresses(number: Int, in context: NSManagedObjectContext) -> Promise<Void>
-  func fetchAndFulfillReceivedAddressRequests(in context: NSManagedObjectContext) -> Promise<Void>
-  func updateReceivedAddressRequests(in context: NSManagedObjectContext) -> Promise<Void>
-  func updateSentAddressRequests(in context: NSManagedObjectContext) -> Promise<Void>
-  func cancelInvitation(withID invitationID: String, in context: NSManagedObjectContext) -> Promise<Void>
-
-  /// Useful for debugging and setting a clean slate during initial registration
-  func deleteAllAddressesOnServer() -> Promise<Void>
-}
-
-extension WalletAddressDataWorkerType {
-  var targetWalletAddressCount: Int { return 5 }
-}
-
 class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
   unowned let walletManager: WalletManagerType
@@ -111,7 +88,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
   func updateReceivedAddressRequests(in context: NSManagedObjectContext) -> Promise<Void> {
     guard persistenceManager.brokers.user.userId(in: context) != nil else {
-      return Promise(error: CKNetworkError.userNotVerified)
+      return Promise(error: DBTError.Network.userNotVerified)
     }
 
     return self.networkManager.getWalletAddressRequests(forSide: .received)
@@ -432,15 +409,15 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
   func payInvitationRequest(for response: WalletAddressRequestResponse, in context: NSManagedObjectContext) -> Promise<Void> {
     guard let pendingInvitation = CKMInvitation.find(withId: response.id, in: context), pendingInvitation.isFulfillable else {
-        return Promise(error: PendingInvitationError.noSentInvitationExistsForID)
+        return Promise(error: DBTError.PendingInvitation.noSentInvitationExistsForID)
     }
 
-    guard let paymentTarget = response.address else { return Promise(error: PendingInvitationError.noAddressProvided) }
-    guard let delegate = paymentSendingDelegate else { return Promise(error: PendingInvitationError.noPaymentDelegate) }
+    guard let paymentTarget = response.address else { return Promise(error: DBTError.PendingInvitation.noAddressProvided) }
+    guard let delegate = paymentSendingDelegate else { return Promise(error: DBTError.PendingInvitation.noPaymentDelegate) }
 
     if response.addressTypeCase == .lightning {
       guard paymentTarget != WalletAddressesTarget.autogenerateInvoicesAddressValue else {
-        return Promise(error: PendingInvitationError.noInvoiceProvided)
+        return Promise(error: DBTError.PendingInvitation.noInvoiceProvided)
       }
     }
 

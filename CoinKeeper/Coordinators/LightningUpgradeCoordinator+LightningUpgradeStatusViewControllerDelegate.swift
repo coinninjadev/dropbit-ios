@@ -30,12 +30,12 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
     return parent.networkManager.updateWallet(walletFlags: existingFlags.flags, referrer: nil)
       .then { (response: WalletResponse) -> Promise<Void> in
         let flagsParser = WalletFlagsParser(flags: response.flags)
-        guard flagsParser.walletDeactivated else { throw CKWalletError.failedToDeactivate }
+        guard flagsParser.walletDeactivated else { throw DBTError.Wallet.failedToDeactivate }
         return self.parent.persistenceManager.keychainManager.upgrade(recoveryWords: self.newWords)
       }
       .then(in: context) { _ -> Promise<Void> in
         guard let newWalletManager = WalletManager(words: self.newWords, persistenceManager: self.parent.persistenceManager) else {
-          return Promise(error: SyncRoutineError.missingWalletManager)
+          return Promise(error: DBTError.SyncRoutine.missingWalletManager)
         }
 
         let userIsVerified = self.parent.persistenceManager.brokers.user.userIsVerified(in: context)

@@ -12,11 +12,11 @@ import Foundation
 class MockRecipientParser: RecipientParserType {
 
   func findRecipients(inText text: String, ofTypes types: [CKRecipientType]) throws -> [CKParsedRecipient] {
-    throw CKRecipientParserError.noResults
+    throw DBTError.RecipientParser.noResults
   }
 
   func findSingleRecipient(inText text: String, ofTypes types: [CKRecipientType]) throws -> CKParsedRecipient {
-    throw CKRecipientParserError.noResults
+    throw DBTError.RecipientParser.noResults
   }
 
 }

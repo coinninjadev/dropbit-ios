@@ -48,7 +48,7 @@ class AddressRequestFulfillmentWorker {
                                                                      in: context)
     let nextAddressesWithPubKeys: [MetaAddress] = nextMetaAddresses.compactMap { MetaAddress(cnbMetaAddress: $0) }
     guard unfulfilledResponses.count == nextAddressesWithPubKeys.count else {
-      return Promise(error: CKPersistenceError.missingValue(key: "CNBMetaAddress.uncompressedPublicKey"))
+      return Promise(error: DBTError.Persistence.missingValue(key: "CNBMetaAddress.uncompressedPublicKey"))
     }
 
     // Modify the WalletAddressRequestResponses with the addresses so that those responses can be used to

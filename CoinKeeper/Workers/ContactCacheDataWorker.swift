@@ -234,7 +234,7 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
     return Promise { seal in
       let fullNameKeyDescriptor = CNContactFormatter.descriptorForRequiredKeys(for: .fullName)
       guard let keysToFetch = [fullNameKeyDescriptor, CNContactPhoneNumbersKey] as? [CNKeyDescriptor] else {
-        seal.reject(CKPersistenceError.failedToFetch("Could not cast as [CNKeyDescriptor]"))
+        seal.reject(DBTError.Persistence.unexpectedResult("Could not cast as [CNKeyDescriptor]"))
         return
       }
 
