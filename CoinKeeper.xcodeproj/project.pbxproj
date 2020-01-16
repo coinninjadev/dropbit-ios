@@ -659,6 +659,7 @@
 		B501022221F2325B00D42A71 /* UIColor+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = B501022121F2325B00D42A71 /* UIColor+Init.swift */; };
 		B501022321F2333C00D42A71 /* UIColor+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = B501022121F2325B00D42A71 /* UIColor+Init.swift */; };
 		B503005223D0C21700009835 /* WalletManagerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B503005123D0C21700009835 /* WalletManagerType.swift */; };
+		B503005423D0C31300009835 /* WalletAddressDataWorkerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B503005323D0C31300009835 /* WalletAddressDataWorkerType.swift */; };
 		B50384C620B304780091AB37 /* DBTError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50384C520B304780091AB37 /* DBTError.swift */; };
 		B5047CEE2345186100F45DB8 /* PaddedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5047CED2345186100F45DB8 /* PaddedLabel.swift */; };
 		B5054148207D00270059C8F9 /* CKMAddress+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5054142207D00270059C8F9 /* CKMAddress+CoreDataClass.swift */; };
@@ -1785,6 +1786,7 @@
 		B500C390232429B7009F7C2D /* MockConfirmLightningPaymentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockConfirmLightningPaymentViewModel.swift; sourceTree = "<group>"; };
 		B501022121F2325B00D42A71 /* UIColor+Init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Init.swift"; sourceTree = "<group>"; };
 		B503005123D0C21700009835 /* WalletManagerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManagerType.swift; sourceTree = "<group>"; };
+		B503005323D0C31300009835 /* WalletAddressDataWorkerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressDataWorkerType.swift; sourceTree = "<group>"; };
 		B50384C520B304780091AB37 /* DBTError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTError.swift; sourceTree = "<group>"; };
 		B5047CED2345186100F45DB8 /* PaddedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddedLabel.swift; sourceTree = "<group>"; };
 		B5054142207D00270059C8F9 /* CKMAddress+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMAddress+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -2566,6 +2568,7 @@
 				B5401C5C228C89D1004C77BC /* WorkerFactory.swift */,
 				B52CC6AA221EC63F00B00C9E /* ContactCacheDataWorker.swift */,
 				B552EDE2211E33D000332BB5 /* TransactionDataWorker.swift */,
+				B503005323D0C31300009835 /* WalletAddressDataWorkerType.swift */,
 				B552EDE6211E33D000332BB5 /* WalletAddressDataWorker.swift */,
 				B5D77072232D6980004E1519 /* AddressRequestFulfillmentWorker.swift */,
 				B5D77070232D6740004E1519 /* AddressRequestPaymentWorker.swift */,
@@ -3665,8 +3668,8 @@
 				A257CEC3230C3EBD0063670B /* CKLightningURLParser.swift */,
 				B5FDA5C4221206AF001682AA /* PhoneNumbers */,
 				B552EDDF211E33D000332BB5 /* QRCodeGenerator.swift */,
-				B552EDE0211E33D000332BB5 /* WalletManager.swift */,
 				B503005123D0C21700009835 /* WalletManagerType.swift */,
+				B552EDE0211E33D000332BB5 /* WalletManager.swift */,
 				B552EDE3211E33D000332BB5 /* PermissionManager.swift */,
 				B552EDE5211E33D000332BB5 /* CKAlamofireSessionManager.swift */,
 				B552EDE7211E33D000332BB5 /* AnalyticsManager.swift */,
@@ -5042,6 +5045,7 @@
 				B56E15A12167E6F1003B69D4 /* NetworkManager+CurrencyValueDataSourceType.swift in Sources */,
 				B514536422A7207500F7DA41 /* UIColor+Theme.swift in Sources */,
 				3B934D2220EFE53A00979ADC /* TransactionDataWorkerDTO.swift in Sources */,
+				B503005423D0C31300009835 /* WalletAddressDataWorkerType.swift in Sources */,
 				B5DB5342232E8C1C0088C8A1 /* TransactionCellStructsAndEnums.swift in Sources */,
 				A2A530AE2092A84800B6F4DE /* String+TrimSymbol.swift in Sources */,
 				3B6749E120AA5CA40032FE02 /* CKMVin+CoreDataClass.swift in Sources */,
