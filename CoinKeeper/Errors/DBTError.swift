@@ -242,7 +242,6 @@ struct DBTError {
     }
   }
 
-
   enum SyncRoutine: String, DBTErrorType {
     case syncRoutineInProgress
     case missingRecoveryWords

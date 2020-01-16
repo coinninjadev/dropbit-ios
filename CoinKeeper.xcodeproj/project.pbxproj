@@ -658,6 +658,7 @@
 		B500C391232429B7009F7C2D /* MockConfirmLightningPaymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B500C390232429B7009F7C2D /* MockConfirmLightningPaymentViewModel.swift */; };
 		B501022221F2325B00D42A71 /* UIColor+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = B501022121F2325B00D42A71 /* UIColor+Init.swift */; };
 		B501022321F2333C00D42A71 /* UIColor+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = B501022121F2325B00D42A71 /* UIColor+Init.swift */; };
+		B503005223D0C21700009835 /* WalletManagerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B503005123D0C21700009835 /* WalletManagerType.swift */; };
 		B50384C620B304780091AB37 /* DBTError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50384C520B304780091AB37 /* DBTError.swift */; };
 		B5047CEE2345186100F45DB8 /* PaddedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5047CED2345186100F45DB8 /* PaddedLabel.swift */; };
 		B5054148207D00270059C8F9 /* CKMAddress+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5054142207D00270059C8F9 /* CKMAddress+CoreDataClass.swift */; };
@@ -1783,6 +1784,7 @@
 		AF53DB128FE9F7956F483AE6 /* Pods-DropBitUIDatabaseTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitUIDatabaseTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitUIDatabaseTests/Pods-DropBitUIDatabaseTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B500C390232429B7009F7C2D /* MockConfirmLightningPaymentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockConfirmLightningPaymentViewModel.swift; sourceTree = "<group>"; };
 		B501022121F2325B00D42A71 /* UIColor+Init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Init.swift"; sourceTree = "<group>"; };
+		B503005123D0C21700009835 /* WalletManagerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManagerType.swift; sourceTree = "<group>"; };
 		B50384C520B304780091AB37 /* DBTError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTError.swift; sourceTree = "<group>"; };
 		B5047CED2345186100F45DB8 /* PaddedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddedLabel.swift; sourceTree = "<group>"; };
 		B5054142207D00270059C8F9 /* CKMAddress+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMAddress+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -3664,6 +3666,7 @@
 				B5FDA5C4221206AF001682AA /* PhoneNumbers */,
 				B552EDDF211E33D000332BB5 /* QRCodeGenerator.swift */,
 				B552EDE0211E33D000332BB5 /* WalletManager.swift */,
+				B503005123D0C21700009835 /* WalletManagerType.swift */,
 				B552EDE3211E33D000332BB5 /* PermissionManager.swift */,
 				B552EDE5211E33D000332BB5 /* CKAlamofireSessionManager.swift */,
 				B552EDE7211E33D000332BB5 /* AnalyticsManager.swift */,
@@ -4742,6 +4745,7 @@
 				B542147E22C103750048B81A /* AdjustableTransactionFeeViewModel.swift in Sources */,
 				B5D834072249680600C45ABE /* SettingSwitchWithInfoCell.swift in Sources */,
 				B59E2C8722E789D800A75AFE /* LightningTooltipViewController.swift in Sources */,
+				B503005223D0C21700009835 /* WalletManagerType.swift in Sources */,
 				B5D8340A224971E400C45ABE /* SettingsViewController+TableView.swift in Sources */,
 				B501022221F2325B00D42A71 /* UIColor+Init.swift in Sources */,
 				B52CC6A7221E401E00B00C9E /* CCMValidatedMetadata+CoreDataProperties.swift in Sources */,
