@@ -51,6 +51,17 @@ struct DBTError {
     }
   }
 
+  enum AVScan: DBTErrorType {
+    case noBitcoinQRCodes
+
+    var displayMessage: String {
+      switch self {
+      case .noBitcoinQRCodes:
+        return "Invalid Bitcoin address or Lightning invoice"
+      }
+    }
+  }
+
   enum Biometrics: String, DBTErrorType {
     case authenticationFailed
     case userCancel
@@ -78,6 +89,56 @@ struct DBTError {
       case .notEnrolled: return "Not enrolled in biometric authentication"
       case .notAvailable: return "Biometric authentication is not available"
       default: return "If you are enrolled in biometric authentication, please try again. \n\n(Error: \(rawValue))"
+      }
+    }
+  }
+
+  enum MerchantPaymentRequest: DBTErrorType {
+    case expired(Date)
+    case incorrectCurrency(String)
+    case incorrectNetwork(String)
+    case missingOutput
+    case underlying(Error)
+    case invalidURL(URL, String)
+
+    /// Useful when the server returns the error message as the response data
+    case serverErrorMessage(String)
+
+    var displayMessage: String {
+      let generalErrorPrefix = "There was an error with the payment request:"
+      let messagePrefix = "The payment request you scanned"
+      switch self {
+      case .expired(let expiredAt):
+        let expiredAtDesc = CKDateFormatter.displayConcise.string(from: expiredAt)
+        if expiredAt < Date() {
+          return "\(messagePrefix) has expired (\(expiredAtDesc)). Please refresh the request and scan it again."
+        } else {
+          return """
+            \(messagePrefix) will expire very soon (\(expiredAtDesc)). To ensure the transaction has enough
+            time to process, please refresh the request and scan it again.
+            """.removingMultilineLineBreaks()
+        }
+      case .incorrectCurrency(let currency):
+        return "\(messagePrefix) is for \(currency). DropBit currently only supports BTC transactions."
+
+      case .incorrectNetwork(let network):
+        return "\(messagePrefix) is for the \(network) network. It should be on the main network."
+
+      case .missingOutput:
+        return "\(messagePrefix) did not include the receive address and/or amount."
+
+      case .serverErrorMessage(let message):
+        return "\(generalErrorPrefix) \(message)"
+
+      case .underlying(let error):
+        return "\(generalErrorPrefix) \(error.localizedDescription)"
+      case .invalidURL(let url, let responseString):
+        let cleanedResponse = responseString.stringByStandardizingWhitespaces()
+        let charLimit = 50
+        let truncatedResponse = cleanedResponse.prefix(charLimit)
+        let trailingChars = cleanedResponse.count > charLimit ? "..." : ""
+
+        return "This URL is invalid for sending payments: \n\n\(url.absoluteString) \n\n\(truncatedResponse)\(trailingChars)"
       }
     }
   }
@@ -238,6 +299,23 @@ struct DBTError {
         return "Error fetching \(object). Error: \(nsError.debugDescription)"
       default:
         return displayMessage
+      }
+    }
+  }
+
+  enum RecipientParser: DBTErrorType {
+    case multipleRecipients
+    case validation(ValidatorErrorType)
+    case noResults
+
+    var displayMessage: String {
+      switch self {
+      case .multipleRecipients:
+        return "Multiplie potential recipients were found in the text."
+      case .validation(let validatorError):
+        return validatorError.displayMessage
+      case .noResults:
+        return "No valid recipients were found in the text."
       }
     }
   }

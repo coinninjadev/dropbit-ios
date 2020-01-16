@@ -25,21 +25,3 @@ enum CKRecipientType: CaseIterable {
 }
 
 protocol ValidatorErrorType: DBTErrorType { }
-
-enum CKRecipientParserError: DBTErrorType {
-  case multipleRecipients
-  case validation(ValidatorErrorType)
-  case noResults
-
-  var displayMessage: String {
-    switch self {
-    case .multipleRecipients:
-      return "Multiplie potential recipients were found in the text."
-    case .validation(let validatorError):
-      return validatorError.displayMessage
-    case .noResults:
-      return "No valid recipients were found in the text."
-    }
-  }
-
-}

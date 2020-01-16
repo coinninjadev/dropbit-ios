@@ -8,60 +8,6 @@
 
 import Foundation
 
-enum MerchantPaymentRequestError: DBTErrorType {
-  case expired(Date)
-  case incorrectCurrency(String)
-  case incorrectNetwork(String)
-  case missingOutput
-  case underlying(Error)
-  case invalidURL(URL, String)
-
-  /// Useful when the server returns the error message as the response data
-  case serverErrorMessage(String)
-
-  var displayMessage: String {
-    errorDescription ?? localizedDescription
-  }
-
-  var errorDescription: String? {
-    let generalErrorPrefix = "There was an error with the payment request:"
-    let messagePrefix = "The payment request you scanned"
-    switch self {
-    case .expired(let expiredAt):
-      let expiredAtDesc = CKDateFormatter.displayConcise.string(from: expiredAt)
-      if expiredAt < Date() {
-        return "\(messagePrefix) has expired (\(expiredAtDesc)). Please refresh the request and scan it again."
-      } else {
-        return """
-          \(messagePrefix) will expire very soon (\(expiredAtDesc)). To ensure the transaction has enough
-          time to process, please refresh the request and scan it again.
-          """.removingMultilineLineBreaks()
-      }
-    case .incorrectCurrency(let currency):
-      return "\(messagePrefix) is for \(currency). DropBit currently only supports BTC transactions."
-
-    case .incorrectNetwork(let network):
-      return "\(messagePrefix) is for the \(network) network. It should be on the main network."
-
-    case .missingOutput:
-      return "\(messagePrefix) did not include the receive address and/or amount."
-
-    case .serverErrorMessage(let message):
-      return "\(generalErrorPrefix) \(message)"
-
-    case .underlying(let error):
-      return "\(generalErrorPrefix) \(error.localizedDescription)"
-    case .invalidURL(let url, let responseString):
-      let cleanedResponse = responseString.stringByStandardizingWhitespaces()
-      let charLimit = 50
-      let truncatedResponse = cleanedResponse.prefix(charLimit)
-      let trailingChars = cleanedResponse.count > charLimit ? "..." : ""
-
-      return "This URL is invalid for sending payments: \n\n\(url.absoluteString) \n\n\(truncatedResponse)\(trailingChars)"
-    }
-  }
-}
-
 struct MerchantPaymentRequestResponse: ResponseDecodable {
 
   let network: String
@@ -102,19 +48,19 @@ struct MerchantPaymentRequestResponse: ResponseDecodable {
 
   static func validateResponse(_ response: MerchantPaymentRequestResponse) throws -> MerchantPaymentRequestResponse {
     guard response.expires > Date().addingTimeInterval(60) else {
-      throw MerchantPaymentRequestError.expired(response.expires)
+      throw DBTError.MerchantPaymentRequest.expired(response.expires)
     }
 
     guard response.currency == "BTC" else {
-      throw MerchantPaymentRequestError.incorrectCurrency(response.currency)
+      throw DBTError.MerchantPaymentRequest.incorrectCurrency(response.currency)
     }
 
     guard response.network == "main" else {
-      throw MerchantPaymentRequestError.incorrectNetwork(response.network)
+      throw DBTError.MerchantPaymentRequest.incorrectNetwork(response.network)
     }
 
     guard let output = response.outputs.first, output.amount > 0, output.address.isNotEmpty else {
-      throw MerchantPaymentRequestError.missingOutput
+      throw DBTError.MerchantPaymentRequest.missingOutput
     }
 
     let stringValidatedResponse = try response.validateStringValues()

@@ -160,7 +160,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     let generalMessage = "Invalid bitcoin address or phone number."
     var fullMessage = ""
 
-    if let parsingError = err as? CKRecipientParserError {
+    if let parsingError = err as? DBTError.RecipientParser {
       fullMessage = "\(parsingError.displayMessage)"
 
     } else if let validationError = err as? ValidatorErrorType {

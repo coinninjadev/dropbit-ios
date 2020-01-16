@@ -9,7 +9,7 @@
 import UIKit
 
 extension AppCoordinator: ScanQRViewControllerDelegate {
-  func viewControllerHadScanFailure(_ viewController: UIViewController, error: AVScanErrorType) {
+  func viewControllerHadScanFailure(_ viewController: UIViewController, error: DBTError.AVScan) {
     alertManager.showErrorHUD(error, forDuration: 2.0)
   }
 

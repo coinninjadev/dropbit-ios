@@ -11,12 +11,15 @@ import Result
 
 protocol MerchantPaymentRequestRequestable: AnyObject {
   /// Pass in the URL included for the r or request parameter of a BIP 70 QR code
-  func getMerchantPaymentRequest(at url: URL, completion: @escaping (Result<MerchantPaymentRequestResponse, MerchantPaymentRequestError>) -> Void)
+  func getMerchantPaymentRequest(at url: URL, completion: @escaping (GetMerchantPaymentRequestResult) -> Void)
 }
+
+typealias GetMerchantPaymentRequestResult = Result<MerchantPaymentRequestResponse, DBTError.MerchantPaymentRequest>
 
 extension NetworkManager: MerchantPaymentRequestRequestable {
 
-  func getMerchantPaymentRequest(at url: URL, completion: @escaping (Result<MerchantPaymentRequestResponse, MerchantPaymentRequestError>) -> Void) {
+  func getMerchantPaymentRequest(at url: URL, completion: @escaping (GetMerchantPaymentRequestResult) -> Void) {
+
     var urlRequest = URLRequest(url: url)
     urlRequest.addValue("application/payment-request", forHTTPHeaderField: "Accept")
     let session = URLSession.shared
@@ -27,11 +30,11 @@ extension NetworkManager: MerchantPaymentRequestRequestable {
           let validatedResponse = try MerchantPaymentRequestResponse.validateResponse(paymentResponse)
           completion(.success(validatedResponse))
         } catch let err {
-          if let requestError = err as? MerchantPaymentRequestError {
+          if let requestError = err as? DBTError.MerchantPaymentRequest {
             completion(.failure(requestError))
           } else if let responseAsString = String(data: data, encoding: .utf8) {
             // The QR code represented a normal website URL instead of a BIP 70 payment request
-            let invalidURLError = MerchantPaymentRequestError.invalidURL(url, responseAsString)
+            let invalidURLError = DBTError.MerchantPaymentRequest.invalidURL(url, responseAsString)
             completion(.failure(invalidURLError))
 
           } else {

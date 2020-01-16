@@ -120,8 +120,8 @@ class CKRecipientParserTests: XCTestCase {
     do {
       _ = try self.sut.findSingleRecipient(inText: fullText)
       XCTFail("Text with multiple addresses should throw error")
-    } catch let error as CKRecipientParserError {
-      XCTAssertEqual(error.localizedDescription, CKRecipientParserError.multipleRecipients.localizedDescription)
+    } catch let error as DBTError.RecipientParser {
+      XCTAssertEqual(error.localizedDescription, DBTError.RecipientParser.multipleRecipients.localizedDescription)
     } catch {
       XCTFail("Error should be CKRecipientParserError")
     }

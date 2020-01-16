@@ -23,8 +23,7 @@ extension PaymentRequestResolver {
     return "Failed to get merchant payment request."
   }
 
-  func resolveMerchantPaymentRequest(withURL paymentRequestURL: URL,
-                                     completion: @escaping (Result<MerchantPaymentRequestResponse, MerchantPaymentRequestError>) -> Void) {
+  func resolveMerchantPaymentRequest(withURL paymentRequestURL: URL, completion: @escaping (GetMerchantPaymentRequestResult) -> Void) {
     self.networkManager.getMerchantPaymentRequest(at: paymentRequestURL) { result in
       switch result {
       case .success(let response):

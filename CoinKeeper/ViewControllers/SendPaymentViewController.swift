@@ -462,7 +462,7 @@ extension SendPaymentViewController {
                                                      exchangeRates: self.viewModel.exchangeRates,
                                                      fiatCurrency: self.viewModel.fiatCurrency)
         guard let fetchedModel = maybeFetchedModel, fetchedModel.address != nil else {
-            self.showValidatorAlert(for: MerchantPaymentRequestError.missingOutput, title: errorTitle)
+            self.showValidatorAlert(for: DBTError.MerchantPaymentRequest.missingOutput, title: errorTitle)
             return
         }
 
