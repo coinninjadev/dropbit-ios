@@ -62,10 +62,6 @@ protocol WalletManagerType: AnyObject {
                        to address: String,
                        withFeeRate feeRate: Double) -> Promise<CNBCnlibTransactionData>
 
-  func transactionDataSendingMax(fromPrivateKey privateKey: WIFPrivateKey,
-                                 to address: String,
-                                 feeRate: Double) -> Promise<CNBCnlibTransactionData>
-
   /// Transaction data for payment to a recipient with a flat, predetermined fee.
   ///
   /// - Parameters:
@@ -86,6 +82,17 @@ protocol WalletManagerType: AnyObject {
   ///   - feeRate: Fee rate per bytes, in Satoshis
   /// - Returns: A Promise that contains a CNBCnlibTransactionData object, or rejects if failed.
   func transactionDataSendingMax(to address: String, withFeeRate feeRate: Double) -> Promise<CNBCnlibTransactionData>
+
+  /// Transaction data for sending max private key amount, minus fee, to a given address. Used when sweeping a private key, i.e. paper wallet.
+  ///
+  /// - Parameters:
+  ///   - privateKey: Source private key that proves the user owns the funds.
+  ///   - address: Destination address. Should be the next receive address for user's wallet.
+  ///   - feeRate: Fee rate per bytes, in Satoshis
+  /// - Returns: A Promise that contains a CNBCnlibTransactionData object, or rejects if failed.
+  func transactionDataSendingMax(fromPrivateKey privateKey: WIFPrivateKey,
+                                 to address: String,
+                                 feeRate: Double) -> Promise<CNBCnlibTransactionData>
 
   /// Transaction data for sending all inputs, even unconfirmed, minus fee, to a given address.
   /// Used when migrating a wallet from one version to another.
