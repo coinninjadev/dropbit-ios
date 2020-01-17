@@ -28,15 +28,16 @@ class TransactionBroker: CKPersistenceBroker, TransactionBrokerType {
     with outgoingTransactionData: OutgoingTransactionData,
     txid: String,
     invitation: CKMInvitation?,
-    in context: NSManagedObjectContext) -> CKMTransaction {
+    in context: NSManagedObjectContext,
+    incomingAddress: String? = nil) -> CKMTransaction {
 
     return databaseManager.persistTemporaryTransaction(
       from: transactionData,
       with: outgoingTransactionData,
       txid: txid,
       invitation: invitation,
-      in: context)
-
+      in: context,
+      incomingAddress: incomingAddress)
   }
 
   @discardableResult

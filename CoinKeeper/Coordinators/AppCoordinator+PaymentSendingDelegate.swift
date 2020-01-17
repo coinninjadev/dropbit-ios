@@ -293,7 +293,8 @@ extension AppCoordinator: PaymentSendingDelegate {
           with: outgoingTransactionData,
           txid: txid,
           invitation: nil,
-          in: context
+          in: context,
+          incomingAddress: nil
         )
         persistedTransaction.isLightningTransfer = isInternalLightningLoad
 

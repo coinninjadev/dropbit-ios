@@ -192,6 +192,36 @@ class WalletManager: WalletManagerType {
     return max(Int(exactly: floored) ?? 0, minimumFeeRate)
   }
 
+  func transactionDataSendingMax(fromPrivateKey privateKey: WIFPrivateKey,
+                                 to address: String,
+                                 feeRate: Double) -> Promise<CNBCnlibTransactionData> {
+
+    return Promise { seal in
+      guard let info = privateKey.key.previousOutputInfo else {
+        seal.reject(DBTError.TransactionData.insufficientFunds)
+        return
+      }
+
+      let blockHeight = persistenceManager.brokers.checkIn.cachedBlockHeight
+      let usableFeeRate = self.usableFeeRate(from: feeRate)
+
+      let txData = CNBCnlibNewTransactionDataSendingMax(address, coin, usableFeeRate, blockHeight)
+      let utxo = CNBCnlibNewUTXO(info.txid, info.index, info.amount, nil, privateKey.key, privateKey.isConfirmed)
+      txData?.add(utxo)
+
+      do {
+        try txData?.generate()
+        if let data = txData?.transactionData {
+          seal.fulfill(data)
+        } else {
+          seal.reject(DBTError.TransactionData.insufficientFunds)
+        }
+      } catch {
+        seal.reject(error)
+      }
+    }
+  }
+
   func transactionData(
     forPayment payment: NSDecimalNumber,
     to address: String,

@@ -11,7 +11,7 @@ import UIKit
 protocol TransactionDetailPopoverDisplayable {
   var directionConfig: TransactionCellAvatarConfig { get }
   var detailStatusText: String { get }
-  var breakdownItems: [TransactionPopoverBreakdownItem] { get }
+  var breakdownItems: [TransactionBreakdownItem] { get }
   var txid: String { get }
   var txidURL: URL? { get }
 }
@@ -45,11 +45,11 @@ extension TransactionDetailPopoverViewModelType {
     }
   }
 
-  var breakdownItems: [TransactionPopoverBreakdownItem] {
-    var results = breakdownAmounts.map { TransactionPopoverBreakdownItem(amount: $0) }
+  var breakdownItems: [TransactionBreakdownItem] {
+    var results = breakdownAmounts.map { TransactionBreakdownItem(amount: $0) }
 
     if let count = onChainConfirmations, !isLightningWithdrawal {
-      results.append(TransactionPopoverBreakdownItem(confirmations: count) )
+      results.append(TransactionBreakdownItem(confirmations: count) )
     }
 
     return results
@@ -127,9 +127,9 @@ struct BreakdownAmount {
 
 }
 
-struct TransactionPopoverBreakdownItem {
-  let title: String
-  let detail: String
+struct TransactionBreakdownItem {
+  var title: String
+  var detail: String
 
   init(amount: BreakdownAmount) {
     self.title = amount.title
@@ -149,6 +149,7 @@ enum BreakdownItemType {
   case networkFees(paidByDropBit: Bool)
   case dropbitFees
   case whenSent
+  case total
 
   var title: String {
     switch self {
@@ -157,6 +158,7 @@ enum BreakdownItemType {
     case .whenSent:         return "When Sent"
     case .networkFees:      return "Network Fee"
     case .dropbitFees:      return "DropBit Fee"
+    case .total:            return "Total"
     case .totalWithdrawal(let walletTxType):
       switch walletTxType {
       case .onChain:        return "Amount"
