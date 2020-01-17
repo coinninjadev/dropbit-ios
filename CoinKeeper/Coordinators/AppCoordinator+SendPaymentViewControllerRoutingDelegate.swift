@@ -273,15 +273,13 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
     let usableRates = UsableFeeRates(rates: rates, walletManager: wmgr)
     let allowed = RBFOption.allowed
 
-    var viewModel: AdjustableTransactionFeeViewModel!
-
     return wmgr.transactionData(forPayment: btcAmount, to: address, withFeeRate: usableRates.lowRate, rbfOption: allowed)
       .map { lowTxData -> AdjustableTransactionFeeViewModel in
-        viewModel = AdjustableTransactionFeeViewModel(preferredFeeType: config.defaultFeeType,
-                                                      lowFeeTxData: lowTxData,
-                                                      mediumFeeTxData: nil,
-                                                      highFeeTxData: nil,
-                                                      isAdjustable: config.adjustableFeesEnabled)
+        let viewModel = AdjustableTransactionFeeViewModel(preferredFeeType: config.defaultFeeType,
+                                                          lowFeeTxData: lowTxData,
+                                                          mediumFeeTxData: nil,
+                                                          highFeeTxData: nil,
+                                                          isAdjustable: config.adjustableFeesEnabled)
         return viewModel
     }
     .then { (viewModel: AdjustableTransactionFeeViewModel) -> Promise<AdjustableTransactionFeeViewModel> in
@@ -307,15 +305,14 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
                                                 wmgr: WalletManagerType,
                                                 address: String) -> Promise<AdjustableTransactionFeeViewModel> {
     let usableRates = UsableFeeRates(rates: rates, walletManager: wmgr)
-    var viewModel: AdjustableTransactionFeeViewModel!
 
     return wmgr.transactionDataSendingMax(to: address, withFeeRate: usableRates.lowRate)
       .map { lowTxData -> AdjustableTransactionFeeViewModel in
-        viewModel = AdjustableTransactionFeeViewModel(preferredFeeType: config.defaultFeeType,
-                                                      lowFeeTxData: lowTxData,
-                                                      mediumFeeTxData: nil,
-                                                      highFeeTxData: nil,
-                                                      isAdjustable: config.adjustableFeesEnabled)
+        let viewModel = AdjustableTransactionFeeViewModel(preferredFeeType: config.defaultFeeType,
+                                                          lowFeeTxData: lowTxData,
+                                                          mediumFeeTxData: nil,
+                                                          highFeeTxData: nil,
+                                                          isAdjustable: config.adjustableFeesEnabled)
         return viewModel
     }
     .then { (viewModel: AdjustableTransactionFeeViewModel) -> Promise<AdjustableTransactionFeeViewModel> in

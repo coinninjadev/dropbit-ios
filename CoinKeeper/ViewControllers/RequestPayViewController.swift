@@ -298,6 +298,9 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   override func makeUnavailable() {
     lock()
   }
+
+  func currencySwappableAmountDataDidChange() { }
+  
 }
 
 extension RequestPayViewController: WalletToggleViewDelegate {

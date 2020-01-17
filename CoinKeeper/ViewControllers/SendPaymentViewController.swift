@@ -381,7 +381,7 @@ extension SendPaymentViewController {
   }
 
   func currencySwappableAmountDataDidChange() {
-    viewModel.sendMaxTransactionData = nil
+    viewModel.resetSendMaxTransactionDataIfNeeded()
   }
 
 }
