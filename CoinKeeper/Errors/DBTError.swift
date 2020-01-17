@@ -352,16 +352,22 @@ struct DBTError {
     }
   }
 
-  enum TransactionData: DBTErrorType {
-    case insufficientFunds
-    case insufficientFee
-    case noSpendableFunds
+  enum TransactionData: String, DBTErrorType {
+    case insufficientFunds = "insufficient funds"
+    case insufficientFee = "insufficient fee"
+    case noSpendableFunds = "no spendable funds"
+    case dust = "transaction too small"
+    case createTransactionFailure = "failed to create transaction"
+    case invalidDestinationAddress = "decoded address is of unknown format"
 
     var displayTitle: String {
       switch self {
       case .insufficientFunds: return "Insufficient Funds"
       case .insufficientFee: return "Insufficient Fee"
       case .noSpendableFunds: return "No Spendable Funds"
+      case .dust: return "Dusty Output"
+      case .createTransactionFailure: return "Failed To Create Transaction"
+      case .invalidDestinationAddress: return "Invalid Destination Address"
       }
     }
 
@@ -373,6 +379,12 @@ struct DBTError {
         return "Something went wrong calculating a fee for this DropBit invitation, please try again."
       case .noSpendableFunds:
         return "This wallet has no known unspent transaction outputs."
+      case .dust:
+        return "The Bitcoin network does not support transactions this small. Smaller transactions can be sent using your Lightning wallet."
+      case .createTransactionFailure:
+        return "Failed to create transaction."
+      case .invalidDestinationAddress:
+        return "Decoded address is of unknown format."
       }
     }
   }

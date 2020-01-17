@@ -114,18 +114,19 @@ CurrencySwappableAmountEditor {
   }
 
   @IBAction func performSendMax() {
-    let tempAddress = ""
+    let tempAddress = CNBCnlibPlaceholderDestination
     self.delegate.transactionDataSendingMaxFunds(toAddress: tempAddress)
       .done { txData in
         self.viewModel.sendMax(with: txData)
         self.refreshBothAmounts()
         self.sendMaxButton.isHidden = true
     }
-    .catch { _ in
+    .catch { error in
+      let dbtError = DBTError.cast(error)
       let action = AlertActionConfiguration.init(title: "OK", style: .default, action: nil)
       let alertViewModel = AlertControllerViewModel(
-        title: "Insufficient Funds",
-        description: "There are not enough funds to cover the transaction and network fee.",
+        title: dbtError.displayTitle,
+        description: dbtError.displayMessage,
         image: nil,
         style: .alert,
         actions: [action]
@@ -380,7 +381,7 @@ extension SendPaymentViewController {
   }
 
   func currencySwappableAmountDataDidChange() {
-    viewModel.sendMaxTransactionData = nil
+    viewModel.resetSendMaxTransactionDataIfNeeded()
   }
 
 }

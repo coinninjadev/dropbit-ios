@@ -275,17 +275,28 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
 
     return wmgr.transactionData(forPayment: btcAmount, to: address, withFeeRate: usableRates.lowRate, rbfOption: allowed)
       .map { lowTxData -> AdjustableTransactionFeeViewModel in
-        let maybeMediumTxData = wmgr.failableTransactionData(
-          forPayment: btcAmount, to: address, withFeeRate: usableRates.mediumRate, rbfOption: allowed
-        )
-        let maybeHighTxData = wmgr.failableTransactionData(
-          forPayment: btcAmount, to: address, withFeeRate: usableRates.highRate, rbfOption: allowed
-        )
-        return AdjustableTransactionFeeViewModel(preferredFeeType: config.defaultFeeType,
-                                                 lowFeeTxData: lowTxData,
-                                                 mediumFeeTxData: maybeMediumTxData,
-                                                 highFeeTxData: maybeHighTxData,
-                                                 isAdjustable: config.adjustableFeesEnabled)
+        let viewModel = AdjustableTransactionFeeViewModel(preferredFeeType: config.defaultFeeType,
+                                                          lowFeeTxData: lowTxData,
+                                                          mediumFeeTxData: nil,
+                                                          highFeeTxData: nil,
+                                                          isAdjustable: config.adjustableFeesEnabled)
+        return viewModel
+    }
+    .then { (viewModel: AdjustableTransactionFeeViewModel) -> Promise<AdjustableTransactionFeeViewModel> in
+      return wmgr.transactionData(forPayment: btcAmount, to: address, withFeeRate: usableRates.mediumRate, rbfOption: allowed)
+        .then { (data: CNBCnlibTransactionData) -> Promise<AdjustableTransactionFeeViewModel> in
+          viewModel.mediumFeeTxData = data
+          return Promise.value(viewModel)
+      }
+      .recover { _ in return Promise.value(viewModel) }
+    }
+    .then { (viewModel: AdjustableTransactionFeeViewModel) -> Promise<AdjustableTransactionFeeViewModel> in
+      return wmgr.transactionData(forPayment: btcAmount, to: address, withFeeRate: usableRates.highRate, rbfOption: allowed)
+        .then { (data: CNBCnlibTransactionData) -> Promise<AdjustableTransactionFeeViewModel> in
+          viewModel.highFeeTxData = data
+          return Promise.value(viewModel)
+      }
+      .recover { _ in return Promise.value(viewModel) }
     }
   }
 
@@ -297,13 +308,28 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
 
     return wmgr.transactionDataSendingMax(to: address, withFeeRate: usableRates.lowRate)
       .map { lowTxData -> AdjustableTransactionFeeViewModel in
-        let maybeMediumTxData = wmgr.failableTransactionDataSendingMax(to: address, withFeeRate: usableRates.mediumRate)
-        let maybeHighTxData = wmgr.failableTransactionDataSendingMax(to: address, withFeeRate: usableRates.highRate)
-        return AdjustableTransactionFeeViewModel(preferredFeeType: config.defaultFeeType,
-                                                 lowFeeTxData: lowTxData,
-                                                 mediumFeeTxData: maybeMediumTxData,
-                                                 highFeeTxData: maybeHighTxData,
-                                                 isAdjustable: config.adjustableFeesEnabled)
+        let viewModel = AdjustableTransactionFeeViewModel(preferredFeeType: config.defaultFeeType,
+                                                          lowFeeTxData: lowTxData,
+                                                          mediumFeeTxData: nil,
+                                                          highFeeTxData: nil,
+                                                          isAdjustable: config.adjustableFeesEnabled)
+        return viewModel
+    }
+    .then { (viewModel: AdjustableTransactionFeeViewModel) -> Promise<AdjustableTransactionFeeViewModel> in
+      return wmgr.transactionDataSendingMax(to: address, withFeeRate: usableRates.mediumRate)
+        .then { (txData: CNBCnlibTransactionData) -> Promise<AdjustableTransactionFeeViewModel> in
+          viewModel.mediumFeeTxData = txData
+          return .value(viewModel)
+      }
+      .recover { _ in return Promise.value(viewModel) }
+    }
+    .then { (viewModel: AdjustableTransactionFeeViewModel) -> Promise<AdjustableTransactionFeeViewModel> in
+      return wmgr.transactionDataSendingMax(to: address, withFeeRate: usableRates.highRate)
+        .then { (txData: CNBCnlibTransactionData) -> Promise<AdjustableTransactionFeeViewModel> in
+          viewModel.highFeeTxData = txData
+          return .value(viewModel)
+      }
+      .recover { _ in return Promise.value(viewModel) }
     }
   }
 
@@ -322,7 +348,7 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
             rates: feeRates,
             wmgr: wmgr,
             btcAmount: btcAmount,
-            address: "")
+            address: CNBCnlibPlaceholderDestination)
             .map { .adjustable($0) }
         case .lightning:
           return Promise { seal in

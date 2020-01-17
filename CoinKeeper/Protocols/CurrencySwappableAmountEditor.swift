@@ -21,8 +21,6 @@ protocol CurrencySwappableAmountEditor: CurrencySwappableEditAmountViewDelegate,
 
 extension CurrencySwappableAmountEditor {
 
-  func currencySwappableAmountDataDidChange() {}
-
   func viewModelDidBeginEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
     refreshBothAmounts()
     moveCursorToCorrectLocationIfNecessary()

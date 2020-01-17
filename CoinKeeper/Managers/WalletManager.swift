@@ -222,83 +222,71 @@ class WalletManager: WalletManagerType {
     }
   }
 
-  func transactionData(
-    forPayment payment: NSDecimalNumber,
-    to address: String,
-    withFeeRate feeRate: Double,  // in Satoshis
-    rbfOption: RBFOption
-    ) -> Promise<CNBCnlibTransactionData> {
+  func transactionData(forPayment payment: NSDecimalNumber,
+                       to address: String,
+                       withFeeRate feeRate: Double,  // in Satoshis
+                       rbfOption: RBFOption) -> Promise<CNBCnlibTransactionData> {
 
     return Promise { seal in
-      let txData = failableTransactionData(forPayment: payment,
-                                           to: address,
-                                           withFeeRate: feeRate,
-                                           rbfOption: rbfOption)
-      if let data = txData {
-        seal.fulfill(data)
-      } else {
-        seal.reject(DBTError.TransactionData.insufficientFunds)
+      let paymentAmount = payment.asFractionalUnits(of: .BTC)
+      let usableFeeRate = self.usableFeeRate(from: feeRate)
+      let blockHeight = persistenceManager.brokers.checkIn.cachedBlockHeight
+      let context = persistenceManager.createBackgroundContext()
+
+      context.perform { [weak self] in
+        guard let strongSelf = self else {
+          seal.reject(DBTError.System.missingValue(key: "wallet manager self"))
+          return
+        }
+        let usableVouts = strongSelf.usableVouts(in: context)
+        let allAvailableOutputs = strongSelf.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
+        var change: CNBCnlibDerivationPath?
+
+        do {
+          change = try strongSelf.newChangePath(in: context)
+        } catch {
+          log.error(error, message: "Failed to create change path")
+          seal.reject(error)
+        }
+
+        let data = CNBCnlibNewTransactionDataStandard(address,
+                                                      strongSelf.coin,
+                                                      paymentAmount,
+                                                      usableFeeRate,
+                                                      change,
+                                                      blockHeight,
+                                                      rbfOption.value)
+
+        allAvailableOutputs.forEach { data?.add($0) }
+
+        do {
+          try data?.generate()
+          if let txData = data?.transactionData {
+            seal.fulfill(txData)
+          } else {
+            seal.reject(DBTError.TransactionData.createTransactionFailure)
+          }
+        } catch {
+          if let txError = DBTError.TransactionData(rawValue: error.localizedDescription) {
+            seal.reject(txError)
+          } else {
+            seal.reject(error)
+          }
+        }
       }
     }
   }
 
-  func failableTransactionData(forPayment payment: NSDecimalNumber,
-                               to address: String,
-                               withFeeRate feeRate: Double) -> CNBCnlibTransactionData? {
+  func transactionData(forPayment payment: NSDecimalNumber,
+                       to address: String,
+                       withFeeRate feeRate: Double) -> Promise<CNBCnlibTransactionData> {
     let allowed = RBFOption.allowed
-    return failableTransactionData(forPayment: payment, to: address, withFeeRate: feeRate, rbfOption: allowed)
+    return transactionData(forPayment: payment, to: address, withFeeRate: feeRate, rbfOption: allowed)
   }
 
-  func failableTransactionData(
-    forPayment payment: NSDecimalNumber,
-    to address: String,
-    withFeeRate feeRate: Double,
-    rbfOption: RBFOption) -> CNBCnlibTransactionData? {
-    let paymentAmount = payment.asFractionalUnits(of: .BTC)
-    let usableFeeRate = self.usableFeeRate(from: feeRate)
-    let blockHeight = persistenceManager.brokers.checkIn.cachedBlockHeight
-    let bgContext = persistenceManager.createBackgroundContext()
-    var result: CNBCnlibTransactionData?
-    bgContext.performAndWait {
-      let usableVouts = self.usableVouts(in: bgContext)
-      let allAvailableOutputs = self.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
-      var change: CNBCnlibDerivationPath?
-      do {
-        change = try self.newChangePath(in: bgContext)
-      } catch {
-        log.error(error, message: "Failed to create change path")
-        return
-      }
-
-      let data = CNBCnlibTransactionDataStandard(address,
-                                                 basecoin: coin,
-                                                 amount: paymentAmount,
-                                                 feeRate: usableFeeRate,
-                                                 change: change,
-                                                 blockHeight: blockHeight,
-                                                 rbfOption: rbfOption.value)
-
-      for utxo in allAvailableOutputs {
-        data?.add(utxo)
-      }
-
-      do {
-        try data?.generate()
-        result = data?.transactionData
-      } catch {
-        log.error(error, message: "Failed to generate standard transaction data.")
-        return
-      }
-
-    }
-    return result
-  }
-
-  func transactionData(
-    forPayment payment: Int,
-    to address: String,
-    withFlatFee flatFee: Int
-    ) -> Promise<CNBCnlibTransactionData> {
+  func transactionData(forPayment payment: Int,
+                       to address: String,
+                       withFlatFee flatFee: Int) -> Promise<CNBCnlibTransactionData> {
 
     return Promise { seal in
       guard flatFee > 0 else {
@@ -306,42 +294,44 @@ class WalletManager: WalletManagerType {
         seal.reject(DBTError.TransactionData.insufficientFee)
         return
       }
-      let bgContext = persistenceManager.createBackgroundContext()
-      bgContext.perform { [weak self] in
+      let context = persistenceManager.createBackgroundContext()
+      context.perform { [weak self] in
         guard let strongSelf = self else {
           seal.reject(DBTError.System.missingValue(key: "wallet manager self"))
           return
         }
-        let usableVouts = strongSelf.usableVouts(in: bgContext)
+        let usableVouts = strongSelf.usableVouts(in: context)
         let allAvailableOutputs = strongSelf.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
         let blockHeight = strongSelf.persistenceManager.brokers.checkIn.cachedBlockHeight
         var change: CNBCnlibDerivationPath?
         do {
-          change = try strongSelf.newChangePath(in: bgContext)
+          change = try strongSelf.newChangePath(in: context)
         } catch {
           log.error(error, message: "Failed to create change path")
           return
         }
 
-        let txData = CNBCnlibTransactionDataFlatFee(address,
-                                                    basecoin: strongSelf.coin,
-                                                    amount: payment,
-                                                    flatFee: flatFee,
-                                                    change: change,
-                                                    blockHeight: blockHeight)
-        for utxo in allAvailableOutputs {
-          txData?.add(utxo)
-        }
+        let data = CNBCnlibTransactionDataFlatFee(address,
+                                                  basecoin: strongSelf.coin,
+                                                  amount: payment,
+                                                  flatFee: flatFee,
+                                                  change: change,
+                                                  blockHeight: blockHeight)
+        allAvailableOutputs.forEach { data?.add($0) }
 
         do {
-          try txData?.generate()
-          if let data = txData?.transactionData {
+          try data?.generate()
+          if let data = data?.transactionData {
             seal.fulfill(data)
           } else {
-            seal.reject(DBTError.TransactionData.insufficientFunds)
+            seal.reject(DBTError.TransactionData.createTransactionFailure)
           }
         } catch {
-          seal.reject(error)
+          if let txError = DBTError.TransactionData(rawValue: error.localizedDescription) {
+            seal.reject(txError)
+          } else {
+            seal.reject(error)
+          }
         }
       }
     }
@@ -349,39 +339,39 @@ class WalletManager: WalletManagerType {
 
   func transactionDataSendingMax(to address: String, withFeeRate feeRate: Double) -> Promise<CNBCnlibTransactionData> {
     return Promise { seal in
-      let maybeTxData = self.failableTransactionDataSendingMax(to: address, withFeeRate: feeRate)
-      if let data = maybeTxData {
-        seal.fulfill(data)
-      } else {
-        seal.reject(DBTError.TransactionData.insufficientFunds)
+      let usableFeeRate = self.usableFeeRate(from: feeRate)
+      let blockHeight = persistenceManager.brokers.checkIn.cachedBlockHeight
+      let context = persistenceManager.createBackgroundContext()
+
+      context.perform { [weak self] in
+        guard let strongSelf = self else {
+          seal.reject(DBTError.System.missingValue(key: "wallet manager self"))
+          return
+        }
+        let usableVouts = strongSelf.usableVouts(in: context)
+        let allAvailableOutputs = strongSelf.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
+
+        // This initializer uses RBFOption MustNotBeRBF.
+        let data = CNBCnlibNewTransactionDataSendingMax(address, strongSelf.coin, usableFeeRate, blockHeight)
+        allAvailableOutputs.forEach { data?.add($0) }
+
+        do {
+          try data?.generate()
+          if let txData = data?.transactionData {
+            seal.fulfill(txData)
+          } else {
+            seal.reject(DBTError.TransactionData.createTransactionFailure)
+          }
+        } catch {
+          log.error(error, message: "Failed to generate send max transaction")
+          if let txError = DBTError.TransactionData(rawValue: error.localizedDescription) {
+            seal.reject(txError)
+          } else {
+            seal.reject(error)
+          }
+        }
       }
     }
-  }
-
-  func failableTransactionDataSendingMax(to address: String, withFeeRate feeRate: Double) -> CNBCnlibTransactionData? {
-    let usableFeeRate = self.usableFeeRate(from: feeRate)
-    let blockHeight = persistenceManager.brokers.checkIn.cachedBlockHeight
-    let bgContext = persistenceManager.createBackgroundContext()
-
-    var result: CNBCnlibTransactionData?
-    bgContext.performAndWait {
-      let usableVouts = self.usableVouts(in: bgContext)
-      let allAvailableOutputs = self.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
-
-      ///This initializer uses CNBTransactionReplaceabilityOption.MustNotBeRBF
-      let data = CNBCnlibNewTransactionDataSendingMax(address, coin, usableFeeRate, blockHeight)
-      for utxo in allAvailableOutputs {
-        data?.add(utxo)
-      }
-
-      do {
-        try data?.generate()
-        result = data?.transactionData
-      } catch {
-        log.error(error, message: "Failed to generate send max transaction")
-      }
-    }
-    return result
   }
 
   func transactionDataSendingAll(to address: String, withFeeRate feeRate: Double) -> Promise<CNBCnlibTransactionData> {
@@ -393,36 +383,38 @@ class WalletManager: WalletManagerType {
         return
       }
 
-      let maybeTxData = self.failableTransactionDataSendingAll(to: address, withFeeRate: feeRate)
-      if let data = maybeTxData {
-        seal.fulfill(data)
-      } else {
-        seal.reject(DBTError.TransactionData.insufficientFunds)
-      }
-    }
-  }
+      let usableFeeRate = self.usableFeeRate(from: feeRate)
+      let blockHeight = persistenceManager.brokers.checkIn.cachedBlockHeight
 
-  func failableTransactionDataSendingAll(to address: String, withFeeRate feeRate: Double) -> CNBCnlibTransactionData? {
-    let usableFeeRate = self.usableFeeRate(from: feeRate)
-    let blockHeight = persistenceManager.brokers.checkIn.cachedBlockHeight
-    let context = persistenceManager.viewContext
-
-    var result: CNBCnlibTransactionData?
-    context.performAndWait {
-      do {
-        let vouts = try CKMVout.findAllUnspent(in: context)
-        let utxos = self.availableTransactionOutputs(fromUsableUTXOs: vouts)
-        let data = CNBCnlibNewTransactionDataSendingMax(address, coin, usableFeeRate, blockHeight)
-        for utxo in utxos {
-          data?.add(utxo)
+      context.perform { [weak self] in
+        guard let strongSelf = self else {
+          seal.reject(DBTError.System.missingValue(key: "wallet manager self"))
+          return
         }
-        try data?.generate()
-        result = data?.transactionData
-      } catch {
-        log.error(error, message: "Failed to generate send all transaction")
+        do {
+          let vouts = try CKMVout.findAllUnspent(in: context)
+          let utxos = strongSelf.availableTransactionOutputs(fromUsableUTXOs: vouts)
+          let data = CNBCnlibNewTransactionDataSendingMax(address, strongSelf.coin, usableFeeRate, blockHeight)
+
+          utxos.forEach { data?.add($0) }
+
+          try data?.generate()
+
+          if let txData = data?.transactionData {
+            seal.fulfill(txData)
+          } else {
+            seal.reject(DBTError.TransactionData.createTransactionFailure)
+          }
+        } catch {
+          log.error(error, message: "Failed to generate send all transaction")
+          if let txError = DBTError.TransactionData(rawValue: error.localizedDescription) {
+            seal.reject(txError)
+          } else {
+            seal.reject(error)
+          }
+        }
       }
     }
-    return result
   }
 
   func decodeLightningInvoice(_ invoice: String) -> Promise<LNDecodePaymentRequestResponse> {

@@ -74,9 +74,18 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   var sharedMemoAllowed = true
   var sendMaxTransactionData: CNBCnlibTransactionData?
 
+  private var shouldResetMaxTransactionData = false
+
+  func resetSendMaxTransactionDataIfNeeded() {
+    if shouldResetMaxTransactionData {
+      sendMaxTransactionData = nil
+    }
+    shouldResetMaxTransactionData = false
+  }
+
   func sendMax(with data: CNBCnlibTransactionData) {
     self.sendMaxTransactionData = data
-    let btcAmount = NSDecimalNumber(integerAmount: Int(data.amount), currency: .BTC)
+    let btcAmount = NSDecimalNumber(integerAmount: data.amount, currency: .BTC)
     setBTCAmountAsPrimary(btcAmount)
     delegate?.viewModelNeedsAmountLabelRefresh(self, secondaryOnly: false)
   }

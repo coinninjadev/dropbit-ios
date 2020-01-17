@@ -61,22 +61,10 @@ extension AppCoordinator: PaymentBuildingDelegate {
           return Promise(error: error)
         }
         let feeRate: Double = feeRates.low
-        let maybePaymentData = self.buildNonReplaceableTransactionData(selectedAmount: selectedAmount,
-                                                                       address: lightningAccount.address,
-                                                                       exchangeRates: exchangeRates,
-                                                                       feeRate: feeRate)
-        if let paymentData = maybePaymentData {
-          do {
-            try BitcoinAddressValidator().validate(value: paymentData.broadcastData.paymentAddress)
-            log.info("Lightning load address successfully validated after creating transaction data.")
-            return Promise.value(paymentData)
-          } catch {
-            log.error(error, message: "Lightning load address failed validation. Address: \(lightningAccount.address)")
-            return Promise(error: error)
-          }
-        } else {
-          return Promise(error: DBTError.TransactionData.insufficientFunds)
-        }
+        return self.buildNonReplaceableTransactionData(selectedAmount: selectedAmount,
+                                                       address: lightningAccount.address,
+                                                       exchangeRates: exchangeRates,
+                                                       feeRate: feeRate)
     }
   }
 
@@ -84,7 +72,7 @@ extension AppCoordinator: PaymentBuildingDelegate {
     selectedAmount: SelectedBTCAmount,
     address: String,
     exchangeRates: ExchangeRates,
-    feeRate: Double) -> PaymentData? {
+    feeRate: Double) -> Promise<PaymentData> {
     var outgoingTransactionData = OutgoingTransactionData.emptyInstance()
     let sharedPayload = SharedPayloadDTO.emptyInstance()
     let rbfOption = RBFOption.mustNotBeRBF
@@ -97,17 +85,20 @@ extension AppCoordinator: PaymentBuildingDelegate {
       rbfReplaceabilityOption: rbfOption)
 
     outgoingTransactionData = configureOutgoingTransactionData(with: outgoingTransactionData, address: address, inputs: inputs)
-    guard let broadcastData = nonReplaceableBroadcastData(for: selectedAmount, to: address, feeRate: feeRate) else { return nil }
-    return PaymentData(broadcastData: broadcastData, outgoingData: outgoingTransactionData)
+    return nonReplaceableBroadcastData(for: selectedAmount, to: address, feeRate: feeRate)
+      .then { return Promise.value(PaymentData(broadcastData: $0, outgoingData: outgoingTransactionData)) }
   }
 
-  private func nonReplaceableBroadcastData(for selectedAmount: SelectedBTCAmount, to address: String, feeRate: Double) -> CNBCnlibTransactionData? {
+  private func nonReplaceableBroadcastData(for selectedAmount: SelectedBTCAmount,
+                                           to address: String,
+                                           feeRate: Double) -> Promise<CNBCnlibTransactionData> {
+    guard let wmgr = walletManager else { return Promise(error: DBTError.System.missingValue(key: "walletManager")) }
     switch selectedAmount {
     case .specific(let btcAmount):
       let rbfOption = RBFOption.mustNotBeRBF
-      return walletManager?.failableTransactionData(forPayment: btcAmount, to: address, withFeeRate: feeRate, rbfOption: rbfOption)
+      return wmgr.transactionData(forPayment: btcAmount, to: address, withFeeRate: feeRate, rbfOption: rbfOption)
     case .max:
-      return walletManager?.failableTransactionDataSendingMax(to: address, withFeeRate: feeRate)
+      return wmgr.transactionDataSendingMax(to: address, withFeeRate: feeRate)
     }
   }
 

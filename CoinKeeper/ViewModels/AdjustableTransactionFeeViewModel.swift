@@ -8,12 +8,12 @@
 
 import Cnlib
 
-struct AdjustableTransactionFeeViewModel {
+class AdjustableTransactionFeeViewModel {
 
   var selectedFeeType: TransactionFeeType
   let lowFeeTxData: CNBCnlibTransactionData // must not be nil due to determining sufficiency of funds and how we handle errors
-  let mediumFeeTxData: CNBCnlibTransactionData?
-  let highFeeTxData: CNBCnlibTransactionData?
+  var mediumFeeTxData: CNBCnlibTransactionData?
+  var highFeeTxData: CNBCnlibTransactionData?
   let isAdjustable: Bool
 
   init(preferredFeeType: TransactionFeeType,

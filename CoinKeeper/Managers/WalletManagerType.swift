@@ -37,24 +37,30 @@ protocol WalletManagerType: AnyObject {
   func activeTemporarySentTxTotal(forType walletTxType: WalletTransactionType,
                                   in context: NSManagedObjectContext) -> Int
 
+  /// Transaction data for payment to a recipient with a flat, predetermined fee.
+  ///
+  /// - Parameters:
+  ///   - payment: Amount (as BTC NSDecimalNumber) to pay.
+  ///   - address: Destination payment address.
+  ///   - feeRate: Fee rate per bytes, in Satoshis
+  ///   - rbfOption: Option to give to transaction such as Allowed, MustBeRBF, or MustNotBeRBF.
+  /// - Returns: A Promise that contains a CNBCnlibTransactionData object, or rejects if failed.
   func transactionData(forPayment payment: NSDecimalNumber,
                        to address: String,
                        withFeeRate feeRate: Double,
                        rbfOption: RBFOption) -> Promise<CNBCnlibTransactionData>
 
-  /// Returns nil instead of an error in the case of insufficient funds, uses default `rbfOption: .Allowed`
-  func failableTransactionData(forPayment payment: NSDecimalNumber,
-                               to address: String,
-                               withFeeRate feeRate: Double) -> CNBCnlibTransactionData?
-
-  func failableTransactionData(forPayment payment: NSDecimalNumber,
-                               to address: String,
-                               withFeeRate feeRate: Double,
-                               rbfOption: RBFOption) -> CNBCnlibTransactionData?
-
-  func transactionDataSendingMax(fromPrivateKey privateKey: WIFPrivateKey,
-                                 to address: String,
-                                 feeRate: Double) -> Promise<CNBCnlibTransactionData>
+  /// Transaction data for payment to a recipient with a flat, predetermined fee.
+  /// Uses default `rbfOption: .Allowed`
+  ///
+  /// - Parameters:
+  ///   - payment: Amount (as BTC NSDecimalNumber) to pay.
+  ///   - address: Destination payment address.
+  ///   - feeRate: Fee rate per bytes, in Satoshis
+  /// - Returns: A Promise that contains a CNBCnlibTransactionData object, or rejects if failed.
+  func transactionData(forPayment payment: NSDecimalNumber,
+                       to address: String,
+                       withFeeRate feeRate: Double) -> Promise<CNBCnlibTransactionData>
 
   /// Transaction data for payment to a recipient with a flat, predetermined fee.
   ///
@@ -62,26 +68,39 @@ protocol WalletManagerType: AnyObject {
   ///   - payment: Amount (in satoshis) to pay.
   ///   - address: Destination payment address.
   ///   - flatFee: Predetermined fee (NOT a rate) for the transaction
-  /// - Returns: A Promise that either contains a CNBCnlibTransactionData object, or rejects if insufficient funds.
-  func transactionData(
-    forPayment payment: Int,
-    to address: String,
-    withFlatFee flatFee: Int
-    ) -> Promise<CNBCnlibTransactionData>
+  /// - Returns: A Promise that contains a CNBCnlibTransactionData object, or rejects if failed.
+  func transactionData(forPayment payment: Int,
+                       to address: String,
+                       withFlatFee flatFee: Int) -> Promise<CNBCnlibTransactionData>
 
   /// Transaction data for sending max wallet amount, minus fee, to a given address.
+  /// Unconfirmed outputs (external/receive outputs only) are not included.
+  /// Unconfirmed outputs (internal/change outputs only) are included.
   ///
   /// - Parameters:
   ///   - address: Destination payment address.
   ///   - feeRate: Fee rate per bytes, in Satoshis
-  /// - Returns: A Promise that either contains a CNBCnlibTransactionData object, ro rejects if insufficient funds.
+  /// - Returns: A Promise that contains a CNBCnlibTransactionData object, or rejects if failed.
   func transactionDataSendingMax(to address: String, withFeeRate feeRate: Double) -> Promise<CNBCnlibTransactionData>
 
-  /// Returns nil instead of an error in the case of insufficient funds
-  func failableTransactionDataSendingMax(to address: String, withFeeRate feeRate: Double) -> CNBCnlibTransactionData?
+  /// Transaction data for sending max private key amount, minus fee, to a given address. Used when sweeping a private key, i.e. paper wallet.
+  ///
+  /// - Parameters:
+  ///   - privateKey: Source private key that proves the user owns the funds.
+  ///   - address: Destination address. Should be the next receive address for user's wallet.
+  ///   - feeRate: Fee rate per bytes, in Satoshis
+  /// - Returns: A Promise that contains a CNBCnlibTransactionData object, or rejects if failed.
+  func transactionDataSendingMax(fromPrivateKey privateKey: WIFPrivateKey,
+                                 to address: String,
+                                 feeRate: Double) -> Promise<CNBCnlibTransactionData>
 
-  /// Returns nil instead of an error in the case of insufficient funds. Takes all unspent outputs, ignoring dust protection and confirmation count.
-  func failableTransactionDataSendingAll(to address: String, withFeeRate feeRate: Double) -> CNBCnlibTransactionData?
+  /// Transaction data for sending all inputs, even unconfirmed, minus fee, to a given address.
+  /// Used when migrating a wallet from one version to another.
+  ///
+  /// - Parameters:
+  ///   - address: Destination payment address.
+  ///   - feeRate: Fee rate per bytes, in Satoshis
+  /// - Returns: A Promise that contains a CNBCnlibTransactionData object, or rejects if failed.
   func transactionDataSendingAll(to address: String, withFeeRate feeRate: Double) -> Promise<CNBCnlibTransactionData>
 
   func encryptPayload<T>(_ payload: T, addressPubKey: String, keyIsEphemeral: Bool) -> Promise<String> where T: SharedPayloadCodable
