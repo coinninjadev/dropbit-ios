@@ -351,7 +351,7 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
             rates: feeRates,
             wmgr: wmgr,
             btcAmount: btcAmount,
-            address: "")
+            address: CNBCnlibPlaceholderDestination)
             .map { .adjustable($0) }
         case .lightning:
           return Promise { seal in

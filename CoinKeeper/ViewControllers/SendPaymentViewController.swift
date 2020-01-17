@@ -114,7 +114,7 @@ CurrencySwappableAmountEditor {
   }
 
   @IBAction func performSendMax() {
-    let tempAddress = ""
+    let tempAddress = CNBCnlibPlaceholderDestination
     self.delegate.transactionDataSendingMaxFunds(toAddress: tempAddress)
       .done { txData in
         self.viewModel.sendMax(with: txData)

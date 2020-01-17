@@ -427,6 +427,10 @@ FOUNDATION_EXPORT const long CNBCnlibMustBeRBF;
  * Following constants are used for RBFOption.
  */
 FOUNDATION_EXPORT const long CNBCnlibMustNotBeRBF;
+/**
+ * PlaceholderDestination is a constant which can be used to indicate a destination is not yet selected, but tx size needs to be estimated.
+ */
+FOUNDATION_EXPORT NSString* _Nonnull const CNBCnlibPlaceholderDestination;
 
 @interface CNBCnlib : NSObject
 + (CNBCnlibBaseCoin* _Nullable) baseCoinBip49MainNet;
