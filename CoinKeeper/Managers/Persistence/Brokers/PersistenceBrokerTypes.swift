@@ -77,7 +77,7 @@ protocol CheckInBrokerType: AnyObject {
   var cachedGoodFee: Double { get set }
 
   func processCheckIn(response: CheckInResponse) -> Promise<Void>
-
+  func fee(forType type: TransactionFeeType) -> Double
 }
 
 protocol DeviceBrokerType: AnyObject {
@@ -153,7 +153,8 @@ protocol TransactionBrokerType: AnyObject {
     with outgoingTransactionData: OutgoingTransactionData,
     txid: String,
     invitation: CKMInvitation?,
-    in context: NSManagedObjectContext
+    in context: NSManagedObjectContext,
+    incomingAddress: String?
     ) -> CKMTransaction
 
   @discardableResult

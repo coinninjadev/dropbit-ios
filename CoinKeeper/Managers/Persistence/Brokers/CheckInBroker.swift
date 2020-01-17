@@ -36,6 +36,17 @@ class CheckInBroker: CKPersistenceBroker, CheckInBrokerType {
     set { userDefaultsManager.set(newValue, for: .feeGood) }
   }
 
+  func fee(forType type: TransactionFeeType) -> Double {
+    switch type {
+    case .fast:
+      return cachedBestFee
+    case .slow:
+      return cachedBetterFee
+    case .cheap:
+      return cachedGoodFee
+    }
+  }
+
   func processCheckIn(response: CheckInResponse) -> Promise<Void> {
     cachedBTCUSDRate = response.pricing.last
     cachedBlockHeight = response.blockheight

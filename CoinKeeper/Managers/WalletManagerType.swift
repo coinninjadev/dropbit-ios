@@ -52,6 +52,10 @@ protocol WalletManagerType: AnyObject {
                                withFeeRate feeRate: Double,
                                rbfOption: RBFOption) -> CNBCnlibTransactionData?
 
+  func transactionDataSendingMax(fromPrivateKey privateKey: WIFPrivateKey,
+                                 to address: String,
+                                 feeRate: Double) -> Promise<CNBCnlibTransactionData>
+
   /// Transaction data for payment to a recipient with a flat, predetermined fee.
   ///
   /// - Parameters:

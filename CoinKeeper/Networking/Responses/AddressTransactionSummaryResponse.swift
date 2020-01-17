@@ -18,6 +18,7 @@ struct AddressTransactionSummaryResponse: ResponseDecodable {
   let txid: String
   let vin: Int
   let vout: Int
+  let receivedTime: Int
 
   let derivativePathResponse: DerivativePathResponse?
 
@@ -30,11 +31,16 @@ struct AddressTransactionSummaryResponse: ResponseDecodable {
     self.txid = atsResponse.txid
     self.vin = atsResponse.vin
     self.vout = atsResponse.vout
+    self.receivedTime = atsResponse.receivedTime
     self.derivativePathResponse = dpResponse
   }
 }
 
 extension AddressTransactionSummaryResponse {
+
+  var balance: Int {
+    return vout - vin
+  }
 
   static var requiredStringKeys: [KeyPath<AddressTransactionSummaryResponse, String>] {
     return [\.address, \.txid]
@@ -50,16 +56,18 @@ extension AddressTransactionSummaryResponse {
     "txid": "f231aaf68aff1e0957d3c9eb668772d6bb249f07a3176cc3c9c99dbe5e960f83",
     "time": 1520972149,
     "vin": 2058617,
+    "received_time": 0,
     "vout": 0
     }
     """
   }
 
-  init(txid: String, address: String, vin: Int, vout: Int) {
+  init(txid: String, address: String, vin: Int, vout: Int, receivedTime: Int) {
     self.txid = txid
     self.address = address
     self.vin = vin
     self.vout = vout
+    self.receivedTime = receivedTime
     self.derivativePathResponse = nil
   }
 

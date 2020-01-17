@@ -13,6 +13,12 @@ import PromiseKit
 @testable import DropBit
 
 class MockTransactionBroker: CKPersistenceBroker, TransactionBrokerType {
+  func persistTemporaryTransaction(from transactionData: CNBCnlibTransactionData,
+                                   with outgoingTransactionData: OutgoingTransactionData,
+                                   txid: String, invitation: CKMInvitation?, in context: NSManagedObjectContext,
+                                   incomingAddress: String?) -> CKMTransaction {
+    return CKMTransaction(insertInto: context)
+  }
 
   func persistTemporaryTransaction(from response: LNTransactionResponse,
                                    in context: NSManagedObjectContext) -> CKMTransaction {

@@ -47,7 +47,8 @@ class AddressRequestPaymentWorker {
             with: outgoingTransactionData,
             txid: paymentId,
             invitation: pendingInvitation,
-            in: context)
+            in: context,
+            incomingAddress: nil)
         } else {
           // update and match them manually, partially matching code in `persistTemporaryTransaction`
           pendingInvitation.setTxid(to: paymentId)

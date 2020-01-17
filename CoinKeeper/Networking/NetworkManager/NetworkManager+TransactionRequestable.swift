@@ -10,6 +10,7 @@ import PromiseKit
 
 protocol TransactionRequestable: AnyObject {
   func fetchTransactionDetails(for txids: [String]) -> Promise<[TransactionResponse]>
+  func fetchTransactionDetails(for txid: String) -> Promise<TransactionResponse>
 }
 
 extension NetworkManager: TransactionRequestable {
@@ -19,4 +20,7 @@ extension NetworkManager: TransactionRequestable {
     return cnProvider.requestList(TransactionsTarget.query(txids))
   }
 
+  func fetchTransactionDetails(for txid: String) -> Promise<TransactionResponse> {
+    return cnProvider.request(TransactionsTarget.get(txid))
+  }
 }

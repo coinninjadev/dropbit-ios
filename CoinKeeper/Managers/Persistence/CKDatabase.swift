@@ -220,7 +220,8 @@ class CKDatabase: PersistenceDatabaseType {
     with outgoingTransactionData: OutgoingTransactionData,
     txid: String,
     invitation: CKMInvitation?,
-    in context: NSManagedObjectContext
+    in context: NSManagedObjectContext,
+    incomingAddress: String?
     ) -> CKMTransaction {
 
     var outgoingTxDTO = outgoingTransactionData
@@ -262,6 +263,11 @@ class CKDatabase: PersistenceDatabaseType {
 
     // Currently, this function is only called after broadcastTx()
     relevantTransaction.broadcastedAt = Date()
+    if let address = incomingAddress {
+      let counterparty = CKMCounterpartyAddress(address: address, insertInto: context)
+      relevantTransaction.counterpartyAddress = counterparty
+      relevantTransaction.isIncoming = true
+    }
 
     let vouts = CKMVout.findUTXOs(from: transactionData, in: context)
 
