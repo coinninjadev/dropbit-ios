@@ -300,7 +300,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   }
 
   func currencySwappableAmountDataDidChange() { }
-  
+
 }
 
 extension RequestPayViewController: WalletToggleViewDelegate {
