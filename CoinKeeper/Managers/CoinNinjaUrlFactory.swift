@@ -51,6 +51,7 @@ struct CoinNinjaUrlFactory {
     case lightningLoadTooltip
     case legacyWords
     case restrictions
+    case trackReferralStatus(walletID: String)
 
     var domain: String {
       switch self {
@@ -98,7 +99,8 @@ struct CoinNinjaUrlFactory {
         return "https://dropbit.app/"
       case .dropBitMe,
            .dropBitMeReferral,
-           .dropBitMeLearnMore:
+           .dropBitMeLearnMore,
+           .trackReferralStatus:
         #if DEBUG
         return "https://test.dropbit.me/"
         #else
@@ -197,6 +199,8 @@ struct CoinNinjaUrlFactory {
         return "\(tooltipBreadcrumb)legacywords"
       case .quickPayTrackPurchase(let transferID):
         return "track/\(transferID)"
+      case .trackReferralStatus(let walletID):
+        return "status/\(walletID)"
       }
     }
   }
