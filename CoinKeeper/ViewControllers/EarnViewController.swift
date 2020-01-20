@@ -70,7 +70,7 @@ class EarnViewController: BaseViewController, StoryboardInitializable {
 
     let thirdStepView = EmojiDetailView()
     thirdStepView.emojiLabel.text = "⚡️"
-    thirdStepView.descriptionLabel.text = "3. You & your friend will receive $1 in your Lighitng wallet"
+    thirdStepView.descriptionLabel.text = "3. You & your friend will receive $1 in your Lightning wallet"
 
     stepsStackView.addArrangedSubview(firstStepView)
     stepsStackView.addArrangedSubview(secondStepView)
