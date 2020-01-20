@@ -19,8 +19,8 @@ class PrivateKeySweepViewController: BaseViewController, PopoverViewControllerTy
   @IBOutlet var containerView: UIView!
   @IBOutlet var privateKeyLabelBackgroundView: UIView!
   @IBOutlet var privateKeyLabel: UILabel!
-  @IBOutlet var actionButton: UIButton!
-  @IBOutlet var cancelButton: UIButton!
+  @IBOutlet var actionButton: PrimaryActionButton!
+  @IBOutlet var cancelButton: PrimaryActionButton!
   @IBOutlet var breakdownStackView: UIStackView!
   @IBOutlet var containerViewCenterYConstraint: NSLayoutConstraint!
   @IBOutlet var containerViewHeightConstraint: NSLayoutConstraint!
@@ -122,6 +122,9 @@ class PrivateKeySweepViewController: BaseViewController, PopoverViewControllerTy
     containerView.applyCornerRadius(10)
 
     titleLabel.numberOfLines = 0
+
+    actionButton.style = .darkBlue
+    cancelButton.style = .standardClear
 
     privateKeyLabelBackgroundView.backgroundColor = .lightGrayBackground
     privateKeyLabelBackgroundView.applyCornerRadius(10)
