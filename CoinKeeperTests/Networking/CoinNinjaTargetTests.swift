@@ -21,7 +21,7 @@ class CoinNinjaTargetTests: XCTestCase {
     let originalError = MoyaError.underlying(NetworkError.generalWithoutStatusCode, nil)
     let mappedError = target.customNetworkError(for: originalError)
 
-    guard let networkError = mappedError, case .reachabilityFailed = networkError else {
+    guard let networkError = mappedError, case DBTError.Network.reachabilityFailed = networkError else {
       XCTFail("A network error without a status code should be mapped to .reachabilityFailed")
       return
     }
