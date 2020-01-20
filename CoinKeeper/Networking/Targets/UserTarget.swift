@@ -100,17 +100,17 @@ extension UserTarget {
     }
   }
 
-  func customNetworkError(for moyaError: MoyaError) -> DBTError.Network? {
+  func customNetworkError(for moyaError: MoyaError) -> DBTErrorType? {
     guard let statusCode = moyaError.unacceptableStatusCode, let response = moyaError.response else {
       return nil
     }
 
     switch statusCode {
     case 200:
-      return .recordAlreadyExists(response)
+      return DBTError.Network.recordAlreadyExists(response)
     case 401:
       if case .get = self, moyaError.responseDescription.containsAny(messagesToUnverify) {
-        return .shouldUnverify(moyaError, .user)
+        return DBTError.Network.shouldUnverify(moyaError, .user)
       } else {
         return nil
       }
@@ -119,7 +119,7 @@ extension UserTarget {
     case 501:
       switch self {
       case .create, .resendVerification:
-        return .twilioError(response)
+        return DBTError.Network.twilioError(response)
       default:
         return nil
       }

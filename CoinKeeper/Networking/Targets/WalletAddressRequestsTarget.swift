@@ -57,7 +57,7 @@ extension WalletAddressRequestsTarget {
     }
   }
 
-  func customNetworkError(for moyaError: MoyaError) -> DBTError.Network? {
+  func customNetworkError(for moyaError: MoyaError) -> DBTErrorType? {
     // 501: Successfully created address request, but Twilio failed to send SMS
     if let statusCode = moyaError.unacceptableStatusCode,
       let response = moyaError.response,
