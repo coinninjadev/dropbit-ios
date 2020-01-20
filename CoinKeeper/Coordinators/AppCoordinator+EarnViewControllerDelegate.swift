@@ -11,12 +11,11 @@ import UIKit
 
 extension AppCoordinator: EarnViewControllerDelegate {
 
-  func viewControllerDidPressShareButton(_ viewController: UIViewController, referralLink: String) {
-    let fullMessage = "Use my referral link to get DropBit and we can each earn $1 in Bitcoin. \(referralLink)"
-    let shareSheet = UIActivityViewController(activityItems: [fullMessage], applicationActivities: nil)
-    shareSheet.excludedActivityTypes = UIActivity.standardExcludedTypes
-
-    self.navigationController.topViewController()?.present(shareSheet, animated: true, completion: nil)
+  func viewControllerDidPressShareButton(_ viewController: UIViewController) {
+    let context = persistenceManager.viewContext
+    guard let walletID = persistenceManager.brokers.wallet.walletId(in: context) else { return }
+    guard let url = CoinNinjaUrlFactory.buildUrl(for: .trackReferralStatus(walletID: walletID)) else { return }
+    openURL(url, completionHandler: nil)
   }
 
   func viewControllerRestrictionsButtonWasTouched(_ viewController: UIViewController) {
