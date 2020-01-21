@@ -74,7 +74,7 @@ class WalletOverviewPage: UITestPage {
       XCTAssert(cellExists, "detail cell \(index) did not exist after \(wait)s timeout")
       return self
     }
-    snapshot("detail_\(index)")
+    snapshot(description(withPrefix: "Tx_Detail", number: index))
     cell.tap()
     return self.swipeDetailCell(atIndex: index + 1, upTo: upTo)
   }
