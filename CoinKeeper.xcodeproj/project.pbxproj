@@ -56,6 +56,7 @@
 		3B071A5220C2C3ED009C2BF6 /* OutgoingTransactionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B071A5120C2C3ED009C2BF6 /* OutgoingTransactionData.swift */; };
 		3B071A5520C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B071A5320C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataClass.swift */; };
 		3B071A5620C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B071A5420C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataProperties.swift */; };
+		3B0C25F223D77D01001F1B99 /* Cnlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B0C25F123D77D01001F1B99 /* Cnlib.framework */; };
 		3B0C4FDE22A1AC31000FE760 /* VerfiedTwitterUserIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0C4FDD22A1AC31000FE760 /* VerfiedTwitterUserIndicatorView.swift */; };
 		3B0C4FE022A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B0C4FDF22A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib */; };
 		3B0C785623197B0A00D4C216 /* LightningUpgradePageViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B0C785523197B0A00D4C216 /* LightningUpgradePageViewController.storyboard */; };
@@ -220,7 +221,6 @@
 		3B5A88A4228B09260082BBA4 /* ContactCellSecondaryLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A88A3228B09260082BBA4 /* ContactCellSecondaryLabel.swift */; };
 		3B5CD00C20DACD7A003FF5AD /* ServerAddressCoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CD00A20DACD79003FF5AD /* ServerAddressCoreDataTests.swift */; };
 		3B5CD00D20DACD7A003FF5AD /* AddressCoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CD00B20DACD7A003FF5AD /* AddressCoreDataTests.swift */; };
-		3B5CD4EA23D6605E00031E42 /* Cnlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B5CD4E923D6605E00031E42 /* Cnlib.framework */; };
 		3B61B6E220DD282E0021D69E /* SendPaymentViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B61B6E120DD282E0021D69E /* SendPaymentViewControllerDelegate.swift */; };
 		3B61B6E620DD4D360021D69E /* AppCoordinator+TransactionHistoryViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B61B6E520DD4D360021D69E /* AppCoordinator+TransactionHistoryViewControllerDelegate.swift */; };
 		3B62397D205FFDAC003120AA /* WalletManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B62397C205FFDAC003120AA /* WalletManagerTests.swift */; };
@@ -1206,6 +1206,7 @@
 		3B071A5120C2C3ED009C2BF6 /* OutgoingTransactionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingTransactionData.swift; sourceTree = "<group>"; };
 		3B071A5320C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMCounterpartyName+CoreDataClass.swift"; sourceTree = "<group>"; };
 		3B071A5420C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMCounterpartyName+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		3B0C25F123D77D01001F1B99 /* Cnlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Cnlib.framework; sourceTree = "<group>"; };
 		3B0C4FDD22A1AC31000FE760 /* VerfiedTwitterUserIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerfiedTwitterUserIndicatorView.swift; sourceTree = "<group>"; };
 		3B0C4FDF22A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VerfiedTwitterUserIndicatorView.xib; sourceTree = "<group>"; };
 		3B0C785523197B0A00D4C216 /* LightningUpgradePageViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningUpgradePageViewController.storyboard; sourceTree = "<group>"; };
@@ -1348,7 +1349,6 @@
 		3B5A88A3228B09260082BBA4 /* ContactCellSecondaryLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCellSecondaryLabel.swift; sourceTree = "<group>"; };
 		3B5CD00A20DACD79003FF5AD /* ServerAddressCoreDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerAddressCoreDataTests.swift; sourceTree = "<group>"; };
 		3B5CD00B20DACD7A003FF5AD /* AddressCoreDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressCoreDataTests.swift; sourceTree = "<group>"; };
-		3B5CD4E923D6605E00031E42 /* Cnlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cnlib.framework; path = ../../../go/src/git.coinninja.net/engineering/cnlib/lib/Cnlib.framework; sourceTree = "<group>"; };
 		3B61B6E120DD282E0021D69E /* SendPaymentViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentViewControllerDelegate.swift; sourceTree = "<group>"; };
 		3B61B6E520DD4D360021D69E /* AppCoordinator+TransactionHistoryViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+TransactionHistoryViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		3B62397C205FFDAC003120AA /* WalletManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManagerTests.swift; sourceTree = "<group>"; };
@@ -2270,7 +2270,7 @@
 				D3050CCBBA9D3A897790120B /* Pods_DropBit.framework in Frameworks */,
 				3BC289B623C8C6F6005B9933 /* PromiseKit in Frameworks */,
 				3B227D7923CCD37D00D86BE8 /* FAPanels in Frameworks */,
-				3B5CD4EA23D6605E00031E42 /* Cnlib.framework in Frameworks */,
+				3B0C25F223D77D01001F1B99 /* Cnlib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2902,7 +2902,7 @@
 		3BAB4BB723A7C71000AADBF7 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				3B5CD4E923D6605E00031E42 /* Cnlib.framework */,
+				3B0C25F123D77D01001F1B99 /* Cnlib.framework */,
 			);
 			path = lib;
 			sourceTree = "<group>";
