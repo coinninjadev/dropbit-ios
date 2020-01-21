@@ -52,9 +52,4 @@ extension XCUIElement {
     }
   }
 
-  ///For swiping full screen collection view cells or pages
-  func fullLeftSwipe() {
-    rightOfCenter.press(forDuration: pressDuration, thenDragTo: leftOfCenter)
-  }
-
 }

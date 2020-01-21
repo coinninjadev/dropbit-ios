@@ -11,12 +11,13 @@ import XCTest
 class DropBitSnapshot: UITestCase {
 
   override func setUp() {
+    super.setUp()
     app.appendTestArguments([.resetPersistence, .skipTwitterAuthentication, .skipGlobalMessageDisplay, .loadMockTransactionHistory])
     setupSnapshot(app)
     app.launch()
   }
 
-  func testProofOfConcept() {
+  func testTransactionHistoryDetails() {
     StartPage().tapNewWallet()
     PinCreationPage().enterSimplePin(digit: 1, times: 6)
     DeviceVerificationPage().tapSkip()
@@ -24,7 +25,7 @@ class DropBitSnapshot: UITestCase {
     snapshot("history")
     WalletOverviewPage() //page will be hidden by detail cell
       .tapFirstSummaryCell()
-      .swipeDetailCells(count: 5)
+      .swipeDetailCells(count: 15)
   }
   
 }

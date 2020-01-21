@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import PromiseKit
+import XCTest
 
 class WalletOverviewPage: UITestPage {
   
@@ -63,25 +63,25 @@ class WalletOverviewPage: UITestPage {
     return self
   }
 
-  private func swipeDetailCell(atIndex index: Int) -> Promise<Void> {
-    let cell = app.cell(withId: .transactionHistory(.detailCell(index)))
-    cell.assertExistence(afterWait: .custom(0.5), elementDesc: "firstDetailCell") {
-      cell.fullLeftSwipe()
-      completion()
+  private func swipeDetailCell(atIndex index: Int, upTo: Int) -> Self {
+    guard index <= upTo else {
+      return self
     }
+    let cell = app.cell(withId: .transactionHistory(.detailCell(index)))
+    let wait: TimeInterval = 1.0
+    let cellExists = cell.waitForExistence(timeout: wait)
+    guard cellExists else {
+      XCTAssert(cellExists, "detail cell \(index) did not exist after \(wait)s timeout")
+      return self
+    }
+    snapshot("detail_\(index)")
+    cell.tap()
+    return self.swipeDetailCell(atIndex: index + 1, upTo: upTo)
   }
 
   @discardableResult
   func swipeDetailCells(count: Int) -> Self {
-    snapshot("detail_0")
-    let counts
-    let promises =
-    for index in 0..<count {
-      self.swipeDetailCell(atIndex: index) {
-        snapshot("detail_\(index)")
-      }
-    }
-    return self
+    return self.swipeDetailCell(atIndex: 0, upTo: count - 1)
   }
 
 }

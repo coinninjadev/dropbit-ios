@@ -14,6 +14,7 @@ protocol TransactionHistoryDetailsViewControllerDelegate: TransactionShareable &
 URLOpener & DeviceCountryCodeProvider & CurrencyValueDataSourceType & CopyToClipboardMessageDisplayable {
 
   var currencyController: CurrencyController { get }
+  var uiTestIsInProgress: Bool { get }
   func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController)
   func viewControllerShouldSeeTransactionDetails(for viewModel: TransactionDetailPopoverDisplayable)
   func viewController(_ viewController: TransactionHistoryDetailsViewController,
