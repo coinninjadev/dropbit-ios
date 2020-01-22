@@ -123,15 +123,7 @@ CurrencySwappableAmountEditor {
     }
     .catch { error in
       let dbtError = DBTError.cast(error)
-      let action = AlertActionConfiguration.init(title: "OK", style: .default, action: nil)
-      let alertViewModel = AlertControllerViewModel(
-        title: dbtError.displayTitle,
-        description: dbtError.displayMessage,
-        image: nil,
-        style: .alert,
-        actions: [action]
-      )
-      self.delegate.viewControllerDidRequestAlert(self, viewModel: alertViewModel)
+      self.delegate.viewControllerDidRequestAlert(self, error: dbtError)
     }
   }
 
@@ -447,8 +439,7 @@ extension SendPaymentViewController {
   private func handleError(error: Error) {
     let dbtError = DBTError.cast(error)
     self.alertManager?.hideActivityHUD(withDelay: nil) {
-      let viewModel = AlertControllerViewModel(title: "", description: dbtError.displayMessage)
-      self.delegate.viewControllerDidRequestAlert(self, viewModel: viewModel)
+      self.delegate.viewControllerDidRequestAlert(self, error: dbtError)
     }
   }
 

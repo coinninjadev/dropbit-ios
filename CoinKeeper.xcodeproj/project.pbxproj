@@ -1251,6 +1251,7 @@
 		B5FAD64A20A4D962008EB727 /* AuthPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FAD64920A4D962008EB727 /* AuthPlugin.swift */; };
 		B5FAD64C20A4DC1D008EB727 /* PublicKeyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FAD64B20A4DC1D008EB727 /* PublicKeyDataSource.swift */; };
 		B5FBE42020DD76550029D273 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FBE41F20DD76550029D273 /* SettingsViewModel.swift */; };
+		B5FC8A2423D8B97E0006D8D8 /* AlertDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A2323D8B97E0006D8D8 /* AlertDelegate.swift */; };
 		B5FDA5C622120747001682AA /* GlobalPhoneNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FDA5C522120747001682AA /* GlobalPhoneNumber.swift */; };
 		B5FE9B67219DD96200801D3C /* MerchantPaymentRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FE9B66219DD96200801D3C /* MerchantPaymentRequestResponse.swift */; };
 		B5FEBE9220879C4200AA9F6E /* CKMInvitation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FEBE9020879C4200AA9F6E /* CKMInvitation+CoreDataClass.swift */; };
@@ -2424,6 +2425,7 @@
 		B5FAD64920A4D962008EB727 /* AuthPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthPlugin.swift; sourceTree = "<group>"; };
 		B5FAD64B20A4DC1D008EB727 /* PublicKeyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyDataSource.swift; sourceTree = "<group>"; };
 		B5FBE41F20DD76550029D273 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		B5FC8A2323D8B97E0006D8D8 /* AlertDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertDelegate.swift; sourceTree = "<group>"; };
 		B5FDA5C522120747001682AA /* GlobalPhoneNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalPhoneNumber.swift; sourceTree = "<group>"; };
 		B5FE9B66219DD96200801D3C /* MerchantPaymentRequestResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantPaymentRequestResponse.swift; sourceTree = "<group>"; };
 		B5FEBE9020879C4200AA9F6E /* CKMInvitation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMInvitation+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -3654,6 +3656,7 @@
 			children = (
 				B5C9472B210E08C3002CBAE4 /* AddressRequestUpdateDisplayable.swift */,
 				B566ED7B219B3840001A65F5 /* AccessibleViewSettable.swift */,
+				B5FC8A2323D8B97E0006D8D8 /* AlertDelegate.swift */,
 				3BF5807D20E2ADC500DD7F95 /* Applicable.swift */,
 				B5697270208A428A00835F01 /* BalanceDisplayable.swift */,
 				B59729B4209B6A2B0012AD14 /* BalanceUpdateable.swift */,
@@ -5455,6 +5458,7 @@
 				B59E2C9A22E8CF4700A75AFE /* LNCreatePaymentRequestResponse.swift in Sources */,
 				B575B61822E9F84800CECFB7 /* NetworkManager+LightningRequestable.swift in Sources */,
 				B5EDFB35231ED12A00B8E739 /* TransactionHistorySummaryHeader.swift in Sources */,
+				B5FC8A2423D8B97E0006D8D8 /* AlertDelegate.swift in Sources */,
 				3B69FBEA21B83ED200C561E2 /* OutgoingInvitationDTO.swift in Sources */,
 				B5B0DC7B221349C70010AB2A /* CountryCodePickerDataSource.swift in Sources */,
 				B5B37B27206AFE22001816F6 /* CurrencyCode.swift in Sources */,

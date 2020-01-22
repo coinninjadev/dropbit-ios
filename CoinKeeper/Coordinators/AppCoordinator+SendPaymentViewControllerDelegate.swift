@@ -33,7 +33,17 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
       alert = alertManager.alert(from: viewModel)
     }
 
-    navigationController.topViewController()?.present(alert, animated: true, completion: nil)
+    viewController.present(alert, animated: true, completion: nil)
+  }
+
+  func viewControllerDidRequestAlert(_ viewController: UIViewController, error: DBTErrorType) {
+    let alert = alertManager.defaultAlert(withError: error)
+    viewController.present(alert, animated: true, completion: nil)
+  }
+
+  func viewControllerDidRequestAlert(_ viewController: UIViewController, title: String?, message: String) {
+    let alert = alertManager.defaultAlert(withTitle: title, description: message)
+    viewController.present(alert, animated: true, completion: nil)
   }
 
   func sendPaymentViewControllerDidLoad(_ viewController: UIViewController) {

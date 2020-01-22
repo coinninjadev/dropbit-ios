@@ -8,7 +8,8 @@
 
 import UIKit
 
-protocol DrawerViewControllerDelegate: CurrencyValueDataSourceType & BadgeUpdateDelegate & FeatureConfigDataSource {
+protocol DrawerViewControllerDelegate: CurrencyValueDataSourceType & BadgeUpdateDelegate &
+FeatureConfigDataSource & UITestConfigurable & AlertDelegate {
   func backupWordsWasTouched()
   func settingsButtonWasTouched()
   func earnButtonWasTouched()
@@ -142,6 +143,14 @@ class DrawerViewController: BaseViewController, StoryboardInitializable, Feature
       delegate.getBitcoinButtonWasTouched()
     case .earn:
       delegate.earnButtonWasTouched()
+    }
+  }
+
+  @objc func backgroundViewWasTouched() {
+    if delegate.uiTestIsInProgress {
+    } else {
+      let info = VersionInfo()
+      delegate.viewControllerDidRequestAlert(self, title: "Build Info", message: info.debugDescription)
     }
   }
 }
