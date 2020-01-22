@@ -10,8 +10,8 @@ import XCTest
 
 class RestoreWalletPage: UITestPage {
 
-  init() {
-    super.init(page: .restoreWallet(.page))
+  init(ifExists: AssertionWaitCompletion = nil) {
+    super.init(page: .restoreWallet(.page), assertionWait: .default, ifExists: ifExists)
   }
 
   @discardableResult

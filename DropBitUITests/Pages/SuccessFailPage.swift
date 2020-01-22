@@ -10,8 +10,8 @@ import XCTest
 
 class SuccessFailPage: UITestPage {
 
-  init() {
-    super.init(page: .successFail(.page))
+  init(ifExists: AssertionWaitCompletion = nil) {
+    super.init(page: .successFail(.page), assertionWait: .default, ifExists: ifExists)
   }
 
   override var rootElement: XCUIElement {

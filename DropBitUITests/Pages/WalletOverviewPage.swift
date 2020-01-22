@@ -11,8 +11,8 @@ import XCTest
 
 class WalletOverviewPage: UITestPage {
   
-  init() {
-    super.init(page: .walletOverview(.page))
+  init(ifExists: AssertionWaitCompletion = nil) {
+    super.init(page: .walletOverview(.page), assertionWait: .default, ifExists: ifExists)
   }
   
   @discardableResult

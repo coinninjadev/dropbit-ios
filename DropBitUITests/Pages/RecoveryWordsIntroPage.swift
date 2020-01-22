@@ -10,8 +10,8 @@ import XCTest
 
 class RecoveryWordsIntroPage: UITestPage {
 
-  init() {
-    super.init(page: .recoveryWordsIntro(.page))
+  init(ifExists: AssertionWaitCompletion = nil) {
+    super.init(page: .recoveryWordsIntro(.page), assertionWait: .default, ifExists: ifExists)
   }
 
   @discardableResult

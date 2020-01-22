@@ -10,8 +10,8 @@ import XCTest
 
 class SendPaymentPage: UITestPage {
 
-  init() {
-    super.init(page: .sendPayment(.page))
+  init(ifExists: AssertionWaitCompletion = nil) {
+    super.init(page: .sendPayment(.page), assertionWait: .default, ifExists: ifExists)
   }
 
   @discardableResult

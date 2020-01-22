@@ -18,9 +18,11 @@ class UITestPage {
   let app = XCUIApplication()
   let pageElement: AccessiblePageElement
 
-  init(page: AccessiblePageElement, assertionWait: AssertionWait = .default) {
+  init(page: AccessiblePageElement,
+       assertionWait: AssertionWait = .default,
+       ifExists: AssertionWaitCompletion = nil) {
     self.pageElement = page
-    rootElement.assertExistence(afterWait: assertionWait, elementDesc: String(describing: self))
+    rootElement.assertExistence(afterWait: assertionWait, elementDesc: String(describing: self), ifExists: ifExists)
   }
 
   /**
