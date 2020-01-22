@@ -34,6 +34,7 @@ class DrawerViewController: BaseViewController, StoryboardInitializable, Feature
   // MARK: outlets
   @IBOutlet var drawerTableView: UITableView!
   @IBOutlet var versionLabel: UILabel!
+  @IBOutlet var bottomTapView: UIView!
 
   static func newInstance(delegate: DrawerViewControllerDelegate) -> DrawerViewController {
     let vc = DrawerViewController.makeFromStoryboard()
@@ -64,7 +65,7 @@ class DrawerViewController: BaseViewController, StoryboardInitializable, Feature
 
     #if DEBUG
     let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(backgroundViewWasTouched))
-    view.addGestureRecognizer(gestureRecognizer)
+    bottomTapView.addGestureRecognizer(gestureRecognizer)
     #endif
   }
 
