@@ -70,6 +70,7 @@ enum AccessiblePageElement {
   case sendPayment(SendPaymentElement)
   case lightningUpgradeStart(LightningUpgradeStartElement)
   case dropBitMe(DropBitMeElement)
+  case drawer(DrawerElement)
 
   var identifier: String {
     switch self {
@@ -93,6 +94,7 @@ enum AccessiblePageElement {
     case .transactionHistory(let element):        return element.fullIdentifier
     case .lightningUpgradeStart(let element):     return element.fullIdentifier
     case .dropBitMe(let element):                 return element.fullIdentifier
+    case .drawer(let element):                    return element.fullIdentifier
     }
   }
 
@@ -219,4 +221,16 @@ enum LightningUpgradeStartElement: String, AccessibleElement {
 enum DropBitMeElement: String, AccessibleElement {
   case page
   case close
+}
+
+enum DrawerElement: String, AccessibleElement {
+  case page
+  case backupWords
+  case getBitcoin
+  case earn
+  case settings
+  case verify
+  case spend
+  case support
+  case versionInfo
 }
