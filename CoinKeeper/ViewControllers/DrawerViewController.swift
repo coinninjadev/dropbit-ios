@@ -42,6 +42,13 @@ class DrawerViewController: BaseViewController, StoryboardInitializable, Feature
     return vc
   }
 
+  override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
+    return [
+      (self.view, .drawer(.page)),
+      (self.bottomTapView, .drawer(.versionInfo))
+    ]
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
