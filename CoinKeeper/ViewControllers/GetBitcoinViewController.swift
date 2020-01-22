@@ -37,6 +37,12 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
     return vc
   }
 
+  override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
+    return [
+      (self.view, .getBitcoin(.page))
+    ]
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 

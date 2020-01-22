@@ -61,4 +61,10 @@ class UITestPage {
     return formatter
   }()
 
+  @discardableResult
+  func tapBack() -> Self {
+    app.navigationBars.buttons.element(boundBy: 0).tap()
+    return self
+  }
+
 }

@@ -17,15 +17,40 @@ class DropBitSnapshot: UITestCase {
     app.launch()
   }
 
-  func testTransactionHistoryDetails() {
+  func testSnapshot() {
     StartPage().tapNewWallet()
     PinCreationPage().enterSimplePin(digit: 1, times: 6)
     DeviceVerificationPage().tapSkip()
     PushInfoPage()?.dismiss()
-    snapshot("history")
+
+    WalletOverviewPage(ifExists: { snapshot("a_History") }).tapMenu()
+    DrawerPage(ifExists: { snapshot("b1_Menu") }).tapGetBitcoin()
+    GetBitcoinPage(ifExists: { snapshot("b2_Get_Bitcoin") }).tapBack()
+
+    WalletOverviewPage().tapMenu()
+    DrawerPage().tapEarn()
+    EarnPage(ifExists: { snapshot("b3_Earn") }).tapClose()
+
+    WalletOverviewPage().tapMenu()
+    DrawerPage().tapSettings()
+    SettingsPage(ifExists: { snapshot("b4_Settings") }).tapClose()
+
+    WalletOverviewPage().tapMenu()
+    DrawerPage().tapVerificationStatus()
+    VerificationStatusPage(ifExists: { snapshot("b5_Verification_Status") }).tapClose()
+
+    WalletOverviewPage().tapMenu()
+    DrawerPage().tapSpend()
+    SpendPage(ifExists: { snapshot("b6_Spend") }).tapBack()
+
+    WalletOverviewPage().tapMenu()
+    DrawerPage().tapSupport()
+    SupportPage(ifExists: { snapshot("b7_Support") }).tapClose()
+
+
     WalletOverviewPage() //page will be hidden by detail cell
       .tapFirstSummaryCell()
-      .swipeDetailCells(count: 15)
+      .swipeDetailCells(count: 24)
   }
   
 }

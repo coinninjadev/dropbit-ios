@@ -1255,6 +1255,24 @@
 		B5FC8A2623D8CECF0006D8D8 /* DrawerPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A2523D8CECF0006D8D8 /* DrawerPage.swift */; };
 		B5FC8A2723D8CED60006D8D8 /* DrawerPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A2523D8CECF0006D8D8 /* DrawerPage.swift */; };
 		B5FC8A2823D8CED70006D8D8 /* DrawerPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A2523D8CECF0006D8D8 /* DrawerPage.swift */; };
+		B5FC8A2C23D8E4530006D8D8 /* GetBitcoinPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A2923D8E4530006D8D8 /* GetBitcoinPage.swift */; };
+		B5FC8A2D23D8E9420006D8D8 /* GetBitcoinPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A2923D8E4530006D8D8 /* GetBitcoinPage.swift */; };
+		B5FC8A2E23D8E9420006D8D8 /* GetBitcoinPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A2923D8E4530006D8D8 /* GetBitcoinPage.swift */; };
+		B5FC8A3023D8F1A20006D8D8 /* EarnPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A2F23D8F1A20006D8D8 /* EarnPage.swift */; };
+		B5FC8A3123D8F1A20006D8D8 /* EarnPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A2F23D8F1A20006D8D8 /* EarnPage.swift */; };
+		B5FC8A3223D8F1A20006D8D8 /* EarnPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A2F23D8F1A20006D8D8 /* EarnPage.swift */; };
+		B5FC8A3423D8F1C90006D8D8 /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A3323D8F1C90006D8D8 /* SettingsPage.swift */; };
+		B5FC8A3523D8F1C90006D8D8 /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A3323D8F1C90006D8D8 /* SettingsPage.swift */; };
+		B5FC8A3623D8F1C90006D8D8 /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A3323D8F1C90006D8D8 /* SettingsPage.swift */; };
+		B5FC8A3C23D8F21E0006D8D8 /* SpendPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A3B23D8F21E0006D8D8 /* SpendPage.swift */; };
+		B5FC8A3D23D8F21E0006D8D8 /* SpendPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A3B23D8F21E0006D8D8 /* SpendPage.swift */; };
+		B5FC8A3E23D8F21E0006D8D8 /* SpendPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A3B23D8F21E0006D8D8 /* SpendPage.swift */; };
+		B5FC8A4023D8F2940006D8D8 /* SupportPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A3F23D8F2940006D8D8 /* SupportPage.swift */; };
+		B5FC8A4123D8F2940006D8D8 /* SupportPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A3F23D8F2940006D8D8 /* SupportPage.swift */; };
+		B5FC8A4223D8F2940006D8D8 /* SupportPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A3F23D8F2940006D8D8 /* SupportPage.swift */; };
+		B5FC8A4423D8F7CE0006D8D8 /* VerificationStatusPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A4323D8F7CE0006D8D8 /* VerificationStatusPage.swift */; };
+		B5FC8A4523D8F7CE0006D8D8 /* VerificationStatusPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A4323D8F7CE0006D8D8 /* VerificationStatusPage.swift */; };
+		B5FC8A4623D8F7CE0006D8D8 /* VerificationStatusPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A4323D8F7CE0006D8D8 /* VerificationStatusPage.swift */; };
 		B5FDA5C622120747001682AA /* GlobalPhoneNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FDA5C522120747001682AA /* GlobalPhoneNumber.swift */; };
 		B5FE9B67219DD96200801D3C /* MerchantPaymentRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FE9B66219DD96200801D3C /* MerchantPaymentRequestResponse.swift */; };
 		B5FEBE9220879C4200AA9F6E /* CKMInvitation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FEBE9020879C4200AA9F6E /* CKMInvitation+CoreDataClass.swift */; };
@@ -2430,6 +2448,12 @@
 		B5FBE41F20DD76550029D273 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		B5FC8A2323D8B97E0006D8D8 /* AlertDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertDelegate.swift; sourceTree = "<group>"; };
 		B5FC8A2523D8CECF0006D8D8 /* DrawerPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerPage.swift; sourceTree = "<group>"; };
+		B5FC8A2923D8E4530006D8D8 /* GetBitcoinPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetBitcoinPage.swift; sourceTree = "<group>"; };
+		B5FC8A2F23D8F1A20006D8D8 /* EarnPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnPage.swift; sourceTree = "<group>"; };
+		B5FC8A3323D8F1C90006D8D8 /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
+		B5FC8A3B23D8F21E0006D8D8 /* SpendPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendPage.swift; sourceTree = "<group>"; };
+		B5FC8A3F23D8F2940006D8D8 /* SupportPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportPage.swift; sourceTree = "<group>"; };
+		B5FC8A4323D8F7CE0006D8D8 /* VerificationStatusPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerificationStatusPage.swift; sourceTree = "<group>"; };
 		B5FDA5C522120747001682AA /* GlobalPhoneNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalPhoneNumber.swift; sourceTree = "<group>"; };
 		B5FE9B66219DD96200801D3C /* MerchantPaymentRequestResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantPaymentRequestResponse.swift; sourceTree = "<group>"; };
 		B5FEBE9020879C4200AA9F6E /* CKMInvitation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMInvitation+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -4126,6 +4150,8 @@
 				B51F1ED8219A286900C54B73 /* DeviceVerificationPage.swift */,
 				B5FC8A2523D8CECF0006D8D8 /* DrawerPage.swift */,
 				3B34B97F232DB06A002D8A92 /* DropBitMePage.swift */,
+				B5FC8A2923D8E4530006D8D8 /* GetBitcoinPage.swift */,
+				B5FC8A2F23D8F1A20006D8D8 /* EarnPage.swift */,
 				3BE1C52C232D2BC100583A83 /* LightningUpgradeStartPage.swift */,
 				3B1BE85F21B57D0A00CCFE29 /* MemoEntryPage.swift */,
 				B51F1ED02199F7CB00C54B73 /* PinCreationPage.swift */,
@@ -4135,9 +4161,13 @@
 				B51F1EDC219A29A700C54B73 /* RequestPayPage.swift */,
 				B58AFF322194DC24001BE563 /* RestoreWalletPage.swift */,
 				3B1BE86321B5819500CCFE29 /* SendPaymentPage.swift */,
+				B5FC8A3323D8F1C90006D8D8 /* SettingsPage.swift */,
+				B5FC8A3B23D8F21E0006D8D8 /* SpendPage.swift */,
 				B51F1ECE2199F62100C54B73 /* StartPage.swift */,
 				B58AFF352194E366001BE563 /* SuccessFailPage.swift */,
+				B5FC8A3F23D8F2940006D8D8 /* SupportPage.swift */,
 				3B3779F5219CA79100F79683 /* SwiftMessagesBannerPage.swift */,
+				B5FC8A4323D8F7CE0006D8D8 /* VerificationStatusPage.swift */,
 				3B3779FD219EE7D900F79683 /* VerifyRecoveryWordsCellPage.swift */,
 				A27DFDF122DCDCD200C2824C /* WalletOverviewPage.swift */,
 			);
@@ -5882,16 +5912,22 @@
 				3B4B929522F354850018285C /* StartPage.swift in Sources */,
 				3B4B928F22F354850018285C /* MemoEntryPage.swift in Sources */,
 				3B4B929222F354850018285C /* PushInfoPage.swift in Sources */,
+				B5FC8A3123D8F1A20006D8D8 /* EarnPage.swift in Sources */,
 				3B4B929722F354850018285C /* RecoveryWordsIntroPage.swift in Sources */,
 				3B4B929A22F354850018285C /* BackupRecoveryWordsCellPage.swift in Sources */,
+				B5FC8A3D23D8F21E0006D8D8 /* SpendPage.swift in Sources */,
 				3B4B928722F354570018285C /* XCUIApplication+UITestArgument.swift in Sources */,
 				3B4B929B22F354850018285C /* VerifyRecoveryWordsCellPage.swift in Sources */,
+				B5FC8A3523D8F1C90006D8D8 /* SettingsPage.swift in Sources */,
+				B5FC8A4123D8F2940006D8D8 /* SupportPage.swift in Sources */,
 				3B4B929822F354850018285C /* SwiftMessagesBannerPage.swift in Sources */,
 				3B7A5D7D22F35A62003FFF5C /* GeneratedTestWords.generated.swift in Sources */,
 				3B4B929122F354850018285C /* PinCreationPage.swift in Sources */,
 				3B4B928622F353D20018285C /* UITestCase.swift in Sources */,
 				3B4B928B22F354680018285C /* UITestDefaultsKey.swift in Sources */,
 				3B4B929422F354850018285C /* RestoreWalletPage.swift in Sources */,
+				B5FC8A2D23D8E9420006D8D8 /* GetBitcoinPage.swift in Sources */,
+				B5FC8A4523D8F7CE0006D8D8 /* VerificationStatusPage.swift in Sources */,
 				3B4B929922F354850018285C /* PinEntryPage.swift in Sources */,
 				3B7A5D7C22F35A42003FFF5C /* Int+Times.swift in Sources */,
 				3B4B928922F3545D0018285C /* AccessibleElement.swift in Sources */,
@@ -5975,14 +6011,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				B51FB0E521751D15005CBAD6 /* UIFont+FontStrings.swift in Sources */,
+				B5FC8A3C23D8F21E0006D8D8 /* SpendPage.swift in Sources */,
 				3BE1C52D232D2BC100583A83 /* LightningUpgradeStartPage.swift in Sources */,
 				3B3779F2219C9DE100F79683 /* NewWalletUITests.swift in Sources */,
 				3B3779F8219DB6C800F79683 /* PinEntryPage.swift in Sources */,
 				B5D1B2CC219337C6006B2BC7 /* ImportWalletUITests.swift in Sources */,
+				B5FC8A4023D8F2940006D8D8 /* SupportPage.swift in Sources */,
 				B58AFF392194E828001BE563 /* AccessibleElement.swift in Sources */,
 				B58AFF362194E366001BE563 /* SuccessFailPage.swift in Sources */,
 				B51F1ED7219A17AA00C54B73 /* PushInfoPage.swift in Sources */,
 				3B3779FE219EE7D900F79683 /* VerifyRecoveryWordsCellPage.swift in Sources */,
+				B5FC8A4423D8F7CE0006D8D8 /* VerificationStatusPage.swift in Sources */,
 				B501022321F2333C00D42A71 /* UIColor+Init.swift in Sources */,
 				B51FB0E621751F75005CBAD6 /* CNNavigationController.swift in Sources */,
 				3B3779F6219CA79100F79683 /* SwiftMessagesBannerPage.swift in Sources */,
@@ -6000,8 +6039,10 @@
 				3B3779F4219C9F4800F79683 /* RecoveryWordsIntroPage.swift in Sources */,
 				B5D1B2D7219384FB006B2BC7 /* XCUIApplication+UITestArgument.swift in Sources */,
 				B58AFF2F21948891001BE563 /* UITestDefaultsKey.swift in Sources */,
+				B5FC8A3423D8F1C90006D8D8 /* SettingsPage.swift in Sources */,
 				3B1BE86421B5819500CCFE29 /* SendPaymentPage.swift in Sources */,
 				304BAED021FA131000065D6D /* TutorialUITests.swift in Sources */,
+				B5FC8A3023D8F1A20006D8D8 /* EarnPage.swift in Sources */,
 				B58AFF312194DAF2001BE563 /* UITestPage.swift in Sources */,
 				3B3779FC219E20AD00F79683 /* BackupRecoveryWordsCellPage.swift in Sources */,
 				A27DFDF222DCDCD200C2824C /* WalletOverviewPage.swift in Sources */,
@@ -6016,6 +6057,7 @@
 				B51F1ECF2199F62100C54B73 /* StartPage.swift in Sources */,
 				B50BB1AF2175126B0038B5DD /* XCUIApplication+WaitAndAssert.swift in Sources */,
 				B5D1B2D121934AD4006B2BC7 /* UITestArgument.swift in Sources */,
+				B5FC8A2E23D8E9420006D8D8 /* GetBitcoinPage.swift in Sources */,
 				3B00C26C220E07C0001FC46B /* GeneratedTestWords.generated.swift in Sources */,
 				B51FB0E121751BF6005CBAD6 /* PrimaryActionButton.swift in Sources */,
 				B51FB0E421751CD8005CBAD6 /* FontStrings.swift in Sources */,
@@ -6028,6 +6070,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B57E6FEF234FB1F50069991A /* XCUIElement+Swipe.swift in Sources */,
+				B5FC8A3E23D8F21E0006D8D8 /* SpendPage.swift in Sources */,
 				B57E6FE9234F79C10069991A /* AccessibleElement.swift in Sources */,
 				B57E6FE3234F78D20069991A /* VerifyRecoveryWordsCellPage.swift in Sources */,
 				B57E6FE7234F78D20069991A /* LightningUpgradeStartPage.swift in Sources */,
@@ -6035,10 +6078,13 @@
 				B57E6FD6234F78C00069991A /* UITestPage.swift in Sources */,
 				B56B6810234E3CF80073BA0D /* UITestArgument.swift in Sources */,
 				B57E6FDB234F78D20069991A /* RequestPayPage.swift in Sources */,
+				B5FC8A4223D8F2940006D8D8 /* SupportPage.swift in Sources */,
 				B57E6FD8234F78C90069991A /* DeviceVerificationPage.swift in Sources */,
 				B57E6FE1234F78D20069991A /* PinEntryPage.swift in Sources */,
 				B57E6FD7234F78C50069991A /* MemoEntryPage.swift in Sources */,
 				B56B6811234E3D190073BA0D /* Typealiases.swift in Sources */,
+				B5FC8A3223D8F1A20006D8D8 /* EarnPage.swift in Sources */,
+				B5FC8A2C23D8E4530006D8D8 /* GetBitcoinPage.swift in Sources */,
 				B57E6FEA234F79CA0069991A /* XCUIApplication+WaitAndAssert.swift in Sources */,
 				B56B6804234E25990073BA0D /* DropBitSnapshot.swift in Sources */,
 				B57E6FE0234F78D20069991A /* SwiftMessagesBannerPage.swift in Sources */,
@@ -6052,6 +6098,8 @@
 				B57E6FDC234F78D20069991A /* RestoreWalletPage.swift in Sources */,
 				B57E6FE4234F78D20069991A /* SendPaymentPage.swift in Sources */,
 				B56B680D234E272C0073BA0D /* SnapshotHelper.swift in Sources */,
+				B5FC8A4623D8F7CE0006D8D8 /* VerificationStatusPage.swift in Sources */,
+				B5FC8A3623D8F1C90006D8D8 /* SettingsPage.swift in Sources */,
 				B56B680E234E28750073BA0D /* UITestCase.swift in Sources */,
 				B57E6FE2234F78D20069991A /* BackupRecoveryWordsCellPage.swift in Sources */,
 				B57E6FDF234F78D20069991A /* RecoveryWordsIntroPage.swift in Sources */,

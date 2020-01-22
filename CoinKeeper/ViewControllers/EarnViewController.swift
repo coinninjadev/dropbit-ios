@@ -38,6 +38,13 @@ class EarnViewController: BaseViewController, StoryboardInitializable {
     super.init(coder: coder)
   }
 
+  override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
+    return [
+      (self.view, .earn(.page)),
+      (self.closeButton, .earn(.closeButton))
+    ]
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
