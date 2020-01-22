@@ -17,6 +17,7 @@ FeatureConfigDataSource & UITestConfigurable & AlertDelegate {
   func spendButtonWasTouched()
   func supportButtonWasTouched()
   func getBitcoinButtonWasTouched()
+  func closeDrawer()
   var badgeManager: BadgeManagerType { get }
 }
 
@@ -60,6 +61,11 @@ class DrawerViewController: BaseViewController, StoryboardInitializable, Feature
     delegate.viewControllerDidRequestBadgeUpdate(self)
     self.subscribeToBadgeNotifications(with: delegate.badgeManager)
     self.subscribeToFeatureConfigurationUpdates()
+
+    #if DEBUG
+    let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(backgroundViewWasTouched))
+    view.addGestureRecognizer(gestureRecognizer)
+    #endif
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -148,6 +154,7 @@ class DrawerViewController: BaseViewController, StoryboardInitializable, Feature
 
   @objc func backgroundViewWasTouched() {
     if delegate.uiTestIsInProgress {
+      delegate.closeDrawer()
     } else {
       let info = VersionInfo()
       delegate.viewControllerDidRequestAlert(self, title: "Build Info", message: info.debugDescription)
