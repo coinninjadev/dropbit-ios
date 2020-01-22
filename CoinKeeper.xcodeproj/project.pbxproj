@@ -1252,6 +1252,9 @@
 		B5FAD64C20A4DC1D008EB727 /* PublicKeyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FAD64B20A4DC1D008EB727 /* PublicKeyDataSource.swift */; };
 		B5FBE42020DD76550029D273 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FBE41F20DD76550029D273 /* SettingsViewModel.swift */; };
 		B5FC8A2423D8B97E0006D8D8 /* AlertDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A2323D8B97E0006D8D8 /* AlertDelegate.swift */; };
+		B5FC8A2623D8CECF0006D8D8 /* DrawerPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A2523D8CECF0006D8D8 /* DrawerPage.swift */; };
+		B5FC8A2723D8CED60006D8D8 /* DrawerPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A2523D8CECF0006D8D8 /* DrawerPage.swift */; };
+		B5FC8A2823D8CED70006D8D8 /* DrawerPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC8A2523D8CECF0006D8D8 /* DrawerPage.swift */; };
 		B5FDA5C622120747001682AA /* GlobalPhoneNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FDA5C522120747001682AA /* GlobalPhoneNumber.swift */; };
 		B5FE9B67219DD96200801D3C /* MerchantPaymentRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FE9B66219DD96200801D3C /* MerchantPaymentRequestResponse.swift */; };
 		B5FEBE9220879C4200AA9F6E /* CKMInvitation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FEBE9020879C4200AA9F6E /* CKMInvitation+CoreDataClass.swift */; };
@@ -2426,6 +2429,7 @@
 		B5FAD64B20A4DC1D008EB727 /* PublicKeyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyDataSource.swift; sourceTree = "<group>"; };
 		B5FBE41F20DD76550029D273 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		B5FC8A2323D8B97E0006D8D8 /* AlertDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertDelegate.swift; sourceTree = "<group>"; };
+		B5FC8A2523D8CECF0006D8D8 /* DrawerPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerPage.swift; sourceTree = "<group>"; };
 		B5FDA5C522120747001682AA /* GlobalPhoneNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalPhoneNumber.swift; sourceTree = "<group>"; };
 		B5FE9B66219DD96200801D3C /* MerchantPaymentRequestResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantPaymentRequestResponse.swift; sourceTree = "<group>"; };
 		B5FEBE9020879C4200AA9F6E /* CKMInvitation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMInvitation+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -4118,23 +4122,24 @@
 			isa = PBXGroup;
 			children = (
 				B58AFF302194DAF2001BE563 /* UITestPage.swift */,
-				3B1BE85F21B57D0A00CCFE29 /* MemoEntryPage.swift */,
+				3B3779FB219E20AD00F79683 /* BackupRecoveryWordsCellPage.swift */,
 				B51F1ED8219A286900C54B73 /* DeviceVerificationPage.swift */,
+				B5FC8A2523D8CECF0006D8D8 /* DrawerPage.swift */,
+				3B34B97F232DB06A002D8A92 /* DropBitMePage.swift */,
+				3BE1C52C232D2BC100583A83 /* LightningUpgradeStartPage.swift */,
+				3B1BE85F21B57D0A00CCFE29 /* MemoEntryPage.swift */,
 				B51F1ED02199F7CB00C54B73 /* PinCreationPage.swift */,
+				3B3779F7219DB6C800F79683 /* PinEntryPage.swift */,
 				B51F1ED6219A17AA00C54B73 /* PushInfoPage.swift */,
+				3B3779F3219C9F4800F79683 /* RecoveryWordsIntroPage.swift */,
 				B51F1EDC219A29A700C54B73 /* RequestPayPage.swift */,
 				B58AFF322194DC24001BE563 /* RestoreWalletPage.swift */,
+				3B1BE86321B5819500CCFE29 /* SendPaymentPage.swift */,
 				B51F1ECE2199F62100C54B73 /* StartPage.swift */,
 				B58AFF352194E366001BE563 /* SuccessFailPage.swift */,
-				3B3779F3219C9F4800F79683 /* RecoveryWordsIntroPage.swift */,
 				3B3779F5219CA79100F79683 /* SwiftMessagesBannerPage.swift */,
-				3B3779F7219DB6C800F79683 /* PinEntryPage.swift */,
-				3B3779FB219E20AD00F79683 /* BackupRecoveryWordsCellPage.swift */,
 				3B3779FD219EE7D900F79683 /* VerifyRecoveryWordsCellPage.swift */,
-				3B1BE86321B5819500CCFE29 /* SendPaymentPage.swift */,
 				A27DFDF122DCDCD200C2824C /* WalletOverviewPage.swift */,
-				3BE1C52C232D2BC100583A83 /* LightningUpgradeStartPage.swift */,
-				3B34B97F232DB06A002D8A92 /* DropBitMePage.swift */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -5894,6 +5899,7 @@
 				3B4B929C22F354850018285C /* SendPaymentPage.swift in Sources */,
 				3B4B928D22F3546E0018285C /* UITestHelpers.swift in Sources */,
 				B5705450230B4812006DD57F /* Typealiases.swift in Sources */,
+				B5FC8A2723D8CED60006D8D8 /* DrawerPage.swift in Sources */,
 				B57E6FEE234FB1F50069991A /* XCUIElement+Swipe.swift in Sources */,
 				3B4B928C22F3546B0018285C /* Springboard.swift in Sources */,
 				B55B46FD23D7C40500E024A7 /* SnapshotHelper.swift in Sources */,
@@ -5983,6 +5989,7 @@
 				B51F1EDD219A29A700C54B73 /* RequestPayPage.swift in Sources */,
 				B51FB0E321751CD0005CBAD6 /* StoryboardInitializable.swift in Sources */,
 				B55B46FC23D7C40500E024A7 /* SnapshotHelper.swift in Sources */,
+				B5FC8A2623D8CECF0006D8D8 /* DrawerPage.swift in Sources */,
 				3BE1C52F232D390700583A83 /* UITestRecoverWordBackupAutomatable.swift in Sources */,
 				B555DCAC23059A1E006B3462 /* Typealiases.swift in Sources */,
 				B51FB0E82175221A005CBAD6 /* UITestCase.swift in Sources */,
@@ -6040,6 +6047,7 @@
 				B57E6FDE234F78D20069991A /* SuccessFailPage.swift in Sources */,
 				B57E6FE6234F78D20069991A /* WalletOverviewPage.swift in Sources */,
 				B57E6FEB234F7B1E0069991A /* Int+Times.swift in Sources */,
+				B5FC8A2823D8CED70006D8D8 /* DrawerPage.swift in Sources */,
 				B57E6FDD234F78D20069991A /* StartPage.swift in Sources */,
 				B57E6FDC234F78D20069991A /* RestoreWalletPage.swift in Sources */,
 				B57E6FE4234F78D20069991A /* SendPaymentPage.swift in Sources */,
