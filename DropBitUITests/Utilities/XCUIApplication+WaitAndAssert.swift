@@ -71,15 +71,15 @@ extension XCUIApplication {
   }
 
   func view(withId pageElement: AccessiblePageElement, assertionWait: AssertionWait = .default) -> XCUIElement {
-    let viewController = otherElements[pageElement.identifier]
-    viewController.assertExistence(afterWait: assertionWait, elementDesc: pageElement.identifier)
-    return viewController
+    let view = otherElements[pageElement.identifier]
+    view.assertExistence(afterWait: assertionWait, elementDesc: pageElement.identifier)
+    return view
   }
 
   func cell(withId pageElement: AccessiblePageElement, assertionWait: AssertionWait = .custom(0.5)) -> XCUIElement {
-    let viewController = cells[pageElement.identifier]
-    viewController.assertExistence(afterWait: assertionWait, elementDesc: pageElement.identifier)
-    return viewController
+    let cell = cells[pageElement.identifier]
+    cell.assertExistence(afterWait: assertionWait, elementDesc: pageElement.identifier)
+    return cell
   }
 
   func buttons(_ pageElement: AccessiblePageElement, assertionWait: AssertionWait = .none) -> XCUIElement {
