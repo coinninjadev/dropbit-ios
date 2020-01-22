@@ -17,7 +17,7 @@ extension AppCoordinator: BadgeUpdateDelegate {
 extension AppCoordinator: DrawerViewControllerDelegate {
 
   func closeDrawer() {
-    drawerController?.openLeft(animated: true)
+    drawerController?.openCenter(animated: true)
   }
 
   func currentConfig() -> FeatureConfig {
