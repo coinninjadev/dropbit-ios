@@ -56,7 +56,6 @@
 		3B071A5220C2C3ED009C2BF6 /* OutgoingTransactionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B071A5120C2C3ED009C2BF6 /* OutgoingTransactionData.swift */; };
 		3B071A5520C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B071A5320C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataClass.swift */; };
 		3B071A5620C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B071A5420C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataProperties.swift */; };
-		3B0C25F423D8B86D001F1B99 /* Cnlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B0C25F323D8B86C001F1B99 /* Cnlib.framework */; };
 		3B0C4FDE22A1AC31000FE760 /* VerfiedTwitterUserIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0C4FDD22A1AC31000FE760 /* VerfiedTwitterUserIndicatorView.swift */; };
 		3B0C4FE022A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B0C4FDF22A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib */; };
 		3B0C785623197B0A00D4C216 /* LightningUpgradePageViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B0C785523197B0A00D4C216 /* LightningUpgradePageViewController.storyboard */; };
@@ -235,6 +234,7 @@
 		3B69FBEA21B83ED200C561E2 /* OutgoingInvitationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B69FBE921B83ED200C561E2 /* OutgoingInvitationDTO.swift */; };
 		3B6BCBF022735A4E00950105 /* TransactionHistoryDetailInvalidCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6BCBEF22735A4E00950105 /* TransactionHistoryDetailInvalidCellTests.swift */; };
 		3B6BCBF2227365D000950105 /* TransactionHistoryDetailValidCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6BCBF1227365D000950105 /* TransactionHistoryDetailValidCellTests.swift */; };
+		3B6DB24823DA29E0005A9152 /* Cnlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B6DB24723DA29E0005A9152 /* Cnlib.framework */; };
 		3B6DCA1B2034B76F00B87EF9 /* KeypadDigitView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B6DCA1A2034B76F00B87EF9 /* KeypadDigitView.xib */; };
 		3B6DCA1D2034B83700B87EF9 /* KeypadDigitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6DCA1C2034B83700B87EF9 /* KeypadDigitView.swift */; };
 		3B6E4D59206E533D00D9CFFA /* ApiKeys.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6E4D58206E533D00D9CFFA /* ApiKeys.generated.swift */; };
@@ -1206,7 +1206,6 @@
 		3B071A5120C2C3ED009C2BF6 /* OutgoingTransactionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingTransactionData.swift; sourceTree = "<group>"; };
 		3B071A5320C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMCounterpartyName+CoreDataClass.swift"; sourceTree = "<group>"; };
 		3B071A5420C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMCounterpartyName+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		3B0C25F323D8B86C001F1B99 /* Cnlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Cnlib.framework; sourceTree = "<group>"; };
 		3B0C4FDD22A1AC31000FE760 /* VerfiedTwitterUserIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerfiedTwitterUserIndicatorView.swift; sourceTree = "<group>"; };
 		3B0C4FDF22A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VerfiedTwitterUserIndicatorView.xib; sourceTree = "<group>"; };
 		3B0C785523197B0A00D4C216 /* LightningUpgradePageViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningUpgradePageViewController.storyboard; sourceTree = "<group>"; };
@@ -1365,6 +1364,7 @@
 		3B69FBE921B83ED200C561E2 /* OutgoingInvitationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingInvitationDTO.swift; sourceTree = "<group>"; };
 		3B6BCBEF22735A4E00950105 /* TransactionHistoryDetailInvalidCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailInvalidCellTests.swift; sourceTree = "<group>"; };
 		3B6BCBF1227365D000950105 /* TransactionHistoryDetailValidCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailValidCellTests.swift; sourceTree = "<group>"; };
+		3B6DB24723DA29E0005A9152 /* Cnlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Cnlib.framework; sourceTree = "<group>"; };
 		3B6DCA1A2034B76F00B87EF9 /* KeypadDigitView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KeypadDigitView.xib; sourceTree = "<group>"; };
 		3B6DCA1C2034B83700B87EF9 /* KeypadDigitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeypadDigitView.swift; sourceTree = "<group>"; };
 		3B6E4D58206E533D00D9CFFA /* ApiKeys.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiKeys.generated.swift; sourceTree = "<group>"; };
@@ -2270,7 +2270,7 @@
 				D3050CCBBA9D3A897790120B /* Pods_DropBit.framework in Frameworks */,
 				3BC289B623C8C6F6005B9933 /* PromiseKit in Frameworks */,
 				3B227D7923CCD37D00D86BE8 /* FAPanels in Frameworks */,
-				3B0C25F423D8B86D001F1B99 /* Cnlib.framework in Frameworks */,
+				3B6DB24823DA29E0005A9152 /* Cnlib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2902,7 +2902,7 @@
 		3BAB4BB723A7C71000AADBF7 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				3B0C25F323D8B86C001F1B99 /* Cnlib.framework */,
+				3B6DB24723DA29E0005A9152 /* Cnlib.framework */,
 			);
 			path = lib;
 			sourceTree = "<group>";
