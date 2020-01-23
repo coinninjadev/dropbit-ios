@@ -51,31 +51,36 @@
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="UIh-al-LFI">
-                                                <rect key="frame" x="0.0" y="71.5" width="334" height="100"/>
+                                                <rect key="frame" x="0.0" y="90" width="334" height="100"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="100" id="Kjv-lF-3r1"/>
                                                 </constraints>
                                             </stackView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J1m-4R-z2x" customClass="TransactionDetailBottomButton" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="199.5" width="334" height="51"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="9H8-Yq-19f">
+                                                <rect key="frame" x="0.0" y="236" width="334" height="97"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J1m-4R-z2x" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="334" height="51"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="51" id="TNB-Jx-Zft"/>
+                                                        </constraints>
+                                                        <state key="normal" title="TRANSFER NOW"/>
+                                                        <connections>
+                                                            <action selector="actionButtonWasTouched" destination="nW8-um-wGJ" eventType="touchUpInside" id="AKx-OE-uCJ"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3rX-JN-Bsa" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="67" width="334" height="30"/>
+                                                        <state key="normal" title="CANCEL"/>
+                                                        <connections>
+                                                            <action selector="cancelButtonWasTouched" destination="nW8-um-wGJ" eventType="touchUpInside" id="1vA-jx-ziG"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="51" id="TNB-Jx-Zft"/>
+                                                    <constraint firstItem="3rX-JN-Bsa" firstAttribute="height" secondItem="J1m-4R-z2x" secondAttribute="height" multiplier="0.588235" id="M4b-Bu-uo9"/>
                                                 </constraints>
-                                                <state key="normal" title="TRANSFER NOW"/>
-                                                <connections>
-                                                    <action selector="actionButtonWasTouched" destination="nW8-um-wGJ" eventType="touchUpInside" id="AKx-OE-uCJ"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3rX-JN-Bsa">
-                                                <rect key="frame" x="0.0" y="278" width="334" height="55"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="55" id="h4K-Ry-PGt"/>
-                                                </constraints>
-                                                <state key="normal" title="CANCEL"/>
-                                                <connections>
-                                                    <action selector="cancelButtonWasTouched" destination="nW8-um-wGJ" eventType="touchUpInside" id="1vA-jx-ziG"/>
-                                                </connections>
-                                            </button>
+                                            </stackView>
                                         </subviews>
                                     </stackView>
                                 </subviews>

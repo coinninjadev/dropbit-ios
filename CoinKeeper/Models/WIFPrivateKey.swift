@@ -19,8 +19,10 @@ struct WIFPrivateKey {
   init?(wallet: CNBCnlibHDWallet, string: String) {
     self.wallet = wallet
 
+    let split = string.components(separatedBy: ":")
+    guard let privateKeyString = split.last else { return nil }
     do {
-      key = try wallet.importPrivateKey(string)
+      key = try wallet.importPrivateKey(privateKeyString)
       addresses = key.possibleAddresses.components(separatedBy: " ")
     } catch {
       return nil

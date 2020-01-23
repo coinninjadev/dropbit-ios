@@ -358,7 +358,8 @@ struct DBTError {
     case noSpendableFunds = "no spendable funds"
     case dust = "transaction too small"
     case createTransactionFailure = "failed to create transaction"
-    case invalidDestinationAddress = "decoded address is of unknown format"
+    case unknownAddressFormat = "decoded address is of unknown format"
+    case invalidDestinationAddress = "invalid destination address"
 
     var displayTitle: String {
       switch self {
@@ -367,6 +368,7 @@ struct DBTError {
       case .noSpendableFunds: return "No Spendable Funds"
       case .dust: return "Dusty Output"
       case .createTransactionFailure: return "Failed To Create Transaction"
+      case .unknownAddressFormat: return "Failed To Decode Address"
       case .invalidDestinationAddress: return "Invalid Destination Address"
       }
     }
@@ -383,8 +385,10 @@ struct DBTError {
         return "The Bitcoin network does not support transactions this small. Smaller transactions can be sent using your Lightning wallet."
       case .createTransactionFailure:
         return "Failed to create transaction."
-      case .invalidDestinationAddress:
+      case .unknownAddressFormat:
         return "Decoded address is of unknown format."
+      case .invalidDestinationAddress:
+        return "The desired destination address is invalid."
       }
     }
   }

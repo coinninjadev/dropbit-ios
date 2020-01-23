@@ -10,7 +10,7 @@
 import PromiseKit
 
 extension MockNetworkManager: TransactionRequestable {
-  
+
   func fetchTransactionDetails(for txid: String) -> Promise<TransactionResponse> {
     return Promise { _ in }
   }

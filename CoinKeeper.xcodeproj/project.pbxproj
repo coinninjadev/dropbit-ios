@@ -56,6 +56,7 @@
 		3B071A5220C2C3ED009C2BF6 /* OutgoingTransactionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B071A5120C2C3ED009C2BF6 /* OutgoingTransactionData.swift */; };
 		3B071A5520C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B071A5320C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataClass.swift */; };
 		3B071A5620C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B071A5420C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataProperties.swift */; };
+		3B0C25F423D8B86D001F1B99 /* Cnlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B0C25F323D8B86C001F1B99 /* Cnlib.framework */; };
 		3B0C4FDE22A1AC31000FE760 /* VerfiedTwitterUserIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0C4FDD22A1AC31000FE760 /* VerfiedTwitterUserIndicatorView.swift */; };
 		3B0C4FE022A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B0C4FDF22A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib */; };
 		3B0C785623197B0A00D4C216 /* LightningUpgradePageViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B0C785523197B0A00D4C216 /* LightningUpgradePageViewController.storyboard */; };
@@ -95,7 +96,6 @@
 		3B287CB62100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B287CB52100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift */; };
 		3B287CBB21020CC700A43E57 /* WalletAddressRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B287CBA21020CC700A43E57 /* WalletAddressRequest.swift */; };
 		3B29ABA42346792700E08A1A /* LightningUnavailableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B29ABA32346792700E08A1A /* LightningUnavailableView.xib */; };
-		3B2D4BFA23CF7540005ECE95 /* Cnlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B2D4BF923CF7540005ECE95 /* Cnlib.framework */; };
 		3B2E3ED021C92FE600AE55DE /* SyncDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2E3ECF21C92FE600AE55DE /* SyncDependencies.swift */; };
 		3B2E78302024AEA100DA25AF /* UIFont+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2E782F2024AEA100DA25AF /* UIFont+Theme.swift */; };
 		3B2E78332024C76D00DA25AF /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2E78322024C76D00DA25AF /* AppCoordinator.swift */; };
@@ -362,7 +362,6 @@
 		3BBDF7E822E780AD00E35EA0 /* TransactionHistoryDetailsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBDF7E722E780AD00E35EA0 /* TransactionHistoryDetailsViewControllerTests.swift */; };
 		3BBEE0C1208A5DA500A7DF9F /* CKMDerivativePath+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBEE0B7208A5DA500A7DF9F /* CKMDerivativePath+CoreDataClass.swift */; };
 		3BBEE0C2208A5DA500A7DF9F /* CKMDerivativePath+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBEE0B8208A5DA500A7DF9F /* CKMDerivativePath+CoreDataProperties.swift */; };
-		3BC008DF23D2302500AB47A5 /* Cnlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BC008DE23D2302500AB47A5 /* Cnlib.framework */; };
 		3BC289B623C8C6F6005B9933 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3BC289B523C8C6F6005B9933 /* PromiseKit */; };
 		3BC456FF20288D7300CC36B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BC456FE20288D7300CC36B1 /* LaunchScreen.storyboard */; };
 		3BC9E5522047440900444A53 /* BackupRecoveryWordCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC9E5512047440900444A53 /* BackupRecoveryWordCellData.swift */; };
@@ -1207,6 +1206,7 @@
 		3B071A5120C2C3ED009C2BF6 /* OutgoingTransactionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingTransactionData.swift; sourceTree = "<group>"; };
 		3B071A5320C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMCounterpartyName+CoreDataClass.swift"; sourceTree = "<group>"; };
 		3B071A5420C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMCounterpartyName+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		3B0C25F323D8B86C001F1B99 /* Cnlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Cnlib.framework; sourceTree = "<group>"; };
 		3B0C4FDD22A1AC31000FE760 /* VerfiedTwitterUserIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerfiedTwitterUserIndicatorView.swift; sourceTree = "<group>"; };
 		3B0C4FDF22A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VerfiedTwitterUserIndicatorView.xib; sourceTree = "<group>"; };
 		3B0C785523197B0A00D4C216 /* LightningUpgradePageViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningUpgradePageViewController.storyboard; sourceTree = "<group>"; };
@@ -1250,7 +1250,6 @@
 		3B287CB52100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+ChildCoordinatorDelegate.swift"; sourceTree = "<group>"; };
 		3B287CBA21020CC700A43E57 /* WalletAddressRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressRequest.swift; sourceTree = "<group>"; };
 		3B29ABA32346792700E08A1A /* LightningUnavailableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LightningUnavailableView.xib; sourceTree = "<group>"; };
-		3B2D4BF923CF7540005ECE95 /* Cnlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Cnlib.framework; sourceTree = "<group>"; };
 		3B2E3ECF21C92FE600AE55DE /* SyncDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncDependencies.swift; sourceTree = "<group>"; };
 		3B2E782F2024AEA100DA25AF /* UIFont+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Theme.swift"; sourceTree = "<group>"; usesTabs = 0; };
 		3B2E78322024C76D00DA25AF /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
@@ -1493,7 +1492,6 @@
 		3BBDF7E722E780AD00E35EA0 /* TransactionHistoryDetailsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailsViewControllerTests.swift; sourceTree = "<group>"; };
 		3BBEE0B7208A5DA500A7DF9F /* CKMDerivativePath+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMDerivativePath+CoreDataClass.swift"; sourceTree = "<group>"; };
 		3BBEE0B8208A5DA500A7DF9F /* CKMDerivativePath+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMDerivativePath+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		3BC008DE23D2302500AB47A5 /* Cnlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Cnlib.framework; sourceTree = "<group>"; };
 		3BC456FE20288D7300CC36B1 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3BC8011821B995DF008D15E6 /* Model v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model v2.xcdatamodel"; sourceTree = "<group>"; };
 		3BC9E5512047440900444A53 /* BackupRecoveryWordCellData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRecoveryWordCellData.swift; sourceTree = "<group>"; };
@@ -2272,7 +2270,7 @@
 				D3050CCBBA9D3A897790120B /* Pods_DropBit.framework in Frameworks */,
 				3BC289B623C8C6F6005B9933 /* PromiseKit in Frameworks */,
 				3B227D7923CCD37D00D86BE8 /* FAPanels in Frameworks */,
-				3BC008DF23D2302500AB47A5 /* Cnlib.framework in Frameworks */,
+				3B0C25F423D8B86D001F1B99 /* Cnlib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2904,7 +2902,7 @@
 		3BAB4BB723A7C71000AADBF7 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				3BC008DE23D2302500AB47A5 /* Cnlib.framework */,
+				3B0C25F323D8B86C001F1B99 /* Cnlib.framework */,
 			);
 			path = lib;
 			sourceTree = "<group>";

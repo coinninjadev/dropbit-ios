@@ -54,13 +54,13 @@ extension WalletTarget {
     }
   }
 
-  func customNetworkError(for moyaError: MoyaError) -> DBTError.Network? {
+  func customNetworkError(for moyaError: MoyaError) -> DBTErrorType? {
     if let statusCode = moyaError.unacceptableStatusCode,
       statusCode == 401,
       case .get = self,
       moyaError.responseDescription.containsAny(messagesToUnverify) {
 
-      return .shouldUnverify(moyaError, .wallet)
+      return DBTError.Network.shouldUnverify(moyaError, .wallet)
 
     } else {
       return nil
