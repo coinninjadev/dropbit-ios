@@ -37,12 +37,15 @@ class AppCoordinatorSendPaymentViewControllerDelegateTests: XCTestCase {
     let url = LightningURL(string: invoiceString)!
     let expectedNumSatoshis = 250000
     let expectedDescription = "1 cup coffee"
+    let expectedExpirationDate = DateComponents(calendar: Calendar.current, timeZone: .utc, year: 2017, month: 6, day: 1, hour: 10, minute: 58, second: 38).date ?? Date()
     let exp = expectation(description: "ln decode valid invoice")
 
     sut.viewControllerDidReceiveLightningURLToDecode(url)
       .done { (response: LNDecodePaymentRequestResponse) in
         XCTAssertEqual(response.numSatoshis ?? 0, expectedNumSatoshis)
         XCTAssertEqual(response.description ?? "", expectedDescription)
+        XCTAssertTrue(response.isExpired)
+        XCTAssertEqual(response.expiresAt, expectedExpirationDate)
       }
       .catch { (error: Error) in XCTFail(error.localizedDescription) }
       .finally { exp.fulfill() }

@@ -8,22 +8,12 @@
 
 import Moya
 
-struct LNRouteHint: Decodable {
-  let hopHints: [LNHopHint]
-}
-
-struct LNHopHint: Decodable {
-  let nodeId: String
-  let chanId: String
-  let feeBaseMsat: Int
-  let feeProportionalMillionths: Int
-  let cltvExpiryDelta: Int
-}
-
 struct LNDecodePaymentRequestResponse: LNResponseDecodable {
 
   let numSatoshis: Int?
   var description: String?
+  let isExpired: Bool
+  let expiresAt: Date
 
   static var sampleJSON: String {
     return """

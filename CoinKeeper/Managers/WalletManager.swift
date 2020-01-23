@@ -422,7 +422,9 @@ class WalletManager: WalletManagerType {
       let decoded = try wallet.decodeLightningInvoice(invoice)
       let response = LNDecodePaymentRequestResponse(
         numSatoshis: decoded.numSatoshis,
-        description: decoded.description.asNilIfEmpty()
+        description: decoded.description.asNilIfEmpty(),
+        isExpired: decoded.isExpired,
+        expiresAt: Date(timeIntervalSince1970: TimeInterval(decoded.expiresAt))
       )
       return .value(response)
     } catch {
