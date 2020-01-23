@@ -95,6 +95,10 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     guard let invoice = decodedInvoice else { return false }
     return invoice.isExpired
   }
+  var invoiceExpiration: Date? {
+    guard let invoice = decodedInvoice else { return nil }
+    return invoice.expiresAt
+  }
 
   private var _memo: String?
   var memo: String? {
