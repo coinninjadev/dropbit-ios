@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol EarnViewControllerDelegate: ViewControllerDismissable, CopyToClipboardMessageDisplayable {
-  func viewControllerDidPressShareButton(_ viewController: UIViewController, referralLink: String)
+  func viewControllerDidPressShareButton(_ viewController: UIViewController)
   func viewControllerRestrictionsButtonWasTouched(_ viewController: UIViewController)
   func viewControllerDidSelectVerify(_ viewController: UIViewController)
 }
@@ -70,7 +70,7 @@ class EarnViewController: BaseViewController, StoryboardInitializable {
 
     let thirdStepView = EmojiDetailView()
     thirdStepView.emojiLabel.text = "⚡️"
-    thirdStepView.descriptionLabel.text = "3. You & your friend will receive $1 in your Lighitng wallet"
+    thirdStepView.descriptionLabel.text = "3. You & your friend will receive $1 in your Lightning wallet"
 
     stepsStackView.addArrangedSubview(firstStepView)
     stepsStackView.addArrangedSubview(secondStepView)
@@ -135,13 +135,13 @@ class EarnViewController: BaseViewController, StoryboardInitializable {
     referralLabel.addGestureRecognizer(gestureRecognizer)
     stepsStackView.addArrangedSubview(referralLabel)
 
-    let shareButton = PrimaryActionButton()
-    shareButton.style = .lightning(rounded: true)
-    shareButton.setTitle("SHARE", for: .normal)
-    shareButton.translatesAutoresizingMaskIntoConstraints = false
-    shareButton.heightAnchor.constraint(equalToConstant: 51).isActive = true
-    shareButton.addTarget(self, action: #selector(shareButtonWasTouched), for: .touchUpInside)
-    stepsStackView.addArrangedSubview(shareButton)
+    let trackReferralStatusButton = PrimaryActionButton()
+    trackReferralStatusButton.style = .lightning(rounded: true)
+    trackReferralStatusButton.setTitle("TRACK REFERRAL STATUS", for: .normal)
+    trackReferralStatusButton.translatesAutoresizingMaskIntoConstraints = false
+    trackReferralStatusButton.heightAnchor.constraint(equalToConstant: 51).isActive = true
+    trackReferralStatusButton.addTarget(self, action: #selector(trackReferralButtonWasTouched), for: .touchUpInside)
+    stepsStackView.addArrangedSubview(trackReferralStatusButton)
   }
 
   private func setupUIForUnverifiedUser() {
@@ -168,9 +168,9 @@ class EarnViewController: BaseViewController, StoryboardInitializable {
     delegate?.viewControllerRestrictionsButtonWasTouched(self)
   }
 
-  @objc func shareButtonWasTouched() {
-    guard let referralLink = referralLink else { return }
-    delegate?.viewControllerDidPressShareButton(self, referralLink: referralLink)
+  @objc func trackReferralButtonWasTouched() {
+    guard referralLink != nil else { return }
+    delegate?.viewControllerDidPressShareButton(self)
   }
 
   @objc func verificationButtonWasTouched() {

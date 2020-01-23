@@ -19,13 +19,13 @@ class TargetTests: XCTestCase {
     let responseData = MockRecordNotFoundErrorResponse.sampleData
     let moyaError = MockMoyaError.unacceptableStatusCode(code: 401, responseData: responseData)
 
-    guard let ckNetworkError = target.networkError(for: moyaError) else {
+    guard let dbtError = target.customNetworkError(for: moyaError) else {
       XCTFail("Should return network error")
       return
     }
 
-    guard case .shouldUnverify = ckNetworkError else {
-      XCTFail("Should return .shouldUnverify, not \(ckNetworkError)")
+    guard case DBTError.Network.shouldUnverify = dbtError else {
+      XCTFail("Should return .shouldUnverify, not \(dbtError)")
       return
     }
   }
@@ -35,13 +35,13 @@ class TargetTests: XCTestCase {
     let responseData = MockDeviceUUIDMismatchErrorResponse.sampleData
     let moyaError = MockMoyaError.unacceptableStatusCode(code: 401, responseData: responseData)
 
-    guard let ckNetworkError = target.networkError(for: moyaError) else {
+    guard let dbtError = target.customNetworkError(for: moyaError) else {
       XCTFail("Should return network error")
       return
     }
 
-    guard case .shouldUnverify = ckNetworkError else {
-      XCTFail("Should return .shouldUnverify, not \(ckNetworkError)")
+    guard case DBTError.Network.shouldUnverify = dbtError else {
+      XCTFail("Should return .shouldUnverify, not \(dbtError)")
       return
     }
   }
@@ -51,13 +51,13 @@ class TargetTests: XCTestCase {
     let responseData = MockRecordNotFoundErrorResponse.sampleData
     let moyaError = MockMoyaError.unacceptableStatusCode(code: 401, responseData: responseData)
 
-    guard let ckNetworkError = target.networkError(for: moyaError) else {
+    guard let dbtError = target.customNetworkError(for: moyaError) else {
       XCTFail("Should return network error")
       return
     }
 
-    guard case .shouldUnverify = ckNetworkError else {
-      XCTFail("Should return .shouldUnverify, not \(ckNetworkError)")
+    guard case DBTError.Network.shouldUnverify = dbtError else {
+      XCTFail("Should return .shouldUnverify, not \(dbtError)")
       return
     }
   }
@@ -67,13 +67,13 @@ class TargetTests: XCTestCase {
     let responseData = MockDeviceUUIDMismatchErrorResponse.sampleData
     let moyaError = MockMoyaError.unacceptableStatusCode(code: 401, responseData: responseData)
 
-    guard let ckNetworkError = target.networkError(for: moyaError) else {
+    guard let dbtError = target.customNetworkError(for: moyaError) else {
       XCTFail("Should return network error")
       return
     }
 
-    guard case .shouldUnverify = ckNetworkError else {
-      XCTFail("Should return .shouldUnverify, not \(ckNetworkError)")
+    guard case DBTError.Network.shouldUnverify = dbtError else {
+      XCTFail("Should return .shouldUnverify, not \(dbtError)")
       return
     }
   }

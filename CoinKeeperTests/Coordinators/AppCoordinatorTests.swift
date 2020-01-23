@@ -9,7 +9,7 @@
 import UIKit
 @testable import DropBit
 import XCTest
-import MMDrawerController
+import FAPanels
 
 class AppCoordinatorTests: MockedPersistenceTestCase {
   var sut: AppCoordinator! {
@@ -85,10 +85,10 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     TestHelpers.initializeWindow(with: mockNavigationController)
     sut.start()
 
-    XCTAssertTrue(mockNavigationController.topViewController is MMDrawerController, "topVC should be an MMDrawerController")
+    XCTAssertTrue(mockNavigationController.topViewController is FAPanelController, "topVC should be an FAPanelController")
 
-    if let drawerVC = mockNavigationController.topViewController as? MMDrawerController,
-      let centerVC = drawerVC.centerViewController as? WalletOverviewViewController {
+    if let drawerVC = mockNavigationController.topViewController as? FAPanelController,
+      let centerVC = drawerVC.center as? WalletOverviewViewController {
       XCTAssertTrue(centerVC.delegate === sut, "coordinationDelegate should be sut")
     } else {
       XCTFail("centerViewController should be a TransactionHistoryViewController")
@@ -167,7 +167,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
       configurePersistenceMocksForTestingSyncRoutine()
 
       let mockNetworkManager = MockNetworkManager(persistenceManager: mockPersistenceManager)
-      let mockWalletManager = MockWalletManager(words: TestHelpers.fakeWords(), persistenceManager: mockPersistenceManager)
+      let mockWalletManager = MockWalletManager(words: TestHelpers.fakeWords(), persistenceManager: mockPersistenceManager)!
       return (mockNetworkManager, mockWalletManager)
   }
 
@@ -243,8 +243,8 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     sut.walletManager = nil
 
     sut.predefineSyncDependencies(in: sut.persistenceManager.createBackgroundContext(), inBackground: false).catch { error in
-      if let syncRoutineError = error as? SyncRoutineError {
-        XCTAssertEqual(syncRoutineError, SyncRoutineError.missingWalletManager)
+      if let syncRoutineError = error as? DBTError.SyncRoutine {
+        XCTAssertEqual(syncRoutineError, DBTError.SyncRoutine.missingWalletManager)
       } else {
         XCTFail("Error should be missingWalletManager")
       }
@@ -265,8 +265,8 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     sut.walletManager = mocks.wallet
 
     sut.predefineSyncDependencies(in: sut.persistenceManager.createBackgroundContext(), inBackground: false).catch { error in
-      if let syncRoutineError = error as? SyncRoutineError {
-        XCTAssertEqual(syncRoutineError, SyncRoutineError.notReady)
+      if let syncRoutineError = error as? DBTError.SyncRoutine {
+        XCTAssertEqual(syncRoutineError, DBTError.SyncRoutine.notReady)
       } else {
         XCTFail("Error should be notReady")
       }
@@ -288,8 +288,8 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     sut.walletManager = mocks.wallet
 
     sut.predefineSyncDependencies(in: sut.persistenceManager.createBackgroundContext(), inBackground: false).catch { error in
-      if let syncRoutineError = error as? SyncRoutineError {
-        XCTAssertEqual(syncRoutineError, SyncRoutineError.notReady)
+      if let syncRoutineError = error as? DBTError.SyncRoutine {
+        XCTAssertEqual(syncRoutineError, DBTError.SyncRoutine.notReady)
       } else {
         XCTFail("Error should be notReady")
       }

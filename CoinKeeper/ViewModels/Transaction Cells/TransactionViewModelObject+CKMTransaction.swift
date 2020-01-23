@@ -51,7 +51,9 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
   var receiverAddress: String? {
     switch direction {
     case .in:
-      if let invite = invitation {
+      if isTemporaryTransaction {
+        return counterpartyAddress?.addressId
+      } else if let invite = invitation {
         return invite.addressProvidedToSender
       } else {
         return vouts

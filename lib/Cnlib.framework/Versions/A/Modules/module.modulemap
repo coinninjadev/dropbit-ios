@@ -1,0 +1,8 @@
+framework module "Cnlib" {
+	header "ref.h"
+    header "CNBCnlib.objc.h"
+    header "Universe.objc.h"
+    header "Cnlib.h"
+
+    export *
+}

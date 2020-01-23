@@ -55,7 +55,7 @@ struct TransactionVoutResponse: ResponseDecodable {
   static func validateResponse(_ response: TransactionVoutResponse) throws -> TransactionVoutResponse {
     guard response.value >= 0 else {
       let path = TransactionVoutResponseKey.value.path
-      throw CKNetworkError.invalidValue(keyPath: path, value: String(response.value), response: response)
+      throw DBTError.Network.invalidValue(keyPath: path, value: String(response.value), response: response)
     }
 
     let stringValidatedResponse = try response.validateStringValues()

@@ -9,7 +9,7 @@
 import Foundation
 import PromiseKit
 import CoreData
-import CNBitcoinKit
+import Cnlib
 
 protocol TransactionDataWorkerType: AnyObject {
 
@@ -62,14 +62,14 @@ class TransactionDataWorker: TransactionDataWorkerType {
     return self.performFetchAndStoreAllOnChainTransactions(in: context, fullSync: false)
   }
 
-  typealias AddressFetcher = (Int) -> CNBMetaAddress
+  typealias AddressFetcher = (Int) throws -> CNBCnlibMetaAddress
 
   func performFetchAndStoreAllOnChainTransactions(in context: NSManagedObjectContext, fullSync: Bool) -> Promise<Void> {
     CKNotificationCenter.publish(key: .didStartSync, object: nil, userInfo: nil)
 
     let addressDataSource = self.walletManager.createAddressDataSource()
-    let receiveAddressFetcher: AddressFetcher = { addressDataSource.receiveAddress(at: $0) }
-    let changeAddressFetcher: AddressFetcher = { addressDataSource.changeAddress(at: $0) }
+    let receiveAddressFetcher: AddressFetcher = { try addressDataSource.receiveAddress(at: $0) }
+    let changeAddressFetcher: AddressFetcher = { try addressDataSource.changeAddress(at: $0) }
 
     // Check latest CKMAddressTransactionSummary because it always represents an actual transaction
     // Run full sync if latestTransactionDate is nil
@@ -94,7 +94,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
 
   func performFetchAndStoreAllLightningTransactions(in context: NSManagedObjectContext, fullSync: Bool) -> Promise<Void> {
     guard let wallet = CKMWallet.find(in: context) else {
-      return Promise(error: CKPersistenceError.noManagedWallet)
+      return Promise(error: DBTError.Persistence.noManagedWallet)
     }
 
     let lnBroker = self.persistenceManager.brokers.lightning
@@ -299,7 +299,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
         return Promise.value(combinedDTO)
     }
     .recover { (error: Error) -> Promise<TransactionDataWorkerDTO> in
-      if let authError = error as? CKNetworkError, case .unauthorized = authError {
+      if let authError = error as? DBTError.Network, case .unauthorized = authError {
         log.info("Request unauthorized, but ok in this scenario. \(error.localizedDescription)")
         return Promise.value(dto)
       } else {
@@ -342,7 +342,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
 
   private func responsesWithPaths(
     from responses: [AddressTransactionSummaryResponse],
-    matching metaAddresses: [CNBMetaAddress]
+    matching metaAddresses: [CNBCnlibMetaAddress]
   ) -> [AddressTransactionSummaryResponse] {
 
     let addressesInTransactions = Set(responses.map { $0.address })
@@ -368,8 +368,17 @@ class TransactionDataWorker: TransactionDataWorkerType {
 
     return Promise { seal in
       let endIndex = startIndex + gapLimit
-      let metaAddresses = (startIndex..<endIndex).map { addressFetcher($0) }
-      let addresses = metaAddresses.compactMap { $0.address }
+      let metaAddresses = (startIndex..<endIndex)
+        .compactMap { (index: Int) -> CNBCnlibMetaAddress? in
+          do {
+            let meta = try addressFetcher(index)
+            return meta
+          } catch {
+            log.error(error, message: "Address at index \(index) is invalid.")
+            return nil
+          }
+      }
+      let addresses = metaAddresses.map { $0.address }
       var aggregateATSResponsesCopy = aggregateATSResponses
 
       networkManager.fetchTransactionSummaries(for: addresses, afterDate: nil)
@@ -389,7 +398,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
       }
       .recover { (error: Error) -> Promise<[AddressTransactionSummaryResponse]> in
         var isEmptyResponseError = false
-        if let networkError = error as? CKNetworkError, case .emptyResponse = networkError {
+        if let networkError = error as? DBTError.Network, case .emptyResponse = networkError {
           isEmptyResponseError = true
         }
 
@@ -428,7 +437,18 @@ class TransactionDataWorker: TransactionDataWorkerType {
     addressFetcher: @escaping AddressFetcher
   ) -> Promise<[AddressTransactionSummaryResponse]> {
 
-    let batchedMetaAddresses: [[CNBMetaAddress]] = Array(0...seekingThroughIndex).map(addressFetcher).chunked(by: 20)
+    let chunkSize = 20
+    let batchedMetaAddresses: [[CNBCnlibMetaAddress]] = Array(0...seekingThroughIndex)
+      .compactMap { (index: Int) -> CNBCnlibMetaAddress? in
+        do {
+          let meta = try addressFetcher(index)
+          return meta
+        } catch {
+          log.error(error, message: "Address at index \(index) is invalid.")
+          return nil
+        }
+      }
+      .chunked(by: chunkSize)
     let atsFetchPromises: [Promise<[AddressTransactionSummaryResponse]>] = batchedMetaAddresses.map { metaAddressBatch in
       let addressBatch = metaAddressBatch.compactMap { $0.address }
       return networkManager.fetchTransactionSummaries(for: addressBatch, afterDate: minDate)
@@ -486,9 +506,9 @@ class TransactionDataWorker: TransactionDataWorkerType {
     let addressDataSource = walletManager.createAddressDataSource()
 
     let decryptedPayloads: [IdentifiedPayload] = responses.compactMap { response in
+      let addressExists = try? addressDataSource.checkAddressExists(for: response.address, in: context)
       guard let payload = response.encryptedPayload,
-        addressDataSource.checkAddressExists(for: response.address, in: context) != nil
-        else { return nil }
+        addressExists != nil else { return nil }
 
       do {
         let payloadData = try cryptor.decrypt(payloadAsBase64String: payload, withReceiveAddress: response.address, in: context)
@@ -595,7 +615,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     }
     .then { txid in self.networkManager.fetchDayAveragePrice(for: txid) }
     .recover { error -> Promise<PriceTransactionResponse> in
-        if let providerError = error as? CKNetworkError {
+        if let providerError = error as? DBTError.Network {
           switch providerError {
           case .recordNotFound,
                .unknownServerError:
@@ -625,7 +645,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
         unspentVouts = try CKMVout.findAllUnspent(in: context)
       } catch {
         log.error(error, message: nil)
-        seal.reject(SpendableBalanceError.voutFetchFailed)
+        seal.reject(error)
       }
 
       // for each vout, get its txid and index, and see if there are any vins with the same previousTxid and index
@@ -640,7 +660,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
           let matchingVinExists = try context.fetch(vinFetchReqest).first != nil
           vout.isSpent = matchingVinExists
         } catch {
-          seal.reject(SpendableBalanceError.vinFetchFailed)
+          seal.reject(DBTError.Persistence.failedToFetch("", error))
         }
       }
       seal.fulfill(())

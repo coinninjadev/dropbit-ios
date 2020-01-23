@@ -9,7 +9,7 @@
 
 import Foundation
 import CoreData
-import CNBitcoinKit
+import Cnlib
 
 @objc(CKMVout)
 public class CKMVout: NSManagedObject {
@@ -47,25 +47,26 @@ public class CKMVout: NSManagedObject {
 
   static func findOrCreateTemporaryVout(
     in context: NSManagedObjectContext,
-    with transactionData: CNBTransactionData,
-    metadata: CNBTransactionMetadata) throws -> CKMVout {
+    with transactionData: CNBCnlibTransactionData,
+    metadata: CNBCnlibTransactionMetadata) throws -> CKMVout {
 
-    let changeAddressKeyPath = #keyPath(CNBTransactionMetadata.changeAddress).description
-    let changePathKeyPath = #keyPath(CNBTransactionMetadata.changePath).description
-    let voutIndexKeyPath = #keyPath(CNBTransactionMetadata.voutIndex).description
+    let changeAddressKeyPath = #keyPath(CNBCnlibTransactionMetadata.transactionChangeMetadata.address).description
+    let changePathKeyPath = #keyPath(CNBCnlibTransactionMetadata.transactionChangeMetadata.path).description
+    let voutIndexKeyPath = #keyPath(CNBCnlibTransactionMetadata.transactionChangeMetadata.voutIndex).description
 
-    guard let changeAddress = metadata.changeAddress else { throw CKPersistenceError.missingValue(key: changeAddressKeyPath) }
-    guard let path = metadata.changePath else { throw CKPersistenceError.missingValue(key: changePathKeyPath) }
-    guard let index = metadata.voutIndex else { throw CKPersistenceError.missingValue(key: voutIndexKeyPath) }
+    let changeMetadata = metadata.transactionChangeMetadata
+    guard let changeAddress = changeMetadata?.address else { throw DBTError.Persistence.missingValue(key: changeAddressKeyPath) }
+    guard let path = changeMetadata?.path else { throw DBTError.Persistence.missingValue(key: changePathKeyPath) }
+    guard let index = changeMetadata?.voutIndex else { throw DBTError.Persistence.missingValue(key: voutIndexKeyPath) }
 
     let fetchRequest: NSFetchRequest<CKMVout> = CKMVout.fetchRequest()
-    fetchRequest.predicate = CKPredicate.Vout.matching(txid: metadata.txid, index: index.intValue)
+    fetchRequest.predicate = CKPredicate.Vout.matching(txid: metadata.txid, index: index)
     fetchRequest.fetchLimit = 1
 
     let configureVout: (CKMVout) -> CKMVout = { returnVout in
       returnVout.addressIDs = [changeAddress]
       returnVout.amount = Int(transactionData.changeAmount)
-      returnVout.index = index.intValue
+      returnVout.index = index
       returnVout.isSpent = false
       returnVout.txid = metadata.txid
 
@@ -113,11 +114,11 @@ public class CKMVout: NSManagedObject {
     }
   }
 
-  static func find(from utxo: CNBUnspentTransactionOutput, in context: NSManagedObjectContext) -> CKMVout? {
+  static func find(from utxo: CNBCnlibUTXO, in context: NSManagedObjectContext) -> CKMVout? {
     let voutFetchRequest: NSFetchRequest<CKMVout> = CKMVout.fetchRequest()
     let txidKeyPath = #keyPath(CKMVout.transaction.txid)
     let indexKeyPath = #keyPath(CKMVout.index)
-    let desiredTxid = utxo.txId
+    let desiredTxid = utxo.txid
     let desiredIndex = Int(utxo.index)
     let txidPredicate = NSPredicate(format: "\(txidKeyPath) = %@", desiredTxid)
     let indexPredicate = NSPredicate(format: "\(indexKeyPath) = %d", desiredIndex)
@@ -132,6 +133,13 @@ public class CKMVout: NSManagedObject {
       result = nil
     }
     return result
+  }
+
+  static func findUTXOs(from transactionData: CNBCnlibTransactionData, in context: NSManagedObjectContext) -> [CKMVout] {
+    let len = transactionData.utxoCount()
+    return (0..<len)
+      .compactMap { try? transactionData.requiredUTXO(at: $0) } // no need to try/catch, errors are bounds checking only
+      .compactMap { CKMVout.find(from: $0, in: context) }
   }
 
   static func findAllSpendable(minAmount: Int, in context: NSManagedObjectContext) -> [CKMVout] {
@@ -149,7 +157,7 @@ public class CKMVout: NSManagedObject {
     do {
       unspentVouts = try context.fetch(fetchRequest)
     } catch {
-      throw SpendableBalanceError.voutFetchFailed
+      throw DBTError.Persistence.failedToFetch("unspent vouts", error)
     }
 
     return unspentVouts

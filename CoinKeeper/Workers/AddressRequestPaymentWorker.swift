@@ -6,7 +6,7 @@
 //  Copyright © 2019 Coin Ninja, LLC. All rights reserved.
 //
 
-import CNBitcoinKit
+import Cnlib
 import CoreData
 import Moya
 import PromiseKit
@@ -32,11 +32,11 @@ class AddressRequestPaymentWorker {
   func completeWalletAddressRequestFulfillmentLocally(outgoingTransactionData: OutgoingTransactionData,
                                                       invitationId: String,
                                                       pendingInvitation: CKMInvitation,
-                                                      txData: CNBTransactionData?,
+                                                      txData: CNBCnlibTransactionData?,
                                                       in context: NSManagedObjectContext,
                                                       transactionType: WalletTransactionType) -> Promise<Void> {
     guard let postableObject = PayloadPostableOutgoingTransactionData(data: outgoingTransactionData) else {
-      return Promise(error: CKPersistenceError.missingValue(key: "postableOutgoingTransactionData"))
+      return Promise(error: DBTError.Persistence.missingValue(key: "postableOutgoingTransactionData"))
     }
 
     return self.networkManager.postSharedPayloadIfAppropriate(withPostableObject: postableObject, walletManager: self.walletManager)
@@ -47,7 +47,8 @@ class AddressRequestPaymentWorker {
             with: outgoingTransactionData,
             txid: paymentId,
             invitation: pendingInvitation,
-            in: context)
+            in: context,
+            incomingAddress: nil)
         } else {
           // update and match them manually, partially matching code in `persistTemporaryTransaction`
           pendingInvitation.setTxid(to: paymentId)
@@ -154,11 +155,11 @@ class LightningAddressRequestPaymentWorker: AddressRequestPaymentWorker {
     let satsToPay = pendingInvitation.totalPendingAmount
     let spendableBalance = self.walletManager.spendableBalance(in: context)
     guard spendableBalance.lightning >= satsToPay else {
-      return Promise(error: PendingInvitationError.insufficientFundsForInvitationWithID(responseId))
+      return Promise(error: DBTError.PendingInvitation.insufficientFundsForInvitationWithID(responseId))
     }
 
     guard let paymentDelegate = paymentSendingDelegate else {
-      return Promise(error: PendingInvitationError.noPaymentDelegate)
+      return Promise(error: DBTError.PendingInvitation.noPaymentDelegate)
     }
 
     let lightningInputs = LightningPaymentInputs(sats: satsToPay, invoice: invoice, sharedPayload: outgoingTxData.sharedPayloadDTO)
@@ -204,7 +205,7 @@ class OnChainAddressRequestPaymentWorker: AddressRequestPaymentWorker {
           let spendableBalance = self.walletManager.spendableBalance(in: context)
           let totalPendingAmount = pendingInvitation.totalPendingAmount
           guard spendableBalance.onChain >= totalPendingAmount else {
-            return Promise(error: PendingInvitationError.insufficientFundsForInvitationWithID(responseId))
+            return Promise(error: DBTError.PendingInvitation.insufficientFundsForInvitationWithID(responseId))
           }
 
           return self.walletManager.transactionData(forPayment: btcAmount, to: address, withFlatFee: pendingInvitation.fees)
@@ -227,27 +228,18 @@ class OnChainAddressRequestPaymentWorker: AddressRequestPaymentWorker {
       return Promise(error: error)
     }
 
-    if let txDataError = error as? TransactionDataError {
+    if let txDataError = error as? DBTError.TransactionData {
       switch txDataError {
       case .insufficientFunds, .noSpendableFunds:
-        return Promise(error: PendingInvitationError.insufficientFundsForInvitationWithID(responseId))
+        return Promise(error: DBTError.PendingInvitation.insufficientFundsForInvitationWithID(responseId))
       case .insufficientFee:
-        return Promise(error: PendingInvitationError.insufficientFeeForInvitationWithID(responseId))
+        return Promise(error: DBTError.PendingInvitation.insufficientFeeForInvitationWithID(responseId))
+      case .dust, .createTransactionFailure, .unknownAddressFormat, .invalidDestinationAddress:
+        return Promise(error: txDataError)
       }
     }
 
-    let nsError = error as NSError
-    let errorCode = TransactionBroadcastError(errorCode: nsError.code)
-    switch errorCode {
-    case .broadcastTimedOut:
-      return Promise(error: TransactionBroadcastError.broadcastTimedOut)
-    case .networkUnreachable:
-      return Promise(error: TransactionBroadcastError.networkUnreachable)
-    case .unknown:
-      return Promise(error: TransactionBroadcastError.unknown)
-    case .insufficientFee:
-      return Promise(error: PendingInvitationError.insufficientFeeForInvitationWithID(responseId))
-    }
+    return Promise(error: error)
   }
 
 }

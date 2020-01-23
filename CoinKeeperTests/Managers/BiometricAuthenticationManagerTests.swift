@@ -71,7 +71,7 @@ class BiometricAuthenticationManagerTests: XCTestCase {
   // MARK: Authentication
   func testAuthenticationWithBiometricsDisabledBehavesProperly() {
     var didCallErrorHandler = false
-    var errorObject: BiometricError!
+    var errorObject: DBTError.Biometrics!
     var completionWasCalled = false
     let mockLAContext = MockLAContext()
     mockLAContext.shouldEvaluatePolicy = false

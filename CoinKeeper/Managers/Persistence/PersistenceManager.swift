@@ -3,7 +3,7 @@
 // Copyright (c) 2018 Coin Ninja, LLC. All rights reserved.
 //
 
-import CNBitcoinKit
+import Cnlib
 import Foundation
 import CoreData
 import PromiseKit
@@ -16,7 +16,7 @@ class PersistenceManager: PersistenceManagerType {
   let contactCacheManager: ContactCacheManagerType
   let brokers: PersistenceBrokersType
 
-  var usableCoin: CNBBaseCoin {
+  var usableCoin: CNBCnlibBaseCoin {
     return brokers.wallet.usableCoin
   }
 
@@ -101,8 +101,8 @@ class PersistenceManager: PersistenceManagerType {
 
   func walletAndUserId(in context: NSManagedObjectContext) -> Promise<(walletId: String, userId: String)> {
     return Promise { seal in
-      guard let walletId = self.databaseManager.walletId(in: context) else { throw CKPersistenceError.missingValue(key: "wallet ID") }
-      guard let userId = self.databaseManager.userId(in: context) else { throw CKPersistenceError.missingValue(key: "user ID") }
+      guard let walletId = self.databaseManager.walletId(in: context) else { throw DBTError.Persistence.missingValue(key: "wallet ID") }
+      guard let userId = self.databaseManager.userId(in: context) else { throw DBTError.Persistence.missingValue(key: "user ID") }
       seal.fulfill((walletId, userId))
     }
   }
@@ -113,7 +113,7 @@ class PersistenceManager: PersistenceManagerType {
 
   func defaultHeaders(temporaryUserId: String, in context: NSManagedObjectContext) -> Promise<DefaultRequestHeaders> {
     return Promise { seal in
-      guard let walletId = self.databaseManager.walletId(in: context) else { throw CKPersistenceError.missingValue(key: "wallet ID") }
+      guard let walletId = self.databaseManager.walletId(in: context) else { throw DBTError.Persistence.missingValue(key: "wallet ID") }
       let headers = DefaultRequestHeaders(walletId: walletId, userId: temporaryUserId)
       seal.fulfill(headers)
     }

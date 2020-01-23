@@ -288,17 +288,17 @@ extension WalletAddressRequestResponse {
     let btcKeyPath = WalletAddressRequestResponseKey.btcAmount.path
 
     guard let responseMetadata = response.metadata else {
-      throw CKNetworkError.responseMissingValue(keyPath: WalletAddressRequestResponseKey.metadata.path)
+      throw DBTError.Network.responseMissingValue(keyPath: WalletAddressRequestResponseKey.metadata.path)
     }
 
     let metadata = try WalletAddressRequestMetadata.validateResponse(responseMetadata)
 
     guard  let btcAmount = metadata.amount?.btc else {
-      throw CKNetworkError.responseMissingValue(keyPath: btcKeyPath)
+      throw DBTError.Network.responseMissingValue(keyPath: btcKeyPath)
     }
 
     guard btcAmount > 0, btcAmount < MAX_SATOSHI else {
-      throw CKNetworkError.invalidValue(keyPath: btcKeyPath, value: String(btcAmount), response: response)
+      throw DBTError.Network.invalidValue(keyPath: btcKeyPath, value: String(btcAmount), response: response)
     }
 
     let stringValidatedResponse = try response.validateStringValues()

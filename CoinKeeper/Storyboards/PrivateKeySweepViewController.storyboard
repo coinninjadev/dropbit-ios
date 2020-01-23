@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Private Key Sweep View Controller-->
+        <scene sceneID="0Qi-D2-kwk">
+            <objects>
+                <viewController storyboardIdentifier="PrivateKeySweepViewController" id="nW8-um-wGJ" customClass="PrivateKeySweepViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="pOf-Co-3D7">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K8y-jt-GP6">
+                                <rect key="frame" x="5" y="243" width="404" height="410"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R99-XY-OU7" customClass="TransactionDetailBreakdownLabel" customModule="DropBit" customModuleProvider="target">
+                                        <rect key="frame" x="35" y="50" width="334" height="0.0"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="QeZ-j6-CEb">
+                                        <rect key="frame" x="35" y="62" width="334" height="333"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e6Z-KV-ibQ">
+                                                <rect key="frame" x="0.0" y="0.0" width="334" height="44"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8gi-3v-bxA">
+                                                        <rect key="frame" x="8" y="0.0" width="318" height="44"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="44" id="448-EU-OfJ"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="8gi-3v-bxA" secondAttribute="trailing" constant="8" id="61u-sR-wvS"/>
+                                                    <constraint firstItem="8gi-3v-bxA" firstAttribute="leading" secondItem="e6Z-KV-ibQ" secondAttribute="leading" constant="8" id="DIG-un-WwY"/>
+                                                    <constraint firstAttribute="height" constant="44" id="ZjB-Op-fbD"/>
+                                                    <constraint firstItem="8gi-3v-bxA" firstAttribute="centerY" secondItem="e6Z-KV-ibQ" secondAttribute="centerY" id="niJ-yT-eO0"/>
+                                                </constraints>
+                                            </view>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="UIh-al-LFI">
+                                                <rect key="frame" x="0.0" y="90" width="334" height="100"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="100" id="Kjv-lF-3r1"/>
+                                                </constraints>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="9H8-Yq-19f">
+                                                <rect key="frame" x="0.0" y="236" width="334" height="97"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J1m-4R-z2x" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="334" height="51"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="51" id="TNB-Jx-Zft"/>
+                                                        </constraints>
+                                                        <state key="normal" title="TRANSFER NOW"/>
+                                                        <connections>
+                                                            <action selector="actionButtonWasTouched" destination="nW8-um-wGJ" eventType="touchUpInside" id="AKx-OE-uCJ"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3rX-JN-Bsa" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="67" width="334" height="30"/>
+                                                        <state key="normal" title="CANCEL"/>
+                                                        <connections>
+                                                            <action selector="cancelButtonWasTouched" destination="nW8-um-wGJ" eventType="touchUpInside" id="1vA-jx-ziG"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="3rX-JN-Bsa" firstAttribute="height" secondItem="J1m-4R-z2x" secondAttribute="height" multiplier="0.588235" id="M4b-Bu-uo9"/>
+                                                </constraints>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="R99-XY-OU7" firstAttribute="centerX" secondItem="K8y-jt-GP6" secondAttribute="centerX" id="3qz-JP-vie"/>
+                                    <constraint firstItem="R99-XY-OU7" firstAttribute="bottom" secondItem="K8y-jt-GP6" secondAttribute="top" constant="50" id="3tp-Q6-nkg"/>
+                                    <constraint firstAttribute="height" constant="410" id="9oc-sf-oFo"/>
+                                    <constraint firstItem="R99-XY-OU7" firstAttribute="width" secondItem="QeZ-j6-CEb" secondAttribute="width" id="AVO-VB-Pkv"/>
+                                    <constraint firstItem="QeZ-j6-CEb" firstAttribute="top" secondItem="R99-XY-OU7" secondAttribute="bottom" constant="12" id="DcW-gX-kkq"/>
+                                    <constraint firstAttribute="trailing" secondItem="QeZ-j6-CEb" secondAttribute="trailing" constant="35" id="Ets-jJ-uqw"/>
+                                    <constraint firstAttribute="bottom" secondItem="QeZ-j6-CEb" secondAttribute="bottom" constant="15" id="MVz-JI-DoM"/>
+                                    <constraint firstItem="QeZ-j6-CEb" firstAttribute="leading" secondItem="K8y-jt-GP6" secondAttribute="leading" constant="35" id="ahi-tP-Cd1"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="K8y-jt-GP6" firstAttribute="centerY" secondItem="pOf-Co-3D7" secondAttribute="centerY" id="D9p-go-fJU"/>
+                            <constraint firstItem="BMf-rK-2xB" firstAttribute="trailing" secondItem="K8y-jt-GP6" secondAttribute="trailing" constant="5" id="MXI-QK-8Ng"/>
+                            <constraint firstItem="K8y-jt-GP6" firstAttribute="leading" secondItem="BMf-rK-2xB" secondAttribute="leading" constant="5" id="W70-Jj-aG3"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="BMf-rK-2xB"/>
+                    </view>
+                    <connections>
+                        <outlet property="actionButton" destination="J1m-4R-z2x" id="hqj-PR-NuW"/>
+                        <outlet property="breakdownStackView" destination="UIh-al-LFI" id="ksD-sl-CT7"/>
+                        <outlet property="cancelButton" destination="3rX-JN-Bsa" id="JOC-zY-feQ"/>
+                        <outlet property="containerView" destination="K8y-jt-GP6" id="cXV-Zj-fQQ"/>
+                        <outlet property="containerViewCenterYConstraint" destination="D9p-go-fJU" id="1AG-9X-nzR"/>
+                        <outlet property="containerViewHeightConstraint" destination="9oc-sf-oFo" id="Mf6-NN-Eyf"/>
+                        <outlet property="privateKeyLabel" destination="8gi-3v-bxA" id="SB8-Qp-dAR"/>
+                        <outlet property="privateKeyLabelBackgroundView" destination="e6Z-KV-ibQ" id="pKP-GI-hpg"/>
+                        <outlet property="titleLabel" destination="R99-XY-OU7" id="Jfs-Fy-eGk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rVZ-W0-yp2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-125" y="-117"/>
+        </scene>
+    </scenes>
+</document>

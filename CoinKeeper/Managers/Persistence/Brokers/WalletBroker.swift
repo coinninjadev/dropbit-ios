@@ -7,7 +7,7 @@
 //
 
 import CoreData
-import CNBitcoinKit
+import Cnlib
 import PromiseKit
 
 class WalletBroker: CKPersistenceBroker, WalletBrokerType {
@@ -69,19 +69,19 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
   /// The responses should correspond 1-to-1 with the metaAddresses, order is irrelevant.
   func persistAddedWalletAddresses(
     from responses: [WalletAddressResponse],
-    metaAddresses: [CNBMetaAddress],
+    metaAddresses: [CNBCnlibMetaAddress],
     in context: NSManagedObjectContext) -> Promise<Void> {
     return Promise { seal in
 
       guard let wallet = CKMWallet.find(in: context) else {
-        seal.reject(CKPersistenceError.noManagedWallet)
+        seal.reject(DBTError.Persistence.noManagedWallet)
         return
       }
 
       var persistencePromises: [Promise<Void>] = []
       for response in responses {
         guard let matchingMetaAddress = metaAddresses.filter({ $0.address == response.address }).first else {
-          seal.reject(WalletAddressError.unexpectedAddress)
+          seal.reject(DBTError.Wallet.unexpectedAddress)
           return
         }
 
@@ -124,17 +124,16 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
     }
   }
 
-  var usableCoin: CNBBaseCoin {
-    var coinType: CoinType = .MainNet
+  var usableCoin: BaseCoin {
+    var coinType = CoinType.mainnet
     #if DEBUG
-    coinType = CKUserDefaults().useRegtest ? .TestNet : .MainNet
+    coinType = CKUserDefaults().useRegtest ? .testnet : .mainnet
     #endif
     let possibleSegwitWords = keychainManager.retrieveValue(for: .walletWordsV2) as? [String]
+    var purpose = CoinPurpose.nestedSegwit
     if let words = possibleSegwitWords, words.count == 12 {
-      return CNBBaseCoin(purpose: .BIP84, coin: coinType, account: 0)
-    } else {
-      return CNBBaseCoin(purpose: .BIP49, coin: coinType, account: 0)
+      purpose = .segwit
     }
+    return BaseCoin(purpose: purpose, coinType: coinType)
   }
-
 }

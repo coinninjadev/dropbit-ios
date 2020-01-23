@@ -42,7 +42,7 @@ extension PriceTransactionResponse {
     let avg = response.average
 
     guard avg > 0 else {
-      throw CKNetworkError.invalidValue(keyPath: path, value: String(avg), response: response)
+      throw DBTError.Network.invalidValue(keyPath: path, value: String(avg), response: response)
     }
 
     let stringValidatedResponse = try response.validateStringValues()

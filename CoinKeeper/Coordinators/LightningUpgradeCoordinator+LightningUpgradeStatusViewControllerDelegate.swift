@@ -8,11 +8,11 @@
 
 import Foundation
 import PromiseKit
-import CNBitcoinKit
+import Cnlib
 import CoreData
 
 extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDelegate {
-  func viewControllerDidRequestUpgradedWallet(_ viewController: LightningUpgradeStatusViewController) -> CNBHDWallet? {
+  func viewControllerDidRequestUpgradedWallet(_ viewController: LightningUpgradeStatusViewController) -> CNBCnlibHDWallet? {
     return newWallet
   }
 
@@ -30,11 +30,13 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
     return parent.networkManager.updateWallet(walletFlags: existingFlags.flags, referrer: nil)
       .then { (response: WalletResponse) -> Promise<Void> in
         let flagsParser = WalletFlagsParser(flags: response.flags)
-        guard flagsParser.walletDeactivated else { throw CKWalletError.failedToDeactivate }
+        guard flagsParser.walletDeactivated else { throw DBTError.Wallet.failedToDeactivate }
         return self.parent.persistenceManager.keychainManager.upgrade(recoveryWords: self.newWords)
       }
       .then(in: context) { _ -> Promise<Void> in
-        let newWalletManager = WalletManager(words: self.newWords, persistenceManager: self.parent.persistenceManager)
+        guard let newWalletManager = WalletManager(words: self.newWords, persistenceManager: self.parent.persistenceManager) else {
+          return Promise(error: DBTError.SyncRoutine.missingWalletManager)
+        }
 
         let userIsVerified = self.parent.persistenceManager.brokers.user.userIsVerified(in: context)
 
@@ -44,10 +46,9 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
           return self.proceedCreatingWallet(walletManager: newWalletManager, flagsParser: newFlags, in: context)
         }
       }
-      .asVoid()
   }
 
-  func viewController(_ viewController: LightningUpgradeStatusViewController, broadcast metadata: CNBTransactionMetadata) -> Promise<String> {
+  func viewController(_ viewController: LightningUpgradeStatusViewController, broadcast metadata: CNBCnlibTransactionMetadata) -> Promise<String> {
     return parent.networkManager.broadcastTx(metadata: metadata)
       .get { _ in self.parent.analyticsManager.track(property: MixpanelProperty(key: .lightningUpgradedFunds, value: true)) }
   }
@@ -65,21 +66,28 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
     in context: NSManagedObjectContext
     ) -> Promise<Void> {
     let timestamp = CKDateFormatter.rfc3339.string(from: Date())
-    let signature = walletManager.signatureSigning(data: timestamp.data(using: .utf8) ?? Data())
-    let body = ReplaceWalletBody(publicKeyString: walletManager.hexEncodedPublicKey,
-                                 flags: flagsParser.flags,
-                                 timestamp: timestamp,
-                                 signature: signature)
-    return self.parent.networkManager.replaceWallet(body: body)
-      .done(in: context) { (response: WalletResponse) in
-        self.parent.walletManager = walletManager
-        try self.parent.persistenceManager.brokers.wallet.persistWalletResponse(from: response, in: context)
-        let wallet = CKMWallet.find(in: context)
-        wallet?.lastReceivedIndex = CKMWallet.defaultLastIndex
-        wallet?.lastChangeIndex = CKMWallet.defaultLastIndex + 1 // send-max to segwit wallet goes to first change address
-        try context.saveRecursively()
-        self.parent.persistenceManager.brokers.wallet.receiveAddressIndexGaps = []
-    }
+    let data = timestamp.data(using: .utf8) ?? Data()
+    return walletManager.signatureSigningPromise(data: data)
+      .then { (signature: String) -> Promise<ReplaceWalletBody> in
+        return walletManager.hexEncodedPublicKeyPromise()
+          .then { (key: String) -> Promise<ReplaceWalletBody> in
+            let body = ReplaceWalletBody(publicKeyString: key,
+                                         flags: flagsParser.flags,
+                                         timestamp: timestamp,
+                                         signature: signature)
+            return .value(body)
+        }
+      }
+      .then { return self.parent.networkManager.replaceWallet(body: $0) }
+        .done(in: context) { (response: WalletResponse) in
+          self.parent.walletManager = walletManager
+          try self.parent.persistenceManager.brokers.wallet.persistWalletResponse(from: response, in: context)
+          let wallet = CKMWallet.find(in: context)
+          wallet?.lastReceivedIndex = CKMWallet.defaultLastIndex
+          wallet?.lastChangeIndex = CKMWallet.defaultLastIndex + 1 // send-max to segwit wallet goes to first change address
+          try context.saveRecursively()
+          self.parent.persistenceManager.brokers.wallet.receiveAddressIndexGaps = []
+      }
   }
 
   private func proceedCreatingWallet(
@@ -87,8 +95,8 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
     flagsParser: WalletFlagsParser,
     in context: NSManagedObjectContext) -> Promise<Void> {
     self.parent.walletManager = walletManager
-    let pubkey = walletManager.hexEncodedPublicKey
-    return self.parent.networkManager.createWallet(withPublicKey: pubkey, walletFlags: flagsParser.flags)
-      .done(in: context) { try self.parent.persistenceManager.brokers.wallet.persistWalletResponse(from: $0, in: context)}
+    return walletManager.hexEncodedPublicKeyPromise()
+      .then { return self.parent.networkManager.createWallet(withPublicKey: $0, walletFlags: flagsParser.flags) }
+      .done(in: context) { try self.parent.persistenceManager.brokers.wallet.persistWalletResponse(from: $0, in: context) }
   }
 }

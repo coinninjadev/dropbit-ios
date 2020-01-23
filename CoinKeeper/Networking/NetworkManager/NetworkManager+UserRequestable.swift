@@ -50,14 +50,14 @@ extension NetworkManager: UserRequestable {
     return cnProvider.request(UserTarget.create(headers, body))
       .recover { error -> Promise<UserResponse> in
 
-        if let networkError = error as? CKNetworkError {
+        if let networkError = error as? DBTError.Network {
           switch networkError {
           case .recordAlreadyExists(let response):
             let userResponse = try response.map(UserResponse.self, using: UserResponse.decoder)
-            throw UserProviderError.userAlreadyExists(userResponse.id, body)
+            throw DBTError.UserRequest.userAlreadyExists(userResponse.id, body)
           case .twilioError(let response):
             let userResponse = try response.map(UserResponse.self, using: UserResponse.decoder)
-            throw UserProviderError.twilioError(userResponse, body)
+            throw DBTError.UserRequest.twilioError(userResponse, body)
           default:
             throw error
           }
@@ -87,7 +87,7 @@ extension NetworkManager: UserRequestable {
     return cnProvider.requestObject(UserQueryTarget.query(identityHashes))
       .then { (jsonObject: JSONObject) -> Promise<StringDictResponse> in
         guard let stringDict = jsonObject as? [String: String] else {
-          throw CKNetworkError.badResponse
+          throw DBTError.Network.badResponse
         }
 
         return Promise.value(stringDict)
@@ -98,9 +98,9 @@ extension NetworkManager: UserRequestable {
   func resendVerification(headers: DefaultRequestHeaders, body: UserIdentityBody) -> Promise<UserResponse> {
     return cnProvider.request(UserTarget.resendVerification(headers, body))
       .recover { error -> Promise<UserResponse> in
-        if let networkError = error as? CKNetworkError, case let .twilioError(response) = networkError {
+        if let networkError = error as? DBTError.Network, case let .twilioError(response) = networkError {
           let userResponse = try response.map(UserResponse.self, using: UserResponse.decoder)
-          throw UserProviderError.twilioError(userResponse, body)
+          throw DBTError.UserRequest.twilioError(userResponse, body)
         } else {
           throw error
         }

@@ -7,20 +7,20 @@
 //
 
 import UIKit
-import CNBitcoinKit
+import Cnlib
 import PromiseKit
 
 protocol LightningUpgradeStatusViewControllerDelegate: AnyObject {
-  func viewControllerDidRequestUpgradedWallet(_ viewController: LightningUpgradeStatusViewController) -> CNBHDWallet?
+  func viewControllerDidRequestUpgradedWallet(_ viewController: LightningUpgradeStatusViewController) -> CNBCnlibHDWallet?
 
   func viewControllerStartUpgradingWallet(_ viewController: LightningUpgradeStatusViewController) -> Promise<Void>
-  func viewController(_ viewController: LightningUpgradeStatusViewController, broadcast metadata: CNBTransactionMetadata) -> Promise<String>
+  func viewController(_ viewController: LightningUpgradeStatusViewController, broadcast metadata: CNBCnlibTransactionMetadata) -> Promise<String>
   func viewController(_ viewController: LightningUpgradeStatusViewController, failedToUpgradeWithError error: Error)
 }
 
 protocol LightningUpgradeStatusDataSource: AnyObject {
-  var transactionData: CNBTransactionData? { get }
-  var transactionMetadata: CNBTransactionMetadata? { get }
+  var transactionData: CNBCnlibTransactionData? { get }
+  var transactionMetadata: CNBCnlibTransactionMetadata? { get }
 }
 
 final class LightningUpgradeStatusViewController: BaseViewController, StoryboardInitializable {

@@ -77,6 +77,8 @@ class WalletOverviewViewControllerTests: XCTestCase {
 
     func latestExchangeRates(responseHandler: ExchangeRatesRequest) { }
 
+    func latestExchangeRates() -> Promise<ExchangeRates> { Promise { _ in } }
+
     func viewControllerDidTapReceivePayment(_ viewController: UIViewController,
                                             converter: CurrencyConverter, walletTransactionType: WalletTransactionType) {}
 

@@ -327,6 +327,11 @@ class AlertManager: AlertManagerType {
                  actionConfigs: [okAlertActionConfig])
   }
 
+  func defaultAlert(withError error: Error) -> AlertControllerType {
+    let dbtError = DBTError.cast(error)
+    return defaultAlert(withTitle: dbtError.displayTitle, description: dbtError.displayMessage)
+  }
+
   func alertActionSheet(withTitle title: String?,
                         message: String?,
                         options: [AlertActionConfiguration]) -> UIAlertController {
@@ -354,11 +359,16 @@ class AlertManager: AlertManagerType {
     }
   }
 
-  func showError(message: String, forDuration duration: TimeInterval?) {
+  func showErrorHUD(message: String, forDuration duration: TimeInterval?) {
     DispatchQueue.main.async {
       SVProgressHUD.showError(withStatus: message)
       duration.flatMap { SVProgressHUD.dismiss(withDelay: $0) }
     }
+  }
+
+  func showErrorHUD(_ error: Error, forDuration duration: TimeInterval?) {
+    let dbtError = DBTError.cast(error)
+    showErrorHUD(message: dbtError.displayMessage, forDuration: duration)
   }
 
   private func pmAlertStyle(from style: AlertActionStyle) -> PMAlertActionStyle {

@@ -16,6 +16,7 @@ class DropBitUIDatabaseTests: UITestCase {
     app.launch()
   }
 
+  /*
   func testRestoreFromICloudPromptsUser() {
 
     let recoveryWords = UITestHelpers.recoverOnlyWords()
@@ -41,5 +42,6 @@ class DropBitUIDatabaseTests: UITestCase {
     RequestPayPage().checkAddressLabelDisplays(expectedAddress: firstAddress)
 
   }
+  */
 
 }

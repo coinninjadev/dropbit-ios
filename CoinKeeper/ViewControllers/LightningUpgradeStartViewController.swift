@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import CNBitcoinKit
+import Cnlib
 
 protocol LightningUpgradeStartViewControllerDelegate: AnyObject {
   func viewControllerRequestedShowLightningUpgradeInfo(_ viewController: LightningUpgradeStartViewController)
@@ -46,7 +46,7 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
 
   var exchangeRates: ExchangeRates = ExchangeRateManager().exchangeRates
 
-  private var data: CNBTransactionData?
+  private var data: CNBCnlibTransactionData?
   var nextStep: CKCompletion = {}
 
   override func viewDidLoad() {
@@ -62,7 +62,7 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
   }
 
   // to be called from owner when balance is provided
-  func updateUI(withTransactionData data: CNBTransactionData?) {
+  func updateUI(withTransactionData data: CNBCnlibTransactionData?) {
     self.data = data
 
     // set activity indicator new distance
@@ -89,7 +89,7 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
                    completion: nil)
   }
 
-  private func showAmountViewIfNecessary(with data: CNBTransactionData?) {
+  private func showAmountViewIfNecessary(with data: CNBCnlibTransactionData?) {
     guard let data = data, data.amount != 0 else { return }
     let fontSize: CGFloat = 12
     let btcAmount = NSDecimalNumber(integerAmount: Int(data.amount), currency: .BTC)

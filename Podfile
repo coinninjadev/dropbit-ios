@@ -3,7 +3,6 @@ platform :ios, '12.2'
 inhibit_all_warnings!
 
 def shared_pods
-  pod 'MMDrawerController', '~> 0.6.0'
   pod 'Permission/Camera', git: 'https://github.com/SixFiveSoftware/Permission.git', commit: '659c257'
   pod 'Permission/Notifications', git: 'https://github.com/SixFiveSoftware/Permission.git', commit: '659c257'
   pod 'Permission/Contacts', git: 'https://github.com/SixFiveSoftware/Permission.git', commit: '659c257'
@@ -14,12 +13,17 @@ def shared_pods
   pod 'ReachabilitySwift', '~> 4.3.1'
   pod 'PhoneNumberKit', git: 'https://github.com/blwinters/PhoneNumberKit.git', commit: '6222471'
   pod 'JKSteppedProgressBar', git: 'https://github.com/MitchellMalleo/JKSteppedProgressBar.git', commit: '0519aa3'
-  pod 'RNCryptor', '~> 5.1.0'
   pod 'DZNEmptyDataSet', '~> 1.8.1'
   pod 'Willow', '~> 5.0'
   pod 'Sheeeeeeeeet', '~> 2.0.2'
-  pod 'Firebase/Analytics'
-  pod 'Firebase/DynamicLinks'
+  pod 'Firebase/Analytics', '~> 6.14.0'
+  pod 'Firebase/DynamicLinks', '~> 6.14.0'
+  pod 'OAuthSwift', '~> 2.1.0'
+  pod 'PMAlertController', '~> 4.0.0'
+  pod 'Charts', '~> 3.4.0'
+  pod 'SwiftMessages', '~> 7.0.0'
+  pod 'Gifu', '~> 3.2.0'
+  pod 'Strongbox', '~> 0.5.3'
 end
 
 target 'DropBit' do

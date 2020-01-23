@@ -115,11 +115,11 @@ struct SharedPayloadV2: SharedPayloadCodable {
 
   init(preauthInvitationDTO invitationDTO: OutgoingInvitationDTO, senderIdentity: UserIdentityBody) throws {
     guard let payloadDTO = invitationDTO.sharedPayloadDTO else {
-      throw CKPersistenceError.missingValue(key: "sharedPayloadDTO")
+      throw DBTError.Persistence.missingValue(key: "sharedPayloadDTO")
     }
 
     guard let amountInfo = payloadDTO.amountInfo else {
-      throw CKPersistenceError.missingValue(key: "amountInfo")
+      throw DBTError.Persistence.missingValue(key: "amountInfo")
     }
 
     self.init(txid: "",

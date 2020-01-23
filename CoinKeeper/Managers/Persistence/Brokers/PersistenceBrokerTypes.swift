@@ -6,7 +6,7 @@
 //  Copyright © 2019 Coin Ninja, LLC. All rights reserved.
 //
 
-import CNBitcoinKit
+import Cnlib
 import CoreData
 import Foundation
 import PromiseKit
@@ -77,7 +77,7 @@ protocol CheckInBrokerType: AnyObject {
   var cachedGoodFee: Double { get set }
 
   func processCheckIn(response: CheckInResponse) -> Promise<Void>
-
+  func fee(forType type: TransactionFeeType) -> Double
 }
 
 protocol DeviceBrokerType: AnyObject {
@@ -149,11 +149,12 @@ protocol TransactionBrokerType: AnyObject {
 
   @discardableResult
   func persistTemporaryTransaction(
-    from transactionData: CNBTransactionData,
+    from transactionData: CNBCnlibTransactionData,
     with outgoingTransactionData: OutgoingTransactionData,
     txid: String,
     invitation: CKMInvitation?,
-    in context: NSManagedObjectContext
+    in context: NSManagedObjectContext,
+    incomingAddress: String?
     ) -> CKMTransaction
 
   @discardableResult
@@ -207,13 +208,13 @@ protocol WalletBrokerType: AnyObject {
   /// The responses should correspond 1-to-1 with the metaAddresses, order is irrelevant.
   func persistAddedWalletAddresses(
     from responses: [WalletAddressResponse],
-    metaAddresses: [CNBMetaAddress],
+    metaAddresses: [CNBCnlibMetaAddress],
     in context: NSManagedObjectContext) -> Promise<Void>
 
   func updateWalletLastIndexes(in context: NSManagedObjectContext)
   func lastReceiveAddressIndex(in context: NSManagedObjectContext) -> Int?
   func lastChangeAddressIndex(in context: NSManagedObjectContext) -> Int?
   var receiveAddressIndexGaps: Set<Int> { get set }
-  var usableCoin: CNBBaseCoin { get }
+  var usableCoin: BaseCoin { get }
 
 }

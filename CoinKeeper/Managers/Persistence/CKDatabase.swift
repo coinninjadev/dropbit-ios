@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 import PromiseKit
-import CNBitcoinKit
+import Cnlib
 
 class CKDatabase: PersistenceDatabaseType {
 
@@ -81,7 +81,7 @@ class CKDatabase: PersistenceDatabaseType {
 
       if errors.isNotEmpty {
         let nsErrors = errors.map { $0 as NSError }
-        throw CKPersistenceError.failedToBatchDeleteWallet(nsErrors)
+        throw DBTError.Persistence.failedToBatchDeleteWallet(nsErrors)
       }
     }
   }
@@ -124,7 +124,7 @@ class CKDatabase: PersistenceDatabaseType {
 
   func persistWalletResponse(_ response: WalletResponse, in context: NSManagedObjectContext) throws {
     guard let wallet = CKMWallet.find(in: context) else {
-      throw CKPersistenceError.noManagedWallet
+      throw DBTError.Persistence.noManagedWallet
     }
 
     wallet.id = response.id
@@ -155,7 +155,7 @@ class CKDatabase: PersistenceDatabaseType {
     return Promise { seal in
       context.perform {
         guard let user = CKMUser.find(in: context) else {
-          seal.reject(CKPersistenceError.noUser)
+          seal.reject(DBTError.Persistence.noUser)
           return
         }
 
@@ -168,13 +168,17 @@ class CKDatabase: PersistenceDatabaseType {
   }
 
   func persistServerAddress(
-    for metaAddress: CNBMetaAddress,
+    for metaAddress: CNBCnlibMetaAddress,
     createdAt: Date,
     wallet: CKMWallet,
     in context: NSManagedObjectContext) -> Promise<Void> {
     return Promise { seal in
+      guard let metaPath = metaAddress.derivationPath else {
+        seal.reject(DBTError.Persistence.missingValue(key: "metaAddress.derivationPath"))
+        return
+      }
       let addressString = metaAddress.address
-      let path = DerivativePathResponse(derivativePath: metaAddress.derivationPath)
+      let path = DerivativePathResponse(derivativePath: metaPath)
 
       context.perform {
         let newAddress = CKMServerAddress(address: addressString, createdAt: createdAt, insertInto: context)
@@ -212,11 +216,12 @@ class CKDatabase: PersistenceDatabaseType {
   }
 
   func persistTemporaryTransaction(
-    from transactionData: CNBTransactionData,
+    from transactionData: CNBCnlibTransactionData,
     with outgoingTransactionData: OutgoingTransactionData,
     txid: String,
     invitation: CKMInvitation?,
-    in context: NSManagedObjectContext
+    in context: NSManagedObjectContext,
+    incomingAddress: String?
     ) -> CKMTransaction {
 
     var outgoingTxDTO = outgoingTransactionData
@@ -258,8 +263,13 @@ class CKDatabase: PersistenceDatabaseType {
 
     // Currently, this function is only called after broadcastTx()
     relevantTransaction.broadcastedAt = Date()
+    if let address = incomingAddress {
+      let counterparty = CKMCounterpartyAddress(address: address, insertInto: context)
+      relevantTransaction.counterpartyAddress = counterparty
+      relevantTransaction.isIncoming = true
+    }
 
-    let vouts = transactionData.unspentTransactionOutputs.compactMap { CKMVout.find(from: $0, in: context) }
+    let vouts = CKMVout.findUTXOs(from: transactionData, in: context)
 
     // Link the vout to the relevant tempTx in case we need to mark the tx as failed and free up these vouts
     relevantTransaction.temporarySentTransaction?.reservedVouts = Set(vouts)

@@ -7,6 +7,7 @@
 //
 
 import Moya
+import Foundation
 
 public enum CoinNinjaBroadcastTarget {
   case broadcast(String)
@@ -22,7 +23,7 @@ extension CoinNinjaBroadcastTarget: TargetType {
     return "broadcast"
   }
 
-  public var method: Method {
+  public var method: Moya.Method {
     return .post
   }
 

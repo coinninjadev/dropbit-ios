@@ -179,7 +179,7 @@ extension TransactionResponse {
     if let minedBlockheight = response.blockheight {
       guard minedBlockheight != 0 else { // blockheight can be -1 for mempool transactions in regtest
         let path = TransactionResponseKey.blockheight.path
-        throw CKNetworkError.invalidValue(keyPath: path, value: String(minedBlockheight), response: response)
+        throw DBTError.Network.invalidValue(keyPath: path, value: String(minedBlockheight), response: response)
       }
     }
 

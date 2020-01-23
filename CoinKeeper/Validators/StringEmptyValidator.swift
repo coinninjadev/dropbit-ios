@@ -8,17 +8,13 @@
 
 import Foundation
 
-enum StringEmptyValidatorError: ValidatorTypeError {
+enum StringEmptyValidatorError: ValidatorErrorType {
   case isEmpty
 
-  var debugMessage: String {
+  var displayMessage: String {
     switch self {
-    case .isEmpty: return "Value is empty."
+    case .isEmpty: return "String is empty."
     }
-  }
-
-  var displayMessage: String? {
-    return nil
   }
 
 }

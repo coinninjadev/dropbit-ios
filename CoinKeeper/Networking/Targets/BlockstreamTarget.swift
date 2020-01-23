@@ -7,6 +7,7 @@
 //
 
 import Moya
+import Foundation
 
 public enum BlockstreamTarget {
   case sendRawTransaction(String)
@@ -21,7 +22,7 @@ extension BlockstreamTarget: TargetType {
     return "tx"
   }
 
-  public var method: Method {
+  public var method: Moya.Method {
     return .post
   }
 

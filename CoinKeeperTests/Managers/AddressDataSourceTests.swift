@@ -7,7 +7,7 @@
 //
 
 @testable import DropBit
-import CNBitcoinKit
+import Cnlib
 import XCTest
 
 class AddressDataSourceTests: MockedPersistenceTestCase {
@@ -17,15 +17,21 @@ class AddressDataSourceTests: MockedPersistenceTestCase {
     return mockUserDefaultsManager
   }
 
+  override func setUp() {
+    super.setUp()
+    let coin = BTCMainnetCoin(purpose: .segwit)
+    let wallet = CNBCnlibNewHDWalletFromWords(TestHelpers.abandonAbandon().joined(separator: " "), coin)!
+    sut = AddressDataSource(wallet: wallet, persistenceManager: mockPersistenceManager)
+  }
+
   override func tearDown() {
+    sut = nil
     super.tearDown()
-    self.sut = nil
   }
 
   func testNextAvailableReceiveIndex_firstReturns0() {
     let context = InMemoryCoreDataStack().context
     mockBrokers.mockWallet.lastReceiveAddressIndexValue = -1
-    sut = AddressDataSource(wallet: CNBHDWallet(), persistenceManager: mockPersistenceManager)
     let nextIndex = sut.nextAvailableReceiveIndex(indicesToSkip: [], in: context)
 
     XCTAssertEqual(nextIndex, 0, "First receive index should be 0")
@@ -34,7 +40,6 @@ class AddressDataSourceTests: MockedPersistenceTestCase {
   func testNextAvailableReceiveIndex_after1Returns2() {
     let context = InMemoryCoreDataStack().context
     mockBrokers.mockWallet.lastReceiveAddressIndexValue = 1
-    sut = AddressDataSource(wallet: CNBHDWallet(), persistenceManager: mockPersistenceManager)
     let nextIndex = sut.nextAvailableReceiveIndex(indicesToSkip: [], in: context)
 
     XCTAssertEqual(nextIndex, 2, "Index after 1 should be 2")
@@ -42,7 +47,6 @@ class AddressDataSourceTests: MockedPersistenceTestCase {
 
   func testNextAvailableReceiveIndex_skipsContiguousIndices() {
     let context = InMemoryCoreDataStack().context
-    sut = AddressDataSource(wallet: CNBHDWallet(), persistenceManager: mockPersistenceManager)
     let nextIndex = sut.nextAvailableReceiveIndex(indicesToSkip: [0, 1], in: context)
 
     XCTAssertEqual(nextIndex, 2, "First receive index after skip should be 2")
@@ -51,7 +55,6 @@ class AddressDataSourceTests: MockedPersistenceTestCase {
   func testNextAvailableReceiveIndex_skips6() {
     let context = InMemoryCoreDataStack().context
     mockBrokers.mockWallet.lastReceiveAddressIndexValue = 5
-    sut = AddressDataSource(wallet: CNBHDWallet(), persistenceManager: mockPersistenceManager)
     let nextIndex = sut.nextAvailableReceiveIndex(indicesToSkip: [6], in: context)
 
     XCTAssertEqual(nextIndex, 7, "Index after 5 skipping 6 should be 7")
@@ -59,7 +62,6 @@ class AddressDataSourceTests: MockedPersistenceTestCase {
 
   func testNextAvailableReceiveIndex_returnsNoncontiguousSkipIndices() {
     let context = InMemoryCoreDataStack().context
-    sut = AddressDataSource(wallet: CNBHDWallet(), persistenceManager: mockPersistenceManager)
     let nextIndex = sut.nextAvailableReceiveIndex(indicesToSkip: [0, 1, 4], in: context)
 
     XCTAssertEqual(nextIndex, 2, "First receive index after skip should be 2")
@@ -69,7 +71,6 @@ class AddressDataSourceTests: MockedPersistenceTestCase {
     let context = InMemoryCoreDataStack().context
     mockBrokers.mockWallet.receiveAddressIndexGapsValue = [3, 8, 20]
     mockBrokers.mockWallet.lastReceiveAddressIndexValue = 21
-    sut = AddressDataSource(wallet: CNBHDWallet(), persistenceManager: mockPersistenceManager)
     let nextIndex = sut.nextAvailableReceiveIndex(indicesToSkip: [], in: context)
 
     XCTAssertEqual(nextIndex, 3, "Should return min gap index of 3")
@@ -80,12 +81,10 @@ class AddressDataSourceTests: MockedPersistenceTestCase {
     mockBrokers.mockWallet.receiveAddressIndexGapsValue = []
     mockBrokers.mockWallet.lastReceiveAddressIndexValue = 0
 
-    sut = AddressDataSource(wallet: CNBHDWallet(), persistenceManager: mockPersistenceManager)
-
     let dropBitIndices = [1, 2]
-    let dropBitAddresses = dropBitIndices.compactMap { sut.receiveAddress(at: $0).address }
+    let dropBitAddresses = dropBitIndices.compactMap { try? sut.receiveAddress(at: $0).address }
     mockBrokers.mockInvitation.addressValuesForReceivedPendingDropBits = dropBitAddresses
-    let expectedAddress = sut.receiveAddress(at: 3).address
+    let expectedAddress = (try? sut.receiveAddress(at: 3).address) ?? ""
 
     let nextAddress = sut.nextAvailableReceiveAddress(forServerPool: false, in: context)?.address ?? "-"
 
@@ -97,14 +96,12 @@ class AddressDataSourceTests: MockedPersistenceTestCase {
     mockBrokers.mockWallet.receiveAddressIndexGapsValue = [3, 4, 6, 12]
     mockBrokers.mockWallet.lastReceiveAddressIndexValue = 15
 
-    sut = AddressDataSource(wallet: CNBHDWallet(), persistenceManager: mockPersistenceManager)
-
     let dropBitIndices = [3, 4] // two DropBits matching first two gaps
-    let dropBitAddresses = dropBitIndices.compactMap { sut.receiveAddress(at: $0).address }
+    let dropBitAddresses = dropBitIndices.compactMap { try? sut.receiveAddress(at: $0).address }
     mockBrokers.mockInvitation.addressValuesForReceivedPendingDropBits = dropBitAddresses
 
     let expectedIndices = [6, 12, 16, 17]
-    let expectedAddresses = expectedIndices.compactMap { sut.receiveAddress(at: $0).address }.asSet()
+    let expectedAddresses = expectedIndices.compactMap { try? sut.receiveAddress(at: $0).address }.asSet()
 
     let nextCNBMetaAddresses = sut.nextAvailableReceiveAddresses(number: 4, forServerPool: true, in: context)
     let nextAddresses = nextCNBMetaAddresses.compactMap { $0.address }.asSet()

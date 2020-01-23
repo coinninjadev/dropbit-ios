@@ -7,12 +7,15 @@
 //
 
 import PromiseKit
+import Foundation
 
 protocol CurrencyValueDataSourceType: AnyObject {
 
   /// Provides a closure to be called by the delegate, which passes back the latest ExchangeRates
   /// Also, checks the exchange rates and posts a notification if they have been updated
   func latestExchangeRates(responseHandler: ExchangeRatesRequest)
+
+  func latestExchangeRates() -> Promise<ExchangeRates>
 
   /// Returns latestFees wrapped in a Promise
   func latestFees() -> Promise<Fees>
@@ -42,6 +45,10 @@ typealias Fees = [ResponseFeeType: Double]
 typealias FeesRequest = (Fees) -> Void
 
 extension NetworkManager: CurrencyValueDataSourceType {
+
+  func latestExchangeRates() -> Promise<ExchangeRates> {
+    return Promise.value([.BTC: 1, .USD: self.persistenceManager.brokers.checkIn.cachedBTCUSDRate])
+  }
 
   func latestExchangeRates(responseHandler: ExchangeRatesRequest) {
     // return latest exchange rates

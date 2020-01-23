@@ -17,9 +17,9 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
    Call this after the seed words are backed up or skipped.
    */
   func registerAndPersistWallet(in context: NSManagedObjectContext) -> Promise<Void> {
-    guard let wmgr = walletManager else { return Promise(error: CKPersistenceError.noWalletManager) }
+    guard let wmgr = walletManager else { return Promise(error: DBTError.Persistence.noWalletManager) }
     guard let syncFactory = self.serialQueueManager.walletSyncOperationFactory else {
-      return Promise(error: CKPersistenceError.missingValue(key: "walletSyncOperationFactory"))
+      return Promise(error: DBTError.Persistence.missingValue(key: "walletSyncOperationFactory"))
     }
 
     // Skip registration if wallet was previously registered and persisted
@@ -32,11 +32,10 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
       .setPurpose(.BIP84)
       .setVersion(.v2)
 
-    return self.networkManager.createWallet(withPublicKey: wmgr.hexEncodedPublicKey, walletFlags: handler.flags)
-      .then(in: context) { response -> Promise<WalletFlagsParser> in
-        try self.persistenceManager.brokers.wallet.persistWalletResponse(from: response, in: context)
-        return Promise.value(WalletFlagsParser(flags: response.flags))
-      }
+    return wmgr.hexEncodedPublicKeyPromise()
+      .then { return self.networkManager.createWallet(withPublicKey: $0, walletFlags: handler.flags) }
+      .get(in: context) { try self.persistenceManager.brokers.wallet.persistWalletResponse(from: $0, in: context) }
+      .then { (response: WalletResponse) -> Promise<WalletFlagsParser> in return .value(WalletFlagsParser(flags: response.flags)) }
       .then(in: context) { (parser: WalletFlagsParser) -> Promise<WalletFlagsParser> in
         switch parser.restoreType {
         case .previouslyUpgradedLegacyWallet:
@@ -52,14 +51,14 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
           return Promise.value(parser)
         }
       }
-      .get(in: context) { _ in
+      .get(in: context) { (_) -> Void in
         do {
           try context.saveRecursively()
         } catch {
           log.contextSaveError(error)
         }
       }
-      .done(on: .main) { (parser: WalletFlagsParser) in
+      .done(on: .main) { (parser: WalletFlagsParser) -> Void in
         switch parser.restoreType {
         case .previouslyUpgradedLegacyWallet:
           self.continueFlowForPreviouslyUpgradedLegacyWallet()

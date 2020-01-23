@@ -9,17 +9,7 @@
 import UIKit
 import AVFoundation
 import SVProgressHUD
-
-enum AVScanErrorType {
-  case noBitcoinQRCodes
-
-  var message: String {
-    switch self {
-    case .noBitcoinQRCodes:
-      return "Invalid Bitcoin address or Lightning invoice"
-    }
-  }
-}
+import Cnlib
 
 typealias PhotoViewController = UIViewController & UIImagePickerControllerDelegate & UINavigationControllerDelegate
 
@@ -27,13 +17,14 @@ typealias PhotoViewController = UIViewController & UIImagePickerControllerDelega
 protocol ScanQRViewControllerDelegate: PaymentRequestResolver, LightningInvoiceResolver, ViewControllerDismissable {
 
   /// If the scanned qrCode.btcAmount is zero, use the fallbackViewModel (whose amount should originate from the calculator amount/converter).
-  func viewControllerDidScan(_ viewController: UIViewController, qrCode: OnChainQRCode,
-                             walletTransactionType: WalletTransactionType, fallbackViewModel: SendPaymentViewModel?)
-  func viewControllerDidScan(_ viewController: UIViewController, lightningInvoice: String, completion: @escaping CKCompletion)
+  func viewControllerDidScan(_ viewController: ScanQRViewController,
+                             possibleDestinations: [String],
+                             fallbackViewModel: SendPaymentViewModel?,
+                             completion: @escaping CKCompletion)
 
   func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: Error?)
   func viewControllerDidPressPhotoButton(_ viewController: PhotoViewController)
-  func viewControllerHadScanFailure(_ viewController: UIViewController, error: AVScanErrorType)
+  func viewControllerHadScanFailure(_ viewController: UIViewController, error: DBTError.AVScan)
 
 }
 
@@ -43,10 +34,6 @@ class ScanQRViewController: BaseViewController, StoryboardInitializable {
   @IBOutlet var flashButton: UIButton!
   @IBOutlet var scanBoxImageView: UIImageView!
   @IBOutlet var photosButton: UIButton!
-
-  var bitcoinAddressValidator: CompositeValidator = {
-    return CompositeValidator<String>(validators: [StringEmptyValidator(), BitcoinAddressValidator()])
-  }()
 
   private(set) weak var delegate: ScanQRViewControllerDelegate!
 
@@ -67,7 +54,11 @@ class ScanQRViewController: BaseViewController, StoryboardInitializable {
   var captureMetadataOutput = AVCaptureMetadataOutput()
   var captureDevice: AVCaptureDevice?
   var isFlashlightEnabled: Bool = false
-  var didCaptureQRCode = false
+  var didCaptureQRCode = false {
+    willSet {
+      newValue ? captureSession.stopRunning() : captureSession.startRunning()
+    }
+  }
 
   override func viewDidLoad() {
     view.backgroundColor = UIColor.black
@@ -148,51 +139,20 @@ extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
 
     let rawCodes = metadataObjects.compactMap { $0 as? AVMetadataMachineReadableCodeObject }
     let destinations = rawCodes.compactMap { $0.stringValue }
-    handle(possibleDestinations: destinations)
+    handle(destinations: destinations)
   }
 
-  private func handle(possibleDestinations: [String]) {
-    let lightningQRCodes = possibleDestinations.compactMap { LightningURL(string: $0) }
-    let bitcoinQRCodes = possibleDestinations.compactMap { OnChainQRCode(string: $0) }
-    guard lightningQRCodes.isNotEmpty || bitcoinQRCodes.isNotEmpty else {
-      delegate.viewControllerHadScanFailure(self, error: .noBitcoinQRCodes)
-      return
-    }
-
-    if let lightningQRCode = lightningQRCodes.first, currentLockStatus != .locked {
-      handle(lightningQRInvoice: lightningQRCode)
-    } else if let bitcoinQRCode = bitcoinQRCodes.first {
-      handle(bitcoinQRCode: bitcoinQRCode)
-    }
-  }
-
-  private func handle(lightningQRInvoice lightningUrl: LightningURL) {
+  private func handle(destinations: [String]) {
     if didCaptureQRCode { return }
     didCaptureQRCode = true
 
-    delegate.viewControllerDidScan(self, lightningInvoice: lightningUrl.invoice, completion: { [weak self] in
+    delegate.viewControllerDidScan(self, possibleDestinations: destinations,
+                                   fallbackViewModel: fallbackPaymentViewModel,
+                                   completion: { [weak self] in
       self?.didCaptureQRCode = false
     })
   }
 
-  private func handle(bitcoinQRCode qrCode: OnChainQRCode) {
-    if didCaptureQRCode { return }
-    didCaptureQRCode = true
-
-    if qrCode.paymentRequestURL != nil {
-      delegate.viewControllerDidScan(self, qrCode: qrCode,
-                                                  walletTransactionType: .onChain, fallbackViewModel: self.fallbackPaymentViewModel)
-
-    } else if let address = qrCode.address {
-      do {
-        try bitcoinAddressValidator.validate(value: address)
-        delegate.viewControllerDidScan(self, qrCode: qrCode,
-                                                    walletTransactionType: .onChain, fallbackViewModel: self.fallbackPaymentViewModel)
-      } catch {
-        delegate.viewControllerDidAttemptInvalidDestination(self, error: error)
-      }
-    }
-  }
 }
 
 extension ScanQRViewController: UIImagePickerControllerDelegate {
@@ -211,7 +171,7 @@ extension ScanQRViewController: UIImagePickerControllerDelegate {
 
     let qrCode = features.reduce("") { "\($0)\($1.messageString ?? "")" }
     picker.dismiss(animated: true) { [weak self] in
-      self?.handle(possibleDestinations: [qrCode])
+      self?.handle(destinations: [qrCode])
     }
   }
 }

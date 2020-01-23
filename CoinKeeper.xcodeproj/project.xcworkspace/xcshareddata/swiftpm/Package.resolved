@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "FAPanels",
+        "repositoryURL": "https://github.com/fahidattique55/FAPanels",
+        "state": {
+          "branch": null,
+          "revision": "227507ae2319408261e9a3c292007806452a429b",
+          "version": "2.0.1"
+        }
+      },
+      {
+        "package": "PromiseKit",
+        "repositoryURL": "https://github.com/mxcl/PromiseKit",
+        "state": {
+          "branch": null,
+          "revision": "80963d4317bcdc03891e0fbaa744f20511d1bc08",
+          "version": "6.12.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

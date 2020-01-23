@@ -8,7 +8,7 @@
 
 import CoreData
 import PromiseKit
-import CNBitcoinKit
+import Cnlib
 
 class TransactionBroker: CKPersistenceBroker, TransactionBrokerType {
 
@@ -24,19 +24,20 @@ class TransactionBroker: CKPersistenceBroker, TransactionBrokerType {
 
   @discardableResult
   func persistTemporaryTransaction(
-    from transactionData: CNBTransactionData,
+    from transactionData: CNBCnlibTransactionData,
     with outgoingTransactionData: OutgoingTransactionData,
     txid: String,
     invitation: CKMInvitation?,
-    in context: NSManagedObjectContext
-    ) -> CKMTransaction {
+    in context: NSManagedObjectContext,
+    incomingAddress: String? = nil) -> CKMTransaction {
+
     return databaseManager.persistTemporaryTransaction(
       from: transactionData,
       with: outgoingTransactionData,
       txid: txid,
       invitation: invitation,
-      in: context
-    )
+      in: context,
+      incomingAddress: incomingAddress)
   }
 
   @discardableResult

@@ -272,7 +272,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
         self.addAmountButton.isHidden = true
       }.catch { error in
         SVProgressHUD.dismiss()
-        if let alert = self.alertManager?.defaultAlert(withTitle: "Error", description: error.localizedDescription) {
+        if let alert = self.alertManager?.defaultAlert(withError: error) {
           self.present(alert, animated: true, completion: nil)
         }
     }
@@ -298,6 +298,9 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   override func makeUnavailable() {
     lock()
   }
+
+  func currencySwappableAmountDataDidChange() { }
+
 }
 
 extension RequestPayViewController: WalletToggleViewDelegate {

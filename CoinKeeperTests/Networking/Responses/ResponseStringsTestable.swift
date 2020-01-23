@@ -29,13 +29,13 @@ extension ResponseStringsTestable where Self: XCTest {
   }
 
   var emptyStringErrorTypeMessage: String {
-    return "Empty string error should be CKNetworkError.invalidValue"
+    return "Empty string error should be DBTError.Network.invalidValue"
   }
 }
 
 extension Error {
   var isNetworkInvalidValueError: Bool {
-    if let networkError = self as? CKNetworkError, case .invalidValue = networkError {
+    if let networkError = self as? DBTError.Network, case .invalidValue = networkError {
       return true
     } else {
       return false

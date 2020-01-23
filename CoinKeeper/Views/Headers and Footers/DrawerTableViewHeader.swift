@@ -14,7 +14,13 @@ class DrawerTableViewHeader: UITableViewHeaderFooterView {
   @IBOutlet var priceTitleLabel: UILabel!
   @IBOutlet var priceLabel: UILabel!
 
-  public weak var currencyValueManager: CurrencyValueDataSourceType?
+  public weak var currencyValueManager: CurrencyValueDataSourceType? {
+    didSet {
+      currencyValueManager?.latestExchangeRates()
+        .done(updateRatesRequest)
+        .catch { log.error($0, message: "Failed to update rates in DrawerTableViewHeader.")}
+    }
+  }
 
   private lazy var formatter: NumberFormatter = {
     let formatter = NumberFormatter()
@@ -40,8 +46,6 @@ class DrawerTableViewHeader: UITableViewHeaderFooterView {
     priceLabel.font = .regular(16)
     _backgroundView.backgroundColor = .darkBlueBackground
 
-    refreshDisplayedPrice()
-
     //Need to listen for correct notification
     CKNotificationCenter.subscribe(self, [.didUpdateExchangeRates: #selector(refreshDisplayedPrice)])
   }
@@ -51,8 +55,8 @@ class DrawerTableViewHeader: UITableViewHeaderFooterView {
   }
 
   /// A closure to be called by the delegate during viewDidLoad and when a .didUpdateExchangeRates notification has been received
-  lazy var updateRatesRequest: ExchangeRatesRequest = { [weak self] rates in
-    let value = rates[.USD] as NSNumber?
-    self?.priceLabel.text = self?.formatter.string(from: value ?? 0.0)
+  func updateRatesRequest(rates: ExchangeRates) {
+    let value = rates[.USD] as NSNumber? ?? 0.0
+    priceLabel?.text = formatter.string(from: value)
   }
 }

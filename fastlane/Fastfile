@@ -9,15 +9,16 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
-fastlane_version '2.137.0'
+fastlane_version '2.140.0'
 
 default_platform(:ios)
 
 platform :ios do
 
   before_all do |lane|
-    lanes_to_exclude = [:quick_test, :register, :local_test, :autogen]
-    if !lanes_to_exclude.include?(lane)
+    lanes_to_exclude = [:quick_test, :register, :local_test, :local_unit_tests, :autogen]
+    unless lanes_to_exclude.include?(lane)
+      clear_derived_data
       bundle_install
       brew(command: "bundle")
       config_tooling
@@ -31,28 +32,6 @@ platform :ios do
     path = File.read("xcversion.config").strip
     puts "found Xcode path: #{path}"
     xcode_select(path)
-  end
-
-  desc "Bootstrap Carthage dependencies"
-  lane :bootstrap_carthage do
-    sh 'rm -rf ~/Library/Caches/carthage'
-    sh 'rm -rf ~/Library/Caches/org.carthage.CarthageKit'
-    carthage(
-      command: "bootstrap",
-      verbose: false,
-      platform: 'iOS',
-      cache_builds: true
-    )
-  end
-
-  desc "Update Carthage dependencies"
-  lane :update_carthage do
-    carthage(
-      command: "update",
-      verbose: false,
-      platform: 'iOS',
-      cache_builds: true
-    )
   end
 
   desc "Autogenerate Swift code with Sourcery. Current working dir for Fastlane's context is ./fastlane"
@@ -126,35 +105,45 @@ platform :ios do
   # testing
   desc "Local testing, without resetting simulators or cleaning."
   lane :local_test do
+    ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
+    scan
+  end
+
+  desc "Local unit testing, without resetting simulators or cleaning."
+  lane :local_unit_tests do
+    ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
     scan
   end
 
   desc "Local testing (unit tests only), without resetting simulators or cleaning."
   lane :unit_tests do
+    ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
     scan
   end
 
   desc "Local testing (UI tests only), without resetting simulators or cleaning."
   lane :local_ui_tests do
+    ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
     scan
   end
 
   desc "Local testing, without the before_all lane"
   lane :quick_test do
+    ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
     scan
   end
 
   desc "Runs full test suite with clean simulator installations."
   lane :test do
+    ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
     reset_sims
-    bootstrap_carthage
     scan
   end
 
   desc "Runs UI tests"
   lane :ui_tests do
+    ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
     reset_sims
-    bootstrap_carthage
     scan
   end
 
@@ -173,10 +162,10 @@ platform :ios do
   end
 
   private_lane :build_and_upload do
+    ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
     increment_build # lane defined above, encapsulating `increment_build_number` call
     set_version_if_applicable # lane defined above, setting version to match that in branch name
     match
-    bootstrap_carthage
     gym
     groups = ENV["PILOT_GROUPS"].split(",")
     changelog = changelog_from_git_commits
@@ -184,7 +173,7 @@ platform :ios do
       skip_waiting_for_build_processing: true,
       demo_account_required: false,
       changelog: changelog,
-      beta_app_description: changelog,
+      beta_app_description: "Test all the things",
       distribute_external: true,
       groups: groups
     )

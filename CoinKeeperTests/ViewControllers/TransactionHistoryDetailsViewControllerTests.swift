@@ -42,10 +42,9 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
   }
 
   func testTappingQuestionMarkButtonTellsDelegate() {
-    //TODO
-//    let url = CoinNinjaUrlFactory.buildUrl(for: .detailsTooltip)!
-//    sut.didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell(), with: url)
-//    XCTAssertTrue(mockCoordinator.wasAskedToOpenURL)
+    let toolTip = DetailCellTooltip(rawValue: 1)!
+    sut.didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell(), tooltip: toolTip)
+    XCTAssertTrue(mockCoordinator.wasAskedToOpenURL)
   }
 
   // MARK: private class
@@ -57,9 +56,8 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
       responseHandler(CurrencyConverter.sampleRates)
     }
 
-    func latestFees() -> Promise<Fees> {
-      return Promise { _ in }
-    }
+    func latestExchangeRates() -> Promise<ExchangeRates> { Promise { _ in } }
+    func latestFees() -> Promise<Fees> { Promise { _ in } }
 
     func deviceCountryCode() -> Int? {
       return 1

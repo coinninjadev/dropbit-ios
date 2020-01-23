@@ -18,7 +18,7 @@ protocol WalletSyncDelegate: AnyObject {
   func syncManagerDidFinishSync()
   func showAlertsForSyncedChanges(in context: NSManagedObjectContext) -> Promise<Void>
   func syncManagerDidSetWalletManager(walletManager: WalletManagerType, in context: NSManagedObjectContext) -> Promise<Void>
-  func handleMissingWalletError(_ error: CKPersistenceError)
+  func handleMissingWalletError(_ error: DBTError.Persistence)
 }
 
 class WalletSyncOperationFactory {
@@ -32,7 +32,7 @@ class WalletSyncOperationFactory {
 
   func performOnChainOnlySync(in context: NSManagedObjectContext) -> Promise<Void> {
     guard let queueDelegate = self.delegate else {
-      return Promise(error: SyncRoutineError.missingQueueDelegate)
+      return Promise(error: DBTError.SyncRoutine.missingQueueDelegate)
     }
 
     return queueDelegate.syncManagerDidRequestDependencies(in: context, inBackground: false)
@@ -44,7 +44,7 @@ class WalletSyncOperationFactory {
                            fetchResult: ((UIBackgroundFetchResult) -> Void)?,
                            in context: NSManagedObjectContext) -> Promise<AsynchronousOperation> {
     guard let queueDelegate = self.delegate else {
-      return Promise.init(error: SyncRoutineError.missingQueueDelegate)
+      return Promise.init(error: DBTError.SyncRoutine.missingQueueDelegate)
     }
 
     let inBackground = (fetchResult != nil)
@@ -131,7 +131,7 @@ class WalletSyncOperationFactory {
 
   private func walletDebugDescription(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> String {
     let walletId = dependencies.persistenceManager.brokers.wallet.walletId(in: context) ?? "-"
-    let pubkey = dependencies.walletManager.hexEncodedPublicKey
+    let pubkey = (try? dependencies.walletManager.hexEncodedPublicKey()) ?? ""
     return "Wallet ID: \(walletId) -- Public Key: \(pubkey)"
   }
 
@@ -193,7 +193,7 @@ class WalletSyncOperationFactory {
   }
 
   private func recoverSyncError(_ error: Error) -> Promise<Void> {
-    if let providerError = error as? CKNetworkError {
+    if let providerError = error as? DBTError.Network {
       switch providerError {
       case .userNotVerified:  return Promise.value(())
       default:                return Promise(error: error)
@@ -238,17 +238,19 @@ class WalletSyncOperationFactory {
       return dependencies.networkManager
         .getWallet()
         .recover { (error: Error) -> Promise<WalletResponse> in
-          if case CKNetworkError.unauthorized = error {
+          if case DBTError.Network.unauthorized = error {
             var flagsParser = WalletFlagsParser(flags: 0).setVersion(.v0).setPurpose(.BIP49)
-            if let words = dependencies.persistenceManager.keychainManager.retrieveValue(for: .walletWords) as? [String] {
-              let newWalletManager = WalletManager(words: words, persistenceManager: dependencies.persistenceManager)
-              return dependencies.networkManager.createWallet(withPublicKey: newWalletManager.hexEncodedPublicKey, walletFlags: flagsParser.flags)
-            } else if let words = dependencies.persistenceManager.keychainManager.retrieveValue(for: .walletWordsV2) as? [String] {
+            if let words = dependencies.persistenceManager.keychainManager.retrieveValue(for: .walletWords) as? [String],
+              let newWalletManager = WalletManager(words: words, persistenceManager: dependencies.persistenceManager) {
+              return newWalletManager.hexEncodedPublicKeyPromise()
+                .then { return dependencies.networkManager.createWallet(withPublicKey: $0, walletFlags: flagsParser.flags) }
+            } else if let words = dependencies.persistenceManager.keychainManager.retrieveValue(for: .walletWordsV2) as? [String],
+              let newWalletManager = WalletManager(words: words, persistenceManager: dependencies.persistenceManager) {
               flagsParser = flagsParser.setVersion(.v2).setPurpose(.BIP84)
-              let newWalletManager = WalletManager(words: words, persistenceManager: dependencies.persistenceManager)
-              return dependencies.networkManager.createWallet(withPublicKey: newWalletManager.hexEncodedPublicKey, walletFlags: flagsParser.flags)
+              return newWalletManager.hexEncodedPublicKeyPromise()
+                .then { return dependencies.networkManager.createWallet(withPublicKey: $0, walletFlags: flagsParser.flags) }
             } else {
-              return Promise(error: CKPersistenceError.noWalletWords)
+              return Promise(error: DBTError.Persistence.noWalletWords)
             }
           } else {
             return Promise(error: error)
@@ -257,12 +259,12 @@ class WalletSyncOperationFactory {
         .get(in: context) { try dependencies.persistenceManager.brokers.wallet.persistWalletResponse(from: $0, in: context) }
         .asVoid()
     } else { // walletId is nil
-      guard let keychainWords = dependencies.persistenceManager.brokers.wallet.walletWords() else {
-        return Promise { $0.reject(CKPersistenceError.noWalletWords) }
+      guard let keychainWords = dependencies.persistenceManager.brokers.wallet.walletWords(),
+        let walletManager = WalletManager(words: keychainWords, persistenceManager: dependencies.persistenceManager) else {
+        return Promise { $0.reject(DBTError.Persistence.noWalletWords) }
       }
 
       // Make sure we are registering a wallet with the words stored in the keychain
-      let walletManager = WalletManager(words: keychainWords, persistenceManager: dependencies.persistenceManager)
       return dependencies.delegate.syncManagerDidSetWalletManager(walletManager: walletManager, in: context)
     }
   }
@@ -274,13 +276,13 @@ class WalletSyncOperationFactory {
   }
 
   private func handleSyncRoutineError(_ error: Error, in context: NSManagedObjectContext) {
-    if let persistenceError = error as? CKPersistenceError {
+    if let persistenceError = error as? DBTError.Persistence {
       switch persistenceError {
       case .noWalletWords:
         delegate?.handleMissingWalletError(persistenceError)
       default: break
       }
-    } else if let networkError = error as? CKNetworkError {
+    } else if let networkError = error as? DBTError.Network {
       switch networkError {
       case .reachabilityFailed(let moyaError):
         delegate?.handleReachabilityError(moyaError)

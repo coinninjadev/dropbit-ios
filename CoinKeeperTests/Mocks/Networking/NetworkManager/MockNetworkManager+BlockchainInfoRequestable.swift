@@ -15,7 +15,7 @@ extension MockNetworkManager: BlockchainInfoRequestable {
     if let didConfirmFailure = confirmFailedTransactionValueByTxid[txid] {
       return Promise.value(didConfirmFailure)
     } else {
-      return Promise { $0.reject(CKNetworkError.badResponse)}
+      return Promise { $0.reject(DBTError.Network.badResponse)}
     }
   }
 

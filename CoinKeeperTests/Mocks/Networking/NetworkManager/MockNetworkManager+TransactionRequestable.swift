@@ -11,6 +11,10 @@ import PromiseKit
 
 extension MockNetworkManager: TransactionRequestable {
 
+  func fetchTransactionDetails(for txid: String) -> Promise<TransactionResponse> {
+    return Promise { _ in }
+  }
+
   func fetchTransactionDetails(for txids: [String]) -> Promise<[TransactionResponse]> {
     return Promise { _ in }
   }

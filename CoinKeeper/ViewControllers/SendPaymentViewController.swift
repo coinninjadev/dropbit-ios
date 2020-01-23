@@ -10,7 +10,7 @@ import UIKit
 import Contacts
 import enum Result.Result
 import PhoneNumberKit
-import CNBitcoinKit
+import Cnlib
 import PromiseKit
 import SVProgressHUD
 
@@ -114,18 +114,19 @@ CurrencySwappableAmountEditor {
   }
 
   @IBAction func performSendMax() {
-    let tempAddress = ""
+    let tempAddress = CNBCnlibPlaceholderDestination
     self.delegate.transactionDataSendingMaxFunds(toAddress: tempAddress)
       .done { txData in
         self.viewModel.sendMax(with: txData)
         self.refreshBothAmounts()
         self.sendMaxButton.isHidden = true
     }
-    .catch { _ in
+    .catch { error in
+      let dbtError = DBTError.cast(error)
       let action = AlertActionConfiguration.init(title: "OK", style: .default, action: nil)
       let alertViewModel = AlertControllerViewModel(
-        title: "Insufficient Funds",
-        description: "There are not enough funds to cover the transaction and network fee.",
+        title: dbtError.displayTitle,
+        description: dbtError.displayMessage,
         image: nil,
         style: .alert,
         actions: [action]
@@ -380,7 +381,7 @@ extension SendPaymentViewController {
   }
 
   func currencySwappableAmountDataDidChange() {
-    viewModel.sendMaxTransactionData = nil
+    viewModel.resetSendMaxTransactionDataIfNeeded()
   }
 
 }
@@ -444,8 +445,9 @@ extension SendPaymentViewController {
   }
 
   private func handleError(error: Error) {
+    let dbtError = DBTError.cast(error)
     self.alertManager?.hideActivityHUD(withDelay: nil) {
-      let viewModel = AlertControllerViewModel(title: "", description: error.localizedDescription)
+      let viewModel = AlertControllerViewModel(title: "", description: dbtError.displayMessage)
       self.delegate.viewControllerDidRequestAlert(self, viewModel: viewModel)
     }
   }
@@ -461,7 +463,7 @@ extension SendPaymentViewController {
                                                      exchangeRates: self.viewModel.exchangeRates,
                                                      fiatCurrency: self.viewModel.fiatCurrency)
         guard let fetchedModel = maybeFetchedModel, fetchedModel.address != nil else {
-            self.showValidatorAlert(for: MerchantPaymentRequestError.missingOutput, title: errorTitle)
+            self.showValidatorAlert(for: DBTError.MerchantPaymentRequest.missingOutput, title: errorTitle)
             return
         }
 
@@ -800,7 +802,8 @@ extension SendPaymentViewController {
   }
 
   private func handleContactValidationError(_ error: Error) {
-    self.showValidatorAlert(for: error, title: "")
+    let dbtError = DBTError.cast(error)
+    self.showValidatorAlert(for: dbtError, title: "")
   }
 
   private func validateRegisteredContact(_ contact: ContactType, sharedPayload: SharedPayloadDTO) throws {
@@ -882,7 +885,7 @@ extension SendPaymentViewController {
     }
   }
 
-  private func sendTransactionForConfirmation(with data: CNBTransactionData?,
+  private func sendTransactionForConfirmation(with data: CNBCnlibTransactionData?,
                                               paymentTarget: String,
                                               contact: ContactType?,
                                               sharedPayload: SharedPayloadDTO) {

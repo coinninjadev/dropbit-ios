@@ -30,7 +30,7 @@ class MerchantPaymentRequestResponseTests: XCTestCase, ResponseStringsTestable {
 
     XCTAssertThrowsError(try MerchantPaymentRequestResponse.validateResponse(expiredResponse),
                          "Soon expired response should throw error", { error in
-                          guard let requestError = error as? MerchantPaymentRequestError, case let .expired(date) = requestError else {
+                          guard let requestError = error as? DBTError.MerchantPaymentRequest, case let .expired(date) = requestError else {
                             XCTFail("Incorrect error type")
                             return
                           }
@@ -42,7 +42,7 @@ class MerchantPaymentRequestResponseTests: XCTestCase, ResponseStringsTestable {
 
     XCTAssertThrowsError(try MerchantPaymentRequestResponse.validateResponse(soonExpiredResponse),
                          "Soon expired response should throw error", { error in
-                          guard let requestError = error as? MerchantPaymentRequestError, case let .expired(date) = requestError else {
+                          guard let requestError = error as? DBTError.MerchantPaymentRequest, case let .expired(date) = requestError else {
                             XCTFail("Incorrect error type")
                             return
                           }
@@ -54,7 +54,7 @@ class MerchantPaymentRequestResponseTests: XCTestCase, ResponseStringsTestable {
     let response = MerchantPaymentRequestResponse.testInstance(output: nil)
     XCTAssertThrowsError(try MerchantPaymentRequestResponse.validateResponse(response),
                          "Empty output response should throw error", { error in
-                          guard let requestError = error as? MerchantPaymentRequestError,
+                          guard let requestError = error as? DBTError.MerchantPaymentRequest,
                             case .missingOutput = requestError else {
                               XCTFail("Incorrect error type")
                               return
@@ -68,7 +68,7 @@ class MerchantPaymentRequestResponseTests: XCTestCase, ResponseStringsTestable {
     let response = MerchantPaymentRequestResponse.testInstance(currency: invalidCurrency)
     XCTAssertThrowsError(try MerchantPaymentRequestResponse.validateResponse(response),
                          "Non-BTC currency should throw error", { error in
-                          guard let requestError = error as? MerchantPaymentRequestError,
+                          guard let requestError = error as? DBTError.MerchantPaymentRequest,
                             case let .incorrectCurrency(currency) = requestError else {
                               XCTFail("Incorrect error type")
                               return
@@ -82,7 +82,7 @@ class MerchantPaymentRequestResponseTests: XCTestCase, ResponseStringsTestable {
     let response = MerchantPaymentRequestResponse.testInstance(network: invalidNetwork)
     XCTAssertThrowsError(try MerchantPaymentRequestResponse.validateResponse(response),
                          "Non-main network should throw error", { error in
-                          guard let requestError = error as? MerchantPaymentRequestError,
+                          guard let requestError = error as? DBTError.MerchantPaymentRequest,
                             case let .incorrectNetwork(network) = requestError else {
                               XCTFail("Incorrect error type")
                               return

@@ -94,7 +94,7 @@ class CKKeychain: PersistenceKeychainType {
           if success {
             seal.fulfill(())
           } else {
-            seal.reject(CKPersistenceError.keychainWriteFailed(key: key))
+            seal.reject(DBTError.Persistence.keychainWriteFailed(key: key))
           }
         }
       }

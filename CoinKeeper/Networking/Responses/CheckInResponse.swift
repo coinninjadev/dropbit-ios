@@ -56,9 +56,9 @@ struct FeesResponse: ResponseCodable {
     let betterFee = response.better
     let goodFee = response.good
 
-    let bestFeeError = CKNetworkError.invalidValue(keyPath: FeesResponseKey.fast.path, value: String(bestFee), response: response)
-    let betterFeeError = CKNetworkError.invalidValue(keyPath: FeesResponseKey.med.path, value: String(betterFee), response: response)
-    let goodFeeError = CKNetworkError.invalidValue(keyPath: FeesResponseKey.slow.path, value: String(goodFee), response: response)
+    let bestFeeError = DBTError.Network.invalidValue(keyPath: FeesResponseKey.fast.path, value: String(bestFee), response: response)
+    let betterFeeError = DBTError.Network.invalidValue(keyPath: FeesResponseKey.med.path, value: String(betterFee), response: response)
+    let goodFeeError = DBTError.Network.invalidValue(keyPath: FeesResponseKey.slow.path, value: String(goodFee), response: response)
 
     guard validFeeFloor <= bestFee && bestFee <= validFeeCeiling else { throw bestFeeError }
     guard validFeeFloor <= betterFee && betterFee <= validFeeCeiling else { throw betterFeeError }
@@ -98,7 +98,7 @@ struct PriceResponse: ResponseCodable {
 
   static func validateResponse(_ response: PriceResponse) throws -> PriceResponse {
     guard response.last > 0 else {
-      throw CKNetworkError.invalidValue(keyPath: PriceResponseKey.last.path, value: String(response.last), response: response)
+      throw DBTError.Network.invalidValue(keyPath: PriceResponseKey.last.path, value: String(response.last), response: response)
     }
 
     let stringValidatedResponse = try response.validateStringValues()

@@ -8,6 +8,7 @@
 
 @testable import DropBit
 import PromiseKit
+import Foundation
 
 extension MockNetworkManager: DeviceRequestable {
 

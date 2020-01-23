@@ -7,6 +7,7 @@
 //
 
 import Moya
+import Foundation
 
 public enum BroadcastTarget: CoinNinjaTargetType {
   typealias ResponseType = StringResponse
@@ -24,7 +25,7 @@ extension BroadcastTarget {
     return nil
   }
 
-  public var method: Method {
+  public var method: Moya.Method {
     return .post
   }
 

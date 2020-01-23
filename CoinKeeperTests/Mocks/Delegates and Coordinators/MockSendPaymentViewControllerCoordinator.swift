@@ -10,7 +10,7 @@ import CoreData
 import Foundation
 import UIKit
 import PromiseKit
-import CNBitcoinKit
+import Cnlib
 @testable import DropBit
 
 class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordinator {
@@ -69,18 +69,18 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     return nil
   }
 
-  var fakeTransactionData: CNBTransactionData?
+  var fakeTransactionData: CNBCnlibTransactionData?
   var didAskToSendMaxFunds = false
-  func viewController(_ viewController: UIViewController, sendMaxFundsTo address: String, feeRate: Double) -> Promise<CNBTransactionData> {
+  func viewController(_ viewController: UIViewController, sendMaxFundsTo address: String, feeRate: Double) -> Promise<CNBCnlibTransactionData> {
     didAskToSendMaxFunds = true
     if let data = fakeTransactionData {
       return Promise.value(data)
     } else {
-      return Promise(error: TransactionDataError.insufficientFunds)
+      return Promise(error: DBTError.TransactionData.insufficientFunds)
     }
   }
 
-  func transactionDataSendingMaxFunds(toAddress destinationAddress: String) -> Promise<CNBTransactionData> {
+  func transactionDataSendingMaxFunds(toAddress destinationAddress: String) -> Promise<CNBCnlibTransactionData> {
     return Promise { _ in }
   }
 
@@ -93,10 +93,8 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
   }
 
   func latestExchangeRates(responseHandler: (ExchangeRates) -> Void) { }
-
-  func latestFees() -> Promise<Fees> {
-    return Promise.value([:])
-  }
+  func latestExchangeRates() -> Promise<ExchangeRates> { Promise { _ in } }
+  func latestFees() -> Promise<Fees> { Promise.value([:]) }
 
   var didTapTwitter = false
   func viewControllerDidPressTwitter(_ viewController: UIViewController & SelectedValidContactDelegate) {
@@ -115,7 +113,7 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
 
   func viewController(
     _ viewController: UIViewController,
-    sendingMax data: CNBTransactionData,
+    sendingMax data: CNBCnlibTransactionData,
     to address: String,
     inputs: SendingDelegateInputs) { }
 

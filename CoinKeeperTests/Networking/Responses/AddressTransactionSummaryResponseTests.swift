@@ -53,10 +53,12 @@ class AddressTransactionSummaryResponseTests: XCTestCase, ResponseStringsTestabl
   }
 
   func testInvalidValuesThrowError() {
-    let invalidVinResponse = AddressTransactionSummaryResponse(txid: "", address: "", vin: -1, vout: 1)
+    let invalidVinResponse = AddressTransactionSummaryResponse(txid: "", address: "", vin: -1,
+                                                               vout: 1, receivedTime: 0)
     XCTAssertThrowsError(try AddressTransactionSummaryResponse.validateResponse(invalidVinResponse), "Negative vin should throw error", { _ in })
 
-    let invalidVoutResponse = AddressTransactionSummaryResponse(txid: "", address: "", vin: 1, vout: -1)
+    let invalidVoutResponse = AddressTransactionSummaryResponse(txid: "", address: "", vin: 1,
+                                                                vout: -1, receivedTime: 0)
     XCTAssertThrowsError(try AddressTransactionSummaryResponse.validateResponse(invalidVoutResponse), "Negative vout should throw error", { _ in })
   }
 
@@ -75,6 +77,7 @@ class AddressTransactionSummaryResponseTests: XCTestCase, ResponseStringsTestabl
 
 extension AddressTransactionSummaryResponse: EmptyStringCopyable {
   func copyWithEmptyRequiredStrings() -> AddressTransactionSummaryResponse {
-    return AddressTransactionSummaryResponse(txid: "", address: "", vin: self.vin, vout: self.vout)
+    return AddressTransactionSummaryResponse(txid: "", address: "", vin: self.vin,
+                                             vout: self.vout, receivedTime: 0)
   }
 }

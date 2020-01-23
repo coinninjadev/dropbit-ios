@@ -7,6 +7,7 @@
 //
 
 import Moya
+import Foundation
 
 enum LNTransactionStatus: String, Codable {
   case pending, completed, expired, failed
@@ -38,7 +39,7 @@ struct LNTransactionResult: LNResponseDecodable {
   var error: String?
 
   /// For results where type is .btc, the id is the txid followed by a colon
-  /// and the index of the vout that funded the lighting load address.
+  /// and the index of the vout that funded the lightning load address.
   /// Note that the first component may be "preauth" for sent invitations.
   var cleanedId: String {
     if let firstComponent = id.components(separatedBy: ":").first,

@@ -71,8 +71,8 @@ class WalletAddressResponseTests: XCTestCase, ResponseStringsTestable {
     }
 
     XCTAssertThrowsError(try sample.copyWithEmptyRequiredStrings().validateStringValues(), "Empty strings should throw error", { error in
-      guard let networkError = error as? CKNetworkError, case .invalidValue = networkError else {
-        XCTFail("Empty string error should be CKNetworkError.invalidValue")
+      guard let networkError = error as? DBTError.Network, case .invalidValue = networkError else {
+        XCTFail("Empty string error should be DBTError.Network.invalidValue")
         return
       }
     })

@@ -7,6 +7,7 @@
 //
 
 import Moya
+import Foundation
 
 public enum AddressesTarget: CoinNinjaTargetType {
   typealias ResponseType = AddressTransactionSummaryResponse
@@ -30,7 +31,7 @@ extension AddressesTarget {
     }
   }
 
-  public var method: Method {
+  public var method: Moya.Method {
     switch self {
     case .query:    return .post
     case .address:  return .get

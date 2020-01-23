@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CNBitcoinKit
+import Cnlib
 import UIKit
 import PromiseKit
 import CoreData
@@ -31,7 +31,7 @@ extension AppCoordinator: PaymentSendingDelegate {
 
   func viewControllerDidConfirmOnChainPayment(
     _ viewController: UIViewController,
-    transactionData: CNBTransactionData,
+    transactionData: CNBCnlibTransactionData,
     rates: ExchangeRates,
     outgoingTransactionData: OutgoingTransactionData
     ) {
@@ -92,7 +92,7 @@ extension AppCoordinator: PaymentSendingDelegate {
   }
 
   func handleSuccessfulOnChainPaymentVerification(
-    with transactionData: CNBTransactionData,
+    with transactionData: CNBCnlibTransactionData,
     outgoingTransactionData: OutgoingTransactionData,
     isInternalBroadcast: Bool = false) {
 
@@ -117,12 +117,16 @@ extension AppCoordinator: PaymentSendingDelegate {
   /// Provides a completion handler to be called in the catch block of payment promise chains
   private func paymentErrorHandler(for successFailVC: SuccessFailViewController, isLightning: Bool) -> CKErrorCompletion {
     let errorHandler: CKErrorCompletion = { [unowned self] error in
-      if let networkError = error as? CKNetworkError,
+      guard let err = error else {
+        successFailVC.setMode(.failure)
+        return
+      }
+      if let networkError = err as? DBTError.Network,
         case let .reachabilityFailed(moyaError) = networkError {
         self.handleReachabilityError(moyaError)
 
       } else {
-        self.handleFailure(error: error, action: {
+        self.handleFailure(error: err, action: {
           successFailVC.setMode(.failure)
         })
       }
@@ -187,7 +191,7 @@ extension AppCoordinator: PaymentSendingDelegate {
 
   private func postSharedPayload(_ postableObject: SharedPayloadPostableObject) -> Promise<String> {
     guard let wmgr = self.walletManager else {
-      return Promise(error: CKPersistenceError.missingValue(key: "walletManager"))
+      return Promise(error: DBTError.Persistence.missingValue(key: "walletManager"))
     }
 
     return self.networkManager.postSharedPayloadIfAppropriate(withPostableObject: postableObject, walletManager: wmgr)
@@ -205,7 +209,7 @@ extension AppCoordinator: PaymentSendingDelegate {
     return senderIdentityFactory.preferredSharedPayloadSenderIdentity(forReceiver: receiver)
   }
 
-  private func broadcastConfirmedOnChainTransaction(with transactionData: CNBTransactionData,
+  private func broadcastConfirmedOnChainTransaction(with transactionData: CNBCnlibTransactionData,
                                                     outgoingTransactionData: OutgoingTransactionData,
                                                     success: @escaping CKCompletion,
                                                     failure: @escaping CKErrorCompletion,
@@ -245,20 +249,23 @@ extension AppCoordinator: PaymentSendingDelegate {
         CKNotificationCenter.publish(key: .didUpdateBalance, object: nil, userInfo: nil)
         self.didBroadcastTransaction()
       }.catch { error in
-        let nsError = error as NSError
-        let broadcastError = TransactionBroadcastError(errorCode: nsError.code)
+        let broadcastError = error.localizedDescription
         let context = self.persistenceManager.viewContext
-        let vouts = transactionData.unspentTransactionOutputs.map { CKMVout.find(from: $0, in: context) }
-          .compactMap { $0 }
+        let vouts = CKMVout.findUTXOs(from: transactionData, in: context)
         let voutDebugDesc = vouts.map { $0.debugDescription }.joined(separator: "\n")
-        let encodedTx = nsError.userInfo["encoded_tx"] as? String ?? ""
-        let txid = nsError.userInfo["txid"] as? String ?? ""
-        let analyticsError = "error code: \(broadcastError.rawValue) :: txid: \(txid) :: encoded_tx: \(encodedTx) :: vouts: \(voutDebugDesc)"
-        log.error("broadcast failed, \(analyticsError)")
-        let eventValue = AnalyticsEventValue(key: .broadcastFailed, value: analyticsError)
-        self.analyticsManager.track(event: .paymentSentFailed, with: eventValue)
+        if let wmgr = self.walletManager {
+          let metadata = try? wmgr.wallet.buildTransactionMetadata(transactionData)
+          let encodedTx = metadata?.encodedTx ?? ""
+          let txid = metadata?.txid ?? ""
+          let analyticsError = "error code: \(broadcastError) :: txid: \(txid) :: encoded_tx: \(encodedTx) :: vouts: \(voutDebugDesc)"
+          log.error("broadcast failed, \(analyticsError)")
+          let eventValue = AnalyticsEventValue(key: .broadcastFailed, value: analyticsError)
+          self.analyticsManager.track(event: .paymentSentFailed, with: eventValue)
 
-        failure(error)
+          failure(error)
+        } else {
+          failure(DBTError.SyncRoutine.missingWalletManager)
+        }
     }
   }
 
@@ -271,14 +278,14 @@ extension AppCoordinator: PaymentSendingDelegate {
   }
 
   private func processPostBroadcast(txid: String,
-                                    transactionData: CNBTransactionData,
+                                    transactionData: CNBCnlibTransactionData,
                                     outgoingTransactionData: OutgoingTransactionData,
                                     isInternalLightningLoad: Bool) -> Promise<String> {
     let context = self.persistenceManager.createBackgroundContext()
     return Promise { seal in
       context.perform { [weak self] in
         guard let strongSelf = self else { return }
-        let vouts = transactionData.unspentTransactionOutputs.map { CKMVout.find(from: $0, in: context) }.compactMap { $0 }
+        let vouts = CKMVout.findUTXOs(from: transactionData, in: context)
         let voutDebugDesc = vouts.map { $0.debugDescription }.joined(separator: "\n")
         log.debug("Broadcast succeeded, vouts: \n\(voutDebugDesc)")
         let persistedTransaction = strongSelf.persistenceManager.brokers.transaction.persistTemporaryTransaction(
@@ -286,7 +293,8 @@ extension AppCoordinator: PaymentSendingDelegate {
           with: outgoingTransactionData,
           txid: txid,
           invitation: nil,
-          in: context
+          in: context,
+          incomingAddress: nil
         )
         persistedTransaction.isLightningTransfer = isInternalLightningLoad
 
@@ -295,9 +303,9 @@ extension AppCoordinator: PaymentSendingDelegate {
         }
 
         if let wallet = strongSelf.walletManager?.wallet {
-          let transactionBuilder = CNBTransactionBuilder()
-          let metadata = transactionBuilder.generateTxMetadata(with: transactionData, wallet: wallet)
           do {
+            let metadata = try wallet.buildTransactionMetadata(transactionData)
+
             // If sending max such that there is no change address, an error will be thrown and caught below
             let tempVout = try CKMVout.findOrCreateTemporaryVout(in: context, with: transactionData, metadata: metadata)
             tempVout.transaction = persistedTransaction

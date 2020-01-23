@@ -8,7 +8,7 @@
 
 import XCTest
 @testable import DropBit
-import CNBitcoinKit
+import Cnlib
 
 class LightningUpgradeStartViewControllerTests: XCTestCase {
 
@@ -65,15 +65,11 @@ class LightningUpgradeStartViewControllerTests: XCTestCase {
   func testUpdatingBalanceUpdatesUI() {
     XCTAssertEqual(sut.activityIndicatorBottomConstraint.constant, 50)
 
-    let data = CNBTransactionData(address: "",
-                                  coin: CNBBaseCoin(purpose: .BIP84, coin: .MainNet, account: 0),
-                                  fromAllAvailableOutputs: [],
-                                  paymentAmount: 0,
-                                  feeRate: 0,
-                                  change: nil,
-                                  blockHeight: 0,
-                                  rbfReplaceabilityOption: .Allowed)
-    data.map { self.sut.updateUI(withTransactionData: $0) }
+    let coin = BTCMainnetCoin(purpose: .segwit)
+    let rbfOption = RBFOption.allowed.value
+    let data = CNBCnlibNewTransactionDataStandard("", coin, 0, 0, nil, 0, rbfOption)
+    try? data?.generate()
+    data.map { self.sut.updateUI(withTransactionData: $0.transactionData) }
 
     XCTAssertLessThan(sut.activityIndicatorBottomConstraint.constant, 0)
   }
@@ -83,15 +79,14 @@ class LightningUpgradeStartViewControllerTests: XCTestCase {
     XCTAssertNil(sut.confirmTransferFundsLabel.attributedText)
 
     CKUserDefaults().standardDefaults.set(10000, forKey: CKUserDefaults.Key.exchangeRateBTCUSD.defaultsString)
-    let coin = CNBBaseCoin(purpose: .BIP49, coin: .MainNet, account: 0)
-    let path = CNBDerivationPath(purpose: .BIP49, coinType: .MainNet, account: 0, change: 0, index: 0)
-    let utxo = CNBUnspentTransactionOutput(id: "abc123", index: 0, amount: 100_000, derivationPath: path, isConfirmed: true)
-    let data = CNBTransactionData(allUsableOutputs: [utxo],
-                                  coin: coin,
-                                  sendingMaxToAddress: "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4",
-                                  feeRate: 5,
-                                  blockHeight: 500000)
-    data.map { self.sut.updateUI(withTransactionData: $0) }
+    let coin = BTCMainnetCoin(purpose: .nestedSegwit)
+    let path = CNBCnlibNewDerivationPath(coin, 0, 0)!
+    let utxo = CNBCnlibNewUTXO("abc123", 0, 100_000, path, nil, true)!
+    let address = "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4"
+    let data = CNBCnlibNewTransactionDataSendingMax(address, coin, 5, 500000)
+    data?.add(utxo)
+    try? data?.generate()
+    data.map { self.sut.updateUI(withTransactionData: $0.transactionData) }
 
     let expectedString = "I understand that DropBit will be transferring my funds of $9.93 with a transaction fee of $0.07 to my upgraded wallet."
     let actualString = sut.confirmTransferFundsLabel.attributedText?.string ?? ""

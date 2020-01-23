@@ -12,6 +12,9 @@ import PromiseKit
 @testable import DropBit
 
 class MockCheckInBroker: CKPersistenceBroker, CheckInBrokerType {
+  func fee(forType type: TransactionFeeType) -> Double {
+    return 0.0
+  }
 
   var cachedBTCUSDRate: Double = 0
 
