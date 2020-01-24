@@ -30,7 +30,7 @@ class WalletOverviewPage: UITestPage {
   }
   
   @discardableResult
-  func tapRequest() -> Self {
+  func tapReceive() -> Self {
     let receiveButton = app.buttons(.walletOverview(.receiveButton))
     receiveButton.tap()
     return self
@@ -47,6 +47,20 @@ class WalletOverviewPage: UITestPage {
   func tapBalance() -> Self {
     let balanceView = app.view(withId: .walletOverview(.balanceView))
     balanceView.tap()
+    return self
+  }
+
+  @discardableResult
+  func tapBitcoin() -> Self {
+    let bitcoinButton = app.buttons(.walletOverview(.bitcoinButton))
+    bitcoinButton.tap()
+    return self
+  }
+
+  @discardableResult
+  func tapLightning() -> Self {
+    let lightningButton = app.buttons(.walletOverview(.lightningButton))
+    lightningButton.tap()
     return self
   }
 

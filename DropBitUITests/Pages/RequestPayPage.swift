@@ -23,4 +23,27 @@ class RequestPayPage: UITestPage {
     return self
   }
 
+  @discardableResult
+  func tapClose() -> Self {
+    let closeButton = app.buttons(.requestPay(.closeButton), assertionWait: .custom(0.5))
+    closeButton.tap()
+    return self
+  }
+
+  @discardableResult
+  func enterAmount(_ amountText: String) -> Self {
+    let editAmountButton = app.buttons(.requestPay(.editAmountButton), assertionWait: .custom(1.5))
+    editAmountButton.tap()
+    for (i, character) in amountText.enumerated() {
+      let enterDigitButton = app.buttons[String(character)]
+      if i == 0 {
+        _ = enterDigitButton.waitForExistence(timeout: 0.5)
+      }
+      enterDigitButton.tap()
+    }
+    let doneButton = app.buttons["Done"]
+    doneButton.tap()
+    return self
+  }
+
 }

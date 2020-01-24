@@ -85,7 +85,9 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
       (transactionHistoryViewController.view, .walletOverview(.transactionHistory)),
       (sendReceiveActionView.receiveButton, .walletOverview(.receiveButton)),
       (sendReceiveActionView.sendButton, .walletOverview(.sendButton)),
-      (transactionHistoryViewController.transactionHistoryNoBalanceView.learnAboutBitcoinButton, .walletOverview(.tutorialButton))
+      (transactionHistoryViewController.transactionHistoryNoBalanceView.learnAboutBitcoinButton, .walletOverview(.tutorialButton)),
+      (walletToggleView.bitcoinWalletButton, .walletOverview(.bitcoinButton)),
+      (walletToggleView.lightningWalletButton, .walletOverview(.lightningButton))
     ]
   }
 

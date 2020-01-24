@@ -170,6 +170,8 @@ enum WalletOverviewElement: String, AccessibleElement {
   case receiveButton
   case sendButton
   case balanceView
+  case bitcoinButton
+  case lightningButton
 }
 
 enum ActionableAlertElement: String, AccessibleElement {
@@ -202,6 +204,8 @@ enum TransactionHistoryElement: AccessibleElement {
 enum RequestPayElement: String, AccessibleElement {
   case page
   case addressLabel
+  case editAmountButton
+  case closeButton
 }
 
 enum RecoveryWordsIntroElement: String, AccessibleElement {

@@ -47,12 +47,15 @@ class DropBitSnapshot: UITestCase {
     DrawerPage().tapSupport()
     SupportPage(ifExists: { snapshot("b7_Support") }).tapClose()
 
-    //TODO: Bitcoin receive (no amount), snapshot, dismiss
+    WalletOverviewPage().tapReceive()
+    RequestPayPage(ifExists: { snapshot("c1_Receive_OnChain") }).tapClose()
+
     //TODO: Lightning tab, receive, enter $20, dismiss keyboard, Create Invoice, snapshot
+    //WalletOverviewPage().tapLightning()
 
     WalletOverviewPage() //page will be hidden by detail cell
       .tapFirstSummaryCell()
       .swipeDetailCells(count: 24)
   }
-  
+
 }

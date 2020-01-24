@@ -124,7 +124,9 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
       (self.view, .requestPay(.page)),
-      (receiveAddressLabel, .requestPay(.addressLabel))
+      (receiveAddressLabel, .requestPay(.addressLabel)),
+      (editAmountView.editAmountButton, .requestPay(.editAmountButton)),
+      (self.closeButton, .requestPay(.closeButton))
     ]
   }
 
