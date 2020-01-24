@@ -20,13 +20,11 @@ struct OnChainQRCode {
     // If the `url` contains either of these parameters, we ignore any address or amount that may also be present
     if let paymentURL = bitcoinURL.components.paymentRequest {
       self.init(paymentURL: paymentURL)
-
     } else if let address = bitcoinURL.components.address {
       self.init(
         btcAmount: bitcoinURL.components.amount, // may be nil
         address: address
       )
-
     } else {
       return nil
     }

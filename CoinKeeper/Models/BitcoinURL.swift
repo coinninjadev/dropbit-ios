@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Cnlib
 
 struct BitcoinURL {
 
@@ -116,8 +117,21 @@ struct BitcoinURLComponents {
     if let bip70URL = URL(string: initialString), bip70URL.scheme == "https" {
       // handle case where user pastes the merchant's URL without the bitcoin scheme
       return BitcoinURL.scheme + ":?r=" + initialString
+    } else if initialString.lowercased().starts(with: BitcoinURL.scheme) {
+      var copy = initialString
+      if initialString.starts(with: BitcoinURL.scheme.uppercased()) {
+        copy = initialString.replacingOccurrences(of: BitcoinURL.scheme.uppercased(), with: BitcoinURL.scheme)
+      }
+      if let address = copy.components(separatedBy: ":").last, CNBCnlibAddressIsValidSegwitAddress(address, nil) {
+        copy = copy.lowercased()
+      }
+      return copy
     } else if !initialString.contains(BitcoinURL.scheme) {
-      return BitcoinURL.scheme + ":" + initialString
+      var copy = initialString
+      if CNBCnlibAddressIsValidSegwitAddress(initialString, nil) {
+        copy = initialString.lowercased()
+      }
+      return BitcoinURL.scheme + ":" + copy
     } else {
       return initialString
     }
