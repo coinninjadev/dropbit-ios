@@ -46,7 +46,9 @@ extension PaymentSendingDelegate {
   func handleFailure(error: Error, action: CKCompletion? = nil) {
     log.error(error, message: nil)
     let alert = alertManager.defaultAlert(withError: error)
-    DispatchQueue.main.async { self.navigationController.topViewController()?.present(alert, animated: true) }
+    DispatchQueue.main.async {
+      self.navigationController.topViewController()?.present(alert, animated: true, completion: action)
+    }
   }
 
   func presentPinEntryViewController(_ pinEntryVC: PinEntryViewController) {
