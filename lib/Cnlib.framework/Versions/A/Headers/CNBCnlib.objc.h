@@ -191,6 +191,8 @@
 - (nonnull instancetype)init;
 @property (nonatomic) long numSatoshis;
 @property (nonatomic) NSString* _Nonnull description;
+@property (nonatomic) BOOL isExpired;
+@property (nonatomic) int64_t expiresAt;
 @end
 
 /**
