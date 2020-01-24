@@ -28,6 +28,7 @@ extension AppCoordinator: PrivateKeySweepViewControllerDelegate {
                                forViewController viewController: SuccessFailViewController) {
     networkManager.broadcastTx(with: transactionData)
       .done { (txid: String) in
+        self.analyticsManager.track(event: .sweepPrivateKey, with: nil)
         let context = self.persistenceManager.createBackgroundContext()
         let outgoingTransactionData = OutgoingTransactionData(txid: txid, destinationAddress: transactionData.paymentAddress,
                                                               amount: transactionData.amount, feeAmount: transactionData.feeAmount,
