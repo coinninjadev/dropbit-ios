@@ -19,7 +19,7 @@ class WyreURLParserTests: XCTestCase {
     let expectedFees = "0.00001"
     let expectedAmount = "0.05"
 
-    let urlString = "dropbit://wyre?transferId=\(expectedTransferID)" +
+    let urlString = "\(DropBitUrlFactory.DropBitURL.scheme)://wyre?transferId=\(expectedTransferID)" +
     "&orderId=\(expectedOrderID)" +
     "&accountId=\(expectedAccountId)" +
     "&dest=\(expectedDestinationAddress)" +
@@ -44,7 +44,7 @@ class WyreURLParserTests: XCTestCase {
     let expectedFees = "0.00001"
     let expectedAmount = "0.05"
 
-    let urlString = "dropbit://wyre?" +
+    let urlString = "\(DropBitUrlFactory.DropBitURL.scheme)wyre?" +
       "orderId=\(expectedOrderID)" +
       "&accountId=\(expectedAccountId)" +
       "&dest=\(expectedDestinationAddress)" +
@@ -63,7 +63,7 @@ class WyreURLParserTests: XCTestCase {
     let expectedFees = "0.00001"
     let expectedAmount = "0.05"
 
-    let urlString = "dropbit://wyre?" +
+    let urlString = "\(DropBitUrlFactory.DropBitURL.scheme)wyre?" +
       "transferId=\(expectedTransferID)" +
       "&accountId=\(expectedAccountId)" +
       "&dest=\(expectedDestinationAddress)" +
@@ -82,7 +82,7 @@ class WyreURLParserTests: XCTestCase {
     let expectedFees = "0.00001"
     let expectedAmount = "0.05"
 
-    let urlString = "dropbit://wyre?transferId=\(expectedTransferID)" +
+    let urlString = "\(DropBitUrlFactory.DropBitURL.scheme)wyre?transferId=\(expectedTransferID)" +
       "&orderId=\(expectedOrderID)" +
       "&dest=\(expectedDestinationAddress)" +
       "&fees=\(expectedFees)" +
@@ -100,7 +100,7 @@ class WyreURLParserTests: XCTestCase {
     let expectedFees = "0.00001"
     let expectedAmount = "0.05"
 
-    let urlString = "dropbit://wyre?transferId=\(expectedTransferID)" +
+    let urlString = "\(DropBitUrlFactory.DropBitURL.scheme)wyre?transferId=\(expectedTransferID)" +
       "&orderId=\(expectedOrderID)" +
       "&accountId=\(expectedAccountId)" +
       "&fees=\(expectedFees)" +
@@ -118,7 +118,7 @@ class WyreURLParserTests: XCTestCase {
     let expectedDestinationAddress = "3HvgiuXMB2SHNsvvR4yWFr7kEGEHkzN8oH"
     let expectedAmount = "0.05"
 
-    let urlString = "dropbit://wyre?transferId=\(expectedTransferID)" +
+    let urlString = "\(DropBitUrlFactory.DropBitURL.scheme)wyre?transferId=\(expectedTransferID)" +
       "&orderId=\(expectedOrderID)" +
       "&accountId=\(expectedAccountId)" +
       "&dest=\(expectedDestinationAddress)" +
@@ -136,7 +136,7 @@ class WyreURLParserTests: XCTestCase {
     let expectedDestinationAddress = "3HvgiuXMB2SHNsvvR4yWFr7kEGEHkzN8oH"
     let expectedFees = "0.00001"
 
-    let urlString = "dropbit://wyre?transferId=\(expectedTransferID)" +
+    let urlString = "\(DropBitUrlFactory.DropBitURL.scheme)wyre?transferId=\(expectedTransferID)" +
       "&orderId=\(expectedOrderID)" +
       "&accountId=\(expectedAccountId)" +
       "&dest=\(expectedDestinationAddress)" +

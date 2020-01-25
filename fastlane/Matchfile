@@ -1,18 +1,18 @@
 git_url "#{ENV['MATCH_CODE_SIGNING_URL']}"
 username "#{ENV['MATCH_USERNAME']}"
 force true
-app_identifier "com.coinninja.CoinKeeper.beta"
+app_identifier ["com.coinninja.CoinKeeper.beta", "com.coinninja.CoinKeeper.beta.TodayExtension"]
 
 # type "development" # The default type, can be: appstore, adhoc, enterprise or development
 
 for_lane :deploy do
   type "appstore"
-  app_identifier "com.coinninja.CoinKeeper"
+  app_identifier ["com.coinninja.CoinKeeper", "com.coinninja.CoinKeeper.TodayExtension"]
 end
 
 for_lane :beta do
   type "appstore"
-  app_identifier "com.coinninja.CoinKeeper.beta"
+  app_identifier ["com.coinninja.CoinKeeper.beta", "com.coinninja.CoinKeeper.beta.TodayExtension"]
 end
 
 for_lane :test do

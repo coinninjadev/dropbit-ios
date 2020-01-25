@@ -85,22 +85,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
     log.systemEvent()
 
-    if url.scheme == "dropbit" {
+    if url.scheme == DropBitUrlFactory.DropBitURL.scheme {
       if let wyreURL = WyreURLParser(url: url) {
-        coordinator.purchasedBitcoinComponents = wyreURL
+        coordinator.launchUrl = .wyre(wyreURL)
+      } else if url.absoluteString.contains(DropBitUrlFactory.DropBitURL.widget.rawValue) {
+        coordinator.launchUrl = .widget
       } else {
         OAuthSwift.handle(url: url)
       }
-      return true
 
+      return true
     } else if let bitcoinURL = BitcoinURL(string: url.absoluteString) {
-      coordinator.bitcoinURLToOpen = bitcoinURL
+      coordinator.launchUrl = .bitcoin(bitcoinURL)
       return true
-
     } else if DynamicLinks.dynamicLinks().shouldHandleDynamicLink(fromCustomSchemeURL: url) {
-      let dynamicLink = DynamicLinks.dynamicLinks().dynamicLink(fromCustomSchemeURL: url)
-      return coordinator.handleDynamicLink(dynamicLink)
-
+      let url = DynamicLinks.dynamicLinks().dynamicLink(fromCustomSchemeURL: url)
+      return coordinator.handleDynamicLink(url)
     } else {
       return false
     }

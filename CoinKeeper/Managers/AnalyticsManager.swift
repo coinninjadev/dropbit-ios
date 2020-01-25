@@ -131,6 +131,7 @@ enum AnalyticsManagerEventType: String {
   case referralLinkDetected = "ReferralLinkDetected"
   case satsTransferred = "SatsTransferred"
   case referralPaymentReceived = "ReferralPaymentReceived"
+  case widgetOpenApp = "WidgetOpenApp"
 
   var id: String {
     return self.rawValue

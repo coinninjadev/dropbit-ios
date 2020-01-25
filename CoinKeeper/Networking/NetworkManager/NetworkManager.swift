@@ -62,6 +62,8 @@ class NetworkManager: NetworkManagerType {
   let coinNinjaProvider = CoinNinjaBroadcastProvider()
   let blockchainInfoProvider = BlockchainInfoProvider()
   let blockstreamProvider = BlockstreamProvider()
+  let newsNetworkManager: NewsNetworkManager
+  let checkInNetworkManager: CheckInNetworkManager
 
   var lastExchangeRateCheck = Date(timeIntervalSince1970: 0)
   var lastFeesCheck = Date(timeIntervalSince1970: 0)
@@ -83,6 +85,8 @@ class NetworkManager: NetworkManagerType {
       accessTokenUrl: twitterOAuth.accessTokenURL
     )
 
+    newsNetworkManager = NewsNetworkManager(coinNinjaProvider: coinNinjaProvider)
+    checkInNetworkManager = CheckInNetworkManager(coinNinjaProvider: coinNinjaProvider)
     self.cnProvider.headerDelegate = self
   }
 

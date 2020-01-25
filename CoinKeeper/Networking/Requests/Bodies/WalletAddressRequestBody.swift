@@ -8,6 +8,8 @@
 
 import Foundation
 
+typealias BitcoinUSDPair = (btcAmount: NSDecimalNumber, usdAmount: NSDecimalNumber)
+
 struct WalletAddressRequestAmount: Codable {
   let usd: Int
   let btc: Int
