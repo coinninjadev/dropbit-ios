@@ -9,17 +9,12 @@
 import PromiseKit
 import Charts
 
-protocol NewsDataRequestable: AnyObject {
-  func requestNewsData(count: Int) -> Promise<[NewsArticleResponse]>
-  func requestPriceData(period: PricePeriod) -> Promise<[PriceSummaryResponse]>
-}
-
 extension NetworkManager: NewsDataRequestable {
   func requestNewsData(count: Int) -> Promise<[NewsArticleResponse]> {
-    return cnProvider.requestList(NewsTarget.news(count))
+    return newsNetworkManager.requestNewsData(count: count)
   }
 
   func requestPriceData(period: PricePeriod) -> Promise<[PriceSummaryResponse]> {
-    return cnProvider.requestList(PriceTarget.price(period))
+    return newsNetworkManager.requestPriceData(period: period)
   }
 }

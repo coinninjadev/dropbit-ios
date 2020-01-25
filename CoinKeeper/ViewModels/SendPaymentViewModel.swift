@@ -9,26 +9,6 @@
 import Foundation
 import Cnlib
 
-enum WalletTransactionType: String {
-  case onChain
-  case lightning
-
-  var addressType: WalletAddressType {
-    switch self {
-    case .onChain:    return .btc
-    case .lightning:  return .lightning
-    }
-  }
-
-  init(addressType: WalletAddressType) {
-    switch addressType {
-    case .btc:        self = .onChain
-    case .lightning:  self = .lightning
-    }
-  }
-
-}
-
 enum PaymentRecipient {
 
   /// Associated value may be either a BTC address or a lightning invoice.

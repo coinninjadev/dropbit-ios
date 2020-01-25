@@ -10,17 +10,10 @@ import Foundation
 import UIKit
 
 protocol TimePeriodCellDelegate: class {
-  func timePeriodWasSelected(_ period: TimePeriodCell.Period)
+  func timePeriodWasSelected(_ period: TimePeriod)
 }
 
 class TimePeriodCell: UITableViewCell {
-  enum Period {
-    case daily
-    case week
-    case monthly
-    case yearly
-    case alltime
-  }
 
   @IBOutlet var monthlyButton: TimePeriodButton!
   @IBOutlet var dayButton: TimePeriodButton!

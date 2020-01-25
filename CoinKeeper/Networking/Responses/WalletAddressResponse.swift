@@ -8,10 +8,6 @@
 
 import Foundation
 
-public enum WalletAddressType: String {
-  case btc, lightning
-}
-
 public struct AddWalletAddressBody: Encodable {
   let address: String
   let addressPubkey: String

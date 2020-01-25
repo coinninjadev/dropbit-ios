@@ -38,7 +38,7 @@ extension AppCoordinator {
 
     navigationController.isNavigationBarHidden = true
 
-    handlePendingBitcoinURL()
+    handleLaunchUrlIfNecessary()
   }
 
   func continueSetupFlow() {

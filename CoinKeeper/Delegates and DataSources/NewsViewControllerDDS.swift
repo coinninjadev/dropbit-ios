@@ -21,31 +21,7 @@ protocol NewsViewControllerDDSDelegate: class {
 
 class NewsViewControllerDDS: NSObject {
 
-  /*
-   Monthly endpoint of price is broken down by hours
-   Average of 30 days times 24 hours = 720
-   720 hours minus a weeks worth of hours (7 x 24 = 168) is 552
-  */
-  lazy var weekDataSourceOffset: Int = {
-    let hoursInWeek = 168
-    return monthlyDataSourceOffset - hoursInWeek
-  }()
-
-  lazy var monthlyDataSourceOffset: Int = {
-    let daysInMonth = 30, hoursInWeek = 24
-    return daysInMonth * hoursInWeek
-  }()
-
-  lazy var dailyDataSourceOffset: Int = {
-    let minutesInHour = 60, hoursInDay = 24
-    return minutesInHour * hoursInDay
-  }()
-
   private let newsCellIndexOffset = 4
-
-  var yearDataSourceOffset: Int {
-    return 365
-  }
 
   enum CellIdentifier: Int {
     case price = 0
@@ -57,7 +33,7 @@ class NewsViewControllerDDS: NSObject {
 
   weak var delegate: NewsViewControllerDDSDelegate?
 
-  private var currentTimePeriod: TimePeriodCell.Period = .daily
+  private var currentTimePeriod: TimePeriod = .daily
 
   var newsData: NewsData = NewsData() {
     didSet {
@@ -70,30 +46,20 @@ class NewsViewControllerDDS: NSObject {
   }
 
   func setupDataSet(coordinationDelegate: NewsViewControllerDelegate) {
-    var newsData = NewsData()
+    let newsData = NewsData()
 
     coordinationDelegate.viewControllerDidRequestNewsData(count: 100)
       .then { articles -> Promise<[PriceSummaryResponse]> in
         newsData.articles = articles
         return coordinationDelegate.viewControllerDidRequestPriceDataFor(period: .daily)
       }.then { dailyPrice -> Promise<[PriceSummaryResponse]> in
-        let day = self.configureDailyData(data: dailyPrice.reversed())
-        newsData.dayPriceData = LineChartDataSet(entries: day.data, label: nil)
-        newsData.dayPriceResponse = day.response
+        newsData.configureDailyData(data: dailyPrice)
         return coordinationDelegate.viewControllerDidRequestPriceDataFor(period: .monthly)
       }.then { monthlyPrice -> Promise<[PriceSummaryResponse]> in
-        let monthlyData = self.configureWeekAndMonthData(data: monthlyPrice.reversed())
-        newsData.weeklyPriceData = LineChartDataSet(entries: monthlyData.weekData, label: nil)
-        newsData.weeklyPriceResponse = monthlyData.weekResponse
-        newsData.monthlyPriceData = LineChartDataSet(entries: monthlyData.monthData, label: nil)
-        newsData.monthlyPriceResponse = monthlyData.monthResponse
+        newsData.configureWeekAndMonthData(data: monthlyPrice.reversed())
         return coordinationDelegate.viewControllerDidRequestPriceDataFor(period: .allTime)
       }.done { allTimePrice in
-        let allTimeData = self.configureYearAndAllTimeData(data: allTimePrice.reversed())
-        newsData.allTimePriceData = LineChartDataSet(entries: allTimeData.allTime, label: nil)
-        newsData.allTimePriceResponse = allTimeData.allTimeResponse
-        newsData.yearlyPriceData = LineChartDataSet(entries: allTimeData.year, label: nil)
-        newsData.yearlyPriceResponse = allTimeData.yearResponse
+        newsData.configureYearAndAllTimeData(data: allTimePrice.reversed())
         self.delegate?.delegateFinishedLoadingData()
       }.catch(on: .main, policy: .allErrors) { error in
         self.delegate?.delegateErrorLoadingData()
@@ -104,48 +70,6 @@ class NewsViewControllerDDS: NSObject {
         self.delegate?.delegateRefreshNews()
     }
 
-  }
-
-  struct WeekMonthChartData {
-    let weekData: [ChartDataEntry]
-    let weekResponse: [PriceSummaryResponse]
-    let monthData: [ChartDataEntry]
-    let monthResponse: [PriceSummaryResponse]
-  }
-
-  private func configureWeekAndMonthData(data: [PriceSummaryResponse]) -> WeekMonthChartData {
-    let monthStartIndex = max(0, data.count - monthlyDataSourceOffset), monthResponse = Array(data[monthStartIndex..<data.count])
-    let weekStartIndex = max(0, monthResponse.count - weekDataSourceOffset)
-    let weekResponseStartIndex = max(0, monthResponse.count - weekStartIndex)
-    let weekResponse = Array(monthResponse[weekResponseStartIndex..<monthResponse.count])
-    let weekData = weekResponse.enumerated().map { index, element in return ChartDataEntry(x: Double(index), y: element.average) }
-    let monthData = monthResponse.enumerated().map { index, element in return ChartDataEntry(x: Double(index), y: element.average) }
-
-    return WeekMonthChartData(weekData: weekData, weekResponse: weekResponse, monthData: monthData, monthResponse: monthResponse)
-  }
-
-  private func configureDailyData(data: [PriceSummaryResponse]) -> (data: [ChartDataEntry], response: [PriceSummaryResponse]) {
-    let startIndex = max(0, data.count - dailyDataSourceOffset)
-    let responseData = Array(data[startIndex..<data.count]).enumerated().compactMap { $0 % 5 == 0 ? $1 : nil }
-    let dailyData = responseData.enumerated().map { index, element in return ChartDataEntry(x: Double(index), y: element.average) }
-
-    return (data: dailyData, response: responseData)
-  }
-
-  struct AllTimePriceChartData {
-    let year: [ChartDataEntry]
-    let yearResponse: [PriceSummaryResponse]
-    let allTime: [ChartDataEntry]
-    let allTimeResponse: [PriceSummaryResponse]
-  }
-
-  private func configureYearAndAllTimeData(data: [PriceSummaryResponse]) -> AllTimePriceChartData {
-    let yearStartIndex = max(0, data.count - yearDataSourceOffset), yearResponse = Array(data[yearStartIndex..<data.count])
-    let yearData = yearResponse.enumerated().map { index, element in return ChartDataEntry(x: Double(index), y: element.average) }
-    let allTimeResponseData = Array(data[0..<data.count]).enumerated().compactMap { $0 % 5 == 0 ? $1 : nil }
-    let allTimeData = allTimeResponseData.enumerated().map { index, element in return ChartDataEntry(x: Double(index), y: element.average) }
-
-    return AllTimePriceChartData(year: yearData, yearResponse: yearResponse, allTime: allTimeData, allTimeResponse: allTimeResponseData)
   }
 }
 
@@ -223,7 +147,7 @@ extension NewsViewControllerDDS: UITableViewDataSource {
 
 extension NewsViewControllerDDS: TimePeriodCellDelegate {
 
-  func timePeriodWasSelected(_ period: TimePeriodCell.Period) {
+  func timePeriodWasSelected(_ period: TimePeriod) {
     currentTimePeriod = period
     delegate?.delegateRefreshNews()
   }
