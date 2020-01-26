@@ -60,7 +60,7 @@ class WalletOverviewPage: UITestPage {
   @discardableResult
   func tapLightning() -> Self {
     let lightningButton = app.buttons(.walletOverview(.lightningButton))
-    lightningButton.tap()
+    lightningButton.forceTapElement()
     return self
   }
 
