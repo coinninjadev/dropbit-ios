@@ -68,24 +68,3 @@ class UITestPage {
   }
 
 }
-
-extension XCUIElement {
-
-  ///Checking `isHittable` can result in an infinite loop in some cases, in which case set `skipCheck` to true.
-  func assistedTap(skipCheck: Bool = false) {
-    func tapCoordinate() {
-      let coordinate: XCUICoordinate = self.coordinate(withNormalizedOffset: CGVector(dx:0.0, dy:0.0))
-      coordinate.tap()
-    }
-
-    if skipCheck {
-      tapCoordinate()
-    } else {
-      if self.isHittable {
-        self.tap()
-      } else {
-        tapCoordinate()
-      }
-    }
-  }
-}
