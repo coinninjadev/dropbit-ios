@@ -58,7 +58,7 @@ class DropBitSnapshot: UITestCase {
     WalletOverviewPage()
       .tapLightning()
       .tapFirstSummaryCell()
-      .swipeDetailCells(count: 2, walletType: .lightning)
+      .swipeDetailCells(count: 4, walletType: .lightning)
 
   }
 
