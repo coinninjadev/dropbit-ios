@@ -204,7 +204,10 @@ enum TransactionHistoryElement: AccessibleElement {
 enum RequestPayElement: String, AccessibleElement {
   case page
   case addressLabel
-  case editAmountButton
+  case addAmountButton
+  case editAmountTextField
+  case bottomActionButton
+  case qrImage
   case closeButton
 }
 

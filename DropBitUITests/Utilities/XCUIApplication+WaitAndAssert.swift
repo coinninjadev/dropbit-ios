@@ -82,6 +82,12 @@ extension XCUIApplication {
     return cell
   }
 
+  func image(withId pageElement: AccessiblePageElement, assertionWait: AssertionWait = .none) -> XCUIElement {
+    let image = self.images[pageElement.identifier]
+    image.assertExistence(afterWait: assertionWait, elementDesc: pageElement.identifier)
+    return image
+  }
+
   func buttons(_ pageElement: AccessiblePageElement, assertionWait: AssertionWait = .none) -> XCUIElement {
     let button = self.buttons[pageElement.identifier]
     button.assertExistence(afterWait: assertionWait, elementDesc: pageElement.identifier)

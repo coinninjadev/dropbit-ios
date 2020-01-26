@@ -32,17 +32,20 @@ class RequestPayPage: UITestPage {
 
   @discardableResult
   func enterAmount(_ amountText: String) -> Self {
-    let editAmountButton = app.buttons(.requestPay(.editAmountButton), assertionWait: .custom(1.5))
+    let editAmountButton = app.buttons(.requestPay(.addAmountButton)) //, assertionWait: .custom(1.5)
     editAmountButton.tap()
-    for (i, character) in amountText.enumerated() {
-      let enterDigitButton = app.buttons[String(character)]
-      if i == 0 {
-        _ = enterDigitButton.waitForExistence(timeout: 0.5)
-      }
-      enterDigitButton.tap()
-    }
+    let textField = app.textFields(.requestPay(.editAmountTextField))
+    textField.typeText(amountText)
     let doneButton = app.buttons["Done"]
     doneButton.tap()
+    return self
+  }
+
+  @discardableResult
+  func createInvoice() -> Self {
+    let button = app.buttons(.requestPay(.bottomActionButton))
+    button.tap()
+    _ = app.image(withId: .requestPay(.qrImage), assertionWait: .custom(3.0))
     return self
   }
 

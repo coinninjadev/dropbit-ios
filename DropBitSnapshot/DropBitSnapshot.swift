@@ -52,14 +52,49 @@ class DropBitSnapshot: UITestCase {
 
     WalletOverviewPage()
       .tapFirstSummaryCell()
-      .swipeDetailCells(count: 24, walletType: .onChain)
+      .swipeDetailCells(count: 24, forEach: { index in
+        let filename = self.description(withPrefix: "OnChain_Tx_Detail", number: index)
+        snapshot(filename)
+      })
 
-    //TODO: Lightning tab, receive, enter $20, dismiss keyboard, Create Invoice, snapshot
     WalletOverviewPage()
       .tapLightning()
-      .tapFirstSummaryCell()
-      .swipeDetailCells(count: 4, walletType: .lightning)
+      .tapReceive()
+    RequestPayPage(ifExists: { snapshot("e1_Receive_Lightning") })
+      .enterAmount("12.34")
+      .createInvoice()
+      .takeSnapshot("e2_Receive_Lightning_Invoice")
+      .tapClose()
 
+    WalletOverviewPage()
+      .tapFirstSummaryCell()
+      .swipeDetailCells(count: 4, forEach: { index in
+        let filename = self.description(withPrefix: "Lightning_Tx_Detail", number: index)
+        snapshot(filename)
+      })
   }
 
+  ///Useful for describing screenshots with fastlane snapshot.
+  ///Pads the number with leading zeros for consistent 3-digit numbers to correctly sort exported image files.
+  private func description(withPrefix prefix: String, number: Int) -> String {
+    let formatter = prefixedNumberFormatter
+    let numberDesc = formatter.string(from: NSNumber(value: number)) ?? ""
+    return "\(prefix)_\(numberDesc)"
+  }
+
+  private lazy var prefixedNumberFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.minimumIntegerDigits = 3
+    formatter.paddingPosition = .beforePrefix
+    formatter.paddingCharacter = "0"
+    return formatter
+  }()
+
+}
+
+extension UITestPage {
+  func takeSnapshot(_ name: String) -> Self {
+    snapshot(name)
+    return self
+  }
 }

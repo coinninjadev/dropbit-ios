@@ -45,22 +45,6 @@ class UITestPage {
     return app.otherElements[pageElement.identifier]
   }
 
-  ///Useful for describing screenshots with fastlane snapshot.
-  ///Pads the number with leading zeros for consistent 3-digit numbers to correctly sort exported image files.
-  func description(withPrefix prefix: String, number: Int) -> String {
-    let formatter = prefixedNumberFormatter
-    let numberDesc = formatter.string(from: NSNumber(value: number)) ?? ""
-    return "\(prefix)_\(numberDesc)"
-  }
-
-  private lazy var prefixedNumberFormatter: NumberFormatter = {
-    let formatter = NumberFormatter()
-    formatter.minimumIntegerDigits = 3
-    formatter.paddingPosition = .beforePrefix
-    formatter.paddingCharacter = "0"
-    return formatter
-  }()
-
   @discardableResult
   func tapBack() -> Self {
     app.navigationBars.buttons.element(boundBy: 0).tap()

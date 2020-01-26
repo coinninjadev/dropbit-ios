@@ -125,7 +125,10 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     return [
       (self.view, .requestPay(.page)),
       (receiveAddressLabel, .requestPay(.addressLabel)),
-      (editAmountView.editAmountButton, .requestPay(.editAmountButton)),
+      (addAmountButton, .requestPay(.addAmountButton)),
+      (editAmountView.primaryAmountTextField, .requestPay(.editAmountTextField)),
+      (qrImageView, .requestPay(.qrImage)),
+      (bottomActionButton, .requestPay(.bottomActionButton)),
       (self.closeButton, .requestPay(.closeButton))
     ]
   }
