@@ -387,8 +387,12 @@ extension WalletOverviewViewController: TransactionHistorySummaryCollectionViewD
     let translatedPoint = view.convert(point, to: self.view)
     if walletToggleView.frame.contains(translatedPoint) {
       let toggleTranslatedPoint = self.view.convert(translatedPoint, to: walletToggleView)
-      walletToggleView.bitcoinWalletButton.frame.contains(toggleTranslatedPoint) ?
-        walletToggleView.bitcoinWalletWasTouched() : walletToggleView.lightningWalletWasTouched()
+      let bitcoinButtonContainsPoint = walletToggleView.bitcoinWalletButton.frame.contains(toggleTranslatedPoint)
+      if bitcoinButtonContainsPoint {
+        walletToggleView.bitcoinWalletWasTouched()
+      } else {
+        walletToggleView.lightningWalletWasTouched()
+      }
       return walletToggleView
     } else if walletBalanceView.frame.contains(translatedPoint) {
       let balanceViewTranslatedPoint = self.view.convert(translatedPoint, to: walletBalanceView)
