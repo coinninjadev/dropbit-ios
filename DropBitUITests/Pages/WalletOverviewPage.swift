@@ -53,21 +53,22 @@ class WalletOverviewPage: UITestPage {
   @discardableResult
   func tapBitcoin() -> Self {
     let bitcoinButton = app.buttons(.walletOverview(.bitcoinButton))
-    bitcoinButton.tap()
+    bitcoinButton.assistedTap(skipCheck: true)
     return self
   }
 
   @discardableResult
   func tapLightning() -> Self {
     let lightningButton = app.buttons(.walletOverview(.lightningButton))
-    lightningButton.forceTapElement()
+    lightningButton.assistedTap(skipCheck: true)
     return self
   }
 
   @discardableResult
   func tapFirstSummaryCell() -> Self {
-    let firstCell = app.cell(withId: .transactionHistory(.summaryCell(0)))
-    firstCell.tap()
+    sleep(1)
+    let firstCell = app.cell(withId: .transactionHistory(.summaryCell(0)), assertionWait: .custom(3.0))
+    firstCell.assistedTap()
     return self
   }
 
