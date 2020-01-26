@@ -14,14 +14,12 @@ class MockTransactionHistoryDataSource: TransactionHistoryDataSourceType {
   let walletTransactionType: WalletTransactionType
   weak var delegate: TransactionHistoryDataSourceDelegate?
 
-  fileprivate var items: [TransactionCellDisplayable]
+  fileprivate var items: [TransactionCellDisplayable] = []
   fileprivate let generator: MockDetailDataGenerator
 
   init(walletTxType: WalletTransactionType) {
     self.walletTransactionType = walletTxType
     generator = MockDetailDataGenerator(walletTxType: walletTxType)
-    let dropBitItems = generator.generatePhoneAndTwitterDropBitItems(categories: MockDataDropBitCategory.allCases)
-    self.items = dropBitItems
   }
 
   func indexPathsToAnimate() -> [IndexPath] {
@@ -67,6 +65,7 @@ class MockTransactionHistoryOnChainDataSource: MockTransactionHistoryDataSource 
 
   init() {
     super.init(walletTxType: .onChain)
+    items += generator.generatePhoneAndTwitterDropBitItems(categories: MockDataDropBitCategory.allCases)
     items += [
       generator.lightningTransfer(walletTxType: walletTransactionType, direction: .out), //load
       generator.lightningTransfer(walletTxType: walletTransactionType, direction: .in), //withdraw
@@ -82,11 +81,12 @@ class MockTransactionHistoryLightningDataSource: MockTransactionHistoryDataSourc
   init() {
     super.init(walletTxType: .lightning)
     items += [
-      generator.lightningTransfer(walletTxType: walletTransactionType, direction: .in), //load
-      generator.lightningTransfer(walletTxType: walletTransactionType, direction: .out), //withdraw
       generator.lightningInvoice(hours: 42),
-      generator.lightningInvoice(hours: nil) //expired
+      generator.lightningInvoice(hours: nil), //expired
+      generator.lightningTransfer(walletTxType: walletTransactionType, direction: .in), //load
+      generator.lightningTransfer(walletTxType: walletTransactionType, direction: .out) //withdraw
     ]
+    items += generator.generatePhoneAndTwitterDropBitItems(categories: MockDataDropBitCategory.allCases)
   }
 
 }

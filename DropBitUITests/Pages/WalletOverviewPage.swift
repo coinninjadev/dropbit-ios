@@ -66,25 +66,29 @@ class WalletOverviewPage: UITestPage {
 
   @discardableResult
   func tapFirstSummaryCell() -> Self {
-    sleep(1)
     let firstCell = app.cell(withId: .transactionHistory(.summaryCell(0)), assertionWait: .custom(3.0))
     firstCell.assistedTap()
     return self
   }
 
-  private func swipeDetailCell(atIndex index: Int, upTo: Int) -> Self {
+  private func swipeDetailCell(atIndex index: Int, upTo: Int, walletType: WalletType) -> Self {
     guard index <= upTo else {
       return self
     }
     let cell = app.cell(withId: .transactionHistory(.detailCell(index)), assertionWait: .none)
-    snapshot(description(withPrefix: "Tx_Detail", number: index))
+    snapshot(description(withPrefix: "\(walletType.rawValue)_Tx_Detail", number: index))
     cell.tap()
-    return self.swipeDetailCell(atIndex: index + 1, upTo: upTo)
+    return self.swipeDetailCell(atIndex: index + 1, upTo: upTo, walletType: walletType)
   }
 
   @discardableResult
-  func swipeDetailCells(count: Int) -> Self {
-    return self.swipeDetailCell(atIndex: 0, upTo: count - 1)
+  func swipeDetailCells(count: Int, walletType: WalletType) -> Self {
+    return self.swipeDetailCell(atIndex: 0, upTo: count - 1, walletType: walletType)
   }
 
+}
+
+enum WalletType: String {
+  case onChain = "OnChain"
+  case lightning = "Lightning"
 }

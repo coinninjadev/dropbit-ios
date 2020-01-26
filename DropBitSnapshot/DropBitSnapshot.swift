@@ -50,12 +50,16 @@ class DropBitSnapshot: UITestCase {
     WalletOverviewPage().tapReceive()
     RequestPayPage(ifExists: { snapshot("c1_Receive_OnChain") }).tapClose()
 
-    //TODO: Lightning tab, receive, enter $20, dismiss keyboard, Create Invoice, snapshot
-    //WalletOverviewPage().tapLightning()
-
-    WalletOverviewPage() //page will be hidden by detail cell
+    WalletOverviewPage()
       .tapFirstSummaryCell()
-      .swipeDetailCells(count: 24)
+      .swipeDetailCells(count: 24, walletType: .onChain)
+
+    //TODO: Lightning tab, receive, enter $20, dismiss keyboard, Create Invoice, snapshot
+    WalletOverviewPage()
+      .tapLightning()
+      .tapFirstSummaryCell()
+      .swipeDetailCells(count: 2, walletType: .lightning)
+
   }
 
 }
