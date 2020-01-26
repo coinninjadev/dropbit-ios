@@ -346,6 +346,10 @@ class AppCoordinator: CoordinatorType {
 
   /// Called by applicationDidBecomeActive()
   func appBecameActive() {
+    if uiTestArguments.contains(.uiTestInProgress) {
+      UIApplication.shared.keyWindow?.layer.speed = 10
+    }
+
     resetWalletManagerIfNeeded()
     handleLaunchUrlIfNecessary()
     refreshContacts()
