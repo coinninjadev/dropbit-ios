@@ -23,6 +23,7 @@ class DropBitSnapshot: UITestCase {
     DeviceVerificationPage().tapSkip()
     PushInfoPage()?.dismiss()
 
+    //Drawer items
     WalletOverviewPage(ifExists: { snapshot("a_History") }).tapMenu()
     DrawerPage(ifExists: { snapshot("b1_Menu") }).tapGetBitcoin()
     GetBitcoinPage(ifExists: { snapshot("b2_Get_Bitcoin") }).tapBack()
@@ -47,29 +48,32 @@ class DropBitSnapshot: UITestCase {
     DrawerPage().tapSupport()
     SupportPage(ifExists: { snapshot("b7_Support") }).tapClose()
 
+    //On-Chain
     WalletOverviewPage().tapReceive()
     RequestPayPage(ifExists: { snapshot("c1_Receive_OnChain") }).tapClose()
 
     WalletOverviewPage()
       .tapFirstSummaryCell()
       .swipeDetailCells(count: 24, forEach: { index in
-        let filename = self.description(withPrefix: "OnChain_Tx_Detail", number: index)
+        let filename = self.description(withPrefix: "c2_OnChain_Tx_Detail", number: index)
         snapshot(filename)
       })
+    TransactionDetailCellPage().tapClose()
 
+    //Lightning
     WalletOverviewPage()
       .tapLightning()
       .tapReceive()
-    RequestPayPage(ifExists: { snapshot("e1_Receive_Lightning") })
+    RequestPayPage(ifExists: { snapshot("d1_Receive_Lightning") })
       .enterAmount("12.34")
       .createInvoice()
-      .takeSnapshot("e2_Receive_Lightning_Invoice")
+      .takeSnapshot("d2_Receive_Lightning_Invoice")
       .tapClose()
 
     WalletOverviewPage()
       .tapFirstSummaryCell()
       .swipeDetailCells(count: 4, forEach: { index in
-        let filename = self.description(withPrefix: "Lightning_Tx_Detail", number: index)
+        let filename = self.description(withPrefix: "d3_Lightning_Tx_Detail", number: index)
         snapshot(filename)
       })
   }

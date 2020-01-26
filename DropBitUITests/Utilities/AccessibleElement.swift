@@ -61,6 +61,7 @@ enum AccessiblePageElement {
   case walletOverview(WalletOverviewElement)
   case actionableAlert(ActionableAlertElement)
   case transactionHistory(TransactionHistoryElement)
+  case transactionDetailCell(DetailCellElement)
   case requestPay(RequestPayElement)
   case recoveryWordsIntro(RecoveryWordsIntroElement)
   case bannerMessage(SwiftMessagesBannerElement)
@@ -98,13 +99,14 @@ enum AccessiblePageElement {
     case .memoEntry(let element):                 return element.fullIdentifier
     case .sendPayment(let element):               return element.fullIdentifier
     case .transactionHistory(let element):        return element.fullIdentifier
+    case .transactionDetailCell(let element):     return element.fullIdentifier
     case .lightningUpgradeStart(let element):     return element.fullIdentifier
     case .dropBitMe(let element):                 return element.fullIdentifier
     case .drawer(let element):                    return element.fullIdentifier
     case .getBitcoin(let element):                return element.fullIdentifier
     case .earn(let element):                      return element.fullIdentifier
     case .settings(let element):                  return element.fullIdentifier
-    case .verificationStatus(let element):                    return element.fullIdentifier
+    case .verificationStatus(let element):        return element.fullIdentifier
     case .spend(let element):                     return element.fullIdentifier
     case .support(let element):                   return element.fullIdentifier
     }
@@ -121,6 +123,11 @@ enum BackupRecoveryWordsElement: String, AccessibleElement {
 enum BackupRecoveryWordsCellElement: String, AccessibleElement {
   case page
   case wordLabel
+}
+
+enum DetailCellElement: String, AccessibleElement {
+  case page
+  case closeButton
 }
 
 enum VerifyRecoveryWordsCellElement: String, AccessibleElement {

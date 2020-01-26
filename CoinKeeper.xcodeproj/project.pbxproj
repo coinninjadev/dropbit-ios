@@ -1198,6 +1198,9 @@
 		B5D1B2D221934DBE006B2BC7 /* UITestArgument.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D1B2CF2193469C006B2BC7 /* UITestArgument.swift */; };
 		B5D1B2D52193700D006B2BC7 /* Springboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D1B2D42193700D006B2BC7 /* Springboard.swift */; };
 		B5D1B2D7219384FB006B2BC7 /* XCUIApplication+UITestArgument.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D1B2D6219384FB006B2BC7 /* XCUIApplication+UITestArgument.swift */; };
+		B5D2EAB123DE53A30029EA8F /* TransactionDetailCellPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D2EAB023DE53A30029EA8F /* TransactionDetailCellPage.swift */; };
+		B5D2EAB223DE53A30029EA8F /* TransactionDetailCellPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D2EAB023DE53A30029EA8F /* TransactionDetailCellPage.swift */; };
+		B5D2EAB323DE53A30029EA8F /* TransactionDetailCellPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D2EAB023DE53A30029EA8F /* TransactionDetailCellPage.swift */; };
 		B5D3BF08222439AF0073A684 /* NSManagedObjectContext+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D3BF07222439AF0073A684 /* NSManagedObjectContext+Extensions.swift */; };
 		B5D3BF0A222470420073A684 /* ManagedPhoneNumberInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D3BF09222470420073A684 /* ManagedPhoneNumberInputs.swift */; };
 		B5D4CE4A234D055400B0CB31 /* AlertManagerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D4CE49234D055400B0CB31 /* AlertManagerType.swift */; };
@@ -2392,6 +2395,7 @@
 		B5D1B2CF2193469C006B2BC7 /* UITestArgument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestArgument.swift; sourceTree = "<group>"; };
 		B5D1B2D42193700D006B2BC7 /* Springboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Springboard.swift; sourceTree = "<group>"; };
 		B5D1B2D6219384FB006B2BC7 /* XCUIApplication+UITestArgument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIApplication+UITestArgument.swift"; sourceTree = "<group>"; };
+		B5D2EAB023DE53A30029EA8F /* TransactionDetailCellPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailCellPage.swift; sourceTree = "<group>"; };
 		B5D3BF07222439AF0073A684 /* NSManagedObjectContext+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Extensions.swift"; sourceTree = "<group>"; };
 		B5D3BF09222470420073A684 /* ManagedPhoneNumberInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedPhoneNumberInputs.swift; sourceTree = "<group>"; };
 		B5D4CE49234D055400B0CB31 /* AlertManagerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManagerType.swift; sourceTree = "<group>"; };
@@ -4167,6 +4171,7 @@
 				B58AFF352194E366001BE563 /* SuccessFailPage.swift */,
 				B5FC8A3F23D8F2940006D8D8 /* SupportPage.swift */,
 				3B3779F5219CA79100F79683 /* SwiftMessagesBannerPage.swift */,
+				B5D2EAB023DE53A30029EA8F /* TransactionDetailCellPage.swift */,
 				B5FC8A4323D8F7CE0006D8D8 /* VerificationStatusPage.swift */,
 				3B3779FD219EE7D900F79683 /* VerifyRecoveryWordsCellPage.swift */,
 				A27DFDF122DCDCD200C2824C /* WalletOverviewPage.swift */,
@@ -5912,6 +5917,7 @@
 				3B4B929522F354850018285C /* StartPage.swift in Sources */,
 				3B4B928F22F354850018285C /* MemoEntryPage.swift in Sources */,
 				3B4B929222F354850018285C /* PushInfoPage.swift in Sources */,
+				B5D2EAB223DE53A30029EA8F /* TransactionDetailCellPage.swift in Sources */,
 				B5FC8A3123D8F1A20006D8D8 /* EarnPage.swift in Sources */,
 				3B4B929722F354850018285C /* RecoveryWordsIntroPage.swift in Sources */,
 				3B4B929A22F354850018285C /* BackupRecoveryWordsCellPage.swift in Sources */,
@@ -6054,6 +6060,7 @@
 				3B34B980232DB06A002D8A92 /* DropBitMePage.swift in Sources */,
 				3B325D542190A46D0094897C /* SecondaryActionButton.swift in Sources */,
 				3B3779FF219EEA9F00F79683 /* Int+Times.swift in Sources */,
+				B5D2EAB123DE53A30029EA8F /* TransactionDetailCellPage.swift in Sources */,
 				B51F1ECF2199F62100C54B73 /* StartPage.swift in Sources */,
 				B50BB1AF2175126B0038B5DD /* XCUIApplication+WaitAndAssert.swift in Sources */,
 				B5D1B2D121934AD4006B2BC7 /* UITestArgument.swift in Sources */,
@@ -6081,6 +6088,7 @@
 				B5FC8A4223D8F2940006D8D8 /* SupportPage.swift in Sources */,
 				B57E6FD8234F78C90069991A /* DeviceVerificationPage.swift in Sources */,
 				B57E6FE1234F78D20069991A /* PinEntryPage.swift in Sources */,
+				B5D2EAB323DE53A30029EA8F /* TransactionDetailCellPage.swift in Sources */,
 				B57E6FD7234F78C50069991A /* MemoEntryPage.swift in Sources */,
 				B56B6811234E3D190073BA0D /* Typealiases.swift in Sources */,
 				B5FC8A3223D8F1A20006D8D8 /* EarnPage.swift in Sources */,
