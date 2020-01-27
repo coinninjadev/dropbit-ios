@@ -70,6 +70,16 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     delegate?.viewModelNeedsAmountLabelRefresh(self, secondaryOnly: false)
   }
 
+  private var decodedInvoice: LNDecodePaymentRequestResponse?
+  var isInvoiceExpired: Bool {
+    guard let invoice = decodedInvoice else { return false }
+    return invoice.isExpired
+  }
+  var invoiceExpiration: Date? {
+    guard let invoice = decodedInvoice else { return nil }
+    return invoice.expiresAt
+  }
+
   private var _memo: String?
   var memo: String? {
     // Allows downstream logic to assume that the optional string is not empty
@@ -107,6 +117,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     self.requiredFeeRate = nil
     self.memo = decodedInvoice.description
     self.hasInvoiceWithAmount = (decodedInvoice.numSatoshis ?? 0) > 0
+    self.decodedInvoice = decodedInvoice
   }
 
   // delegate may be nil at init since the delegate is likely a view controller which requires this view model for its own creation

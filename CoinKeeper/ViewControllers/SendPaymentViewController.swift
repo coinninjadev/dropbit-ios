@@ -359,6 +359,11 @@ extension SendPaymentViewController {
     refreshBothAmounts()
     updateMemoContainer()
     setupStyle()
+
+    if viewModel.isInvoiceExpired {
+      alertExpiredInvoice(with: viewModel)
+      return
+    }
   }
 
   func updateMemoContainer() {
@@ -468,10 +473,14 @@ extension SendPaymentViewController {
 
   func applyFetchedBitcoinModelAndUpdateView(fetchedModel: SendPaymentViewModel) {
     self.viewModel = fetchedModel
-    self.setupCurrencySwappableEditAmountView()
-    self.viewModel.setBTCAmountAsPrimary(fetchedModel.btcAmount)
-    self.alertManager?.hideActivityHUD(withDelay: nil) {
-      self.updateViewWithModel()
+    if viewModel.isInvoiceExpired {
+      alertExpiredInvoice(with: viewModel)
+    } else {
+      self.setupCurrencySwappableEditAmountView()
+      self.viewModel.setBTCAmountAsPrimary(fetchedModel.btcAmount)
+      self.alertManager?.hideActivityHUD(withDelay: nil) {
+        self.updateViewWithModel()
+      }
     }
   }
 
@@ -503,6 +512,21 @@ extension SendPaymentViewController {
     case .phoneContact, .twitterContact:
       self.hideRecipientInputViews()
     }
+  }
+
+  private func alertExpiredInvoice(with viewModel: SendPaymentViewModel) {
+    var expirationDate = ""
+    if let expiration = viewModel.invoiceExpiration {
+      let formatter = CKDateFormatter.displayConcise
+      expirationDate = " " + formatter.string(from: expiration)
+    }
+    let title = "Invoice Expired"
+    let description = "This invoice expired" + expirationDate
+    let action = AlertActionConfiguration(title: "Close", style: .default) { [weak self] in
+      self?.dismiss(animated: true, completion: nil)
+    }
+    let alertVM = AlertControllerViewModel(title: title, description: description, image: nil, style: .alert, actions: [action])
+    delegate.viewControllerDidRequestAlert(self, viewModel: alertVM)
   }
 
   private func showPaymentTargetRecipient(with title: String) {
