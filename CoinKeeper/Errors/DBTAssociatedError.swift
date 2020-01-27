@@ -13,7 +13,7 @@ extension DBTError {
   enum RecipientParser: DBTErrorType {
     case multipleRecipients
     case validation(ValidatorErrorType)
-    case noResults
+    case noResults(String)
 
     var displayMessage: String {
       switch self {
@@ -21,8 +21,8 @@ extension DBTError {
         return "Multiplie potential recipients were found in the text."
       case .validation(let validatorError):
         return validatorError.displayMessage
-      case .noResults:
-        return "No valid recipients were found in the text."
+      case .noResults(let pastedText):
+        return "No valid recipients found in: \(pastedText.substring(start: 0, offsetBy: 100) ?? pastedText)"
       }
     }
   }
