@@ -50,6 +50,8 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
   // MARK: private class
   class MockCoordinator: TransactionHistoryDetailsViewControllerDelegate, URLOpener {
 
+    var uiTestIsInProgress: Bool { false }
+
     let currencyController: CurrencyController = CurrencyController(fiatCurrency: .USD)
 
     func latestExchangeRates(responseHandler: (ExchangeRates) -> Void) {

@@ -10,8 +10,8 @@ import XCTest
 
 class StartPage: UITestPage {
 
-  init() {
-    super.init(page: .start(.page))
+  init(ifExists: AssertionWaitCompletion = nil) {
+    super.init(page: .start(.page), assertionWait: .default, ifExists: ifExists)
   }
 
   @discardableResult

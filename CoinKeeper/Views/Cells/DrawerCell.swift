@@ -27,6 +27,7 @@ class DrawerCell: UITableViewCell, Badgeable {
   }
 
   func load(with data: DrawerData, badgeInfo: BadgeInfo) {
+    setAccessibilityId(.drawer(data.kind.accessibilityElement))
     iconImageView.image = data.image
     iconImageView.tintColor = data.kind == .earn ? .neonGreen : nil
 

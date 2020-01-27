@@ -10,8 +10,8 @@ import Foundation
 
 class LightningUpgradeStartPage: UITestPage {
 
-  init() {
-    super.init(page: .lightningUpgradeStart(.page))
+  init(ifExists: AssertionWaitCompletion = nil) {
+    super.init(page: .lightningUpgradeStart(.page), assertionWait: .default, ifExists: ifExists)
   }
 
   @discardableResult

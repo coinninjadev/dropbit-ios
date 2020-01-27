@@ -29,6 +29,12 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
     return vc
   }
 
+  override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
+    return [
+      (self.view, .spend(.page))
+    ]
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 

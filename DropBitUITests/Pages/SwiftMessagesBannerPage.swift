@@ -10,8 +10,8 @@ import XCTest
 
 class SwiftMessagesBannerPage: UITestPage {
 
-  init() {
-    super.init(page: .bannerMessage(.page))
+  init(ifExists: AssertionWaitCompletion = nil) {
+    super.init(page: .bannerMessage(.page), assertionWait: .default, ifExists: ifExists)
   }
 
   @discardableResult

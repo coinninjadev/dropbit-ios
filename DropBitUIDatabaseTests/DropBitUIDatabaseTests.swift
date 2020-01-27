@@ -38,7 +38,7 @@ class DropBitUIDatabaseTests: UITestCase {
       .tapGoToWallet()
     DeviceVerificationPage().tapSkip()
     PushInfoPage()?.dismiss()
-    WalletOverviewPage().tapRequest()
+    WalletOverviewPage().tapReceive()
     RequestPayPage().checkAddressLabelDisplays(expectedAddress: firstAddress)
 
   }

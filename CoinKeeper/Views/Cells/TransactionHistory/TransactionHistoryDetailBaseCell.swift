@@ -82,6 +82,9 @@ class TransactionHistoryDetailBaseCell: CollectionViewCardCell {
 
     addMemoButton.styleAddButtonWith(title: "Add Memo")
     configureTwitterShareButton()
+
+    underlyingContentView.setAccessibilityId(.transactionDetailCell(.page))
+    closeButton.setAccessibilityId(.transactionDetailCell(.closeButton))
   }
 
   // MARK: actions

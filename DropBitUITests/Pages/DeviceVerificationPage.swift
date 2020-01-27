@@ -10,8 +10,8 @@ import XCTest
 
 class DeviceVerificationPage: UITestPage {
 
-  init() {
-    super.init(page: .deviceVerification(.page))
+  init(ifExists: AssertionWaitCompletion = nil) {
+    super.init(page: .deviceVerification(.page), assertionWait: .default, ifExists: ifExists)
   }
 
   @discardableResult

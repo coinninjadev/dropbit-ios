@@ -8,7 +8,8 @@
 
 import UIKit
 
-protocol DrawerViewControllerDelegate: CurrencyValueDataSourceType & BadgeUpdateDelegate & FeatureConfigDataSource {
+protocol DrawerViewControllerDelegate: CurrencyValueDataSourceType & BadgeUpdateDelegate &
+FeatureConfigDataSource & UITestConfigurable & AlertDelegate {
   func backupWordsWasTouched()
   func settingsButtonWasTouched()
   func earnButtonWasTouched()
@@ -16,6 +17,7 @@ protocol DrawerViewControllerDelegate: CurrencyValueDataSourceType & BadgeUpdate
   func spendButtonWasTouched()
   func supportButtonWasTouched()
   func getBitcoinButtonWasTouched()
+  func closeDrawer()
   var badgeManager: BadgeManagerType { get }
 }
 
@@ -32,11 +34,19 @@ class DrawerViewController: BaseViewController, StoryboardInitializable, Feature
   // MARK: outlets
   @IBOutlet var drawerTableView: UITableView!
   @IBOutlet var versionLabel: UILabel!
+  @IBOutlet var bottomTapView: UIView!
 
   static func newInstance(delegate: DrawerViewControllerDelegate) -> DrawerViewController {
     let vc = DrawerViewController.makeFromStoryboard()
     vc.delegate = delegate
     return vc
+  }
+
+  override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
+    return [
+      (self.view, .drawer(.page)),
+      (self.bottomTapView, .drawer(.versionInfo))
+    ]
   }
 
   override func viewDidLoad() {
@@ -59,6 +69,11 @@ class DrawerViewController: BaseViewController, StoryboardInitializable, Feature
     delegate.viewControllerDidRequestBadgeUpdate(self)
     self.subscribeToBadgeNotifications(with: delegate.badgeManager)
     self.subscribeToFeatureConfigurationUpdates()
+
+    #if DEBUG
+    let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(backgroundViewWasTouched))
+    bottomTapView.addGestureRecognizer(gestureRecognizer)
+    #endif
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -142,6 +157,15 @@ class DrawerViewController: BaseViewController, StoryboardInitializable, Feature
       delegate.getBitcoinButtonWasTouched()
     case .earn:
       delegate.earnButtonWasTouched()
+    }
+  }
+
+  @objc func backgroundViewWasTouched() {
+    if delegate.uiTestIsInProgress {
+      delegate.closeDrawer()
+    } else {
+      let info = VersionInfo()
+      delegate.viewControllerDidRequestAlert(self, title: "Build Info", message: info.debugDescription)
     }
   }
 }

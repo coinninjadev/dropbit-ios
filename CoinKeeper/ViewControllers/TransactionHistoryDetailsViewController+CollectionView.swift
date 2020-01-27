@@ -16,6 +16,13 @@ extension TransactionHistoryDetailsViewController: UICollectionViewDelegate {
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     collectionView.deselectItem(at: indexPath, animated: false)
+    if self.delegate.uiTestIsInProgress {
+      let itemCount = self.viewModel.dataSource.numberOfItems(inSection: indexPath.section)
+      let newIndex = indexPath.item + 1
+      guard newIndex < itemCount else { return }
+      let newPath = IndexPath(item: newIndex, section: indexPath.section)
+      collectionView.scrollToItem(at: newPath, at: .centeredHorizontally, animated: false)
+    }
   }
 
 }

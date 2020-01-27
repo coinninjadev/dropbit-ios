@@ -16,13 +16,17 @@ extension AppCoordinator: BadgeUpdateDelegate {
 
 extension AppCoordinator: DrawerViewControllerDelegate {
 
+  func closeDrawer() {
+    drawerController?.openCenter(animated: true)
+  }
+
   func currentConfig() -> FeatureConfig {
     return featureConfigManager.latestConfig
   }
 
   func earnButtonWasTouched() {
     analyticsManager.track(event: .earnButtonPressed, with: nil)
-    drawerController?.openLeft(animated: true)
+    closeDrawer()
     let context = self.persistenceManager.viewContext
     var url: URL?
     if let identity = self.persistenceManager.brokers.user.getUserPublicURLInfo(in: context)?.primaryIdentity {
@@ -38,13 +42,13 @@ extension AppCoordinator: DrawerViewControllerDelegate {
 
   func backupWordsWasTouched() {
     analyticsManager.track(event: .backupWordsButtonPressed, with: nil)
-    drawerController?.openLeft(animated: true)
+    closeDrawer()
     self.showWordRecoveryFlow()
   }
 
   func verifyButtonWasTouched() {
     analyticsManager.track(event: .phoneButtonPressed, with: nil)
-    drawerController?.openLeft(animated: true)
+    closeDrawer()
     showVerificationStatusViewController()
   }
 
@@ -55,7 +59,7 @@ extension AppCoordinator: DrawerViewControllerDelegate {
 
   func settingsButtonWasTouched() {
     analyticsManager.track(event: .settingsButtonPressed, with: nil)
-    drawerController?.openLeft(animated: true)
+    closeDrawer()
     let settingsViewController = SettingsViewController.newInstance(with: self)
     let settingsNavigationController = CNNavigationController(rootViewController: settingsViewController)
     settingsNavigationController.navigationBar.tintColor = .darkBlueBackground
@@ -64,21 +68,21 @@ extension AppCoordinator: DrawerViewControllerDelegate {
 
   func spendButtonWasTouched() {
     analyticsManager.track(event: .spendButtonPressed, with: nil)
-    drawerController?.openLeft(animated: true)
+    closeDrawer()
     let controller = SpendBitcoinViewController.newInstance(delegate: self)
     navigationController.pushViewController(controller, animated: true)
   }
 
   func supportButtonWasTouched() {
     analyticsManager.track(event: .supportButtonPressed, with: nil)
-    drawerController?.openLeft(animated: true)
+    closeDrawer()
     let viewController = SupportViewController.newInstance(with: self)
     navigationController.present(viewController, animated: true, completion: nil)
   }
 
   func getBitcoinButtonWasTouched() {
     guard let controller = drawerController else { return }
-    drawerController?.openLeft(animated: true)
+    closeDrawer()
     viewControllerDidTapGetBitcoin(controller)
   }
 }

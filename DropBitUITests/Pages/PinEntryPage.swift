@@ -10,8 +10,8 @@ import XCTest
 
 class PinEntryPage: UITestPage {
 
-  init() {
-    super.init(page: .pinEntry(.page))
+  init(ifExists: AssertionWaitCompletion = nil) {
+    super.init(page: .pinEntry(.page), assertionWait: .default, ifExists: ifExists)
   }
 
   @discardableResult

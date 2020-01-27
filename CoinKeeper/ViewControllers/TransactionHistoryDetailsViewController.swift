@@ -10,7 +10,11 @@ import UIKit
 import CoreData
 import PromiseKit
 
-protocol TransactionHistoryDetailsViewControllerDelegate: TransactionShareable &
+protocol UITestConfigurable: AnyObject {
+  var uiTestIsInProgress: Bool { get }
+}
+
+protocol TransactionHistoryDetailsViewControllerDelegate: TransactionShareable & UITestConfigurable &
 URLOpener & DeviceCountryCodeProvider & CurrencyValueDataSourceType & CopyToClipboardMessageDisplayable {
 
   var currencyController: CurrencyController { get }

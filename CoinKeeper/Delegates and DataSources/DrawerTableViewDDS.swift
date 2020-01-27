@@ -17,6 +17,18 @@ struct DrawerData {
     case spend
     case support
     case earn
+
+    var accessibilityElement: DrawerElement {
+      switch self {
+      case .backupWords:  return .backupWords
+      case .getBitcoin:   return .getBitcoin
+      case .settings:     return .settings
+      case .verify:       return .verify
+      case .spend:        return .spend
+      case .support:      return .support
+      case .earn:         return .earn
+      }
+    }
   }
 
   var image: UIImage?

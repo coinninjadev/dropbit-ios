@@ -47,6 +47,13 @@ class VerificationStatusViewController: BaseViewController, StoryboardInitializa
     return vc
   }
 
+  override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
+    return [
+      (self.view, .verificationStatus(.page)),
+      (self.closeButton, .verificationStatus(.closeButton))
+    ]
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
