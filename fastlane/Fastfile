@@ -172,6 +172,7 @@ platform :ios do
   lane :deploy do
     puts "*** Starting lane deploy ***"
     build_and_upload
+		snap_sims
     capture_screenshots
   end
 
@@ -199,6 +200,14 @@ platform :ios do
     puts "...resetting simulator contents..."
     sh 'ruby reset_sims.rb'
     puts "...done resetting simulator contents..."
+    puts "************************************"
+  end
+
+  private_lane :snap_sims do |lane|
+    puts "************************************"
+    puts "...resetting simulator contents for snapshots..."
+    sh 'ruby snap_sims.rb'
+    puts "...done resetting simulator contents for snapshots..."
     puts "************************************"
   end
 end
