@@ -53,7 +53,7 @@ class NewsViewControllerDDS: NSObject {
         newsData.articles = articles
         return coordinationDelegate.viewControllerDidRequestPriceDataFor(period: .daily)
       }.then { dailyPrice -> Promise<[PriceSummaryResponse]> in
-        newsData.configureDailyData(data: dailyPrice)
+        newsData.configureDailyData(data: dailyPrice.reversed())
         return coordinationDelegate.viewControllerDidRequestPriceDataFor(period: .monthly)
       }.then { monthlyPrice -> Promise<[PriceSummaryResponse]> in
         newsData.configureWeekAndMonthData(data: monthlyPrice.reversed())
@@ -69,7 +69,6 @@ class NewsViewControllerDDS: NSObject {
         self.newsData = newsData
         self.delegate?.delegateRefreshNews()
     }
-
   }
 }
 
