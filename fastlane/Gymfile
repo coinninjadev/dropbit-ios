@@ -16,15 +16,15 @@ output_directory "./build"
 sdk "iphoneos13.2"
 include_bitcode false
 silent true
+clean true
 
 for_lane :deploy do
-  clean true
   puts "*** In Gymfile, setting Release configuration ***"
   configuration "Release"
+  capture_screenshots
 end
 
 for_lane :beta do
-  clean true
   puts "*** In Gymfile, setting Beta configuration ***"
   configuration "Beta"
 end

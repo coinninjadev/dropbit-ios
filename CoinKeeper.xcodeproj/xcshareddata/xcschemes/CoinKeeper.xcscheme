@@ -82,7 +82,7 @@
             </DeviceAppData>
          </TestableReference>
          <TestableReference
-            skipped = "NO">
+            skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B56B6800234E25990073BA0D"
