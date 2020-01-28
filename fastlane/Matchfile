@@ -20,6 +20,16 @@ for_lane :test do
   app_identifier "com.coinninja.CoinKeeper"
 end
 
+for_lane :recreate_development do
+	type "development"
+  app_identifier ["com.coinninja.CoinKeeper.beta", "com.coinninja.CoinKeeper.beta.TodayExtension"]
+end
+
+for_lane :recreate_distribution do
+	type "appstore"
+  app_identifier ["com.coinninja.CoinKeeper", "com.coinninja.CoinKeeper.TodayExtension"]
+end
+
 # app_identifier ["tools.fastlane.app", "tools.fastlane.app2"]
 # username "user@fastlane.tools" # Your Apple Developer Portal username
 

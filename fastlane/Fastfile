@@ -102,6 +102,19 @@ platform :ios do
     match(force: true)
   end
 
+	# match
+	desc "Recreate development certs and provisioning profiles (destructive). Command will prompt to verify nuking. Customized in Matchfile. Use this lane when development certs are about to expire or adding a new app_identifier in Matchfile."
+	lane :recreate_development do
+		sh 'bundle exec fastlane match nuke development'
+		match
+	end
+
+	desc "Recreate distribution certs and provisioning profiles (destructive). Command will prompt to verify nuking. Customized in Matchfile. Use this lane when distribution certs are about to expire or adding a new app_identifier in Matchfile."
+	lane :recreate_distribution do
+		sh 'bundle exec fastlane match nuke distribution'
+		match
+	end
+
   # testing
   desc "Local testing, without resetting simulators or cleaning."
   lane :local_test do
