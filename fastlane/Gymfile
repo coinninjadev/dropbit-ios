@@ -21,7 +21,6 @@ clean true
 for_lane :deploy do
   puts "*** In Gymfile, setting Release configuration ***"
   configuration "Release"
-  capture_screenshots
 end
 
 for_lane :beta do

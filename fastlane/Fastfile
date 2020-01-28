@@ -172,6 +172,7 @@ platform :ios do
   lane :deploy do
     puts "*** Starting lane deploy ***"
     build_and_upload
+    capture_screenshots
   end
 
   private_lane :build_and_upload do
