@@ -135,7 +135,7 @@ struct ServerCannotTweetViewModel: TweetMethodViewModelType {
   }
 
   var firstOption: TweetMethodOption {
-    TweetMethodOption(method: .twitterApp, buttonTitle: "SEND NOTIFICATION TWEET", buttonStyle: .darkBlue)
+    TweetMethodOption(method: .twitterApp, buttonTitle: "SEND NOTIFICATION TWEET", buttonStyle: .standard)
   }
 
   var secondOption: TweetMethodOption {
