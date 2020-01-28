@@ -521,6 +521,7 @@
 		A24B9E822306E67A00852718 /* MockLightningBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B9E812306E67A00852718 /* MockLightningBroker.swift */; };
 		A24B9E8A230AF1D300852718 /* LightningInvoiceResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B9E89230AF1D300852718 /* LightningInvoiceResolver.swift */; };
 		A24B9E8C230B13F200852718 /* LightningURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B9E8B230B13F200852718 /* LightningURL.swift */; };
+		A253835523DF902D006FDC11 /* NSMutableAttributedString+Constructors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B27E8F2088D91700D4DB89 /* NSMutableAttributedString+Constructors.swift */; };
 		A2568E1223D6402000CE5F6B /* PriceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2568E1123D6402000CE5F6B /* PriceDelegate.swift */; };
 		A2568E1323D6403500CE5F6B /* PriceTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A246C82622CBA83F00AF1F52 /* PriceTarget.swift */; };
 		A2568E1423D640A200CE5F6B /* CoinNinjaTargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50ACBB121662C7B00E877DF /* CoinNinjaTargetType.swift */; };
@@ -5963,6 +5964,7 @@
 				A2568E2323D6429300CE5F6B /* DefaultHeaders.swift in Sources */,
 				A2E6222E23D237AE00417A9B /* TodayViewController.swift in Sources */,
 				A2568E1E23D641EB00CE5F6B /* CKCurrencyFormatter.swift in Sources */,
+				A253835523DF902D006FDC11 /* NSMutableAttributedString+Constructors.swift in Sources */,
 				A2568E1723D640D300CE5F6B /* CKDateFormatter.swift in Sources */,
 				A2853B0C23DA080A00533272 /* CheckInNetworkManager.swift in Sources */,
 				A2853ADC23D8EFF200533272 /* UIFont+FontStrings.swift in Sources */,
@@ -6610,6 +6612,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 3.8;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.CoinKeeper.beta.TodayExtension;
@@ -6644,6 +6647,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 3.8;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.CoinKeeper.TodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6676,6 +6680,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 3.8;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.CoinKeeper.beta.TodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";

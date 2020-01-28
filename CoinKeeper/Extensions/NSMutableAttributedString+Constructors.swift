@@ -63,6 +63,12 @@ extension NSMutableAttributedString {
     return mutableString
   }
 
+  public static func space(_ text: String, spacing: Double) -> NSMutableAttributedString {
+    let mutableString = NSMutableAttributedString(string: text)
+    mutableString.addAttributes([.kern: spacing], range: NSRange(location: 0, length: mutableString.length))
+    return mutableString
+  }
+
   // Appending functions
 
   public func appendLight(_ text: String, size: CGFloat, color: UIColor? = nil, paragraphStyle: NSMutableParagraphStyle? = nil) {

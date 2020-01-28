@@ -33,10 +33,21 @@ class TodayViewController: UIViewController, NCWidgetProviding {
   override func viewDidLoad() {
     super.viewDidLoad()
     todayView.openAppButton.addTarget(self, action: #selector(openAppButtonWasTouched), for: .touchUpInside)
+    extensionContext?.widgetLargestAvailableDisplayMode = NCWidgetDisplayMode.expanded
   }
 
   override func loadView() {
     view = todayView
+  }
+
+  func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
+    if (activeDisplayMode == NCWidgetDisplayMode.compact) {
+      preferredContentSize = maxSize
+    } else {
+      preferredContentSize = CGSize(width: maxSize.width, height: 200)
+    }
+
+    todayView.updateLayout(with: activeDisplayMode)
   }
 
   func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
