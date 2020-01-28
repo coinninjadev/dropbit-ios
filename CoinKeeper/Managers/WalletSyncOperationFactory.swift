@@ -214,7 +214,7 @@ class WalletSyncOperationFactory {
         let hasUpdates = dependencies.configManager.update(with: response)
         if hasUpdates {
           DispatchQueue.main.async {
-            CKNotificationCenter.publish(key: .didUpdateFeatureConfig)
+            CKNotificationCenter.publish(key: .didUpdateRemoteConfig)
           }
         }
     }.asVoid()

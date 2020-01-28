@@ -93,7 +93,7 @@ extension AppCoordinator: SerialQueueManagerDelegate {
       delegate: self,
       twitterAccessManager: twitterAccessManager,
       ratingAndReviewManager: ratingAndReviewManager,
-      configManager: featureConfigManager
+      configManager: remoteConfigManager
     )
     log.debug("Sync dependencies satisfied, will continue with sync")
     return Promise.value(syncHelpers)

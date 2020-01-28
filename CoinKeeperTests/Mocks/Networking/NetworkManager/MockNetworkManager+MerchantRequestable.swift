@@ -13,7 +13,7 @@ import PromiseKit
 extension MockNetworkManager: ConfigRequestable {
 
   func fetchConfig() -> Promise<ConfigResponse> {
-    let mockResponse = ConfigResponse(updatedAt: nil, config: ConfigResponseItems(buy: [], referral: nil))
+    let mockResponse = ConfigResponse(updatedAt: nil, config: ConfigResponseItems(buy: [], referral: nil, settings: nil))
     return Promise.value(mockResponse)
   }
 
