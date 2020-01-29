@@ -485,6 +485,10 @@
 		A21D09CA235DFC6E003BE2A6 /* AppCoordinator+MemoEntryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21D09C9235DFC6E003BE2A6 /* AppCoordinator+MemoEntryDelegate.swift */; };
 		A21D09CC235DFCA1003BE2A6 /* MemoEntryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21D09CB235DFCA1003BE2A6 /* MemoEntryDelegate.swift */; };
 		A21DEE5722E8D6E900BBE508 /* WalletOverviewViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21DEE5622E8D6E900BBE508 /* WalletOverviewViewControllerTests.swift */; };
+		A22088AB23E1FA0B00BEA19C /* UIView+CornerRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56788B0227A430300A39534 /* UIView+CornerRadius.swift */; };
+		A22088AF23E2008500BEA19C /* PaddedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5047CED2345186100F45DB8 /* PaddedLabel.swift */; };
+		A22088B123E201C100BEA19C /* WidgetPaddedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22088B023E201C100BEA19C /* WidgetPaddedLabel.swift */; };
+		A22088B223E201C100BEA19C /* WidgetPaddedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22088B023E201C100BEA19C /* WidgetPaddedLabel.swift */; };
 		A220A97B20B5E0E400C30149 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A220A97A20B5E0E400C30149 /* SettingsViewController.swift */; };
 		A220A97D20B5E10C00C30149 /* SettingsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A220A97C20B5E10C00C30149 /* SettingsViewController.storyboard */; };
 		A22B196020EC1DA80084E8E9 /* AppCoordinator+RestoreWalletViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22B195F20EC1DA80084E8E9 /* AppCoordinator+RestoreWalletViewControllerDelegate.swift */; };
@@ -1105,7 +1109,7 @@
 		B59C9E22230DEA2900E4F3C8 /* TransactionSummaryCellViewModelTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59C9E21230DEA2900E4F3C8 /* TransactionSummaryCellViewModelTypeTests.swift */; };
 		B59C9E24230EC86C00E4F3C8 /* TransactionDirectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59C9E23230EC86C00E4F3C8 /* TransactionDirectionView.swift */; };
 		B59C9E26230F548F00E4F3C8 /* TransactionSummaryCellDescriptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59C9E25230F548F00E4F3C8 /* TransactionSummaryCellDescriptionTests.swift */; };
-		B59C9E282311834500E4F3C8 /* SummaryCellPillLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59C9E272311834500E4F3C8 /* SummaryCellPillLabel.swift */; };
+		B59C9E282311834500E4F3C8 /* PillLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59C9E272311834500E4F3C8 /* PillLabel.swift */; };
 		B59C9E2A23118DF400E4F3C8 /* SummaryCellSatsLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59C9E2923118DF400E4F3C8 /* SummaryCellSatsLabel.swift */; };
 		B59D0F2A2345701600E828BF /* TransactionDetailInvoiceCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59D0F292345701500E828BF /* TransactionDetailInvoiceCellViewModel.swift */; };
 		B59E2C8722E789D800A75AFE /* LightningTooltipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2C8622E789D800A75AFE /* LightningTooltipViewController.swift */; };
@@ -1802,6 +1806,7 @@
 		A21D09C9235DFC6E003BE2A6 /* AppCoordinator+MemoEntryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+MemoEntryDelegate.swift"; sourceTree = "<group>"; };
 		A21D09CB235DFCA1003BE2A6 /* MemoEntryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEntryDelegate.swift; sourceTree = "<group>"; };
 		A21DEE5622E8D6E900BBE508 /* WalletOverviewViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletOverviewViewControllerTests.swift; sourceTree = "<group>"; };
+		A22088B023E201C100BEA19C /* WidgetPaddedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetPaddedLabel.swift; sourceTree = "<group>"; };
 		A220A97A20B5E0E400C30149 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		A220A97C20B5E10C00C30149 /* SettingsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsViewController.storyboard; sourceTree = "<group>"; };
 		A22B195F20EC1DA80084E8E9 /* AppCoordinator+RestoreWalletViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+RestoreWalletViewControllerDelegate.swift"; sourceTree = "<group>"; };
@@ -2305,7 +2310,7 @@
 		B59C9E21230DEA2900E4F3C8 /* TransactionSummaryCellViewModelTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSummaryCellViewModelTypeTests.swift; sourceTree = "<group>"; };
 		B59C9E23230EC86C00E4F3C8 /* TransactionDirectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDirectionView.swift; sourceTree = "<group>"; };
 		B59C9E25230F548F00E4F3C8 /* TransactionSummaryCellDescriptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSummaryCellDescriptionTests.swift; sourceTree = "<group>"; };
-		B59C9E272311834500E4F3C8 /* SummaryCellPillLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryCellPillLabel.swift; sourceTree = "<group>"; };
+		B59C9E272311834500E4F3C8 /* PillLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillLabel.swift; sourceTree = "<group>"; };
 		B59C9E2923118DF400E4F3C8 /* SummaryCellSatsLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryCellSatsLabel.swift; sourceTree = "<group>"; };
 		B59D0F292345701500E828BF /* TransactionDetailInvoiceCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailInvoiceCellViewModel.swift; sourceTree = "<group>"; };
 		B59E2C8622E789D800A75AFE /* LightningTooltipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningTooltipViewController.swift; sourceTree = "<group>"; };
@@ -3864,6 +3869,7 @@
 				A289FEFC239839B6002DB6B0 /* HolidaySelectorView.xib */,
 				A267F5162395A4C70098170E /* EmojiDetailView.swift */,
 				A267F5182395A4D30098170E /* EmojiDetailView.xib */,
+				A22088B023E201C100BEA19C /* WidgetPaddedLabel.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -4056,7 +4062,7 @@
 				B505A8792076C5BE00AACB23 /* TransactionHistoryCounterpartyLabel.swift */,
 				B505A87B2076C79700AACB23 /* TransactionHistoryDetailLabel.swift */,
 				B505A87D2076C96100AACB23 /* SummaryCellSubtitleLabel.swift */,
-				B59C9E272311834500E4F3C8 /* SummaryCellPillLabel.swift */,
+				B59C9E272311834500E4F3C8 /* PillLabel.swift */,
 				B512D67123171F37004D9E0F /* SummaryCellPaddedLabelView.swift */,
 				B59C9E2923118DF400E4F3C8 /* SummaryCellSatsLabel.swift */,
 				B54A4216207FF365005B40A9 /* TransactionDetailBreakdownLabel.swift */,
@@ -5393,7 +5399,7 @@
 				B509262922CA57CF00126250 /* CKLogger.swift in Sources */,
 				B552EDF3211E33D000332BB5 /* PersistenceManager.swift in Sources */,
 				3B6749E220AA5CA40032FE02 /* CKMVin+CoreDataProperties.swift in Sources */,
-				B59C9E282311834500E4F3C8 /* SummaryCellPillLabel.swift in Sources */,
+				B59C9E282311834500E4F3C8 /* PillLabel.swift in Sources */,
 				B54F8FA420C3088300294F50 /* CKCurrencyFormatter.swift in Sources */,
 				A257CEC6230C3F6D0063670B /* LightningInvoiceValidator.swift in Sources */,
 				B52053E1227B6D3000E5D2ED /* AlertManager+Constants.swift in Sources */,
@@ -5494,6 +5500,7 @@
 				B5DC877A22F093D700FDDEED /* LNLedgerResponse.swift in Sources */,
 				B56C414821F7717C005668E3 /* ConfirmPaymentMemoView.swift in Sources */,
 				B5FAD64C20A4DC1D008EB727 /* PublicKeyDataSource.swift in Sources */,
+				A22088B123E201C100BEA19C /* WidgetPaddedLabel.swift in Sources */,
 				3B13ED112254E24900905226 /* CurrencyController.swift in Sources */,
 				A2893BC020FD4E7700E96B07 /* UIViewController+ToolbarUtilities.swift in Sources */,
 				A29CE0FC20A32B2000761B91 /* CurrencyAmountValidator.swift in Sources */,
@@ -5965,10 +5972,12 @@
 				A2E6223223D237AE00417A9B /* TodayView.swift in Sources */,
 				A2568E6923D783D800CE5F6B /* UIColor+Init.swift in Sources */,
 				A2568E5523D6488A00CE5F6B /* CKUserDefaults.swift in Sources */,
+				A22088B223E201C100BEA19C /* WidgetPaddedLabel.swift in Sources */,
 				A2568E1C23D6415B00CE5F6B /* KeyPathDescribable.swift in Sources */,
 				A2568E2223D6428100CE5F6B /* CoinNinjaProvider.swift in Sources */,
 				A2568E2C23D6438100CE5F6B /* RequestHeaders.swift in Sources */,
 				A2568E2423D6429F00CE5F6B /* CKAlamofireSessionManager.swift in Sources */,
+				A22088AB23E1FA0B00BEA19C /* UIView+CornerRadius.swift in Sources */,
 				A2568E2323D6429300CE5F6B /* DefaultHeaders.swift in Sources */,
 				A2E6222E23D237AE00417A9B /* TodayViewController.swift in Sources */,
 				A2568E1E23D641EB00CE5F6B /* CKCurrencyFormatter.swift in Sources */,
@@ -5978,6 +5987,7 @@
 				A2853ADC23D8EFF200533272 /* UIFont+FontStrings.swift in Sources */,
 				A2568E4523D6457100CE5F6B /* CKParser.swift in Sources */,
 				A2853AD923D8EBC500533272 /* FontStrings.swift in Sources */,
+				A22088AF23E2008500BEA19C /* PaddedLabel.swift in Sources */,
 				A2853B1623DA37AB00533272 /* DropBitUrlFactory.swift in Sources */,
 				A2568E5823D6494600CE5F6B /* VersionInfo.swift in Sources */,
 				A2568E1523D640B600CE5F6B /* DBTError.swift in Sources */,
@@ -6614,7 +6624,7 @@
 					"$(PROJECT_DIR)/lib",
 				);
 				INFOPLIST_FILE = TodayExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6649,7 +6659,7 @@
 					"$(PROJECT_DIR)/lib",
 				);
 				INFOPLIST_FILE = TodayExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6682,7 +6692,7 @@
 					"$(PROJECT_DIR)/lib",
 				);
 				INFOPLIST_FILE = TodayExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

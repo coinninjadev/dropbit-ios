@@ -91,6 +91,11 @@ extension NSMutableAttributedString {
     appendText(text, fontName: .montserratBold, size: size, color: color, paragraphStyle: paragraphStyle)
   }
 
+  public func space(spacing: Double) -> NSMutableAttributedString {
+    addAttributes([.kern: spacing], range: NSRange(location: 0, length: mutableString.length))
+    return self
+  }
+
   private func appendText(_ text: String,
                           fontName: FontStrings,
                           size: CGFloat,
