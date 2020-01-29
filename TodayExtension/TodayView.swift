@@ -18,11 +18,12 @@ class TodayView: UIView {
   private let bitcoinTitleLabel = UILabel()
   private let bitcoinDetailLabel = UILabel()
   private let priceTitleLabel = UILabel()
-  private let priceDetailLabel = UILabel()
+  private let priceDetailLabel = WidgetPaddedLabel()
   private let chart: LineChartView = LineChartView()
   private let bitcoinStackView = UIStackView()
   private let priceStackView = UIStackView()
   private let activityIndicator = UIActivityIndicatorView()
+  private var displayMode: NCWidgetDisplayMode = .compact
 
   var newsData: NewsData? {
     didSet {
@@ -38,14 +39,13 @@ class TodayView: UIView {
       let displayString: String =  movement.gross > 0 ? "▲ \(percentageString)" : "▼ \(percentageString)"
 
       if movement.gross > 0 {
-        priceTitleLabel.textColor = .widgetGreen
-        priceDetailLabel.textColor = .widgetGreen
+        priceDetailLabel.backgroundColor = .neonGreen
       } else {
-        priceTitleLabel.textColor = .widgetRed
-        priceDetailLabel.textColor = .widgetRed
+        priceDetailLabel.backgroundColor = .widgetRed
       }
 
-      priceDetailLabel.attributedText = NSMutableAttributedString.space(displayString, spacing: 1)
+      priceDetailLabel.attributedText = NSMutableAttributedString.semiBold(displayString,
+                                                                           size: 12, color: .white).space(spacing: 1)
     }
   }
 
@@ -84,6 +84,10 @@ class TodayView: UIView {
     bitcoinStackView.axis = .vertical
     priceStackView.axis = .vertical
 
+    priceStackView.distribution = .fillProportionally
+    priceStackView.alignment = .trailing
+    priceStackView.spacing = 2
+
     bitcoinTitleLabel.text = "Bitcoin"
     bitcoinTitleLabel.font = .semiBold(16)
     bitcoinStackView.addArrangedSubview(bitcoinTitleLabel)
@@ -94,11 +98,12 @@ class TodayView: UIView {
     bitcoinStackView.addArrangedSubview(bitcoinDetailLabel)
 
     priceTitleLabel.textAlignment = .right
-    priceTitleLabel.font = .bold(17)
+    priceTitleLabel.font = .semiBold(17)
     priceStackView.addArrangedSubview(priceTitleLabel)
 
     priceDetailLabel.font = .semiBold(12)
-    priceDetailLabel.textAlignment = .right
+    priceDetailLabel.textAlignment = .center
+    priceDetailLabel.applyCornerRadius(3)
     priceStackView.addArrangedSubview(priceDetailLabel)
 
     chart.leftAxis.enabled = false
@@ -149,6 +154,7 @@ class TodayView: UIView {
 
     activityIndicator.isHidden = true
     activityIndicator.stopAnimating()
+    chart.isHidden = displayMode == .compact
   }
 
   func updateLayout(with mode: NCWidgetDisplayMode) {
@@ -166,6 +172,8 @@ class TodayView: UIView {
     default:
       break
     }
+
+    displayMode = mode
   }
 
   private func setupSharedConstraints() {

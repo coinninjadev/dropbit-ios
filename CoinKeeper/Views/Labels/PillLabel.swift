@@ -1,5 +1,5 @@
 //
-//  SummaryCellPillLabel.swift
+//  PillLabel.swift
 //  DropBit
 //
 //  Created by Ben Winters on 8/24/19.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SummaryCellPillLabel: UILabel {
+class PillLabel: UILabel {
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)

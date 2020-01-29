@@ -18,7 +18,6 @@ extension UIColor {
   static var primaryActionButton: UIColor { return lightBlueTint }
 
   static var successGreen: UIColor { return UIColor(r: 131, g: 207, b: 28) }
-  static var widgetGreen: UIColor { return UIColor(r: 62, g: 238, b: 142) }
   static var bannerSuccess: UIColor { return successGreen }
 
   static var primaryActionButtonHighlighted: UIColor { return UIColor(r: 150, g: 219, b: 243) }
