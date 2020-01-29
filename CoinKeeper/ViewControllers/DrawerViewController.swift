@@ -9,7 +9,7 @@
 import UIKit
 
 protocol DrawerViewControllerDelegate: CurrencyValueDataSourceType & BadgeUpdateDelegate &
-FeatureConfigDataSource & UITestConfigurable & AlertDelegate {
+RemoteConfigDataSource & UITestConfigurable & AlertDelegate {
   func backupWordsWasTouched()
   func settingsButtonWasTouched()
   func earnButtonWasTouched()
@@ -21,15 +21,15 @@ FeatureConfigDataSource & UITestConfigurable & AlertDelegate {
   var badgeManager: BadgeManagerType { get }
 }
 
-class DrawerViewController: BaseViewController, StoryboardInitializable, FeatureConfigurable {
+class DrawerViewController: BaseViewController, StoryboardInitializable, RemoteConfigurable {
 
   private(set) weak var delegate: DrawerViewControllerDelegate!
 
-  var featureConfigDataSource: FeatureConfigDataSource? { delegate }
+  var remoteConfigDataSource: RemoteConfigDataSource? { delegate }
   var drawerTableViewDDS: DrawerTableViewDDS?
 
   var badgeNotificationToken: NotificationToken?
-  var featureConfigNotificationToken: NotificationToken?
+  var remoteConfigNotificationToken: NotificationToken?
 
   // MARK: outlets
   @IBOutlet var drawerTableView: UITableView!
@@ -63,12 +63,12 @@ class DrawerViewController: BaseViewController, StoryboardInitializable, Feature
     drawerTableView.registerNib(cellType: BackupWordsReminderDrawerCell.self)
     drawerTableView.registerHeaderFooter(headerFooterType: DrawerTableViewHeader.self)
 
-    reloadFeatureConfigurableView()
+    reloadRemoteConfigurableView()
     setupDataSource()
 
     delegate.viewControllerDidRequestBadgeUpdate(self)
     self.subscribeToBadgeNotifications(with: delegate.badgeManager)
-    self.subscribeToFeatureConfigurationUpdates()
+    self.subscribeToRemoteConfigurationUpdates()
 
     #if DEBUG
     let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(backgroundViewWasTouched))
@@ -78,11 +78,11 @@ class DrawerViewController: BaseViewController, StoryboardInitializable, Feature
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    reloadFeatureConfigurableView()
+    reloadRemoteConfigurableView()
   }
 
-  func reloadFeatureConfigurableView() {
-    guard let config = self.featureConfigDataSource?.currentConfig() else { return }
+  func reloadRemoteConfigurableView() {
+    guard let config = self.remoteConfigDataSource?.currentConfig() else { return }
 
     let circularIconOffset = ViewOffset(dx: 7, dy: -2)
 
@@ -118,7 +118,7 @@ class DrawerViewController: BaseViewController, StoryboardInitializable, Feature
     drawerTableView.reloadData()
   }
 
-  private func itemIsEnabled(_ item: DrawerData, respecting config: FeatureConfig) -> Bool {
+  private func itemIsEnabled(_ item: DrawerData, respecting config: RemoteConfig) -> Bool {
     switch item.kind {
     case .earn:   return config.shouldEnable(.referrals)
     default:      return true
@@ -174,7 +174,7 @@ extension DrawerViewController: BadgeDisplayable {
 
   func didReceiveBadgeUpdate(badgeInfo: BadgeInfo) {
     drawerTableViewDDS?.latestBadgeInfo = badgeInfo
-    reloadFeatureConfigurableView()
+    reloadRemoteConfigurableView()
   }
 
 }

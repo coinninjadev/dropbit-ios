@@ -115,6 +115,9 @@ class PrimaryActionButtonStyle {
     return PrimaryActionButtonStyle(normal: .primaryActionButton, highlighted: .lightGrayText, background: .clear, tint: nil, rounded: true)
   }
 
+  static var darkBlueClear: PrimaryActionButtonStyle {
+    return PrimaryActionButtonStyle(normal: .darkBlueText, highlighted: .lightGrayText, background: .clear, tint: nil, rounded: true)
+  }
 }
 
 class LightTextButtonStyle: PrimaryActionButtonStyle {

@@ -20,8 +20,8 @@ extension AppCoordinator: DrawerViewControllerDelegate {
     drawerController?.openCenter(animated: true)
   }
 
-  func currentConfig() -> FeatureConfig {
-    return featureConfigManager.latestConfig
+  func currentConfig() -> RemoteConfig {
+    return remoteConfigManager.latestConfig
   }
 
   func earnButtonWasTouched() {
