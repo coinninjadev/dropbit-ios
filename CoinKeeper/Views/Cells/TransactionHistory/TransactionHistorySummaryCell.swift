@@ -80,7 +80,7 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
                                      accentColor: UIColor,
                                      walletTxType: WalletTransactionType,
                                      selectedCurrency: SelectedCurrency) {
-    let pillLabel = SummaryCellPillLabel(frame: CGRect(x: 0, y: 0, width: 0, height: 28))
+    let pillLabel = PillLabel(frame: CGRect(x: 0, y: 0, width: 0, height: 28))
     pillLabel.configure(withText: labels.pillText, backgroundColor: accentColor, isAmount: labels.pillIsAmount)
     let textLabel = btcLabel(for: labels, walletTxType: walletTxType)
 

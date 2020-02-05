@@ -85,12 +85,15 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
                                                      currencies: selectedCurrencyPair,
                                                      deviceCountryCode: self.deviceCountryCode)
     cell.configure(with: item, isAtTop: isFirstCell)
+    cell.setAccessibilityId(.transactionHistory(.summaryCell(indexPath.row)))
     return cell
   }
 
   private func detailCell(forItemAt indexPath: IndexPath, in collectionView: UICollectionView) -> UICollectionViewCell {
     func defaultValidCell() -> TransactionHistoryDetailValidCell { // only dequeue if necessary
-      return collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
+      let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
+      cell.setAccessibilityId(.transactionHistory(.detailCell(indexPath.row)))
+      return cell
     }
 
     guard let cellDelegate = detailsDelegate else {
@@ -105,27 +108,29 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
 
     switch displayableItem.detailCellType {
     case .valid:
-      let cell = defaultValidCell()
-      cell.configure(with: displayableItem, delegate: cellDelegate)
-      return cell
+      let validCell = defaultValidCell()
+      validCell.configure(with: displayableItem, delegate: cellDelegate)
+      return validCell
 
     case .invalid:
       guard let invalidDisplayableItem = displayableItem as? TransactionDetailInvalidCellDisplayable else {
         log.error("Failed to cast item as TransactionDetailInvalidCellDisplayable")
         return defaultValidCell()
       }
-      let cell = collectionView.dequeue(TransactionHistoryDetailInvalidCell.self, for: indexPath)
-      cell.configure(with: invalidDisplayableItem, delegate: cellDelegate)
-      return cell
+      let invalidCell = collectionView.dequeue(TransactionHistoryDetailInvalidCell.self, for: indexPath)
+      invalidCell.configure(with: invalidDisplayableItem, delegate: cellDelegate)
+      invalidCell.setAccessibilityId(.transactionHistory(.detailCell(indexPath.row)))
+      return invalidCell
 
     case .invoice:
       guard let invoiceDisplayableItem = displayableItem as? TransactionDetailInvoiceCellDisplayable else {
         log.error("Failed to cast item as TransactionDetailInvoiceCellDisplayable")
         return defaultValidCell()
       }
-      let cell = collectionView.dequeue(TransactionHistoryDetailInvoiceCell.self, for: indexPath)
-      cell.configure(with: invoiceDisplayableItem, delegate: cellDelegate)
-      return cell
+      let invoiceCell = collectionView.dequeue(TransactionHistoryDetailInvoiceCell.self, for: indexPath)
+      invoiceCell.configure(with: invoiceDisplayableItem, delegate: cellDelegate)
+      invoiceCell.setAccessibilityId(.transactionHistory(.detailCell(indexPath.row)))
+      return invoiceCell
     }
   }
 

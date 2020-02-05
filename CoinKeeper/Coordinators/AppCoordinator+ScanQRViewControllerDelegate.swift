@@ -21,6 +21,7 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
     let wifPrivateKeys = possibleDestinations.compactMap { WIFPrivateKey(wallet: walletManager.wallet, string: $0) }
     guard lightningQRCodes.isNotEmpty || bitcoinQRCodes.isNotEmpty || wifPrivateKeys.isNotEmpty else {
       viewControllerHadScanFailure(viewController, error: .noBitcoinQRCodes)
+      viewController.dismiss(animated: true, completion: nil)
       return
     }
 

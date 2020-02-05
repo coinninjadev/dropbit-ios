@@ -123,15 +123,7 @@ CurrencySwappableAmountEditor {
     }
     .catch { error in
       let dbtError = DBTError.cast(error)
-      let action = AlertActionConfiguration.init(title: "OK", style: .default, action: nil)
-      let alertViewModel = AlertControllerViewModel(
-        title: dbtError.displayTitle,
-        description: dbtError.displayMessage,
-        image: nil,
-        style: .alert,
-        actions: [action]
-      )
-      self.delegate.viewControllerDidRequestAlert(self, viewModel: alertViewModel)
+      self.delegate.viewControllerDidRequestAlert(self, error: dbtError)
     }
   }
 
@@ -367,6 +359,11 @@ extension SendPaymentViewController {
     refreshBothAmounts()
     updateMemoContainer()
     setupStyle()
+
+    if viewModel.isInvoiceExpired {
+      alertExpiredInvoice(with: viewModel)
+      return
+    }
   }
 
   func updateMemoContainer() {
@@ -447,8 +444,7 @@ extension SendPaymentViewController {
   private func handleError(error: Error) {
     let dbtError = DBTError.cast(error)
     self.alertManager?.hideActivityHUD(withDelay: nil) {
-      let viewModel = AlertControllerViewModel(title: "", description: dbtError.displayMessage)
-      self.delegate.viewControllerDidRequestAlert(self, viewModel: viewModel)
+      self.delegate.viewControllerDidRequestAlert(self, error: dbtError)
     }
   }
 
@@ -477,10 +473,14 @@ extension SendPaymentViewController {
 
   func applyFetchedBitcoinModelAndUpdateView(fetchedModel: SendPaymentViewModel) {
     self.viewModel = fetchedModel
-    self.setupCurrencySwappableEditAmountView()
-    self.viewModel.setBTCAmountAsPrimary(fetchedModel.btcAmount)
-    self.alertManager?.hideActivityHUD(withDelay: nil) {
-      self.updateViewWithModel()
+    if viewModel.isInvoiceExpired {
+      alertExpiredInvoice(with: viewModel)
+    } else {
+      self.setupCurrencySwappableEditAmountView()
+      self.viewModel.setBTCAmountAsPrimary(fetchedModel.btcAmount)
+      self.alertManager?.hideActivityHUD(withDelay: nil) {
+        self.updateViewWithModel()
+      }
     }
   }
 
@@ -512,6 +512,21 @@ extension SendPaymentViewController {
     case .phoneContact, .twitterContact:
       self.hideRecipientInputViews()
     }
+  }
+
+  private func alertExpiredInvoice(with viewModel: SendPaymentViewModel) {
+    var expirationDate = ""
+    if let expiration = viewModel.invoiceExpiration {
+      let formatter = CKDateFormatter.displayConcise
+      expirationDate = " " + formatter.string(from: expiration)
+    }
+    let title = "Invoice Expired"
+    let description = "This invoice expired" + expirationDate
+    let action = AlertActionConfiguration(title: "Close", style: .default) { [weak self] in
+      self?.dismiss(animated: true, completion: nil)
+    }
+    let alertVM = AlertControllerViewModel(title: title, description: description, image: nil, style: .alert, actions: [action])
+    delegate.viewControllerDidRequestAlert(self, viewModel: alertVM)
   }
 
   private func showPaymentTargetRecipient(with title: String) {

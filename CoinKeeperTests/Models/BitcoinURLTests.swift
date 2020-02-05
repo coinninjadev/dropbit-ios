@@ -130,4 +130,36 @@ class BitcoinURLTests: XCTestCase {
     XCTAssertEqual(expectedURLString, repairedURLFullString)
   }
 
+  func testUppercaseBech32AddressParsesCorrectly() {
+    let address = "BC1QZQ0R803RYLQKGYULT6ZPVXQNMXY86VXTUHKJ39"
+    let expected = "bitcoin:\(address.lowercased())"
+    let bitcoinURL = BitcoinURL(string: address)
+    let string = bitcoinURL?.absoluteString
+    XCTAssertEqual(expected, string ?? "")
+  }
+
+  func testUppercaseBech32AddressWithLowerPrefixParsesCorrectly() {
+    let address = "bitcoin:BC1QZQ0R803RYLQKGYULT6ZPVXQNMXY86VXTUHKJ39"
+    let expected = address.lowercased()
+    let bitcoinURL = BitcoinURL(string: address)
+    let string = bitcoinURL?.absoluteString
+    XCTAssertEqual(expected, string ?? "")
+  }
+
+  func testUppercaseBech32AddressWithUpperPrefixParsesCorrectly() {
+    let address = "BITCOIN:BC1QZQ0R803RYLQKGYULT6ZPVXQNMXY86VXTUHKJ39"
+    let expected = address.lowercased()
+    let bitcoinURL = BitcoinURL(string: address)
+    let string = bitcoinURL?.absoluteString
+    XCTAssertEqual(expected, string ?? "")
+  }
+
+  func testLowercaseBech32AddressWithUpperPrefixParsesCorrectly() {
+    let address = "BITCOIN:bc1qzq0r803rylqkgyult6zpvxqnmxy86vxtuhkj39"
+    let expected = address.lowercased()
+    let bitcoinURL = BitcoinURL(string: address)
+    let string = bitcoinURL?.absoluteString
+    XCTAssertEqual(expected, string ?? "")
+  }
+
 }

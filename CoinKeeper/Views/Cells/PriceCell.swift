@@ -24,28 +24,19 @@ class PriceCell: UITableViewCell {
     }
   }
 
-  private lazy var percentageFormatter: NumberFormatter = {
-    let formatter = NumberFormatter()
-    formatter.maximumFractionDigits = 2
-    formatter.minimumFractionDigits = 2
-    formatter.locale = Locale.current
-    formatter.usesGroupingSeparator = true
-    return formatter
-  }()
-
   var movement: (gross: Double, percentage: Double)? {
     didSet {
       guard let movement = movement, movement.gross != 0, movement.percentage != 0 else { return }
       let grossNumber = NSDecimalNumber(value: movement.gross)
       let percentageNumber = NSNumber(value: movement.percentage)
       let amountString = FiatFormatter(currency: .USD, withSymbol: true).string(fromDecimal: grossNumber) ?? ""
-      let percentageString = "(\(percentageFormatter.string(from: percentageNumber) ?? "")%)"
+      let percentageString = "(\(NumberFormatter.percentageFormatter.string(from: percentageNumber) ?? "")%)"
       let displayString: String =  amountString + " " + percentageString
 
       if movement.gross > 0 {
         movementLabel.textColor = .successGreen
       } else {
-        movementLabel.textColor = .mango
+        movementLabel.textColor = .invalid
       }
 
       movementLabel.text = displayString

@@ -10,13 +10,6 @@
 import Foundation
 import CoreData
 
-@objc public enum HolidayType: Int16 {
-  case bitcoin = 1
-  case holiday = 2
-  case christmas = 3
-  case hanukkah = 4
-}
-
 extension CKMUser {
 
   @nonobjc public class func fetchRequest() -> NSFetchRequest<CKMUser> {

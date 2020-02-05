@@ -173,6 +173,15 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     }
   }
 
+  private func invitationTweetMethodViewModel(withRecipient recipient: TwitterContactType) -> TweetMethodViewModelType {
+    let serverCanTweet = self.remoteConfigManager.latestConfig.shouldEnable(.twitterDelegate)
+    if serverCanTweet {
+      return ServerCanTweetViewModel(recipient: recipient)
+    } else {
+      return ServerCannotTweetViewModel(recipient: recipient)
+    }
+  }
+
   private func handleAddressRequestCreationSuccess(output: CreateAddressRequestOutput,
                                                    successFailVC: SuccessFailViewController,
                                                    in context: NSManagedObjectContext) {
@@ -187,8 +196,9 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
 
           if case let .twitter(twitterContact) = output.invitationDTO.contact.asDropBitReceiver,
             let topVC = strongSelf.navigationController.topViewController() {
-            let tweetMethodVC = TweetMethodViewController.newInstance(twitterRecipient: twitterContact,
-                                                                      addressRequestResponse: output.warResponse,
+            let viewModel = strongSelf.invitationTweetMethodViewModel(withRecipient: twitterContact)
+            let tweetMethodVC = TweetMethodViewController.newInstance(addressRequestResponse: output.warResponse,
+                                                                      viewModel: viewModel,
                                                                       delegate: strongSelf)
             topVC.present(tweetMethodVC, animated: true, completion: nil)
           }

@@ -10,8 +10,8 @@ import XCTest
 
 class PinCreationPage: UITestPage {
 
-  init() {
-    super.init(page: .pinCreation(.page))
+  init(ifExists: AssertionWaitCompletion = nil) {
+    super.init(page: .pinCreation(.page), assertionWait: .default, ifExists: ifExists)
   }
 
   /// This method using tap(withNumberOfTaps:, numberOfTouches:) is a bit faster than iterating over an array of digits.

@@ -47,6 +47,13 @@ final class SupportViewController: BaseViewController, StoryboardInitializable {
 
   private(set) weak var delegate: SupportViewControllerDelegate!
 
+  override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
+    return [
+      (self.view, .support(.page)),
+      (self.closeButton, .support(.closeButton))
+    ]
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     sendDebugInfoButton.setTitle("SEND DEBUG INFO", for: .normal)

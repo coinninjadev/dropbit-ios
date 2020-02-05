@@ -8,11 +8,6 @@
 
 import Foundation
 
-protocol CKParser {
-  associatedtype Result
-  func parse(_ string: String) throws -> Result?
-}
-
 enum CKParsedRecipient {
   case phoneNumber(GlobalPhoneNumber)
   case bitcoinURL(BitcoinURL)

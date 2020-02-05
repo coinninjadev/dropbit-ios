@@ -38,6 +38,7 @@ extension UIColor {
   static var bitcoinOrange: UIColor { return UIColor(r: 246, g: 151, b: 71) }
 
   static var invalid: UIColor { return UIColor(r: 194, g: 93, b: 93) }
+  static var widgetRed: UIColor { return UIColor(r: 160, g: 50, b: 50) }
 
   static var appleGreen: UIColor { return UIColor(r: 131, g: 207, b: 28) }
 
@@ -58,6 +59,7 @@ extension UIColor {
   static var deselectedGrayText: UIColor { return pageIndicator }
 
   static var graySeparator: UIColor { return UIColor(gray: 216) }
+  static var widgetGray: UIColor { return UIColor(gray: 116) }
 
   static var semiOpaquePopoverBackground: UIColor { return UIColor.black.withAlphaComponent(0.7) }
 

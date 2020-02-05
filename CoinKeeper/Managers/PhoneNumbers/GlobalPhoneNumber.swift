@@ -9,6 +9,8 @@
 import Foundation
 import PhoneNumberKit
 
+let phoneNumberKit = PhoneNumberKit()
+
 /// A simple struct for passing around phone number details. Values are not necessarily valid or complete.
 public struct GlobalPhoneNumber: Codable, CustomStringConvertible {
   var countryCode: Int

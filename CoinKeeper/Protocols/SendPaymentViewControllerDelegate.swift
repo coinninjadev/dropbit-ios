@@ -79,7 +79,7 @@ protocol SendPaymentViewControllerRoutingDelegate: PaymentBuildingDelegate {
 
 }
 
-protocol SendPaymentViewControllerDelegate: SendPaymentViewControllerRoutingDelegate, DeviceCountryCodeProvider {
+protocol SendPaymentViewControllerDelegate: SendPaymentViewControllerRoutingDelegate, DeviceCountryCodeProvider, AlertDelegate {
   func sendPaymentViewControllerDidLoad(_ viewController: UIViewController)
   func sendPaymentViewControllerWillDismiss(_ viewController: UIViewController)
   func viewControllerDidPressScan(_ viewController: UIViewController, btcAmount: NSDecimalNumber, primaryCurrency: CurrencyCode)
@@ -97,7 +97,6 @@ protocol SendPaymentViewControllerDelegate: SendPaymentViewControllerRoutingDele
   func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: Error?)
   func viewControllerDidSelectPaste(_ viewController: UIViewController)
   func viewControllerDidSelectMemoButton(_ viewController: UIViewController, memo: String?, completion: @escaping (String) -> Void)
-  func viewControllerDidRequestAlert(_ viewController: UIViewController, viewModel: AlertControllerViewModel)
   func viewControllerShouldInitiallyAllowMemoSharing(_ viewController: SendPaymentViewController) -> Bool
   func showAlertForInvalidContactOrPhoneNumber(contactName: String?, displayNumber: String)
 

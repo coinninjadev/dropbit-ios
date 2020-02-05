@@ -133,6 +133,8 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
   func viewControllerDidRequestVerificationCheck(_ viewController: UIViewController, completion: @escaping CKCompletion) { }
 
   func viewControllerDidRequestAlert(_ viewController: UIViewController, viewModel: AlertControllerViewModel) { }
+  func viewControllerDidRequestAlert(_ viewController: UIViewController, title: String?, message: String) { }
+  func viewControllerDidRequestAlert(_ viewController: UIViewController, error: DBTErrorType) { }
 
   func viewControllerShouldInitiallyAllowMemoSharing(_ viewController: SendPaymentViewController) -> Bool {
     return true

@@ -47,27 +47,6 @@ public struct MetadataAmount: Decodable, CustomStringConvertible {
   }
 }
 
-public struct MetadataParticipant: Decodable, CustomStringConvertible {
-  let type: String
-  let identity: String
-  let handle: String?
-
-  public var description: String {
-    var responseDesc = ""
-    let propertyKeyValues: [String] = [
-      "type: \(type)",
-      "identity: \(identity)",
-      "handle: \(handle ?? "-")"
-    ]
-    propertyKeyValues.forEach { desc in
-      responseDesc.append("\n\t\(desc)")
-    }
-
-    return responseDesc
-  }
-
-}
-
 public struct WalletAddressRequestMetadata: ResponseDecodable, CustomStringConvertible {
 
   let amount: MetadataAmount?

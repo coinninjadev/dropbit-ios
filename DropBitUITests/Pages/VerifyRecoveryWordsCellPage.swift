@@ -10,7 +10,7 @@ import XCTest
 
 class VerifyRecoveryWordsCellPage: UITestPage {
 
-  init() {
-    super.init(page: .verifyRecoveryWordsCell(.page))
+  init(ifExists: AssertionWaitCompletion = nil) {
+    super.init(page: .verifyRecoveryWordsCell(.page), assertionWait: .default, ifExists: ifExists)
   }
 }

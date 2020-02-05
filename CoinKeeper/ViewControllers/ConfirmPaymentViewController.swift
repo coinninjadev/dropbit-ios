@@ -17,8 +17,6 @@ protocol ConfirmPaymentViewControllerDelegate: ViewControllerDismissable, AllPay
 
 }
 
-typealias BitcoinUSDPair = (btcAmount: NSDecimalNumber, usdAmount: NSDecimalNumber)
-
 class ConfirmPaymentViewController: PresentableViewController, StoryboardInitializable {
 
   static func newInstance(type: TransactionType,

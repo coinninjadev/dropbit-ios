@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -32,13 +32,21 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dropbitTitle" translatesAutoresizingMaskIntoConstraints="NO" id="B4V-cE-9DF">
                                 <rect key="frame" x="25.5" y="635" width="67" height="19"/>
                             </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cDq-fS-Lus">
+                                <rect key="frame" x="8" y="627" width="102" height="40"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="cDq-fS-Lus" firstAttribute="top" secondItem="pKK-bh-S9D" secondAttribute="bottom" id="91a-II-yRd"/>
                             <constraint firstItem="B4V-cE-9DF" firstAttribute="top" secondItem="pKK-bh-S9D" secondAttribute="bottom" constant="8" id="ALG-fD-fQG"/>
+                            <constraint firstItem="cDq-fS-Lus" firstAttribute="leading" secondItem="pKK-bh-S9D" secondAttribute="leading" id="CSA-go-yTd"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="cDq-fS-Lus" secondAttribute="bottom" id="DlX-Iz-4kO"/>
                             <constraint firstItem="ORh-md-pMr" firstAttribute="centerX" secondItem="pKK-bh-S9D" secondAttribute="centerX" id="F9x-sg-nzM"/>
                             <constraint firstItem="pKK-bh-S9D" firstAttribute="top" secondItem="t19-o2-kaz" secondAttribute="top" id="S9b-jX-2Dt"/>
                             <constraint firstItem="B4V-cE-9DF" firstAttribute="centerX" secondItem="pKK-bh-S9D" secondAttribute="centerX" id="SYz-AB-ZTU"/>
+                            <constraint firstItem="cDq-fS-Lus" firstAttribute="trailing" secondItem="pKK-bh-S9D" secondAttribute="trailing" id="YYf-14-OAw"/>
                             <constraint firstItem="ORh-md-pMr" firstAttribute="top" secondItem="B4V-cE-9DF" secondAttribute="bottom" constant="1" id="bO0-dh-Lfq"/>
                             <constraint firstItem="t19-o2-kaz" firstAttribute="bottom" secondItem="ORh-md-pMr" secondAttribute="bottom" constant="12" id="h3n-bp-top"/>
                             <constraint firstItem="pKK-bh-S9D" firstAttribute="leading" secondItem="t19-o2-kaz" secondAttribute="leading" constant="8" id="tfE-G0-XDe"/>
@@ -46,13 +54,14 @@
                         <viewLayoutGuide key="safeArea" id="t19-o2-kaz"/>
                     </view>
                     <connections>
+                        <outlet property="bottomTapView" destination="cDq-fS-Lus" id="IZh-bf-bcM"/>
                         <outlet property="drawerTableView" destination="pKK-bh-S9D" id="4NB-lj-zNg"/>
                         <outlet property="versionLabel" destination="ORh-md-pMr" id="hBz-NI-SPw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rnb-ju-RYb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-634.39999999999998" y="20.239880059970016"/>
+            <point key="canvasLocation" x="-1135.2" y="-147.07646176911544"/>
         </scene>
     </scenes>
     <resources>

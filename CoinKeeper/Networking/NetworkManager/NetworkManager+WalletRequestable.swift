@@ -8,17 +8,23 @@
 
 import PromiseKit
 
-protocol WalletRequestable: AnyObject {
+protocol WalletRequestable: WalletCheckInRequestable {
   func createWallet(withPublicKey key: String, walletFlags: Int) -> Promise<WalletResponse>
   func updateWallet(walletFlags: Int, referrer: String?) -> Promise<WalletResponse>
   func replaceWallet(body: ReplaceWalletBody) -> Promise<WalletResponse>
   func getWallet() -> Promise<WalletResponse>
-  func walletCheckIn() -> Promise<CheckInResponse>
-  func checkIn() -> Promise<CheckInResponse>
   func resetWallet() -> Promise<Void>
 }
 
 extension NetworkManager: WalletRequestable {
+
+  func walletCheckIn() -> Promise<CheckInResponse> {
+    return checkInNetworkManager.walletCheckIn()
+  }
+
+  func checkIn() -> Promise<CheckInResponse> {
+    return checkInNetworkManager.checkIn()
+  }
 
   func createWallet(withPublicKey key: String, walletFlags: Int) -> Promise<WalletResponse> {
     let body = CreateWalletBody(publicKeyString: key, flags: walletFlags)
@@ -36,14 +42,6 @@ extension NetworkManager: WalletRequestable {
 
   func getWallet() -> Promise<WalletResponse> {
     return cnProvider.request(WalletTarget.get)
-  }
-
-  func walletCheckIn() -> Promise<CheckInResponse> {
-    return cnProvider.request(WalletCheckInTarget.get)
-  }
-
-  func checkIn() -> Promise<CheckInResponse> {
-    return cnProvider.request(WalletCheckInTarget.getNoAuth)
   }
 
   func resetWallet() -> Promise<Void> {

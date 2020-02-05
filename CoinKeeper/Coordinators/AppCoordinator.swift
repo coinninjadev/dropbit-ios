@@ -31,8 +31,6 @@ protocol ChildCoordinatorDelegate: class {
   func childCoordinatorDidComplete(childCoordinator: ChildCoordinatorType)
 }
 
-let phoneNumberKit = PhoneNumberKit()
-
 class AppCoordinator: CoordinatorType {
   let navigationController: UINavigationController
   let persistenceManager: PersistenceManagerType
@@ -53,7 +51,7 @@ class AppCoordinator: CoordinatorType {
   let persistenceCacheDataWorker: PersistenceCacheDataWorkerType
   let twitterAccessManager: TwitterAccessManagerType
   let ratingAndReviewManager: RatingAndReviewManagerType
-  let featureConfigManager: FeatureConfigManagerType
+  let remoteConfigManager: RemoteConfigManagerType
   var userIdentifiableManager: UserIdentifiableManagerType
   var localNotificationManager: LocalNotificationManagerType
   let uiTestArguments: [UITestArgument]
@@ -76,8 +74,7 @@ class AppCoordinator: CoordinatorType {
   let contactStore = CNContactStore()
   let locationManager = CLLocationManager()
 
-  var bitcoinURLToOpen: BitcoinURL?
-  var purchasedBitcoinComponents: WyreURLParser?
+  var launchUrl: LaunchURLType?
 
   lazy var contactCacheDataWorker: ContactCacheDataWorker = {
     return ContactCacheDataWorker(contactCacheManager: self.contactCacheManager,
@@ -114,7 +111,7 @@ class AppCoordinator: CoordinatorType {
     currencyController: CurrencyController = CurrencyController(fiatCurrency: .USD),
     twitterAccessManager: TwitterAccessManagerType? = nil,
     ratingAndReviewManager: RatingAndReviewManagerType? = nil,
-    featureConfigManager: FeatureConfigManagerType? = nil,
+    remoteConfigManager: RemoteConfigManagerType? = nil,
     userIdentifiableManager: UserIdentifiableManagerType? = nil,
     uiTestArguments: [UITestArgument] = []
     ) {
@@ -159,7 +156,7 @@ class AppCoordinator: CoordinatorType {
     self.notificationManager = notificationMgr
     self.ratingAndReviewManager = RatingAndReviewManager(persistenceManager: persistenceManager)
     let configDefaults = persistenceManager.userDefaultsManager.configDefaults
-    self.featureConfigManager = featureConfigManager ?? FeatureConfigManager(userDefaults: configDefaults)
+    self.remoteConfigManager = remoteConfigManager ?? RemoteConfigManager(userDefaults: configDefaults)
 
     // now we can use `self` after initializing all properties
     self.notificationManager.delegate = self
@@ -349,8 +346,12 @@ class AppCoordinator: CoordinatorType {
 
   /// Called by applicationDidBecomeActive()
   func appBecameActive() {
+    if uiTestArguments.contains(.uiTestInProgress) {
+      UIApplication.shared.keyWindow?.layer.speed = 10
+    }
+
     resetWalletManagerIfNeeded()
-    handlePendingBitcoinURL()
+    handleLaunchUrlIfNecessary()
     refreshContacts()
 
     self.permissionManager.refreshNotificationPermissionStatus()

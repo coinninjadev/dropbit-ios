@@ -9,7 +9,7 @@
 import UIKit
 
 enum NotifyRecipientMethod {
-  case twitterApp, shareSheet
+  case twitterApp, shareSheet, coinNinja
 }
 
 protocol TweetMethodViewControllerDelegate: ViewControllerDismissable {
@@ -21,15 +21,15 @@ protocol TweetMethodViewControllerDelegate: ViewControllerDismissable {
 class TweetMethodViewController: BaseViewController, StoryboardInitializable {
 
   private weak var delegate: TweetMethodViewControllerDelegate?
-  private var recipient: TwitterContactType!
+  private var viewModel: TweetMethodViewModelType!
   private var addressRequestResponse: WalletAddressRequestResponse!
 
-  static func newInstance(twitterRecipient: TwitterContactType,
-                          addressRequestResponse: WalletAddressRequestResponse,
+  static func newInstance(addressRequestResponse: WalletAddressRequestResponse,
+                          viewModel: TweetMethodViewModelType,
                           delegate: TweetMethodViewControllerDelegate) -> TweetMethodViewController {
     let vc = TweetMethodViewController.makeFromStoryboard()
-    vc.recipient = twitterRecipient
     vc.addressRequestResponse = addressRequestResponse
+    vc.viewModel = viewModel
     vc.delegate = delegate
     vc.modalTransitionStyle = .crossDissolve
     vc.modalPresentationStyle = .overFullScreen
@@ -41,15 +41,17 @@ class TweetMethodViewController: BaseViewController, StoryboardInitializable {
   @IBOutlet var avatarImageView: UIImageView!
   @IBOutlet var screenNameLabel: UILabel!
   @IBOutlet var messageLabel: UILabel!
-  @IBOutlet var twitterAppButton: PrimaryActionButton!
-  @IBOutlet var shareSheetButton: UIButton!
+  @IBOutlet var firstMethodButton: PrimaryActionButton!
+  @IBOutlet var secondMethodButton: PrimaryActionButton!
 
-  @IBAction func sendWithTwitterApp(_ sender: Any) {
-    delegate?.viewControllerRequestedUserSendTweet(self, response: addressRequestResponse, method: .twitterApp)
+  @IBAction func sendWithFirstMethod(_ sender: Any) {
+    let method = viewModel.firstOption.method
+    delegate?.viewControllerRequestedUserSendTweet(self, response: addressRequestResponse, method: method)
   }
 
-  @IBAction func sendWithShareSheet(_ sender: Any) {
-    delegate?.viewControllerRequestedUserSendTweet(self, response: addressRequestResponse, method: .shareSheet)
+  @IBAction func sendWithSecondMethod(_ sender: Any) {
+    let method = viewModel.secondOption.method
+    delegate?.viewControllerRequestedUserSendTweet(self, response: addressRequestResponse, method: method)
   }
 
   override func viewDidLoad() {
@@ -58,12 +60,12 @@ class TweetMethodViewController: BaseViewController, StoryboardInitializable {
     view.backgroundColor = .clear
     semiOpaqueBackgroundView.backgroundColor = .semiOpaquePopoverBackground
     backgroundView.applyCornerRadius(9)
-    configureViews(with: recipient)
+    configureViews()
   }
 
-  private func configureViews(with recipient: TwitterContactType) {
+  private func configureViews() {
     avatarImageView.applyCornerRadius(avatarImageView.frame.width/2)
-    if let imageData = recipient.twitterUser.profileImageData {
+    if let imageData = viewModel.recipient.twitterUser.profileImageData {
       avatarImageView.image = UIImage(data: imageData)
     } else {
       avatarImageView.isHidden = true
@@ -71,26 +73,73 @@ class TweetMethodViewController: BaseViewController, StoryboardInitializable {
 
     screenNameLabel.font = .medium(20)
     screenNameLabel.textColor = .darkBlueText
-    screenNameLabel.text = recipient.displayHandle
+    screenNameLabel.text = viewModel.recipient.displayHandle
 
     messageLabel.font = .medium(14)
     messageLabel.textColor = .darkBlueText
-    messageLabel.text = messageText(with: recipient)
+    messageLabel.text = viewModel.message
 
-    twitterAppButton.style = .standard
-    twitterAppButton.setTitle("SEND NOTIFICATION TWEET", for: .normal)
+    firstMethodButton.style = viewModel.firstOption.buttonStyle
+    firstMethodButton.setTitle(viewModel.firstOption.buttonTitle, for: .normal)
 
-    shareSheetButton.backgroundColor = .clear
-    shareSheetButton.setTitleColor(.darkBlueText, for: .normal)
-    shareSheetButton.titleLabel?.font = .primaryButtonTitle
-    shareSheetButton.setTitle("DON'T HAVE THE TWITTER APP?", for: .normal)
+    secondMethodButton.style = viewModel.secondOption.buttonStyle
+    secondMethodButton.setTitle(viewModel.secondOption.buttonTitle, for: .normal)
   }
 
-  private func messageText(with recipient: TwitterContactType) -> String {
+}
+
+struct TweetMethodOption {
+  let method: NotifyRecipientMethod
+  let buttonTitle: String
+  let buttonStyle: PrimaryActionButtonStyle
+}
+
+protocol TweetMethodViewModelType {
+  var recipient: TwitterContactType { get }
+  var message: String { get }
+  var firstOption: TweetMethodOption { get }
+  var secondOption: TweetMethodOption { get }
+}
+
+struct ServerCanTweetViewModel: TweetMethodViewModelType {
+
+  let recipient: TwitterContactType
+
+  var message: String {
+    return """
+    You’ve sent Bitcoin to \(recipient.displayHandle) on Twitter.
+    You can notify the receiver with a tweet or to maintain privacy
+    we can notify them with a tweet from our account.
+    """.removingMultilineLineBreaks()
+  }
+
+  var firstOption: TweetMethodOption {
+    TweetMethodOption(method: .coinNinja, buttonTitle: "LET DROPBIT SEND THE TWEET", buttonStyle: .darkBlue)
+  }
+
+  var secondOption: TweetMethodOption {
+    TweetMethodOption(method: .twitterApp, buttonTitle: "I'LL SEND THE TWEET MYSELF", buttonStyle: .standard)
+  }
+
+}
+
+struct ServerCannotTweetViewModel: TweetMethodViewModelType {
+
+  let recipient: TwitterContactType
+
+  var message: String {
     return """
     You’ve sent Bitcoin to \(recipient.displayHandle) on Twitter.
     Be sure to send a notification tweet so they can claim their Bitcoin.
     """.removingMultilineLineBreaks()
+  }
+
+  var firstOption: TweetMethodOption {
+    TweetMethodOption(method: .twitterApp, buttonTitle: "SEND NOTIFICATION TWEET", buttonStyle: .standard)
+  }
+
+  var secondOption: TweetMethodOption {
+    TweetMethodOption(method: .shareSheet, buttonTitle: "DON'T HAVE THE TWITTER APP?", buttonStyle: .darkBlueClear)
   }
 
 }

@@ -20,6 +20,11 @@ extension WalletAddressRequestRequestable {
   func updateWalletAddressRequest(withPatch details: AddressRequestPatch) -> Promise<WalletAddressRequestResponse> {
     return updateWalletAddressRequest(for: details.requestId, with: details.patch)
   }
+
+  func requestServerSendTweetForWalletAddressRequest(id: String) -> Promise<WalletAddressRequestResponse> {
+    let request = WalletAddressRequest(suppress: false)
+    return updateWalletAddressRequest(for: id, with: request)
+  }
 }
 
 extension NetworkManager: WalletAddressRequestRequestable {

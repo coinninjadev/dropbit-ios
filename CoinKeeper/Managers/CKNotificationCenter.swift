@@ -13,7 +13,7 @@ public enum CKNotificationKey: String {
   case didUpdateExchangeRates
   case didUpdateFees
   case didUpdateBalance
-  case didUpdateFeatureConfig
+  case didUpdateRemoteConfig
   case didSendTransactionSuccessfully
   case didUpdateBadgeInfo
   case didStartSync

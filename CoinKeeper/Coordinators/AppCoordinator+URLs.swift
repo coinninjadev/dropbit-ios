@@ -10,10 +10,11 @@ import UIKit
 
 extension AppCoordinator {
 
-  func handlePendingBitcoinURL() {
-    if let bitcoinURL = bitcoinURLToOpen, launchStateManager.userAuthenticated {
-      bitcoinURLToOpen = nil
+  func handleLaunchUrlIfNecessary() {
+    guard let launchType = launchUrl, launchStateManager.userAuthenticated else { return }
 
+    switch launchType {
+    case .bitcoin(let bitcoinURL):
       if let topVC = navigationController.topViewController(), let sendPaymentVC = topVC as? SendPaymentViewController {
         sendPaymentVC.applyRecipient(inText: bitcoinURL.absoluteString)
 
@@ -29,20 +30,23 @@ extension AppCoordinator {
         sendPaymentViewController.recipientDescriptionToLoad = bitcoinURL.absoluteString
         navigationController.present(sendPaymentViewController, animated: true)
       }
-    } else if let urlComponents = purchasedBitcoinComponents, launchStateManager.userAuthenticated {
-      purchasedBitcoinComponents = nil
+    case .wyre(let url):
       analyticsManager.track(event: .quickPaySuccessReturn, with: nil)
       if let top = navigationController.topViewController(), top is GetBitcoinViewController {
         navigationController.popViewController(animated: true)
       }
-      let transferID = urlComponents.transferID
+      let transferID = url.transferID
       let controller = GetBitcoinSuccessViewController.newInstance(withDelegate: self, transferID: transferID)
       controller.modalPresentationStyle = .overFullScreen
       controller.modalTransitionStyle = .crossDissolve
       navigationController.topViewController()?.present(controller, animated: true, completion: nil)
-    } else {
+    case .widget:
+      analyticsManager.track(event: .widgetOpenApp, with: nil)
+      didTapChartsButton()
+    default:
       return
     }
 
+    launchUrl = nil
   }
 }

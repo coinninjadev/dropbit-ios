@@ -290,7 +290,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   func testFiatIsOnTopWhenSelected() {
     let viewModel = MockSummaryCellVM.testSummaryInstance(selectedCurrency: .fiat)
     sut.configure(with: viewModel)
-    let firstLabelIsFiat = sut.amountStackView.arrangedSubviews.first is SummaryCellPillLabel
+    let firstLabelIsFiat = sut.amountStackView.arrangedSubviews.first is PillLabel
     XCTAssertTrue(firstLabelIsFiat)
   }
 
@@ -316,12 +316,12 @@ class TransactionHistorySummaryCellTests: XCTestCase {
 
 extension TransactionHistorySummaryCell {
 
-  var pillLabel: SummaryCellPillLabel? {
+  var pillLabel: PillLabel? {
     return pillLabels.first
   }
 
-  var pillLabels: [SummaryCellPillLabel] {
-    return self.amountStackView.arrangedSubviews.compactMap { $0 as? SummaryCellPillLabel }
+  var pillLabels: [PillLabel] {
+    return self.amountStackView.arrangedSubviews.compactMap { $0 as? PillLabel }
   }
 
   var satsLabel: SummaryCellSatsLabel? {

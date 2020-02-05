@@ -10,6 +10,17 @@ import Foundation
 import Charts
 import PromiseKit
 
+extension AppCoordinator: LoadingDelegate {
+  func viewControllerWillLoad(_ viewController: UIViewController) {
+    alertManager.showActivityHUD(withStatus: nil)
+  }
+
+  func viewControllerFinishedLoading(_ viewController: UIViewController) {
+    alertManager.hideActivityHUD(withDelay: nil, completion: nil)
+  }
+
+}
+
 extension AppCoordinator: NewsViewControllerDelegate {
 
   func viewControllerDidRequestPriceDataFor(period: PricePeriod) -> Promise<[PriceSummaryResponse]> {

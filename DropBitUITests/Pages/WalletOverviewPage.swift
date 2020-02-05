@@ -7,17 +7,17 @@
 //
 
 import Foundation
+import XCTest
 
 class WalletOverviewPage: UITestPage {
   
-  init() {
-    super.init(page: .walletOverview(.page))
+  init(ifExists: AssertionWaitCompletion = nil) {
+    super.init(page: .walletOverview(.page), assertionWait: .default, ifExists: ifExists)
   }
   
   @discardableResult
   func tapTutorialButton() -> Self {
     let tutorialButton = app.buttons(.walletOverview(.tutorialButton))
-    tutorialButton.assertExistence(afterWait: .default, elementDesc: "learnAboutBitcoinButton")
     tutorialButton.tap()
     return self
   }
@@ -25,15 +25,13 @@ class WalletOverviewPage: UITestPage {
   @discardableResult
   func tapMenu() -> Self {
     let menuButton = app.buttons(.walletOverview(.menu))
-    menuButton.assertExistence(afterWait: .none, elementDesc: "menuButton")
     menuButton.tap()
     return self
   }
   
   @discardableResult
-  func tapRequest() -> Self {
+  func tapReceive() -> Self {
     let receiveButton = app.buttons(.walletOverview(.receiveButton))
-    receiveButton.assertExistence(afterWait: .none, elementDesc: "receiveButton")
     receiveButton.tap()
     return self
   }
@@ -41,7 +39,6 @@ class WalletOverviewPage: UITestPage {
   @discardableResult
   func tapSend() -> Self {
     let sendButton = app.buttons(.walletOverview(.sendButton))
-    sendButton.assertExistence(afterWait: .none, elementDesc: "sendButton")
     sendButton.tap()
     return self
   }
@@ -49,8 +46,44 @@ class WalletOverviewPage: UITestPage {
   @discardableResult
   func tapBalance() -> Self {
     let balanceView = app.view(withId: .walletOverview(.balanceView))
-    balanceView.assertExistence(afterWait: .none, elementDesc: "balanceView")
     balanceView.tap()
     return self
   }
+
+  @discardableResult
+  func tapBitcoin() -> Self {
+    let bitcoinButton = app.buttons(.walletOverview(.bitcoinButton))
+    bitcoinButton.assistedTap(skipCheck: true)
+    return self
+  }
+
+  @discardableResult
+  func tapLightning() -> Self {
+    let lightningButton = app.buttons(.walletOverview(.lightningButton))
+    lightningButton.assistedTap(skipCheck: true)
+    return self
+  }
+
+  @discardableResult
+  func tapFirstSummaryCell() -> Self {
+    let firstCell = app.cell(withId: .transactionHistory(.summaryCell(0)), assertionWait: .custom(3.0))
+    firstCell.assistedTap()
+    return self
+  }
+
+  private func swipeDetailCell(atIndex index: Int, upTo: Int, forEach: ((Int) -> Void)?) -> Self {
+    guard index <= upTo else {
+      return self
+    }
+    let cell = app.cell(withId: .transactionHistory(.detailCell(index)), assertionWait: .none)
+    forEach?(index)
+    cell.tap()
+    return self.swipeDetailCell(atIndex: index + 1, upTo: upTo, forEach: forEach)
+  }
+
+  @discardableResult
+  func swipeDetailCells(count: Int, forEach: ((Int) -> Void)?) -> Self {
+    return self.swipeDetailCell(atIndex: 0, upTo: count - 1, forEach: forEach)
+  }
+
 }

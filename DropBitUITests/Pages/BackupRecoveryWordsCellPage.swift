@@ -10,8 +10,8 @@ import XCTest
 
 class BackupRecoveryWordsCellPage: UITestPage {
 
-  init() {
-    super.init(page: .backupRecoveryWordsCell(.page))
+  init(ifExists: AssertionWaitCompletion = nil) {
+    super.init(page: .backupRecoveryWordsCell(.page), assertionWait: .default, ifExists: ifExists)
   }
 
   func recoveryWordString() -> String {

@@ -41,7 +41,7 @@ class ImportWalletUITests: UITestCase, UITestRecoverWordBackupAutomatable {
     PushInfoPage()?.dismiss()
 
     WalletOverviewPage()
-      .tapRequest()
+      .tapReceive()
 
     RequestPayPage()
       .checkAddressLabelDisplays(expectedAddress: firstAddress)

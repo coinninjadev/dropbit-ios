@@ -35,7 +35,7 @@ protocol TwitterRequestable: AnyObject {
 
 extension TwitterOAuth {
   var callbackURL: String {
-    return "dropbit://"
+    return DropBitUrlFactory.DropBitURL.scheme + "://"
   }
 }
 

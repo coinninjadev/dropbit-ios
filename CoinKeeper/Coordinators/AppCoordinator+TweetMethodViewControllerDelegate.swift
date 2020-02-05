@@ -14,7 +14,13 @@ extension AppCoordinator: TweetMethodViewControllerDelegate {
   func viewControllerRequestedUserSendTweet(_ viewController: UIViewController,
                                             response: WalletAddressRequestResponse,
                                             method: NotifyRecipientMethod) {
-    self.analyticsManager.track(event: .sendTweetManually, with: nil)
+    switch method {
+    case .coinNinja:
+      self.analyticsManager.track(event: .sendTweetViaDropBit, with: nil)
+    case .twitterApp, .shareSheet:
+      self.analyticsManager.track(event: .sendTweetManually, with: nil)
+    }
+
     let message = self.tweetMessage(for: response)
 
     viewController.dismiss(animated: true, completion: {
@@ -23,6 +29,8 @@ extension AppCoordinator: TweetMethodViewControllerDelegate {
         self.openTwitterURL(withMessage: message)
       case .shareSheet:
         self.showShareSheet(withMessage: message)
+      case .coinNinja:
+        self.networkManager.requestServerSendTweetForWalletAddressRequest(id: response.id).cauterize()
       }
     })
   }

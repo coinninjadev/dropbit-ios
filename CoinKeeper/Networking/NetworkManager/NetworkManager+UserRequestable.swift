@@ -27,14 +27,6 @@ protocol UserRequestable: AnyObject {
 
 }
 
-/**
- The headers provided in this dictionary should not include the signature
- or timestamp as those are added automatically through the AuthPlugin.
- */
-public protocol CKRequestHeadersProvider {
-  var dictionary: Headers { get }
-}
-
 public struct CreateUserHeaders: CKRequestHeadersProvider {
   var walletId: String
 

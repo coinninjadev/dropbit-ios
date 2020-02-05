@@ -10,8 +10,8 @@ import XCTest
 
 class MemoEntryPage: UITestPage {
 
-  init() {
-    super.init(page: .memoEntry(.page))
+  init(ifExists: AssertionWaitCompletion = nil) {
+    super.init(page: .memoEntry(.page), assertionWait: .default, ifExists: ifExists)
   }
 
   @discardableResult

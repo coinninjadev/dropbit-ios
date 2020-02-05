@@ -18,9 +18,11 @@ class UITestPage {
   let app = XCUIApplication()
   let pageElement: AccessiblePageElement
 
-  init(page: AccessiblePageElement, assertionWait: AssertionWait = .default) {
+  init(page: AccessiblePageElement,
+       assertionWait: AssertionWait = .default,
+       ifExists: AssertionWaitCompletion = nil) {
     self.pageElement = page
-    rootElement.assertExistence(afterWait: assertionWait, elementDesc: String(describing: self))
+    rootElement.assertExistence(afterWait: assertionWait, elementDesc: String(describing: self), ifExists: ifExists)
   }
 
   /**
@@ -41,6 +43,12 @@ class UITestPage {
 
   var rootElement: XCUIElement {
     return app.otherElements[pageElement.identifier]
+  }
+
+  @discardableResult
+  func tapBack() -> Self {
+    app.navigationBars.buttons.element(boundBy: 0).tap()
+    return self
   }
 
 }
